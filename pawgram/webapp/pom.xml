@@ -34,7 +34,7 @@
     </dependency>
     <dependency>
       <groupId>ar.edu.itba.pawgram</groupId>
-      <artifactId>interface</artifactId>
+      <artifactId>interfaces</artifactId>
       <version>${parent.version}</version>
     </dependency>
       <dependency>

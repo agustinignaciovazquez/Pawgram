@@ -30,13 +30,18 @@
     <module>model</module>
     <module>persistence</module>
     <module>service</module>
-    <module>interface</module>
+    <module>interfaces</module>
   </modules>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
+				<version>${org.springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
 				<version>${org.springframework.version}</version>
 			</dependency>
 			<dependency>
