@@ -1,8 +1,11 @@
 package ar.edu.itba.pawgram.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -20,4 +23,14 @@ public class WebConfig {
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
 	}
+	@Bean
+	public DataSource dataSource() {
+		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
+		ds.setDriverClass(org.postgresql.Driver.class);
+		ds.setUrl("jdbc:postgresql://localhost/paw");
+		ds.setUsername("root");
+		ds.setPassword("root");
+		return ds;
+	}
+
 }
