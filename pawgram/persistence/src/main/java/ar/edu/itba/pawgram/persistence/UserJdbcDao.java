@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.pawgram.interfaces.UserDao;
@@ -19,6 +20,9 @@ import ar.edu.itba.pawgram.model.User;
 
 @Repository
 public class UserJdbcDao implements UserDao {
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 	private JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
 	private final static RowMapper<User> ROW_MAPPER = new RowMapper<User>() {
@@ -49,12 +53,13 @@ public class UserJdbcDao implements UserDao {
 	@Override
 	public User create(String name, String surname, String mail, String password) {
 		final Map<String, Object> args = new HashMap<>();
+		String enc_password = bCryptPasswordEncoder.encode(password);
 		args.put("name", name); 
 		args.put("surname", surname); 
 		args.put("mail", mail); 
-		args.put("password", password); 
+		args.put("password", enc_password); 
 		final Number userId = jdbcInsert.executeAndReturnKey(args);
-		return new User(userId.longValue(),name,surname,mail,password);
+		return new User(userId.longValue(),name,surname,mail,enc_password);
 	}
 
 	@Override

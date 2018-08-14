@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2>Register</h2>
-<c:url value="/create" var="postPath"/>
+<c:url value="/register/process" var="postPath"/>
 <form:form modelAttribute="registerForm" action="${postPath}" method="post">
 <div>
 <form:label path="name">Name: </form:label>

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ComponentScan({ "ar.edu.itba.pawgram.persistence", })
 @Configuration
@@ -20,5 +21,8 @@ public class TestConfig {
 	ds.setPassword("");
 	return ds;
 	}
-
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder(){
+		return new BCryptPasswordEncoder();
+	}
 }

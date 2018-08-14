@@ -25,11 +25,6 @@ public class MainController {
 		return new ModelAndView("index");
 	}
 	
-	@RequestMapping("/register")
-	public ModelAndView register(@ModelAttribute("registerForm") final UserForm form) {
-		return new ModelAndView("register");
-	}
-	
 	@RequestMapping("/user")
 	public ModelAndView index(@RequestParam(value = "userId", required = true) final int id) {
 		final ModelAndView mav = new ModelAndView("users");
@@ -42,7 +37,12 @@ public class MainController {
 		return new ModelAndView("login");
 	}
 	
-	@RequestMapping(value = "/create", method = { RequestMethod.POST })
+	@RequestMapping("/register")
+	public ModelAndView register(@ModelAttribute("registerForm") final UserForm form) {
+		return new ModelAndView("register");
+	}
+	
+	@RequestMapping(value = "/register/process", method = { RequestMethod.POST })
 	public ModelAndView create(@Valid @ModelAttribute("registerForm") final UserForm form, final BindingResult errors) {
 		if (errors.hasErrors()) {
 			return register(form);

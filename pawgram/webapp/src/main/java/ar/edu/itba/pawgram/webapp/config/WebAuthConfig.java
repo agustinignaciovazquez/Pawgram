@@ -3,12 +3,15 @@ package ar.edu.itba.pawgram.webapp.config;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import ar.edu.itba.pawgram.webapp.auth.PawgramUserDetailsService;
 
@@ -25,7 +28,7 @@ protected void configure(final HttpSecurity http) throws Exception {
 	.sessionManagement()
 	.invalidSessionUrl("/login")
 	.and().authorizeRequests()
-	.antMatchers("/login","/register").anonymous()
+	.antMatchers("/login","/register","/register/**").anonymous()
 	.antMatchers("/admin/**").hasRole("ADMIN")
 	.antMatchers("/**").authenticated()
 	.and().formLogin()
@@ -50,6 +53,16 @@ protected void configure(final HttpSecurity http) throws Exception {
 public void configure(final WebSecurity web) throws Exception {
 	web.ignoring().antMatchers("/resources/**","/favicon.ico", "/403");
 }
+
+@Bean
+public BCryptPasswordEncoder bCryptPasswordEncoder(){
+	return new BCryptPasswordEncoder();
+}
+
+@Autowired
+public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+	auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+} 
 
 }
 
