@@ -1,41 +1,70 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<html>
+
 <head>
-<link rel="stylesheet" href="<c:url value="/css/style.css"/>" />
+	<meta charset="UTF-8">
+	<title>Pawgram - Register</title>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<link rel="stylesheet" href="css/pawgram.css">
+
+	<script src="js/pawgram.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	
 </head>
+
 <body>
-<h2>Register</h2>
-<c:url value="/register/process" var="postPath"/>
-<form:form modelAttribute="registerForm" action="${postPath}" method="post">
-<div>
-<form:label path="name">Name: </form:label>
-<form:input type="text" path="name"/>
-<form:errors path="name" cssClass="formError" element="p"/>
-</div>
-<div>
-<form:label path="surname">Surname: </form:label>
-<form:input type="text" path="surname"/>
-<form:errors path="surname" cssClass="formError" element="p"/>
-</div>
-<div>
-<form:label path="mail">E-Mail: </form:label>
-<form:input type="text" path="mail"/>
-<form:errors path="mail" cssClass="formError" element="p"/>
-</div>
-<div>
-<form:label path="password">Password: </form:label>
-<form:input type="password" path="password" />
-<form:errors path="password" cssClass="formError" element="p"/>
-</div>
-<div>
-<form:label path="repeatPassword">Repeat password: </form:label>
-<form:input type="password" path="repeatPassword"/>
-<form:errors path="repeatPassword" cssClass="formError" element="p"/>
-</div>
-<div>
-<input type="submit" value="Register!"/>
-</div>
-</form:form>
-</body>
-</html>
+	<div class="v-center">
+
+	<div class="container">
+	  
+	  <div class="row" id="pwd-container">
+	    <div class="col-md-4"></div>
+	    
+	    <div class="col-md-4">
+	      <section class="login-form">
+	        <form:form method="post" action="#" role="login">
+	          <img src="http://i.imgur.com/RcmcLv4.png" class="img-responsive" alt="" />
+
+	          <div>
+	          	<form:input type="text" path="name" placeholder="Name" class="form-control input-lg"/>
+				<form:errors path="name" cssClass="formError" element="p" />
+	          </div>
+
+	          <div>
+	          	<form:input type="text" path="surname" placeholder="Surname" class="form-control input-lg"/>
+				<form:errors path="surname" cssClass="formError" element="p" />
+	          </div>
+
+	          <div>
+	          	<form:input type="email" path="email" placeholder="Email" class="form-control input-lg"/>
+				<form:errors path="email" cssClass="formError" element="p" />
+	          </div>
+
+	          <div>
+	          	<form:input type="password" path="password" placeholder="Password" class="form-control input-lg"/>
+				<form:errors path="password" cssClass="formError" element="p" />
+	          </div>
+
+	          <div>
+	          	<form:input type="rpassword" path="rpassword" placeholder="Repeat Password" class="form-control input-lg"/>
+				<form:errors path="rpassword" cssClass="formError" element="p" />
+	          </div>
+	          
+	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="Register"></input>
+	          
+	        </form:form>
+	      </section>  
+	    </div>
+	      
+	     <div class="col-md-4"></div>
+	      
+
+	  </div>  
+	  
+	</div>
+	</div>
+
+
+</body>	
