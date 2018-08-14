@@ -5,12 +5,12 @@
 	<meta charset="UTF-8">
 	<title>Pawgram - Login</title>
 
-	<link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-	<link rel="stylesheet" href="css/pawgram.css">
+	<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/pawgram.css"/>">
 
-	<script src="js/pawgram.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="<c:url value="/resources/js/pawgram.js"/>"></script>
+	<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+	<script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
 	
 </head>
 
@@ -24,25 +24,26 @@
 	    
 	    <div class="col-md-4">
 	      <section class="login-form">
-	        <form:form method="post" action="#" role="login">
+	      	<c:url value="/login" var="loginUrl" />
+	      	<c:url value="/register" var="registerUrl" />
+			<form  method="post" action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded" role="login">
 	          <img src="http://i.imgur.com/RcmcLv4.png" class="img-responsive" alt="" />
 	          
 			  <div>
-	          	<form:input type="email" path="email" placeholder="Email" class="form-control input-lg"/>
-				<form:errors path="email" cssClass="formError" element="p" />
+	          	<input type="text" name="j_username" placeholder="Email" class="form-control input-lg"/>
 	          </div>
 
 	          <div>
-	          	<form:input type="password" path="password" placeholder="Password" class="form-control input-lg"/>
-				<form:errors path="password" cssClass="formError" element="p" />
+	          	<input type="password" name="j_password" placeholder="Password" class="form-control input-lg"/>
 	          </div>         
-	          
+	          <div>
+				<label><input name="j_rememberme" type="checkbox"/> <spring:message code="remember_me"/> Recuerdame Coco</label>
+			</div>
 	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="Sign in"></input>
 	          <div>
-
-	            <a href="#">Create account</a> or <a href="#">reset password</a>
+	            <a href="${registerUrl}">Create account</a> or <a href="#">reset password</a>
 	          </div>
-	        </form:form>
+	        </form>
 	      </section>  
 	    </div>
 	      

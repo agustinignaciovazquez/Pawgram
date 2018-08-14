@@ -5,12 +5,12 @@
 	<meta charset="UTF-8">
 	<title>Pawgram - Register</title>
 
-	<link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-	<link rel="stylesheet" href="css/pawgram.css">
+	<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/pawgram.css"/>">
 
-	<script src="js/pawgram.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="<c:url value="/resources/js/pawgram.js"/>"></script>
+	<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+	<script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
 	
 </head>
 
@@ -24,7 +24,8 @@
 	    
 	    <div class="col-md-4">
 	      <section class="login-form">
-	        <form:form method="post" action="#" role="login">
+	        <c:url value="/register/process" var="postPath"/>
+			<form:form modelAttribute="registerForm" action="${postPath}" method="post" role="login">
 	          <img src="http://i.imgur.com/RcmcLv4.png" class="img-responsive" alt="" />
 
 	          <div>
@@ -38,8 +39,8 @@
 	          </div>
 
 	          <div>
-	          	<form:input type="email" path="email" placeholder="Email" class="form-control input-lg"/>
-				<form:errors path="email" cssClass="formError" element="p" />
+	          	<form:input type="text" path="mail" placeholder="Email" class="form-control input-lg"/>
+				<form:errors path="mail" cssClass="formError" element="p" />
 	          </div>
 
 	          <div>
@@ -48,8 +49,8 @@
 	          </div>
 
 	          <div>
-	          	<form:input type="rpassword" path="rpassword" placeholder="Repeat Password" class="form-control input-lg"/>
-				<form:errors path="rpassword" cssClass="formError" element="p" />
+	          	<form:input type="repeatPassword" path="repeatPassword" placeholder="Repeat Password" class="form-control input-lg"/>
+				<form:errors path="repeatPassword" cssClass="formError" element="p" />
 	          </div>
 	          
 	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="Register"></input>
