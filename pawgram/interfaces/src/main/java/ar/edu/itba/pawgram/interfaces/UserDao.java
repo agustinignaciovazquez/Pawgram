@@ -13,6 +13,14 @@ public interface UserDao {
 	public User findById(final long id);
 	
 	/**
+	* Find an existing user by e-mail
+	*
+	* @param mail of the user
+	* @return user if id is correct null otherwise
+	*/
+	public User findByMail(final String mail);
+	
+	/**
 	* Create a new user.
 	*
 	* @param username The name of the user.

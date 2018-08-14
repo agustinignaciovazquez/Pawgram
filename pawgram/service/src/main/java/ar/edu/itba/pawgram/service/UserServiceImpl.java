@@ -22,4 +22,9 @@ public class UserServiceImpl implements UserService{
 		return userDao.create(name, surname, mail, password);
 	}
 
+	@Override
+	public User findByMail(String mail) {
+		return userDao.findByMail(mail);
+	}
+
 }

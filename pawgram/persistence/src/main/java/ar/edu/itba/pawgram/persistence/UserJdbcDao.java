@@ -57,4 +57,13 @@ public class UserJdbcDao implements UserDao {
 		return new User(userId.longValue(),name,surname,mail,password);
 	}
 
+	@Override
+	public User findByMail(String mail) {
+		final List<User> list = jdbcTemplate.query("SELECT * FROM users WHERE mail = ?", ROW_MAPPER, mail);
+		if (list.isEmpty()) {
+			return null;
+		}
+		return list.get(0);
+	}
+
 }
