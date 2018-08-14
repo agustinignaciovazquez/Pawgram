@@ -3,6 +3,7 @@ package ar.edu.itba.pawgram.webapp.config;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,8 @@ import ar.edu.itba.pawgram.webapp.auth.PawgramUserDetailsService;
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 @Autowired
 private PawgramUserDetailsService userDetailsService;
+@Value("classpath:remember_me_key.pem")
+private String remember_me_key;
 
 @Override
 protected void configure(final HttpSecurity http) throws Exception {
@@ -39,7 +42,7 @@ protected void configure(final HttpSecurity http) throws Exception {
 	.and().rememberMe()
 	.rememberMeParameter("j_rememberme")
 	.userDetailsService(userDetailsService)
-	.key("mysupersecretketthatnobodyknowsabout")
+	.key(remember_me_key)
 	.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
 	.and().logout()
 	.logoutUrl("/logout")

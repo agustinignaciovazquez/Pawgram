@@ -13,6 +13,13 @@
 	<org.slf4j.version>1.7.5</org.slf4j.version>
 	<logback.version>1.1.2</logback.version>
 	<logback-ext-spring.version>0.1.1</logback-ext-spring.version>
+	<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+	<maven-compiler-plugin-target.version>1.7</maven-compiler-plugin-target.version>
+	<maven-compiler-plugin-src.version>1.7</maven-compiler-plugin-src.version>
+	<javax.mail-version>1.4.7</javax.mail-version>
+	<javax.mail.api-version>1.5.5</javax.mail.api-version>
+	<tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
+	<junit.version>4.11</junit.version>
 	</properties>
 	<build>
 		<plugins>
@@ -24,6 +31,15 @@
 					<downloadSources>true</downloadSources>
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
+			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-compiler-plugin</artifactId>
+			    <version>${maven-compiler-plugin.version}</version>
+			    <configuration>
+			        <source>${maven-compiler-plugin-src.version}</source>
+			        <target>${maven-compiler-plugin-target.version}</target>
+			    </configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -58,6 +74,12 @@
 				<version>${servlet-api.version}</version>
 				<scope>provided</scope>
 			</dependency>
+			<dependency>
+		      <groupId>junit</groupId>
+		      <artifactId>junit</artifactId>
+		      <version>${junit.version}</version>
+		      <scope>test</scope>
+		    </dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>jstl</artifactId>
@@ -135,6 +157,23 @@
 				<artifactId>logback-ext-spring</artifactId>
 				<version>${logback-ext-spring.version}</version>
 				<scope>runtime</scope>
+			</dependency>
+			<!-- All Mail related stuff + Much more-->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context-support</artifactId>
+				<version>${org.springframework.version}</version>
+			</dependency>
+			<!-- JavaMail-->
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>javax.mail-api</artifactId>
+				<version>${javax.mail.api-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>${javax.mail-version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
