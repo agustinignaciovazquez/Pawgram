@@ -11,7 +11,7 @@ import ar.edu.itba.pawgram.model.structures.ParentNode;
 public class CommentFamily {
 
 	private final ParentNode<Comment> parentNode;
-	private final int parentId;
+	private final long parentId;
 	
 	public CommentFamily(Comment parentComment) {
 		notNull(parentComment, "Parent comment cannot be null");

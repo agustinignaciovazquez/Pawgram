@@ -9,21 +9,21 @@ import static org.apache.commons.lang3.Validate.notNull;
 public class Comment {
 	private static final int NO_PARENT_ID = -1;
 	
-	private final int id;
-	private final int parentId;
+	private final long id;
+	private final long parentId;
 	private final String content;
 	private final LocalDateTime commentDate;
 	private final User author;
 	
-	public Comment(int id, User author, String content, LocalDateTime date) {
+	public Comment(long id, User author, String content, LocalDateTime date) {
 		this(id, NO_PARENT_ID, author, content, date, true);
 	}
 	
-	public Comment(int id, int parentId, User author, String content, LocalDateTime date) {
+	public Comment(long id, long parentId, User author, String content, LocalDateTime date) {
 		this(id, parentId, author, content, date, false);
 	}
 	
-	private Comment(int id, int parentId, User author, String content, LocalDateTime date, boolean isParentId) {
+	private Comment(long id, long parentId, User author, String content, LocalDateTime date, boolean isParentId) {
 		isTrue(id >= 0, "Comment ID must be non negative: %d", id);
 		isTrue(parentId >= 0 || (parentId == NO_PARENT_ID && isParentId), "Parent comment ID must be non negative: %d", parentId);
 		
@@ -34,11 +34,11 @@ public class Comment {
 		this.commentDate = notNull(date, "Comment date cannot be null");		
 	}
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 	
-	public int getParentId() {
+	public long getParentId() {
 		if (!hasParent())
 			throw new NoSuchElementException("Root comment has no parent");
 		return parentId;
@@ -62,7 +62,7 @@ public class Comment {
 	
 	@Override
 	public int hashCode() {
-		return id;
+		return (int)id;
 	}
 	
 	@Override

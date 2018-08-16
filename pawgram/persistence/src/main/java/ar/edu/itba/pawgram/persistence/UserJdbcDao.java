@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.pawgram.interfaces.UserDao;
 import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.persistence.rowmapper.UserRowMapper;
 
 @Repository
 public class UserJdbcDao implements UserDao {
@@ -25,12 +26,8 @@ public class UserJdbcDao implements UserDao {
 	
 	private JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
-	private final static RowMapper<User> ROW_MAPPER = new RowMapper<User>() {
-		@Override
-		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return new User(rs.getInt("id"), rs.getString("name"), rs.getString("surname"), rs.getString("mail"), rs.getString("password"));
-		}
-	};
+	@Autowired
+	private UserRowMapper ROW_MAPPER;
 	
 	@Autowired
 	public UserJdbcDao(final DataSource ds) {
