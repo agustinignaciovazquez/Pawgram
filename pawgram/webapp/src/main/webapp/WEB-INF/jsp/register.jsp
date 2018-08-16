@@ -26,7 +26,7 @@
 	      <section class="login-form">
 	        <c:url value="/register/process" var="postPath"/>
 			<form:form modelAttribute="registerForm" action="${postPath}" method="post" role="login">
-	          <img src="http://i.imgur.com/RcmcLv4.png" class="img-responsive" alt="" />
+	          <img src="<c:url value="/resources/img/logo.png"/>" class="img-responsive" alt="" />
 
 	          <div>
 	          	<form:input type="text" path="name" placeholder="Name" class="form-control input-lg"/>

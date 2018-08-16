@@ -27,7 +27,7 @@
 	      	<c:url value="/login" var="loginUrl" />
 	      	<c:url value="/register" var="registerUrl" />
 			<form  method="post" action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded" role="login">
-	          <img src="http://i.imgur.com/RcmcLv4.png" class="img-responsive" alt="" />
+	          <img src="<c:url value="/resources/img/logo.png"/>" class="img-responsive" alt="" />
 	          
 			  <div>
 	          	<input type="text" name="j_username" placeholder="Email" class="form-control input-lg"/>
