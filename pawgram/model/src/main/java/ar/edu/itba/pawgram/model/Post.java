@@ -1,5 +1,7 @@
 package ar.edu.itba.pawgram.model;
 
+import ar.edu.itba.pawgram.model.interfaces.PlainPost;
+
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.Locale;
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notBlank;
 
-public class Post {
+public class Post implements PlainPost {
 	private long id;
 	private String title;
 	private String description;
@@ -18,8 +20,7 @@ public class Post {
 	private Category category;
 	private Pet pet;
 	private boolean is_male;
-	private double longitude;
-	private double latitude;
+	private Location location;
 	private User owner;
 	private List<CommentFamily> comments;
 	
@@ -41,21 +42,23 @@ public class Post {
 		this.category = builder.category;
 		this.pet = builder.pet;
 		this.is_male = builder.is_male;
-		this.longitude = builder.longitude;
-		this.latitude = builder.latitude;
+		this.location = builder.location;
 		this.owner = builder.owner;
 		this.comments = builder.comments;
 	}
 	
+	@Override
 	public long getId() {
 		return id;
 	}
+	@Override
 	public String getTitle() {
 		return title;
 	}
 	public String getDescription() {
 		return description;
 	}
+	@Override
 	public String getImg_url() {
 		return img_url;
 	}
@@ -65,26 +68,23 @@ public class Post {
 	public LocalDateTime getevent_date() {
 		return event_date;
 	}
+	@Override
 	public Category getCategory() {
 		return category;
 	}
+	@Override
 	public Pet getPet() {
 		return pet;
 	}
 	public boolean isIs_male() {
 		return is_male;
 	}
-	public double getLongitude() {
-		return longitude;
-	}
-	public double getLatitude() {
-		return latitude;
-	}
+	public Location getLocation(){return location;}
 	public User getOwner() {
 		return owner;
 	}
 	
-	private static class PostBuilder{
+	public static class PostBuilder{
 		private long id;
 		private String title;
 		private String description;
@@ -94,8 +94,7 @@ public class Post {
 		private Category category;
 		private Pet pet;
 		private boolean is_male;
-		private double longitude;
-		private double latitude;
+		private Location location;
 		private User owner;
 		private List<CommentFamily> comments = Collections.emptyList();
 
@@ -129,18 +128,27 @@ public class Post {
 			this.category = Category.valueOf(category.toUpperCase(Locale.ENGLISH).trim());
 			return this;
 		}
-		
+
 		public PostBuilder pet(Pet pet) {
 			this.pet = pet;
 			return this;
 		}
-		
-		public PostBuilder location(double latitude, double longitude) {
-			this.latitude = latitude;
-			this.longitude = longitude;
+
+		public PostBuilder pet(String pet) {
+			this.pet = Pet.valueOf(pet.toUpperCase(Locale.ENGLISH).trim());
 			return this;
 		}
-		
+
+		public PostBuilder location(Location location) {
+			this.location = location;
+			return this;
+		}
+
+		public PostBuilder is_male(boolean is_male) {
+			this.is_male = is_male;
+			return this;
+		}
+
 		public PostBuilder user(User owner) {
 			this.owner = owner;
 			return this;
