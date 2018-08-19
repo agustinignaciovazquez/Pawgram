@@ -28,7 +28,9 @@ import org.springframework.web.servlet.view.JstlView;
 public class WebConfig extends WebMvcConfigurerAdapter {
 	@Value("classpath:schema.sql")
 	private Resource schemaSql;
-	
+	@Value("classpath:haversine.sql")
+	private Resource haversineSql;
+
 	@Bean
 	public ViewResolver viewResolver() {
 		final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -72,6 +74,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	private DatabasePopulator databasePopulator() {
 		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
 		dbp.addScript(schemaSql);
+		dbp.addScript(haversineSql);
 		return dbp;
 	}
 
