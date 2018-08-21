@@ -19,9 +19,9 @@ import ar.edu.itba.pawgram.model.User;
 public class MainController {
 	@Autowired
 	private UserService us;
-		
+
 	@RequestMapping("/")
-	public ModelAndView index(@ModelAttribute("registerForm") final UserForm form) {
+	public ModelAndView index() {
 		return new ModelAndView("index");
 	}
 	

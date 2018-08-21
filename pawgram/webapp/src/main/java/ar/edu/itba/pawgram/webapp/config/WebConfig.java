@@ -15,6 +15,7 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -31,6 +32,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Value("classpath:haversine.sql")
 	private Resource haversineSql;
 
+	private int maxUploadSizeInMb = 5 * 1024 * 1024; // 5 MB
 	@Bean
 	public ViewResolver viewResolver() {
 		final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -70,7 +72,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		dsi.setDatabasePopulator(databasePopulator());
 		return dsi;
 	}
-	
+
+	@Bean
+	public CommonsMultipartResolver multipartResolver() {
+
+		CommonsMultipartResolver cmr = new CommonsMultipartResolver();
+		cmr.setMaxUploadSize(maxUploadSizeInMb * 2);
+		cmr.setMaxUploadSizePerFile(maxUploadSizeInMb); //bytes
+		return cmr;
+
+	}
+
 	private DatabasePopulator databasePopulator() {
 		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
 		dbp.addScript(schemaSql);
