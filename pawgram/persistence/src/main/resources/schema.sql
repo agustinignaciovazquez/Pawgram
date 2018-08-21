@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS posts (
     category VARCHAR(32) NOT NULL CHECK (category IN ('LOST', 'FOUND', 'ADOPT', 'EMERGENCY')),
     pet VARCHAR(32) NOT NULL CHECK (pet IN ('DOG', 'CAT', 'OTHER')),
     is_male BOOLEAN NOT NULL,
-    longitude FLOAT(24) NOT NULL,
-    latitude FLOAT(24) NOT NULL,
+    latitude double precision NOT NULL,
+    longitude double precision NOT NULL,
     userId INTEGER REFERENCES users(id) NOT NULL
 );
 

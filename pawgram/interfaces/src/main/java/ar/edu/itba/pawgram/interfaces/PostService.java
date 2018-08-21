@@ -6,7 +6,7 @@ import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface PostDao {
+public interface PostService {
     /**
      * Creates a {@link Post.PostBuilder} inserting the {@link Post} data into the database.
      * @param title - Title of the post
@@ -23,7 +23,7 @@ public interface PostDao {
      */
    /* public Post.PostBuilder createProduct(String name, String description, String shortDescription, String website, String category,
                                           LocalDateTime uploadDate, byte[] logo, int creatorId);*/
-    public Post.PostBuilder createPost(final String title, final String description, final String img_url, final String contact_phone,
+    public Post createPost(final String title, final String description, final String img_url, final String contact_phone,
                                        final LocalDateTime event_date, final Category category, final Pet pet, final boolean is_male,
                                        final Location location, final User owner);
 
@@ -68,7 +68,7 @@ public interface PostDao {
      * @param location - current location of the user
      * @return Post with the associated ID of null if it doesn't exist
      */
-    public Post.PostBuilder getFullPostById(final long postId, final Location location);
+    public Post getFullPostById(final long postId, final Location location);
 
     /**
      * Retrieves a {@link Post} as a {@link PlainPost}.

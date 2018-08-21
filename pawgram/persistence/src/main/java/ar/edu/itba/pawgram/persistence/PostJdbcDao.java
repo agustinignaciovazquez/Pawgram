@@ -103,13 +103,13 @@ public class PostJdbcDao implements PostDao {
     public Post.PostBuilder getFullPostById(long postId, Location location) {
         List<Post.PostBuilder> l = jdbcTemplate.query("SELECT *," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
-                        "NATURAL JOIN users FROM posts WHERE postId = ? ORDER BY postId ASC",
+                        "FROM posts,users WHERE posts.userId = users.id AND postId = ? ORDER BY postId ASC",
                 postBuilderRowMapper,location.getLatitude(),location.getLongitude(),postId);
         return (l.isEmpty())? null: l.get(0);
     }
 
     @Override
-    public PlainPost getPlainProductById(long postId) {
+    public PlainPost getPlainPostById(long postId) {
         List<PlainPost> l = jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
                         " 0 as distance FROM posts WHERE postId = ? ORDER BY postId ASC",
                 plainPostRowMapper,postId);

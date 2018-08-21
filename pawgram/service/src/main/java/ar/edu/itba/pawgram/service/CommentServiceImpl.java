@@ -10,7 +10,9 @@ import ar.edu.itba.pawgram.interfaces.CommentDao;
 import ar.edu.itba.pawgram.interfaces.CommentService;
 import ar.edu.itba.pawgram.model.Comment;
 import ar.edu.itba.pawgram.model.CommentFamily;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CommentServiceImpl implements CommentService{
 	@Autowired
 	private CommentDao commentDao;
