@@ -1,5 +1,7 @@
 package ar.edu.itba.pawgram.service;
 
+import ar.edu.itba.pawgram.interfaces.CommentDao;
+import ar.edu.itba.pawgram.interfaces.CommentService;
 import ar.edu.itba.pawgram.interfaces.PostDao;
 import ar.edu.itba.pawgram.interfaces.PostService;
 import ar.edu.itba.pawgram.model.*;
@@ -14,6 +16,8 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
     @Autowired
     private PostDao postDao;
+    @Autowired
+    private CommentService commentService;
 
     @Override
     public Post createPost(String title, String description, String img_url, String contact_phone,
@@ -44,12 +48,35 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getFullPostById(long postId, Location location) {
-        return postDao.getFullPostById(postId, location).build();
+        Post.PostBuilder pb = postDao.getFullPostById(postId, location);
+        if(pb == null)
+            return null;
+        return pb.commentFamilies(commentService.getCommentsByPostId(postId)).build();
     }
 
     @Override
     public PlainPost getPlainPostById(long postId) {
         return postDao.getPlainPostById(postId);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsPaged(Location location, int range, int page, int pageSize) {
+        return postDao.getPlainPostsRange(location, range, (page - 1) * pageSize, pageSize);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByCategoryPaged(Location location, int range, Category category, int page, int pageSize) {
+        return postDao.getPlainPostsByCategoryRange(location, range, category, (page - 1) * pageSize, pageSize);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, int page, int pageSize) {
+        return postDao.getPlainPostsByKeywordRange(keyword, location, (page - 1) * pageSize, pageSize);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Location location, int page, int pageSize) {
+        return postDao.getPlainPostsByUserIdRange(userId, location, (page - 1) * pageSize, pageSize);
     }
 
     @Override

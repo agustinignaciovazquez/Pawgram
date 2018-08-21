@@ -39,7 +39,7 @@ public class CommentJdbcDao implements CommentDao {
 
 	@Override
 	public List<Comment> getCommentsByPostId(final long id) {
-		final List<Comment> comments = jdbcTemplate.query("SELECT * FROM comments NATURAL JOIN users WHERE postId = ? ORDER BY parentId NULLS FIRST, commentDate ASC", 
+		final List<Comment> comments = jdbcTemplate.query("SELECT * FROM comments, users WHERE comments.userId = users.id AND postId = ? ORDER BY parentId NULLS FIRST, commentDate ASC",
 				commentRowMapper, id);
 		return comments;	
 	}

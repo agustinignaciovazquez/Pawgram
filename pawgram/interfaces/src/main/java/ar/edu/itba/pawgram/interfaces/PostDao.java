@@ -21,8 +21,6 @@ public interface PostDao {
      * @param owner - owner id of the post
      * @return Post - The newly created post
      */
-   /* public Post.PostBuilder createProduct(String name, String description, String shortDescription, String website, String category,
-                                          LocalDateTime uploadDate, byte[] logo, int creatorId);*/
     public Post.PostBuilder createPost(final String title, final String description, final String img_url, final String contact_phone,
                                        final LocalDateTime event_date, final Category category, final Pet pet, final boolean is_male,
                                        final Location location, final User owner);
@@ -30,15 +28,15 @@ public interface PostDao {
     /**
      * Lists every nearby in range KM existing {@link Post} as a {@link PlainPost} .
      * @param location - current location of the user
-     * @param range - max range of search
+     * @param range - max range of search in meters
      * @return {@link List} of the existing posts
      */
     public List<PlainPost> getPlainPosts(final Location location, final int range);
 
     /**
-     * Lists every nearby in range KM existing {@link Post} as a {@link PlainPost} for a given {@link Category}
+     * Lists every nearby in range (Meters) existing {@link Post} as a {@link PlainPost} for a given {@link Category}
      * @param location - current location of the user
-     * @param range - max range of search
+     * @param range - max range of search in meters
      * @param category - Category the posts belongs to
      * @return {@link List} of the existing posts
      */
@@ -84,6 +82,52 @@ public interface PostDao {
      * @return true if a product was deleted
      */
     public boolean deletePostById(final long postId, User user);
+
+    /**
+     * Lists every nearby in range KM existing {@link Post} as a {@link PlainPost} .
+     * @param location - current location of the user
+     * @param range - max range of search in meters
+     * @param limit - max number of results
+     * @param offset - post offset
+     * @return {@link List} of the existing posts
+     */
+    public List<PlainPost> getPlainPostsRange(final Location location, final int range,
+                                              final int limit, final int offset);
+
+    /**
+     * Lists every nearby in range (Meters) existing {@link Post} as a {@link PlainPost} for a given {@link Category}
+     * @param location - current location of the user
+     * @param range - max range of search in meters
+     * @param category - Category the posts belongs to
+     * @param limit - max number of results
+     * @param offset - post offset
+     * @return {@link List} of the existing posts
+     */
+    public List<PlainPost> getPlainPostsByCategoryRange(final Location location, final int range, final Category category,
+                                                        final int limit, final int offset);
+
+    /**
+     * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
+     * The keyword should match the post title or description
+     * @param keyword - The keyword which should be matched
+     * @param location - Current user location
+     * @param limit - max number of results
+     * @param offset - post offset
+     * @return The list of plain post that match with the keyword.
+     */
+    public List<PlainPost> getPlainPostsByKeywordRange(final String keyword, final Location location,
+                                                       final int limit, final int offset);
+
+    /**
+     * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
+     * @param userId - ID of the creator
+     * @param location - current location of the user
+     * @param limit - max number of results
+     * @param offset - post offset
+     * @return List of post. Empty in case the user did not create any post
+     */
+    public List<PlainPost> getPlainPostsByUserIdRange(final long userId, final Location location,
+                                                      final int limit, final int offset);
 
     /**
      * Retrieves the total amount of post registered.

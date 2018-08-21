@@ -126,6 +126,39 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
+    public List<PlainPost> getPlainPostsRange(Location location, int range, int limit, int offset) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " haversine_distance(?,?,latitude,longitude) as distance" +
+                        " FROM posts WHERE distance <= ? ORDER BY distance DESC LIMIT ? OFFSET ?",
+                plainPostRowMapper,location.getLatitude(),location.getLongitude(),range,limit,offset);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByCategoryRange(Location location, int range, Category category, int limit, int offset) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet, " +
+                        "haversine_distance(?,?,latitude,longitude) as distance" +
+                        " FROM posts WHERE distance <= ? AND category = ? ORDER BY distance DESC LIMIT ? OFFSET ?",
+                plainPostRowMapper,location.getLatitude(),location.getLongitude(),
+                range,category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, int limit, int offset) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " haversine_distance(?,?,latitude,longitude) as distance" +
+                        " FROM posts WHERE title LIKE %?% DESC LIMIT ? OFFSET ?",
+                plainPostRowMapper,keyword,limit,offset);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByUserIdRange(long userId, Location location, int limit, int offset) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " haversine_distance(?,?,latitude,longitude) as distance" +
+                        " FROM posts WHERE userId = ? ORDER BY postId ASC LIMIT ? OFFSET ?",
+                plainPostRowMapper,location.getLatitude(),location.getLongitude(),userId,limit,offset);
+    }
+
+    @Override
     public long getTotalPosts() {
         Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts", Integer.class);
         return total != null ? total : 0;

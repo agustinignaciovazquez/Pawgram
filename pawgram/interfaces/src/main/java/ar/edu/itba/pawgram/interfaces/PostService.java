@@ -78,6 +78,44 @@ public interface PostService {
     public PlainPost getPlainPostById(final long postId);
 
     /**
+     * Lists every nearby in range KM existing {@link Post} as a {@link PlainPost} .
+     * @param location - current location of the user
+     * @param range - max range of search in meters
+     * @return {@link List} of the existing posts
+     */
+    public List<PlainPost> getPlainPostsPaged(final Location location, final int range,
+                                              final int page, final int pageSize);
+
+    /**
+     * Lists every nearby in range (Meters) existing {@link Post} as a {@link PlainPost} for a given {@link Category}
+     * @param location - current location of the user
+     * @param range - max range of search in meters
+     * @param category - Category the posts belongs to
+     * @return {@link List} of the existing posts
+     */
+    public List<PlainPost> getPlainPostsByCategoryPaged(final Location location, final int range, final Category category,
+                                                        final int page, final int pageSize);
+
+    /**
+     * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
+     * The keyword should match the post title or description
+     * @param keyword - The keyword which should be matched
+     * @param location - Current user location
+     * @return The list of plain post that match with the keyword.
+     */
+    public List<PlainPost> getPlainPostsByKeywordPaged(final String keyword, final Location location,
+                                                       final int page, final int pageSize);
+
+    /**
+     * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
+     * @param userId - ID of the creator
+     * @param location - current location of the user
+     * @return List of post. Empty in case the user did not create any post
+     */
+    public List<PlainPost> getPlainPostsByUserIdPaged(final long userId, final Location location,
+                                                      final int page, final int pageSize);
+
+    /**
      * Deletes a {@link Post} from the database.
      * @param postId - ID of the post to delete
      * @param user - user calling the method to check if has privileges

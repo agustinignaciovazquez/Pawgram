@@ -23,7 +23,7 @@ public class Post implements PlainPost {
 	private Location location;
 	private User owner;
 	private int distance;
-	private List<CommentFamily> comments;
+	private List<CommentFamily> commentFamilies;
 	
 	public static PostBuilder getBuilder(long id, String title, String img_url) {
 		isTrue(id >= 0, "Post ID must be non negative: %d", id);
@@ -45,7 +45,7 @@ public class Post implements PlainPost {
 		this.is_male = builder.is_male;
 		this.location = builder.location;
 		this.owner = builder.owner;
-		this.comments = builder.comments;
+		this.commentFamilies = builder.commentFamilies;
 		this.distance = builder.distance;
 	}
 	
@@ -99,7 +99,7 @@ public class Post implements PlainPost {
 		private Location location;
 		private User owner;
 		private int distance;
-		private List<CommentFamily> comments = Collections.emptyList();
+		private List<CommentFamily> commentFamilies = Collections.emptyList();
 
 		private PostBuilder(long id, String title, String img_url) {
 			this.id = id;
@@ -161,7 +161,10 @@ public class Post implements PlainPost {
 			this.distance = distance;
 			return this;
 		}
-		
+		public PostBuilder commentFamilies(List<CommentFamily> commentFamilies) {
+			this.commentFamilies = commentFamilies;
+			return this;
+		}
 		public Post build() {
 			return new Post(this);
 		}
