@@ -11,8 +11,12 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @Repository
 public class PostJdbcDao implements PostDao {
@@ -35,62 +39,117 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public Post.PostBuilder createPost(String title, String description, String img_url, String contact_phone, LocalDateTime event_date,
-                                       Category category, Pet pet, boolean is_male, Location location, long ownerId) {
-        return null;
+                                       Category category, Pet pet, boolean is_male, Location location, User owner) {
+        final Map<String, Object> args = new HashMap<String, Object>();
+        args.put("title", title);
+        args.put("img_url", img_url);
+        args.put("description", description);
+        args.put("contact_phone", contact_phone);
+        args.put("category", category.getLowerName().toUpperCase(Locale.ENGLISH));
+        args.put("pet", pet.getLowerName().toUpperCase(Locale.ENGLISH));
+        args.put("event_date", Timestamp.valueOf(event_date));
+        args.put("is_male", is_male);
+        args.put("latitude", location.getLatitude());
+        args.put("longitude", location.getLongitude());
+        args.put("userId", owner.getId());
+
+        final Number postId = jdbcInsert.executeAndReturnKey(args);
+
+        return Post.getBuilder(postId.longValue(), title, img_url)
+                .category(category).pet(pet)
+                .description(description)
+                .contact_phone(contact_phone)
+                .event_date(event_date)
+                .is_male(is_male)
+                .location(location)
+                .distance(0)
+                .user(owner);
     }
 
     @Override
     public List<PlainPost> getPlainPosts(Location location, int range) {
-        return null;
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " haversine_distance(?,?,latitude,longitude) as distance" +
+                        " FROM posts WHERE distance <= ? ORDER BY distance DESC",
+                plainPostRowMapper,location.getLatitude(),location.getLongitude(),range);
     }
 
     @Override
     public List<PlainPost> getPlainPostsByCategory(Location location, int range, Category category) {
-        return null;
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet, " +
+                        "haversine_distance(?,?,latitude,longitude) as distance" +
+                        " FROM posts WHERE distance <= ? AND category = ? ORDER BY distance DESC",
+                plainPostRowMapper,location.getLatitude(),location.getLongitude(),
+                range,category.getLowerName().toUpperCase(Locale.ENGLISH));
     }
 
     @Override
     public List<PlainPost> getPlainPostsByKeyword(String keyword, Location location) {
-        return null;
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " haversine_distance(?,?,latitude,longitude) as distance" +
+                        " FROM posts WHERE title LIKE %?% DESC",
+                plainPostRowMapper,keyword);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByUserId(long userId) {
-        return null;
+    public List<PlainPost> getPlainPostsByUserId(long userId, Location location) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " haversine_distance(?,?,latitude,longitude) as distance" +
+                        " FROM posts WHERE userId = ? ORDER BY postId ASC",
+                plainPostRowMapper,location.getLatitude(),location.getLongitude(),userId);
     }
 
     @Override
-    public Post.PostBuilder getFullPostById(long postId) {
-        return null;
+    public Post.PostBuilder getFullPostById(long postId, Location location) {
+        List<Post.PostBuilder> l = jdbcTemplate.query("SELECT *," +
+                        " haversine_distance(?,?,latitude,longitude) as distance" +
+                        "NATURAL JOIN users FROM posts WHERE postId = ? ORDER BY postId ASC",
+                postBuilderRowMapper,location.getLatitude(),location.getLongitude(),postId);
+        return (l.isEmpty())? null: l.get(0);
     }
 
     @Override
     public PlainPost getPlainProductById(long postId) {
-        return null;
+        List<PlainPost> l = jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " 0 as distance FROM posts WHERE postId = ? ORDER BY postId ASC",
+                plainPostRowMapper,postId);
+        return (l.isEmpty())? null: l.get(0);
     }
 
     @Override
     public boolean deletePostById(long postId, User user) {
-        return false;
+        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts, users WHERE postId = ? AND userId = ?",
+                Integer.class,postId,user.getId());
+        if(total == 0)
+            return false;
+        return jdbcTemplate.update("DELETE FROM posts WHERE postId = ?", postId) == 1;
     }
 
     @Override
     public long getTotalPosts() {
-        return 0;
+        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts", Integer.class);
+        return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPostsByCategory(Category category) {
-        return 0;
+        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE category = ?",
+                Integer.class, category.getLowerName().toUpperCase(Locale.ENGLISH));
+        return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPosts(Location location, int range) {
-        return 0;
+        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*), haversine_distance(?,?,latitude,longitude) as distance" +
+                " FROM posts WHERE distance <= ?", Integer.class,location.getLongitude(),location.getLatitude(),range);
+        return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPostsByCategory(Location location, int range, Category category) {
-        return 0;
+        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*), haversine_distance(?,?,latitude,longitude) as distance" +
+                " FROM posts WHERE category = ? AND distance <= ?", Integer.class,location.getLongitude(),location.getLatitude(),
+                category.getLowerName().toUpperCase(Locale.ENGLISH),range);
+        return total != null ? total : 0;
     }
 }

@@ -25,7 +25,7 @@ public interface PostDao {
                                           LocalDateTime uploadDate, byte[] logo, int creatorId);*/
     public Post.PostBuilder createPost(final String title, final String description, final String img_url, final String contact_phone,
                                        final LocalDateTime event_date, final Category category, final Pet pet, final boolean is_male,
-                                       final Location location, final long ownerId);
+                                       final Location location, final User owner);
 
     /**
      * Lists every nearby in range KM existing {@link Post} as a {@link PlainPost} .
@@ -56,17 +56,19 @@ public interface PostDao {
     /**
      * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
      * @param userId - ID of the creator
+     * @param location - current location of the user
      * @return List of post. Empty in case the user did not create any post
      */
-    public List<PlainPost> getPlainPostsByUserId(final long userId);
+    public List<PlainPost> getPlainPostsByUserId(final long userId, final Location location);
 
     /**
      * Retrieves a {@link Post.PostBuilder} with every attribute set except for
      * the familyComments.
      * @param postId - ID of the post
+     * @param location - current location of the user
      * @return Post with the associated ID of null if it doesn't exist
      */
-    public Post.PostBuilder getFullPostById(final long postId);
+    public Post.PostBuilder getFullPostById(final long postId, final Location location);
 
     /**
      * Retrieves a {@link Post} as a {@link PlainPost}.

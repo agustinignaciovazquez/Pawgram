@@ -22,6 +22,7 @@ public class Post implements PlainPost {
 	private boolean is_male;
 	private Location location;
 	private User owner;
+	private int distance;
 	private List<CommentFamily> comments;
 	
 	public static PostBuilder getBuilder(long id, String title, String img_url) {
@@ -45,6 +46,7 @@ public class Post implements PlainPost {
 		this.location = builder.location;
 		this.owner = builder.owner;
 		this.comments = builder.comments;
+		this.distance = builder.distance;
 	}
 	
 	@Override
@@ -96,6 +98,7 @@ public class Post implements PlainPost {
 		private boolean is_male;
 		private Location location;
 		private User owner;
+		private int distance;
 		private List<CommentFamily> comments = Collections.emptyList();
 
 		private PostBuilder(long id, String title, String img_url) {
@@ -151,6 +154,11 @@ public class Post implements PlainPost {
 
 		public PostBuilder user(User owner) {
 			this.owner = owner;
+			return this;
+		}
+
+		public PostBuilder distance(int distance){
+			this.distance = distance;
 			return this;
 		}
 		

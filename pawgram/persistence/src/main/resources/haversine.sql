@@ -1,7 +1,7 @@
 -- Haversine Formula based geodistance in miles (constant is diameter of Earth in miles)
 -- Based on a similar PostgreSQL function found here: https://gist.github.com/831833
 -- Updated to use distance formulas found here: http://www.codecodex.com/wiki/Calculate_distance_between_two_points_on_a_globe
-CREATE OR REPLACE FUNCTION distance(
+CREATE OR REPLACE FUNCTION haversine_distance(
     lat1 double precision,
     lon1 double precision,
     lat2 double precision,

@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class PlainPostRowMapper implements RowMapper<PlainPost> {
     public PlainPost mapRow(final ResultSet rs, final int rowNum) throws SQLException {
         return Post.getBuilder(rs.getLong("postId"), rs.getString("title"), rs.getString("img_url"))
-                .category(rs.getString("category")).pet(rs.getString("pet"))
+                .category(rs.getString("category")).pet(rs.getString("pet")).distance(rs.getInt("distance"))
                 .build();
     }
 }

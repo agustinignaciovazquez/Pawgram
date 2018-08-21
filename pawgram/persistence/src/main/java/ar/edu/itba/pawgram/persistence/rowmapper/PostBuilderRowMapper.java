@@ -23,6 +23,7 @@ public class PostBuilderRowMapper implements RowMapper<Post.PostBuilder> {
                 .event_date(rs.getTimestamp("event_date").toLocalDateTime())
                 .is_male(rs.getBoolean("is_male"))
                 .location(new Location(rs.getDouble("longitude"),rs.getDouble("latitude")))
+                .distance(rs.getInt("distance"))
                 .user(userRowMapper.mapRow(rs, rowNum));
     }
 }
