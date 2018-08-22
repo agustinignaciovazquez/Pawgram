@@ -3,6 +3,9 @@ package ar.edu.itba.pawgram.persistence;
 import ar.edu.itba.pawgram.interfaces.SearchZoneDao;
 import ar.edu.itba.pawgram.model.Location;
 import ar.edu.itba.pawgram.model.SearchZone;
+import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
+import ar.edu.itba.pawgram.persistence.rowmapper.PlainSearchZoneRowMapper;
 import ar.edu.itba.pawgram.persistence.rowmapper.SearchZoneRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,7 +24,8 @@ public class SearchZoneJdbcDao implements SearchZoneDao {
 
     @Autowired
     private SearchZoneRowMapper ROW_MAPPER;
-
+    @Autowired
+    private PlainSearchZoneRowMapper PLAIN_ROW_MAPPER;
     @Autowired
     public SearchZoneJdbcDao(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
@@ -39,6 +43,22 @@ public class SearchZoneJdbcDao implements SearchZoneDao {
         args.put("userId", userId);
         final Number zoneId = jdbcInsert.executeAndReturnKey(args);
         return SearchZone.getBuilder(zoneId.longValue(),location,range).build();
+    }
+
+    @Override
+    public boolean deleteZoneById(long zoneId, User user) {
+        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM search_zones, users WHERE zoneId = ? AND userId = ?",
+                Integer.class,zoneId,user.getId());
+        if(total == 0)
+            return false;
+        return jdbcTemplate.update("DELETE FROM search_zones WHERE zoneId = ?", zoneId) == 1;
+    }
+
+    @Override
+    public List<PlainSearchZone> getPlainSearchZonesByUser(long userId) {
+        return jdbcTemplate.query("SELECT zoneId, latitude, longitude, range" +
+                        " FROM search_zones WHERE userId = ? ORDER BY id ASC",
+                PLAIN_ROW_MAPPER,userId);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.interfaces;
 
 import ar.edu.itba.pawgram.model.*;
+import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 
 import java.util.List;
 
@@ -15,6 +16,21 @@ public interface SearchZoneService {
     public SearchZone createSearchZone(final Location location, final int range, final long userId);
 
     /**
+     * Deletes a {@link SearchZone} from the database.
+     * @param zoneId - ID of the post to delete
+     * @param user - user calling the method to check if has privileges
+     * @return true if a product was deleted
+     */
+    public boolean deleteZoneById(final long zoneId, User user);
+
+    /**
+     * Lists searchZones of a specific {@link User} sorted by minor distance first,
+     * @param user - the user searching in his zones.
+     * @return {@link List} of searchZone associated with the {@link User}
+     */
+    public List<PlainSearchZone> getPlainSearchZonesByUser(final User user);
+
+    /**
      * Lists searchZones of a specific {@link User} sorted by minor distance first,
      * @param user - the user searching in his zones.
      * @return {@link List} of searchZone associated with the {@link User}
@@ -25,6 +41,8 @@ public interface SearchZoneService {
     /**
      * Lists searchZones of a specific {@link User} sorted by minor distance first,
      * @param user - the user searching in his zones.
+     * @param page - number of page
+     * @param pageSize - max number of results per page
      * @return {@link List} of searchZone associated with the {@link User}
      * and in each {@link SearchZone} the list of {@link Post} that matches the criteria.
      */
@@ -39,6 +57,8 @@ public interface SearchZoneService {
     /**
      * Lists searchZones of a specific {@link User} sorted by minor distance first,
      * @param user - the user searching in his zones.
+     * @param page - number of page
+     * @param pageSize - max number of results per page
      * @return {@link List} of searchZone associated with the {@link User}
      * and in each {@link SearchZone} the list of {@link Post} that matches the criteria.
      */

@@ -5,6 +5,7 @@ import ar.edu.itba.pawgram.interfaces.SearchZoneDao;
 import ar.edu.itba.pawgram.interfaces.SearchZoneService;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
+import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,16 @@ public class SearchZoneServiceImpl implements SearchZoneService {
     @Override
     public SearchZone createSearchZone(Location location, int range, long userId) {
         return searchZoneDao.createSearchZone(location, range, userId);
+    }
+
+    @Override
+    public boolean deleteZoneById(long zoneId, User user) {
+        return searchZoneDao.deleteZoneById(zoneId, user);
+    }
+
+    @Override
+    public List<PlainSearchZone> getPlainSearchZonesByUser(User user) {
+        return searchZoneDao.getPlainSearchZonesByUser(user.getId());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.model;
 
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
+import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
 
-public class SearchZone {
+public class SearchZone implements PlainSearchZone {
     private long id;
     private Location location;
     private int range;
@@ -30,15 +31,15 @@ public class SearchZone {
         this.posts = builder.posts;
         this.user = builder.user;
     }
-
+    @Override
     public long getId() {
         return id;
     }
-
+    @Override
     public Location getLocation() {
         return location;
     }
-
+    @Override
     public int getRange() {
         return range;
     }

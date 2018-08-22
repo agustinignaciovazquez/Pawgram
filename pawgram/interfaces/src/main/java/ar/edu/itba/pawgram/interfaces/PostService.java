@@ -21,8 +21,6 @@ public interface PostService {
      * @param owner - owner id of the post
      * @return Post - The newly created post
      */
-   /* public Post.PostBuilder createProduct(String name, String description, String shortDescription, String website, String category,
-                                          LocalDateTime uploadDate, byte[] logo, int creatorId);*/
     public Post createPost(final String title, final String description, final String img_url, final String contact_phone,
                                        final LocalDateTime event_date, final Category category, final Pet pet, final boolean is_male,
                                        final Location location, final User owner);
@@ -81,6 +79,8 @@ public interface PostService {
      * Lists every nearby in range KM existing {@link Post} as a {@link PlainPost} .
      * @param location - current location of the user
      * @param range - max range of search in meters
+     * @param page - number of page
+     * @param pageSize - max number of results per page
      * @return {@link List} of the existing posts
      */
     public List<PlainPost> getPlainPostsPaged(final Location location, final int range,
@@ -91,6 +91,8 @@ public interface PostService {
      * @param location - current location of the user
      * @param range - max range of search in meters
      * @param category - Category the posts belongs to
+     * @param page - number of page
+     * @param pageSize - max number of results per page
      * @return {@link List} of the existing posts
      */
     public List<PlainPost> getPlainPostsByCategoryPaged(final Location location, final int range, final Category category,
@@ -101,6 +103,8 @@ public interface PostService {
      * The keyword should match the post title or description
      * @param keyword - The keyword which should be matched
      * @param location - Current user location
+     * @param page - number of page
+     * @param pageSize - max number of results per page
      * @return The list of plain post that match with the keyword.
      */
     public List<PlainPost> getPlainPostsByKeywordPaged(final String keyword, final Location location,
@@ -110,6 +114,8 @@ public interface PostService {
      * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
      * @param userId - ID of the creator
      * @param location - current location of the user
+     * @param page - number of page
+     * @param pageSize - max number of results per page
      * @return List of post. Empty in case the user did not create any post
      */
     public List<PlainPost> getPlainPostsByUserIdPaged(final long userId, final Location location,
