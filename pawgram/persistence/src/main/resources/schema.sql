@@ -6,6 +6,14 @@ CREATE TABLE IF NOT EXISTS users (
 	password char(60)
 );
 
+CREATE TABLE IF NOT EXISTS search_zones (
+    zoneId SERIAL PRIMARY KEY,
+    latitude double precision NOT NULL,
+    longitude double precision NOT NULL,
+    range INTEGER CHECK(range > 0),
+    userId INTEGER REFERENCES users(id) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS posts (
     postId SERIAL PRIMARY KEY,
     title    VARCHAR(64) NOT NULL,

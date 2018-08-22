@@ -61,22 +61,22 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PlainPost> getPlainPostsPaged(Location location, int range, int page, int pageSize) {
-        return postDao.getPlainPostsRange(location, range, (page - 1) * pageSize, pageSize);
+        return postDao.getPlainPostsRange(location, range, pageSize,(page - 1) * pageSize);
     }
 
     @Override
     public List<PlainPost> getPlainPostsByCategoryPaged(Location location, int range, Category category, int page, int pageSize) {
-        return postDao.getPlainPostsByCategoryRange(location, range, category, (page - 1) * pageSize, pageSize);
+        return postDao.getPlainPostsByCategoryRange(location, range, category, pageSize,(page - 1) * pageSize);
     }
 
     @Override
     public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, int page, int pageSize) {
-        return postDao.getPlainPostsByKeywordRange(keyword, location, (page - 1) * pageSize, pageSize);
+        return postDao.getPlainPostsByKeywordRange(keyword, location, pageSize,(page - 1) * pageSize);
     }
 
     @Override
     public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Location location, int page, int pageSize) {
-        return postDao.getPlainPostsByUserIdRange(userId, location, (page - 1) * pageSize, pageSize);
+        return postDao.getPlainPostsByUserIdRange(userId, location, pageSize,(page - 1) * pageSize);
     }
 
     @Override

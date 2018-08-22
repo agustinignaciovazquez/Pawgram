@@ -34,7 +34,7 @@ public class CommentJdbcDao implements CommentDao {
 		jdbcTemplate = new JdbcTemplate(ds);
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
 					.withTableName("comments")
-					.usingGeneratedKeyColumns("commentid");		
+					.usingGeneratedKeyColumns("commentId");
 	}
 
 	@Override
