@@ -1,119 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
-   <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
-      <title>Parallax Template - Materialize</title>
-      <!-- CSS  -->
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!-- Compiled and minified CSS -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
 
-   </head>
-   <body>
-      <!--NAVBAR-->
-      <nav>
-         <div class="nav-wrapper grey darken-4">
-            <div class="container">
-               <a href="#!" class="brand-logo">
-               <img src="img/logo.png" class="logo-navbar"></img>
-               </a>
-<!-- 
-                Boton para cambiar idioma
-               <ul class="right hide-on-med-and-down">
-                  <li><a class="dropdown-button text-navbar" data-beloworigin="true" href="#!" data-activates="lenguaje"><i class="large material-icons">translate</i></a></li>
+<head>
 
-                  <ul id='lenguaje' class='dropdown-content'>
-                      <li><a href="#!">Español</a></li>
-                      <li><a href="#!">Ingles</a></li>
-                  </ul>
-               </ul> -->
+	<meta charset="UTF-8">
+	<title>Pawgram - Index</title>
 
-            </div>
-         </div>
-      </nav>
-      <!--NAVBAR END-->
+	<!-- Para jsp
 
-      <!--PARALLAX-->
-      <div class="valign-wrapper main-height" style="background-image: url('img/bg.jpg');">
-         <div class="container valign center-block ">
-            <br><br>
-            <h1 class="header center">Buscá tu mascota</h1>
+	<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/pawgram.css"/>">
 
-            <div class="card-panel white row" id="search-form" ><!-- style="display: none" -->
-               <div class="input-field col s12">
-                  <input type="text" id="autocomplete-from" class="autocomplete" placeholder="Ubicacion">
-                  <!-- <label for="autocomplete-input">Origen</label> -->
-               </div>
+	<script src="<c:url value="/resources/js/pawgram.js"/>"></script>
+	<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+	<script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
+
+	!-->
+
+	<link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+	<link rel="stylesheet" href="css/pawgramin.css"/>
+
+	
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/pawgram.js"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
+
+</head>
 
 
-               <div class="col s12 center">
-                  <a class="waves-effect waves-light btn" onclick="send();">Buscar</a>
-               </div>
+<body>
+	
+    <div id="wrapper" class="animate">
 
-            </div>
-
-            <br><br>
-         </div>
-      </div>
-      <!--PARALLAX END-->
-
-      <!--CATALOGO-->
-      <div class="valign-wrapper deals" style="background-image: url('');">
-          <div class="container">
-            <h2 class="header center">Los mas recientes</h2>
-             <div class="section">
-                <div class="row" id="catalogo">
-                    <!-- Carrusel para mostrar catalogo-->
-                    <div class="col s1"><i class="fa fa-arrow-left carrousel-arrows carrousel-arrows-left-first"></i></div>
-                    <div class="col s10 carousel first">
-                      <div class='carousel-item'><div class="loader1"></div></div>
-                      <div class='carousel-item'><div class="loader1"></div></div>
-                      <div class='carousel-item'><div class="loader1"></div></div>
-                      <div class='carousel-item'><div class="loader1"></div></div>
-                      <div class='carousel-item'><div class="loader1"></div></div>
-                      <div class='carousel-item'><div class="loader1"></div></div>
-                      <div class='carousel-item'><div class="loader1"></div></div>
-                      <div class='carousel-item'><div class="loader1"></div></div>
-                    </div>
-                    <div class="col s1"><i class="fa fa-arrow-right carrousel-arrows carrousel-arrows-right-first"></i></div>
-                </div>
-             </div>
+        <nav class="navbar header-top fixed-top navbar-expand-lg navbar-light pawnav">
+          <span class="navbar-toggler-icon leftmenutrigger"></span>
+          <img src="img/logo.png" class="logo-navbar"/>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav animate side-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Busquedas
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Adopciones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Emergencias</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav ml-md-auto d-md-flex">
+              <li class="nav-item">
+                <a class="nav-link pawlink" href="#">Busquedas
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Adopciones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Emergencias</a>
+              </li>
+            </ul>
           </div>
-      </div>
-      <!--CATALOGO END-->
+        </nav>
 
-      <!--FOOTER-->
-      <footer class="page-footer grey darken-4" id="my-footer">
-         <div class="container">
+        <section class="banner-sec">
+
+        <div class="container uspaced5">
             <div class="row">
-               <div class="col l6 s12">
-                  <h5 class="white-text">PAW</h5>
-                  <p class="grey-text text-lighten-4"><a href="http://itba.edu.ar"><img class="img" src="https://www.itba.edu.ar/wp-content/uploads/2016/04/Logo-ITBA-azul.png"></a></p>
-               </div>
-               <div class="col l4 offset-l2 s12">
-                  <h5 class="white-text">Links</h5>
-                  <ul>
-                      <!-- <br><br>   -->
-                      <li><a class="grey-text text-lighten-3" href="index.html">Página principal</a></li>
-                      <li><a class="grey-text text-lighten-3" href="infoMascotas.html">Busca tu mascota!</a></li>
-                  </ul>
-               </div>
+                <input id="searchInput" class="controls" type="text" placeholder="Enter a location">
+                <div id="map"></div>
+                <ul id="geoData">
+                    <li>Direccion: <span id="location"></span></li>
+                    <li>Codigo Postal: <span id="postal_code"></span></li>
+                    <li>Pais: <span id="country"></span></li>
+                    <li>Latitud: <span id="lat"></span></li>
+                    <li>Longitud: <span id="lon"></span></li>
+                </ul>
             </div>
-         </div>
-         <div class="footer-copyright">
-            <div class="container">
-               © 2018, PawGram SA . Todos los derechos reservados
-               <!-- <a class="grey-text text-lighten-4 right" href="#!">More Links</a> -->
-            </div>
-         </div>
-      </footer>
-      <!--FOOTER END-->
+            
+        </div>
 
-      <!--  Scripts-->
-      <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-      <script src="js/typeahead.bundle.js"></script>
-      <script type="text/javascript" src="js/index.js"></script>
+        <div class="container uspaced5">
+            <div class="row">
+                <div class="col-md-4">                  
+                    <a href="#post" class="">
+                        <div class="card"> 
+                            <img class="img-fluid card-img" src="https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d" alt="">
+                            <div class="card-img-overlay"> <span class="badge badge-pill badge-danger">Perdido</span> </div>
+                            <div class="card-body">
+                                <p class="card-text"><small class="text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em> <em>Perro</em> <em> / </em> <em>Sexo:</em> <em>Macho</em> </small></p>
+                                <div class="news-title">
+                                    <h2 class=" title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="#post" class="">
+                        <div class="card"> 
+                            <img class="img-fluid card-img" src="https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg" alt="">
+                            <div class="card-img-overlay"> <span class="badge badge-pill badge-success">Encontrado</span> </div>
+                            <div class="card-body">
+                                <p class="card-text"><small class="text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em> <em>Perro</em> <em> / </em> <em>Sexo:</em> <em>Macho</em> </small></p>
+                                <div class="news-title">
+                                    <h2 class=" title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </a>
+                </div> 
 
-   </body>
+                <div class="col-md-4">
+                    <a href="#post" class="">
+                        <div class="card"> 
+                            <img class="img-fluid card-img" src="https://www.guidedogs.org/wp-content/uploads/2018/01/Mobile.jpg" alt="">
+                            <div class="card-img-overlay"> <span class="badge badge-pill badge-primary">En Adopcion</span> </div>
+                            <div class="card-body">
+                                <p class="card-text"><small class="text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em> <em>Perro</em> <em> / </em> <em>Sexo:</em> <em>Macho</em> </small></p>
+                                <div class="news-title">
+                                    <h2 class=" title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>  
+
+            <div class="row">
+                <div class="col-md-4">                  
+                    <a href="#post" class="">
+                        <div class="card"> 
+                            <img class="img-fluid card-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUEuB70PuTDIloSOxU2rBq7oo50wVGpXHEkJFw4IrAUtWsj8qC" alt="">
+                            <div class="card-img-overlay"> <span class="badge badge-pill badge-warning">Emergencia</span> </div>
+                            <div class="card-body">
+                                <p class="card-text"><small class="text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em> <em>Perro</em> <em> / </em> <em>Sexo:</em> <em>Macho</em> </small></p>
+                                <div class="news-title">
+                                    <h2 class=" title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="#post" class="">
+                        <div class="card"> 
+                            <img class="img-fluid card-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mgsUGEdhzwiNL_Q0AFYONG-JHKR5SetOJVKCedYQG3U6oyLoyw" alt="">
+                            <div class="card-img-overlay"> <span class="badge badge-pill badge-primary">En Adopcion</span> </div>
+                            <div class="card-body">
+                                <p class="card-text"><small class="text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em> <em>Perro</em> <em> / </em> <em>Sexo:</em> <em>Macho</em> </small></p>
+                                <div class="news-title">
+                                    <h2 class=" title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </a>
+                </div> 
+
+                <div class="col-md-4">
+                    <a href="#post" class="">
+                        <div class="card"> 
+                            <img class="img-fluid card-img" src="https://i.kinja-img.com/gawker-media/image/upload/s--WFkXeene--/c_scale,f_auto,fl_progressive,q_80,w_800/ol9ceoqxidudap8owlwn.jpg" alt="">
+                            <div class="card-img-overlay"> <span class="badge badge-pill badge-danger">Perdido</span> </div>
+                            <div class="card-body">
+                                <p class="card-text"><small class="text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em> <em>Perro</em> <em> / </em> <em>Sexo:</em> <em>Macho</em> </small></p>
+                                <div class="news-title">
+                                    <h2 class=" title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            </div> 
+
+        </div>    
+        </section>
+
+
+
+    </div>
+
+    
+</body>
+
+
+
+
 </html>

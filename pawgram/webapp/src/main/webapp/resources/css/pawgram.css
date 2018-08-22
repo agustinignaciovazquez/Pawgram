@@ -35,7 +35,9 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    overflow-x: hidden; 
 }
+
 
 .login-form {
 	margin-top: 60px;
@@ -71,3 +73,4 @@ form[role=login] {
 	.form-links a {
 		color: #fff;
 	}
+
