@@ -111,6 +111,18 @@ public interface PostService {
                                                        final int page, final int pageSize);
 
     /**
+     * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
+     * The keyword should match the post title or description
+     * @param keyword - The keyword which should be matched
+     * @param category - The category we are searching in
+     * @param location - Current user location
+     * @param page - number of page
+     * @param pageSize - max number of results per page
+     * @return The list of plain post that match with the keyword.
+     */
+    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, Category category, int page, int pageSize);
+
+    /**
      * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
      * @param userId - ID of the creator
      * @param location - current location of the user
@@ -136,19 +148,19 @@ public interface PostService {
     public long getTotalPosts();
 
     /**
-     * Retrieves the total amount of post registered for a given {@link Category}
-     * @param category - Category the posts belongs to
-     * @return The number of posts.
-     */
-    public long getTotalPostsByCategory(final Category category);
-
-    /**
      * Retrieves the total amount of post nearby.
      * @param location - current location of the user
      * @param range - max range of search
      * @return The number of posts.
      */
     public long getTotalPosts(final Location location,final int range);
+
+    /**
+     * Retrieves the total amount of post registered for a given {@link Category}
+     * @param category - Category the posts belongs to
+     * @return The number of posts.
+     */
+    public long getTotalPostsByCategory(final Category category);
 
     /**
      * Retrieves the total amount of post nearby for a given {@link Category}
@@ -158,4 +170,26 @@ public interface PostService {
      * @return The number of posts.
      */
     public long getTotalPostsByCategory(final Location location,final int range,final Category category);
+
+    /**
+     * Retrieves the total amount of post registered for a given keyword
+     * @param keyword - keyword search
+     * @return The number of posts.
+     */
+    public long getTotalPostsByKeyword(final String keyword);
+
+    /**
+     * Retrieves the total amount of post registered for a given {@link Category} and keyword
+     * @param keyword - keyword search
+     * @param category - the category we are searching
+     * @return The number of posts.
+     */
+    public long getTotalPostsByKeyword(final String keyword,final Category category);
+
+    /**
+     * Retrieves the total amount of post registered for a given {@link User}
+     * @param userId - the user id
+     * @return The number of posts.
+     */
+    public long getTotalPostsByUserId(final long userId);
 }

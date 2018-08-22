@@ -75,6 +75,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, Category category, int page, int pageSize) {
+        return postDao.getPlainPostsByKeywordRange(keyword,location,category,pageSize,(page - 1) * pageSize);
+    }
+
+    @Override
     public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Location location, int page, int pageSize) {
         return postDao.getPlainPostsByUserIdRange(userId, location, pageSize,(page - 1) * pageSize);
     }
@@ -102,5 +107,20 @@ public class PostServiceImpl implements PostService {
     @Override
     public long getTotalPostsByCategory(Location location, int range, Category category) {
         return postDao.getTotalPostsByCategory(location,range,category);
+    }
+
+    @Override
+    public long getTotalPostsByKeyword(String keyword) {
+        return postDao.getTotalPostsByKeyword(keyword);
+    }
+
+    @Override
+    public long getTotalPostsByKeyword(String keyword, Category category) {
+        return postDao.getTotalPostsByKeyword(keyword,category);
+    }
+
+    @Override
+    public long getTotalPostsByUserId(long userId) {
+        return postDao.getTotalPostsByUserId(userId);
     }
 }

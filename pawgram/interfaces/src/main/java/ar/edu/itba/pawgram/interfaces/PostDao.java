@@ -138,7 +138,7 @@ public interface PostDao {
      * @param offset - post offset
      * @return The list of plain post that match with the keyword.
      */
-    public List<PlainPost> getPlainPostsByKeyword(final String keyword, final Location location, final Category category,final int limit, final int offset);
+    public List<PlainPost> getPlainPostsByKeywordRange(final String keyword, final Location location, final Category category,final int limit, final int offset);
 
     /**
      * Lists post created by {@link User} as a {@link PlainPost} with the given userId.

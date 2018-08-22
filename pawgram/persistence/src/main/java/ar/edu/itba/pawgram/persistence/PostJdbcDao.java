@@ -159,7 +159,7 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeyword(String keyword, Location location, Category category, int limit, int offset) {
+    public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, Category category, int limit, int offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE category = ? AND title LIKE %?% ORDER BY distance DESC LIMIT ? OFFSET ?",
