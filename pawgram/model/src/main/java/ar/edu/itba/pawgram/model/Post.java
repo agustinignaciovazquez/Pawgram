@@ -78,14 +78,36 @@ public class Post implements PlainPost {
 	public Pet getPet() {
 		return pet;
 	}
-	public boolean isIs_male() {
+	public boolean isMale() {
 		return is_male;
 	}
 	public Location getLocation(){return location;}
 	public User getOwner() {
 		return owner;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (!(obj instanceof Post))
+			return false;
+
+		Post other = (Post) obj;
+
+		return id == other.getId();
+	}
+
+	@Override
+	public int hashCode() {
+		return (int)id;
+	}
+
+	@Override
+	public String toString() {
+		return title;
+	}
+
 	public static class PostBuilder{
 		private long id;
 		private String title;

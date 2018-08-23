@@ -42,6 +42,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PlainPost> getPlainPostsByKeyword(String keyword, Location location, Category category) {
+        return postDao.getPlainPostsByKeyword(keyword, location, category);
+    }
+
+    @Override
     public List<PlainPost> getPlainPostsByUserId(long userId, Location location) {
         return postDao.getPlainPostsByUserId(userId, location);
     }
