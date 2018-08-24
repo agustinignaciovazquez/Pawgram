@@ -1,5 +1,5 @@
 body {
-	background:#f9f9f9;
+	background: url(../img/ibg.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -7,13 +7,21 @@ body {
     overflow-x: hidden; 
 }
 
-#wrapper{padding:90px 15px;}
+#wrapper{
+	padding:90px 15px;
+}
 
-.navbar-expand-lg .navbar-nav.side-nav{flex-direction: column;}
+.navbar-expand-lg .navbar-nav.side-nav{
+	flex-direction: column;
+}
 
-.header-top{box-shadow: 0 3px 5px rgba(0,0,0,.1)}
+.header-top{
+	box-shadow: 0 3px 5px rgba(0,0,0,.1)
+}
 
-.leftmenutrigger{display: none}
+.leftmenutrigger{
+	display: none
+}
 
 @media(min-width:992px) {
 	.leftmenutrigger{display: block;display: block;margin: 7px 20px 4px 0;cursor: pointer;}
@@ -22,33 +30,63 @@ body {
 	.navbar-nav.side-nav{background: white;box-shadow: 2px 1px 2px rgba(0,0,0,.1);position:fixed;top:93px;flex-direction: column!important;left:-220px;width:200px;overflow-y:auto;bottom:0;overflow-x:hidden;padding-bottom:40px}
 }
 
-.animate{-webkit-transition:all .3s ease-in-out;-moz-transition:all .3s ease-in-out;-o-transition:all .3s ease-in-out;-ms-transition:all .3s ease-in-out;transition:all .3s ease-in-out}
+.animate{
+	-webkit-transition:all .3s ease-in-out;
+	-moz-transition:all .3s ease-in-out;
+	-o-transition:all .3s ease-in-out;
+	-ms-transition:all .3s ease-in-out;
+	transition:all .3s ease-in-out
+}
 
 .pawnav{
 	background-color: white;
 }
 
-section{padding-top: 30px 0; float: left; width: 100%}
+.banner-sec .news-block{
+	margin-bottom: 20px
+}
 
-.banner-sec .news-block{margin-bottom: 20px}
+.banner-sec .news-block:last-child{
+	margin-bottom: 0px
+}
 
-.banner-sec .news-block:last-child{margin-bottom: 0px}
+.banner-sec .news-des{
+	margin-bottom: 5px;
+}
 
-.banner-sec .news-des {margin-bottom: 5px;}
+.banner-sec .title-large{
+	margin: 18px 0 0
+}
 
-.banner-sec .title-large{margin: 18px 0 0}
+.banner-sec .time{
+	margin-top: 0px; font-size: 13px;
+}
 
-.banner-sec .time{margin-top: 0px; font-size: 13px;}
+.banner-sec .card{
+	margin-bottom:20px;
+}
 
-.banner-sec .card{margin-bottom:20px;}
+.card{
+	float: left;
+	width:100%
+}
 
-.card{float: left; width:100%}
+.card-block{
+	padding:0 10px 10px;
+}
 
-.card-block{padding:0 10px 10px;}
+.card-text{
+	margin: 0;
+	color: #141517
+}
 
-.card-text{margin: 0; color: #141517}
-
-.title-small { color: #000000; font-size: 18px; font-weight: bold; line-height: 23px; margin: 6px 0 0;}
+.title-small {
+	color: #000000;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 23px;
+	margin: 6px 0 0;
+}
 
 .card-img{
 	height: 200px;
@@ -57,7 +95,6 @@ section{padding-top: 30px 0; float: left; width: 100%}
 .card-exp{
 	margin-top: 10px;
 	text-align: center;
-
 }
 
 .uspaced5{
@@ -97,8 +134,10 @@ section{padding-top: 30px 0; float: left; width: 100%}
 }
 
 .titsec{
-	font-size: 32px;
+	font-size: 40px;
 	padding-left: 20px;
+	font-style: italic;
+	color:white;
 }
 
 .nav-sec{
@@ -155,7 +194,13 @@ section{padding-top: 30px 0; float: left; width: 100%}
 }
 
 .filttext{
-	font-size: 18px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.zonetext{
+	font-size: 24px;
+	font-style: italic;
 	font-weight: bold;
 }
 
@@ -176,10 +221,42 @@ section{padding-top: 30px 0; float: left; width: 100%}
 .footer{
 	background-color: #444444;
 	height: 50px;
+	position:fixed;
+	bottom: 0px;
 }
 
 .footertext{
 	color: white;
 	text-align: right;
 	padding-top: 15px;
+}
+
+.uspaced20{
+	margin-top: 20px;
+}
+
+.btn-glyphicon { 
+	padding:8px; background:#ffffff; 
+	margin-right:4px;
+}
+
+.icon-btn { 
+	padding: 1px 15px 3px 2px; 
+	border-radius:50px;
+}
+
+.titzon{
+	background:#444444;
+}
+
+.newbutton{
+	border-radius: 50px;
+}
+
+.noposttext{
+	font-size: 18px;
+}
+
+.lspaced50{
+	padding-left: 50px;
 }
