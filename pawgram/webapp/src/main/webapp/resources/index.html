@@ -15,13 +15,13 @@
 	<script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
 
 	!-->
-
+    <link href="css/all.css" rel="stylesheet"/>
 	<link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
 	<link rel="stylesheet" href="css/pawgramin.css"/>
 
 	
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="js/pawgram.js"></script>
 
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
@@ -31,8 +31,10 @@
 
 <body>
 	
+
     <div id="wrapper" class="animate">
 
+    <!--HEADER-->
         <nav class="navbar header-top fixed-top navbar-expand-lg navbar-light pawnav">
           <span class="navbar-toggler-icon leftmenutrigger"></span>
           <img src="img/logo.png" class="logo-navbar"/>
@@ -43,48 +45,84 @@
           <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav animate side-nav">
               <li class="nav-item">
-                <a class="nav-link" href="#">Busquedas
+                <a class="nav-link text nav-sec" href="#">Busquedas
                   <span class="sr-only">(current)</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Adopciones</a>
+                <a class="nav-link text nav-sec" href="#">Adopciones</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Emergencias</a>
+                <a class="nav-link text nav-sec" href="#">Emergencias</a>
               </li>
             </ul>
             <ul class="navbar-nav ml-md-auto d-md-flex">
               <li class="nav-item">
-                <a class="nav-link pawlink" href="#">Busquedas
+                <a class="nav-link pawlink text nav-sec" href="#">Busquedas
                   <span class="sr-only">(current)</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Adopciones</a>
+                <a class="nav-link text nav-sec" href="#">Adopciones</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Emergencias</a>
+                <a class="nav-link text nav-sec" href="#">Emergencias</a>
               </li>
             </ul>
           </div>
         </nav>
+    </div>
+    <!--HEADER-->
 
-        <section class="banner-sec">
+        <div class="container-fluid banner-sec">
 
         <div class="container uspaced5">
             <div class="row">
                 <input id="searchInput" class="controls" type="text" placeholder="Enter a location">
                 <div id="map"></div>
-                <ul id="geoData">
+                <!--<ul id="geoData">
                     <li>Direccion: <span id="location"></span></li>
                     <li>Codigo Postal: <span id="postal_code"></span></li>
                     <li>Pais: <span id="country"></span></li>
                     <li>Latitud: <span id="lat"></span></li>
                     <li>Longitud: <span id="lon"></span></li>
-                </ul>
+                </ul>-->
             </div>
             
+        </div>
+
+
+       <div class="container">
+            <div class="row uspaced60">
+                    <div class="col-md-4">
+                        <div id="custom-search-input">
+                            <label for="validationCustom03" class="text filttext">Buscar:</label>
+                            <div class="input-group col-md-12 ">
+                                
+                                <input type="text" class="  search-query form-control form-control-md text" placeholder="Search" />
+                                <span class="input-group-btn">
+                                    <button class="btn uspacedfa" type="button">
+                                        <i class=" fas fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="validationCustom03" class="text filttext">Categoria:</label>
+                          <select class="form-control form-control-md" name="category" id="validationCustom03">
+                            <option value="">Todas </option>
+                            <option value="Perdido">Perdido</option>
+                            <option value="Encontrado">Encontrado</option>
+                            <option value="Adpocion">Adopcion</option>
+                            <option value="Emergencia">Emergencia</option>
+                          </select>
+                    </div>
+                    
+                    <div class="col-md-2"><!--Filtro por Especie--></div>
+                    <div class="col-md-2"><!--Filtro por Sexo--></div>
+                    <div class="col-md-2"><!--Order by--></div>
+            </div>
         </div>
 
         <div class="container uspaced5">
@@ -93,11 +131,14 @@
                     <a href="#post" class="">
                         <div class="card"> 
                             <img class="img-fluid card-img" src="https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d" alt="">
-                            <div class="card-img-overlay"> <span class="badge badge-pill badge-danger">Perdido</span> </div>
+                            <div class="card-img-overlay"> <span class="badge badge-pill badge-danger text categorytext">Perdido</span> </div>
                             <div class="card-body">
-                                <p class="card-text"><small class="text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em> <em>Perro</em> <em> / </em> <em>Sexo:</em> <em>Macho</em> </small></p>
+                                <p class="card-text"><small class="text  text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em><em>:</em> <em>Perro</em> <em> / </em> <em>Sexo</em><em>:</em> <em>Macho</em> </small></p>
                                 <div class="news-title">
-                                    <h2 class=" title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                    <h2 class="text title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                </div>
+                                <div class="card-exp">
+                                    <i class="far fa-eye"> <div class="text seemoretext">Ver Detalles</div></i>
                                 </div>
                                 
                             </div>
@@ -108,11 +149,14 @@
                     <a href="#post" class="">
                         <div class="card"> 
                             <img class="img-fluid card-img" src="https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg" alt="">
-                            <div class="card-img-overlay"> <span class="badge badge-pill badge-success">Encontrado</span> </div>
+                            <div class="card-img-overlay"> <span class="badge badge-pill badge-success text categorytext ">Encontrado</span> </div>
                             <div class="card-body">
-                                <p class="card-text"><small class="text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em> <em>Perro</em> <em> / </em> <em>Sexo:</em> <em>Macho</em> </small></p>
+                                <p class="card-text"><small class="text text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em><em>:</em> <em>Perro</em> <em> / </em> <em>Sexo</em><em>:</em> <em>Macho</em> </small></p>
                                 <div class="news-title">
-                                    <h2 class=" title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                    <h2 class="text title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                </div>
+                                <div class="card-exp">
+                                    <i class="far fa-eye"> <div class="text seemoretext">Ver Detalles</div></i>
                                 </div>
                                 
                             </div>
@@ -124,11 +168,14 @@
                     <a href="#post" class="">
                         <div class="card"> 
                             <img class="img-fluid card-img" src="https://www.guidedogs.org/wp-content/uploads/2018/01/Mobile.jpg" alt="">
-                            <div class="card-img-overlay"> <span class="badge badge-pill badge-primary">En Adopcion</span> </div>
+                            <div class="card-img-overlay"> <span class="badge badge-pill badge-primary text categorytext">En Adopcion</span> </div>
                             <div class="card-body">
-                                <p class="card-text"><small class="text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em> <em>Perro</em> <em> / </em> <em>Sexo:</em> <em>Macho</em> </small></p>
+                                <p class="card-text"><small class=" text text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em><em>:</em> <em>Perro</em> <em> / </em> <em>Sexo</em><em>:</em> <em>Macho</em> </small></p>
                                 <div class="news-title">
-                                    <h2 class=" title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                    <h2 class=" text title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                </div>
+                                <div class="card-exp">
+                                    <i class="far fa-eye"> <div class="text seemoretext">Ver Detalles</div></i>
                                 </div>
                                 
                             </div>
@@ -143,14 +190,16 @@
                     <a href="#post" class="">
                         <div class="card"> 
                             <img class="img-fluid card-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUEuB70PuTDIloSOxU2rBq7oo50wVGpXHEkJFw4IrAUtWsj8qC" alt="">
-                            <div class="card-img-overlay"> <span class="badge badge-pill badge-warning">Emergencia</span> </div>
+                            <div class="card-img-overlay"> <span class="badge badge-pill badge-warning text categorytext">Emergencia</span> </div>
                             <div class="card-body">
-                                <p class="card-text"><small class="text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em> <em>Perro</em> <em> / </em> <em>Sexo:</em> <em>Macho</em> </small></p>
+                                <p class="card-text"><small class=" text text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em><em>:</em> <em>Perro</em> <em> / </em> <em>Sexo</em><em>:</em> <em>Macho</em> </small></p>
                                 <div class="news-title">
-                                    <h2 class=" title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                    <h2 class="text title-small">Tomy se perdio en la concha de tu hermana</h2>
                                 </div>
-                                
-                            </div>
+                                <div class="card-exp">
+                                    <i class="far fa-eye"> <div class="text seemoretext">Ver Detalles</div></i>
+                                </div>
+                            </div> 
                         </div>
                     </a>
                 </div>
@@ -158,13 +207,15 @@
                     <a href="#post" class="">
                         <div class="card"> 
                             <img class="img-fluid card-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mgsUGEdhzwiNL_Q0AFYONG-JHKR5SetOJVKCedYQG3U6oyLoyw" alt="">
-                            <div class="card-img-overlay"> <span class="badge badge-pill badge-primary">En Adopcion</span> </div>
+                            <div class="card-img-overlay"> <span class="badge badge-pill badge-primary text categorytext">En Adopcion</span> </div>
                             <div class="card-body">
-                                <p class="card-text"><small class="text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em> <em>Perro</em> <em> / </em> <em>Sexo:</em> <em>Macho</em> </small></p>
+                                <p class="card-text"><small class=" text text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em><em>:</em> <em>Perro</em> <em> / </em> <em>Sexo</em><em>:</em> <em>Macho</em> </small></p>
                                 <div class="news-title">
-                                    <h2 class=" title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                    <h2 class="text title-small text cartittext">Tomy se perdio en la concha de tu hermana</h2>
                                 </div>
-                                
+                                <div class="card-exp">
+                                    <i class="far fa-eye"> <div class="text seemoretext">Ver Detalles</div></i>
+                                </div>                                
                             </div>
                         </div>
                     </a>
@@ -174,11 +225,14 @@
                     <a href="#post" class="">
                         <div class="card"> 
                             <img class="img-fluid card-img" src="https://i.kinja-img.com/gawker-media/image/upload/s--WFkXeene--/c_scale,f_auto,fl_progressive,q_80,w_800/ol9ceoqxidudap8owlwn.jpg" alt="">
-                            <div class="card-img-overlay"> <span class="badge badge-pill badge-danger">Perdido</span> </div>
+                            <div class="card-img-overlay"> <span class="badge badge-pill badge-danger text categorytext">Perdido</span> </div>
                             <div class="card-body">
-                                <p class="card-text"><small class="text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em> <em>Perro</em> <em> / </em> <em>Sexo:</em> <em>Macho</em> </small></p>
+                                <p class="card-text"><small class=" text text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em><em>:</em> <em>Perro</em> <em> / </em> <em>Sexo</em><em>:</em> <em>Macho</em> </small></p>
                                 <div class="news-title">
-                                    <h2 class=" title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                    <h2 class=" text title-small">Tomy se perdio en la concha de tu hermana</h2>
+                                </div>
+                                <div class="card-exp">
+                                    <i class="far fa-eye"> <div class="text seemoretext">Ver Detalles</div></i>
                                 </div>
                                 
                             </div>
@@ -189,11 +243,16 @@
             </div> 
 
         </div>    
-        </section>
-
-
-
     </div>
+
+    <!--FOOTER-->
+    <div class="row uspaced60"></div>
+    <div class="container-fluid footer">
+        <div class="text footertext">© 2018 Todos los derechos reservados pawgram.org</div> 
+    </div>
+    <!--FOOTER-->
+    
+    
 
     
 </body>

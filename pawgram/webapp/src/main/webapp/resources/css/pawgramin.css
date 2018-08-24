@@ -48,10 +48,16 @@ section{padding-top: 30px 0; float: left; width: 100%}
 
 .card-text{margin: 0; color: #141517}
 
-.title-small { color: #2a8bf9; font-size: 16px; font-weight: 4000; line-height: 23px; margin: 6px 0 0;}
+.title-small { color: #000000; font-size: 18px; font-weight: bold; line-height: 23px; margin: 6px 0 0;}
 
 .card-img{
 	height: 200px;
+}
+
+.card-exp{
+	margin-top: 10px;
+	text-align: center;
+
 }
 
 .uspaced5{
@@ -84,4 +90,96 @@ section{padding-top: 30px 0; float: left; width: 100%}
 }
 #searchInput:focus {
     border-color: #4d90fe;
+}
+
+.text{
+	font-family: Fira-Sans;
+}
+
+.titsec{
+	font-size: 32px;
+	padding-left: 20px;
+}
+
+.nav-sec{
+	font-size: 24px;
+}
+
+.categorytext{
+	font-size: 18px;
+}
+
+.seemoretext{
+	font-size: 18px;
+}
+
+.text-time{
+	font-size: 14px;
+}
+
+#custom-search-input {
+        margin:0;
+        padding: 0;
+    }
+ 
+    #custom-search-input .search-query {
+
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+
+    }
+ 
+    #custom-search-input button {
+        border: 0;
+        background: none;
+        /** belows styles are working good */
+        padding: 2px 5px;
+        margin-top: 2px;
+        position: relative;
+        left: -28px;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+ 
+    .search-query:focus + button {
+        z-index: 3;   
+    }
+
+.uspacedfa{
+	margin-top: 5px !important;
+}
+
+.filttext{
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.uspaced60{
+	margin-top: 60px;
+}
+
+.nav-item:hover{
+	background-color: #f7f7f7;
+}
+
+.section{
+	background-color: white;
+	border-radius: 3px;
+
+}
+
+.footer{
+	background-color: #444444;
+	height: 50px;
+}
+
+.footertext{
+	color: white;
+	text-align: right;
+	padding-top: 15px;
 }
