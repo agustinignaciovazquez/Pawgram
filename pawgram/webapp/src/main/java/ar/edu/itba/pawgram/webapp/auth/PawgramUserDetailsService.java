@@ -26,8 +26,7 @@ public class PawgramUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException("No user by the mail " + username);
 		}
 		final Collection<? extends GrantedAuthority> authorities = Arrays.asList(
-				new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN")
-		);
+				new SimpleGrantedAuthority("ROLE_USER"));
 		return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
 	}
 }

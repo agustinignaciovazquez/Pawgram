@@ -20,12 +20,15 @@ public interface UserDao {
 	*/
 	public User findByMail(final String mail);
 	
-	/**
-	* Create a new user.
-	*
-	* @param username The name of the user.
-	* @return The created user.
-	*/
+	 /**
+	 * Create a new user.
+	 *
+	 * @param name The name of the user.
+	 * @param surname The surname of the user.
+	  * @param mail The mail of the user.
+	  * @param password the password of the user.
+	 * @return The created user.
+	 */
 	public User create(String name, String surname, String mail, String password);
 
 }

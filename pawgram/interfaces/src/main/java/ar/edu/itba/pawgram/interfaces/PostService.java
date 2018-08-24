@@ -52,6 +52,16 @@ public interface PostService {
     public List<PlainPost> getPlainPostsByKeyword(final String keyword, final Location location);
 
     /**
+     * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
+     * The keyword should match the post title or description
+     * @param keyword - The keyword which should be matched
+     * @param location - Current user location
+     * @param category - The category we are searching in
+     * @return The list of plain post that match with the keyword.
+     */
+    public List<PlainPost> getPlainPostsByKeyword(final String keyword, final Location location, final Category category);
+
+    /**
      * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
      * @param userId - ID of the creator
      * @param location - current location of the user

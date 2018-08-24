@@ -52,6 +52,28 @@ public class SearchZone implements PlainSearchZone {
         return user;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        if (!(obj instanceof SearchZone))
+            return false;
+
+        SearchZone other = (SearchZone) obj;
+
+        return id == other.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return (int)id;
+    }
+
+    @Override
+    public String toString() {
+        return location.toString() + " " + range;
+    }
+
     public static class SearchZoneBuilder{
         private long id;
         private Location location;
