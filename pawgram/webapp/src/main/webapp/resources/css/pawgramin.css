@@ -299,6 +299,11 @@ body {
 	margin-right: auto;
 }
 
+.center{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
 
 .avatarwrapper{
 	position: relative;
@@ -309,4 +314,41 @@ body {
    top: 20px;
    left: 50px;
    color: white;
+}
+
+.zonecard{
+	background-color: white;
+	border-top-right-radius: 50px;
+	border-top-left-radius: 50px;
+}
+
+.mapround{
+	border-top-right-radius: 50px;
+	border-top-left-radius: 50px;
+	max-width:100%;
+}
+
+.zonetitle{
+	font-size: 20px;
+	font-weight: bold;
+	padding-left: 10px;
+	float:left;
+}
+
+.zonedata{
+	font-size: 18px;	
+	overflow: hidden;
+	margin-top: 2px;
+}
+
+.zonewrapper{
+	overflow: hidden;
+}
+
+.bspaced2{
+	padding-bottom: 20px;
+}
+
+.uspaced10{
+	padding-top: 10px;
 }
