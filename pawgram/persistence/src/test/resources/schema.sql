@@ -6,10 +6,18 @@ CREATE TABLE IF NOT EXISTS users (
 	password char(60)
 );
 
+CREATE TABLE IF NOT EXISTS search_zones (
+    zoneId INTEGER IDENTITY PRIMARY KEY,
+    latitude double precision NOT NULL,
+    longitude double precision NOT NULL,
+    range INTEGER CHECK(range > 0),
+    userId INTEGER REFERENCES users(id) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS posts (
     postId INTEGER IDENTITY PRIMARY KEY,
     title    VARCHAR(64) NOT NULL,
-    description VARCHAR(1024) NOT NULL,
+    description VARCHAR(2048) NOT NULL,
     img_url    VARCHAR(32) NOT NULL,
     contact_phone    VARCHAR(32) NOT NULL,
     event_date TIMESTAMP NOT NULL,

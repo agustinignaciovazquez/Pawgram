@@ -108,6 +108,14 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
+    public List<PlainPost> getPlainPostsByUserId(long userId, Category category, Location location) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " haversine_distance(?,?,latitude,longitude) as distance" +
+                        " FROM posts WHERE userId = ? AND category = ? ORDER BY distance DESC",
+                plainPostRowMapper,location.getLatitude(),location.getLongitude(),userId,category.getLowerName().toUpperCase(Locale.ENGLISH));
+    }
+
+    @Override
     public Post.PostBuilder getFullPostById(long postId, Location location) {
         List<Post.PostBuilder> l = jdbcTemplate.query("SELECT *," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
@@ -175,6 +183,14 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
+    public List<PlainPost> getPlainPostsByUserIdRange(long userId, Location location, Category category, int limit, int offset) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " haversine_distance(?,?,latitude,longitude) as distance" +
+                        " FROM posts WHERE userId = ? AND category = ? ORDER BY distance DESC LIMIT ? OFFSET ?",
+                plainPostRowMapper,location.getLatitude(),location.getLongitude(),userId,category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
+    }
+
+    @Override
     public long getTotalPosts() {
         Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts", Integer.class);
         return total != null ? total : 0;
@@ -218,6 +234,12 @@ public class PostJdbcDao implements PostDao {
     @Override
     public long getTotalPostsByUserId(long userId) {
         Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE userId = ?", Integer.class,userId);
+        return total != null ? total : 0;
+    }
+
+    @Override
+    public long getTotalPostsByUserId(long userId, Category category) {
+        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE userId = ? AND category = ?", Integer.class,userId,category.getLowerName().toUpperCase(Locale.ENGLISH));
         return total != null ? total : 0;
     }
 }

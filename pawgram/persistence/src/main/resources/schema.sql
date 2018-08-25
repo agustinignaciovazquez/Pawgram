@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS search_zones (
 CREATE TABLE IF NOT EXISTS posts (
     postId SERIAL PRIMARY KEY,
     title    VARCHAR(64) NOT NULL,
-    description VARCHAR(1024) NOT NULL,
+    description VARCHAR(2048) NOT NULL,
     img_url    VARCHAR(32) NOT NULL,
     contact_phone    VARCHAR(32) NOT NULL,
     event_date TIMESTAMP NOT NULL,
