@@ -1,24 +1,13 @@
 package ar.edu.itba.pawgram.model;
 
 public enum Category {
-	LOST ("lost"),
-	FOUND ("found"),
-	ADOPT ("adopt"),
-	EMERGENCY ("emergency");
+	LOST, FOUND, ADOPT, EMERGENCY;
 
-	
-	private final String name;
-	
-	private Category(String name) {
-		this.name = name;
-	}
-	
-	@Override
-	public String toString() {
-		return name;
+	public static Category fromString(final String str) {
+		return valueOf(str.toUpperCase());
 	}
 
 	public String getLowerName() {
-		return name;
+		return name().toLowerCase();
 	}
 }

@@ -1,6 +1,5 @@
 package ar.edu.itba.pawgram.service;
 
-import ar.edu.itba.pawgram.interfaces.CommentDao;
 import ar.edu.itba.pawgram.interfaces.CommentService;
 import ar.edu.itba.pawgram.interfaces.PostDao;
 import ar.edu.itba.pawgram.interfaces.PostService;
@@ -52,6 +51,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PlainPost> getPlainPostsByUserId(long userId, Category category, Location location) {
+        return postDao.getPlainPostsByUserId(userId, category, location);
+    }
+
+    @Override
     public Post getFullPostById(long postId, Location location) {
         Post.PostBuilder pb = postDao.getFullPostById(postId, location);
         if(pb == null)
@@ -87,6 +91,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Location location, int page, int pageSize) {
         return postDao.getPlainPostsByUserIdRange(userId, location, pageSize,(page - 1) * pageSize);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Location location, Category category, int page, int pageSize) {
+        return postDao.getPlainPostsByUserIdRange(userId, location, category, pageSize,(page - 1) * pageSize);
     }
 
     @Override
@@ -127,5 +136,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public long getTotalPostsByUserId(long userId) {
         return postDao.getTotalPostsByUserId(userId);
+    }
+
+    @Override
+    public long getTotalPostsByUserId(long userId, Category category) {
+        return postDao.getTotalPostsByUserId(userId, category);
     }
 }

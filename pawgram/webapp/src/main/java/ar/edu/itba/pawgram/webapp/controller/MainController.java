@@ -44,11 +44,10 @@ public class MainController {
 	
 	@RequestMapping(value = "/register/process", method = { RequestMethod.POST })
 	public ModelAndView create(@Valid @ModelAttribute("registerForm") final UserForm form, final BindingResult errors) {
-		//TODO add passwords do not match error in JSP
-		if (errors.hasErrors() || !form.getPassword().equals(form.getRepeatPassword())) {
+		if (errors.hasErrors()) {
 			return register(form);
 		}
-		final User u = us.create(form.getName(),form.getSurname(),form.getMail(),form.getPassword());
+		final User u = us.create(form.getName(),form.getSurname(),form.getMail(),form.getPasswordForm().getPassword());
 		return new ModelAndView("redirect:/user?userId="+ u.getId());
 	}
 }

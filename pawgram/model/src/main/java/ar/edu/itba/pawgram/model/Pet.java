@@ -1,23 +1,14 @@
 package ar.edu.itba.pawgram.model;
 
 public enum Pet {
-	DOG ("dog"),
-	CAT ("cat"),
-	OTHER ("other");
+	DOG, CAT, OTHER;
 
-	
-	private final String name;
-	
-	private Pet(String name) {
-		this.name = name;
-	}
-	
-	@Override
-	public String toString() {
-		return name;
+
+	public static Pet fromString(final String str) {
+		return valueOf(str.toUpperCase());
 	}
 
 	public String getLowerName() {
-		return name;
+		return name().toLowerCase();
 	}
 }
