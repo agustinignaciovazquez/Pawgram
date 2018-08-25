@@ -260,3 +260,53 @@ body {
 .lspaced50{
 	padding-left: 50px;
 }
+
+.profilebanner{
+	background: url(../img/dark-title-background.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    overflow-x: hidden; 
+}
+
+.avatar{
+	border-radius: 50%;
+	height: 200px;
+	width: 200px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.bspaced5{
+	padding-bottom: 50px;
+}
+
+.name{
+	font-size:30px;
+	color: white;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.email{
+	font-size:20px;
+	color: white;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+.avatarwrapper{
+	position: relative;
+}
+
+.avatarwrapper .editicon {
+   position: absolute;
+   top: 20px;
+   left: 50px;
+   color: white;
+}
