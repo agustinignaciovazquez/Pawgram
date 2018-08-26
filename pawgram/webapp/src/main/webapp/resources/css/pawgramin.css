@@ -336,9 +336,13 @@ body {
 }
 
 .zonedata{
-	font-size: 18px;	
 	overflow: hidden;
-	margin-top: 2px;
+	padding-top: 5px;
+}
+
+
+.zoneel1{
+	overflow: hidden;
 }
 
 .zonewrapper{
@@ -351,4 +355,34 @@ body {
 
 .uspaced10{
 	padding-top: 10px;
+}
+
+.btn-circle{
+	width: 30px;
+  	height: 30px;
+  	text-align: center;
+  	padding: 6px 0;
+ 	font-size: 12px;
+  	line-height: 1.428571429;
+  	border-radius: 15px;
+  	float:right;
+}
+
+.lspaced20{
+	margin-left: 20px;
+}
+
+.uspaced4{
+	margin-top: 4px;
+}
+
+.divider{
+	border-top: 1px solid #8c8b8b;
+	border-bottom: 1px solid #fff;
+	padding: 0px;
+    margin: 0px;
+}
+
+.rspaced50{
+	padding-right: 50px;
 }
