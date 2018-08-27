@@ -1,8 +1,8 @@
 package ar.edu.itba.pawgram.service;
 
-import ar.edu.itba.pawgram.interfaces.CommentService;
-import ar.edu.itba.pawgram.interfaces.PostDao;
-import ar.edu.itba.pawgram.interfaces.PostService;
+import ar.edu.itba.pawgram.interfaces.service.CommentService;
+import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
+import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import org.springframework.beans.factory.annotation.Autowired;

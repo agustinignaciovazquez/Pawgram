@@ -1,21 +1,20 @@
 package ar.edu.itba.pawgram.persistence;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
+import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
-import ar.edu.itba.pawgram.interfaces.UserDao;
+import ar.edu.itba.pawgram.interfaces.persistence.UserDao;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.persistence.rowmapper.UserRowMapper;
 
@@ -48,15 +47,31 @@ public class UserJdbcDao implements UserDao {
 	}
 
 	@Override
-	public User create(String name, String surname, String mail, String password) {
+	public User create(String name, String surname, String mail, String password) throws DuplicateEmailException {
 		final Map<String, Object> args = new HashMap<>();
 		String enc_password = bCryptPasswordEncoder.encode(password);
 		args.put("name", name); 
 		args.put("surname", surname); 
 		args.put("mail", mail); 
 		args.put("password", enc_password); 
-		final Number userId = jdbcInsert.executeAndReturnKey(args);
-		return new User(userId.longValue(),name,surname,mail,enc_password);
+
+		try {
+			final Number userId = jdbcInsert.executeAndReturnKey(args);
+			return new User(userId.longValue(),name,surname,mail,enc_password);
+		}
+		catch (DuplicateKeyException e) {
+			throw new DuplicateEmailException("There already exists an user with email: " + mail);
+		}
+	}
+
+	@Override
+	public User changePassword(final long id,final String password) {
+		User user = findById(id);
+		String enc_password = bCryptPasswordEncoder.encode(password);
+		if (user != null)
+			jdbcTemplate.update("UPDATE users SET password = ? WHERE userId = ?", enc_password, id);
+
+		return user;
 	}
 
 	@Override

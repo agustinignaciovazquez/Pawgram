@@ -1,6 +1,6 @@
 package ar.edu.itba.pawgram.persistence;
 
-import ar.edu.itba.pawgram.interfaces.PostDao;
+import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.persistence.rowmapper.PlainPostRowMapper;

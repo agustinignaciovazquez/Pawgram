@@ -1,4 +1,4 @@
-package ar.edu.itba.pawgram.interfaces;
+package ar.edu.itba.pawgram.interfaces.persistence;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ar.edu.itba.pawgram.interfaces;
+package ar.edu.itba.pawgram.interfaces.service;
 
 import java.util.List;
 

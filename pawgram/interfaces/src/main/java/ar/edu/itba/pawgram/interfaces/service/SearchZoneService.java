@@ -1,4 +1,4 @@
-package ar.edu.itba.pawgram.interfaces;
+package ar.edu.itba.pawgram.interfaces.service;
 
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;

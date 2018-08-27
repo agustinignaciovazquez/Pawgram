@@ -1,4 +1,4 @@
-package ar.edu.itba.pawgram.interfaces;
+package ar.edu.itba.pawgram.interfaces.service;
 
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
@@ -6,7 +6,7 @@ import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface PostDao {
+public interface PostService {
     /**
      * Creates a {@link Post.PostBuilder} inserting the {@link Post} data into the database.
      * @param title - Title of the post
@@ -21,22 +21,22 @@ public interface PostDao {
      * @param owner - owner id of the post
      * @return Post - The newly created post
      */
-    public Post.PostBuilder createPost(final String title, final String description, final String img_url, final String contact_phone,
+    public Post createPost(final String title, final String description, final String img_url, final String contact_phone,
                                        final LocalDateTime event_date, final Category category, final Pet pet, final boolean is_male,
                                        final Location location, final User owner);
 
     /**
      * Lists every nearby in range KM existing {@link Post} as a {@link PlainPost} .
      * @param location - current location of the user
-     * @param range - max range of search in meters
+     * @param range - max range of search
      * @return {@link List} of the existing posts
      */
     public List<PlainPost> getPlainPosts(final Location location, final int range);
 
     /**
-     * Lists every nearby in range (Meters) existing {@link Post} as a {@link PlainPost} for a given {@link Category}
+     * Lists every nearby in range KM existing {@link Post} as a {@link PlainPost} for a given {@link Category}
      * @param location - current location of the user
-     * @param range - max range of search in meters
+     * @param range - max range of search
      * @param category - Category the posts belongs to
      * @return {@link List} of the existing posts
      */
@@ -85,7 +85,7 @@ public interface PostDao {
      * @param location - current location of the user
      * @return Post with the associated ID of null if it doesn't exist
      */
-    public Post.PostBuilder getFullPostById(final long postId, final Location location);
+    public Post getFullPostById(final long postId, final Location location);
 
     /**
      * Retrieves a {@link Post} as a {@link PlainPost}.
@@ -95,82 +95,82 @@ public interface PostDao {
     public PlainPost getPlainPostById(final long postId);
 
     /**
-     * Deletes a {@link Post} from the database.
-     * @param postId - ID of the post to delete
-     * @param user - user calling the method to check if has privileges
-     * @return true if a product was deleted
-     */
-    public boolean deletePostById(final long postId, User user);
-
-    /**
      * Lists every nearby in range KM existing {@link Post} as a {@link PlainPost} .
      * @param location - current location of the user
      * @param range - max range of search in meters
-     * @param limit - max number of results
-     * @param offset - post offset
+     * @param page - number of page
+     * @param pageSize - max number of results per page
      * @return {@link List} of the existing posts
      */
-    public List<PlainPost> getPlainPostsRange(final Location location, final int range,
-                                              final int limit, final int offset);
+    public List<PlainPost> getPlainPostsPaged(final Location location, final int range,
+                                              final int page, final int pageSize);
 
     /**
      * Lists every nearby in range (Meters) existing {@link Post} as a {@link PlainPost} for a given {@link Category}
      * @param location - current location of the user
      * @param range - max range of search in meters
      * @param category - Category the posts belongs to
-     * @param limit - max number of results
-     * @param offset - post offset
+     * @param page - number of page
+     * @param pageSize - max number of results per page
      * @return {@link List} of the existing posts
      */
-    public List<PlainPost> getPlainPostsByCategoryRange(final Location location, final int range, final Category category,
-                                                        final int limit, final int offset);
+    public List<PlainPost> getPlainPostsByCategoryPaged(final Location location, final int range, final Category category,
+                                                        final int page, final int pageSize);
 
     /**
      * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
      * The keyword should match the post title or description
      * @param keyword - The keyword which should be matched
      * @param location - Current user location
-     * @param limit - max number of results
-     * @param offset - post offset
+     * @param page - number of page
+     * @param pageSize - max number of results per page
      * @return The list of plain post that match with the keyword.
      */
-    public List<PlainPost> getPlainPostsByKeywordRange(final String keyword, final Location location,
-                                                       final int limit, final int offset);
+    public List<PlainPost> getPlainPostsByKeywordPaged(final String keyword, final Location location,
+                                                       final int page, final int pageSize);
 
     /**
      * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
      * The keyword should match the post title or description
      * @param keyword - The keyword which should be matched
-     * @param location - Current user location
      * @param category - The category we are searching in
-     * @param limit - max number of results
-     * @param offset - post offset
+     * @param location - Current user location
+     * @param page - number of page
+     * @param pageSize - max number of results per page
      * @return The list of plain post that match with the keyword.
      */
-    public List<PlainPost> getPlainPostsByKeywordRange(final String keyword, final Location location, final Category category,final int limit, final int offset);
+    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, Category category, int page, int pageSize);
 
     /**
      * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
      * @param userId - ID of the creator
      * @param location - current location of the user
-     * @param limit - max number of results
-     * @param offset - post offset
+     * @param page - number of page
+     * @param pageSize - max number of results per page
      * @return List of post. Empty in case the user did not create any post
      */
-    public List<PlainPost> getPlainPostsByUserIdRange(final long userId, final Location location,
-                                                      final int limit, final int offset);
+    public List<PlainPost> getPlainPostsByUserIdPaged(final long userId, final Location location,
+                                                      final int page, final int pageSize);
 
     /**
      * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
      * @param userId - ID of the creator
      * @param location - current location of the user
      * @param category - category we are searching
-     * @param limit - max number of results
-     * @param offset - post offset
+     * @param page - number of page
+     * @param pageSize - max number of results per page
      * @return List of post. Empty in case the user did not create any post
      */
-    public List<PlainPost> getPlainPostsByUserIdRange(final long userId, final Location location,final Category category,
-                                                      final int limit, final int offset);
+    public List<PlainPost> getPlainPostsByUserIdPaged(final long userId, final Location location,final Category category,
+                                                      final int page, final int pageSize);
+
+    /**
+     * Deletes a {@link Post} from the database.
+     * @param postId - ID of the post to delete
+     * @param user - user calling the method to check if has privileges
+     * @return true if a product was deleted
+     */
+    public boolean deletePostById(final long postId, User user);
 
     /**
      * Retrieves the total amount of post registered.
@@ -231,6 +231,4 @@ public interface PostDao {
      * @return The number of posts.
      */
     public long getTotalPostsByUserId(final long userId,final Category category);
-
-
 }

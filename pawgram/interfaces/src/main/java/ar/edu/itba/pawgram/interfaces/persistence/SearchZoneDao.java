@@ -1,4 +1,4 @@
-package ar.edu.itba.pawgram.interfaces;
+package ar.edu.itba.pawgram.interfaces.persistence;
 
 import ar.edu.itba.pawgram.model.Location;
 import ar.edu.itba.pawgram.model.Post;

@@ -1,8 +1,8 @@
 package ar.edu.itba.pawgram.service;
 
-import ar.edu.itba.pawgram.interfaces.PostService;
-import ar.edu.itba.pawgram.interfaces.SearchZoneDao;
-import ar.edu.itba.pawgram.interfaces.SearchZoneService;
+import ar.edu.itba.pawgram.interfaces.service.PostService;
+import ar.edu.itba.pawgram.interfaces.persistence.SearchZoneDao;
+import ar.edu.itba.pawgram.interfaces.service.SearchZoneService;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
