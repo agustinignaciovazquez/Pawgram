@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import javax.sql.DataSource;
 
+import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,11 +44,17 @@ public class UserJdbcDaoTest {
 	
 	@Test
 	public void testCreate() {
-		final User user = userDao.create(NAME,SURNAME,MAIL,PASSWORD);
-		assertNotNull(user);
-		assertEquals(NAME, user.getName());
-		assertTrue(bCryptPasswordEncoder.matches(PASSWORD, user.getPassword()));
-		assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
+		final User user;
+		try {
+			user = userDao.create(NAME,SURNAME,MAIL,PASSWORD);
+			assertNotNull(user);
+			assertEquals(NAME, user.getName());
+			assertTrue(bCryptPasswordEncoder.matches(PASSWORD, user.getPassword()));
+			assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
+		} catch (DuplicateEmailException e) {
+			assertTrue(false);
+		}
+
 	}
 
 }

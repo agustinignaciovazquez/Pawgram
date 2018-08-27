@@ -24,42 +24,42 @@ public class ErrorControllerAdvice {
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(value= HttpStatus.NOT_FOUND)
     public ModelAndView resourceNotFound() {
-        return buildModelAndView("404");
+        return buildModelAndView("error/404");
     }
 
     @ExceptionHandler(PostNotFoundException.class)
     @ResponseStatus(value=HttpStatus.NOT_FOUND)
     public ModelAndView productNotFound() {
-        return buildModelAndView("404post");
+        return buildModelAndView("error/404post");
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(value=HttpStatus.NOT_FOUND)
     public ModelAndView userNotFound() {
-        return buildModelAndView("404user");
+        return buildModelAndView("error/404user");
     }
 
     @ExceptionHandler(ImageNotFoundException.class)
     @ResponseStatus(value=HttpStatus.NOT_FOUND)
     public ModelAndView imageNotFound() {
-        return buildModelAndView("404image");
+        return buildModelAndView("error/404image");
     }
 
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(value=HttpStatus.UNAUTHORIZED)
     public ModelAndView unauthorized() {
-        return buildModelAndView("401");
+        return buildModelAndView("error/401");
     }
 
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(value=HttpStatus.FORBIDDEN)
     public ModelAndView Forbidden() {
-        return buildModelAndView("403");
+        return buildModelAndView("error/403");
     }
 
     @ExceptionHandler(InvalidQueryException.class)
     @ResponseStatus(value=HttpStatus.BAD_REQUEST)
     public ModelAndView invalidQuery() {
-        return buildModelAndView("400badQuery");
+        return buildModelAndView("error/400badQuery");
     }
 }

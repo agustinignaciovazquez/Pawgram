@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS users (
 	id SERIAL PRIMARY KEY,
-	name varchar(50),
-	surname varchar(50),
-	mail varchar(50),
-	password char(60)
+	name varchar(50) NOT NULL,
+	surname varchar(50) NOT NULL,
+	mail varchar(50) UNIQUE NOT NULL,
+	password char(60) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS search_zones (
