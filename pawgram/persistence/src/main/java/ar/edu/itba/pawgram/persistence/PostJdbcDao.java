@@ -116,6 +116,15 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
+    public Post.PostBuilder getFullPostById(long postId) {
+        List<Post.PostBuilder> l = jdbcTemplate.query("SELECT *," +
+                        " 0 as distance" +
+                        "FROM posts,users WHERE posts.userId = users.id AND postId = ?",
+                postBuilderRowMapper,postId);
+        return (l.isEmpty())? null: l.get(0);
+    }
+
+    @Override
     public Post.PostBuilder getFullPostById(long postId, Location location) {
         List<Post.PostBuilder> l = jdbcTemplate.query("SELECT *," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
@@ -155,11 +164,27 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
+    public List<PlainPost> getPlainPostsByKeywordRange(String keyword, int limit, long offset) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " 0 as distance" +
+                        " FROM posts WHERE title LIKE %?% ORDER BY distance DESC LIMIT ? OFFSET ?",
+                plainPostRowMapper,keyword,limit,offset);
+    }
+
+    @Override
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE title LIKE %?% ORDER BY distance DESC LIMIT ? OFFSET ?",
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),keyword,limit,offset);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Category category, int limit, long offset) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " 0 as distance" +
+                        " FROM posts WHERE category = ? AND title LIKE %?% ORDER BY postId ASC LIMIT ? OFFSET ?",
+                plainPostRowMapper,category.getLowerName().toUpperCase(Locale.ENGLISH),keyword,limit,offset);
     }
 
     @Override
@@ -171,11 +196,27 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
+    public List<PlainPost> getPlainPostsByUserIdRange(long userId, int limit, long offset) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " 0 as distance" +
+                        " FROM posts WHERE userId = ? ORDER BY postId ASC LIMIT ? OFFSET ?",
+                plainPostRowMapper,userId,limit,offset);
+    }
+
+    @Override
     public List<PlainPost> getPlainPostsByUserIdRange(long userId, Location location, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE userId = ? ORDER BY distance DESC LIMIT ? OFFSET ?",
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),userId,limit,offset);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByUserIdRange(long userId, Category category, int limit, long offset) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " 0 as distance" +
+                        " FROM posts WHERE userId = ? AND category = ? ORDER BY postId ASC LIMIT ? OFFSET ?",
+                plainPostRowMapper,userId,category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
     }
 
     @Override

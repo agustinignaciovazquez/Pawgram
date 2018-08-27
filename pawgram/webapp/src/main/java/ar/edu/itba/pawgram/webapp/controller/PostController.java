@@ -36,12 +36,15 @@ public class PostController {
     }
 
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
-    public ModelAndView getProduct(@PathVariable final long postId, @RequestParam(value = "latitude", required = false, defaultValue = "0") double latitude,
-                                   @RequestParam(value = "longitude", required = false, defaultValue = "0") double longitude) throws PostNotFoundException {
+    public ModelAndView getPost(@PathVariable final long postId, @RequestParam(value = "latitude", required = false) final Optional<Double> latitude,
+                                @RequestParam(value = "longitude", required = false) final Optional<Double> longitude) throws PostNotFoundException {
 
-
-        final Post post = postService.getFullPostById(postId, new Location(longitude,latitude));
-
+        Post post;
+        if(longitude.isPresent() && latitude.isPresent()) {
+             post = postService.getFullPostById(postId, new Location(longitude.get(), latitude.get()));
+        }else{
+             post = postService.getFullPostById(postId);
+        }
         if (post == null) {
             throw new PostNotFoundException();
         }
@@ -68,7 +71,6 @@ public class PostController {
         if (post == null) {
             throw new PostNotFoundException();
         }
-
 
         final CommentForm postedForm;
 

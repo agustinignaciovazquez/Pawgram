@@ -56,6 +56,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Post getFullPostById(long postId) {
+        Post.PostBuilder pb = postDao.getFullPostById(postId);
+        if(pb == null)
+            return null;
+        return pb.commentFamilies(commentService.getCommentsByPostId(postId)).build();
+    }
+
+    @Override
     public Post getFullPostById(long postId, Location location) {
         Post.PostBuilder pb = postDao.getFullPostById(postId, location);
         if(pb == null)
@@ -79,8 +87,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, long page, int pageSize) {
+        return postDao.getPlainPostsByKeywordRange(keyword,pageSize,(page - 1) * pageSize);
+    }
+
+    @Override
     public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, long page, int pageSize) {
         return postDao.getPlainPostsByKeywordRange(keyword, location, pageSize,(page - 1) * pageSize);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Category category, long page, int pageSize) {
+        return postDao.getPlainPostsByKeywordRange(keyword,category,pageSize,(page - 1) * pageSize);
     }
 
     @Override
@@ -89,8 +107,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, long page, int pageSize) {
+        return postDao.getPlainPostsByUserIdRange(userId,pageSize,(page - 1) * pageSize);
+    }
+
+    @Override
     public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Location location, long page, int pageSize) {
         return postDao.getPlainPostsByUserIdRange(userId, location, pageSize,(page - 1) * pageSize);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Category category, long page, int pageSize) {
+        return postDao.getPlainPostsByUserIdRange(userId,category,pageSize,(page - 1) * pageSize);
     }
 
     @Override

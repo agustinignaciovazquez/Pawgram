@@ -79,8 +79,14 @@ public interface PostService {
     public List<PlainPost> getPlainPostsByUserId(final long userId, final Category category, final Location location);
 
     /**
-     * Retrieves a {@link Post.PostBuilder} with every attribute set except for
-     * the familyComments.
+     * Retrieves a {@link Post.PostBuilder} with every attribute set
+     * @param postId - ID of the post
+     * @return Post with the associated ID of null if it doesn't exist
+     */
+    public Post getFullPostById(final long postId);
+
+    /**
+     * Retrieves a {@link Post.PostBuilder} with every attribute set
      * @param postId - ID of the post
      * @param location - current location of the user
      * @return Post with the associated ID of null if it doesn't exist
@@ -118,6 +124,16 @@ public interface PostService {
                                                         final long page, final int pageSize);
 
     /**
+     * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the id asc
+     * The keyword should match the post title or description
+     * @param keyword - The keyword which should be matched
+     * @param page - number of page
+     * @param pageSize - max number of results per page
+     * @return The list of plain post that match with the keyword.
+     */
+    public List<PlainPost> getPlainPostsByKeywordPaged(final String keyword, final long page, final int pageSize);
+
+    /**
      * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
      * The keyword should match the post title or description
      * @param keyword - The keyword which should be matched
@@ -130,6 +146,17 @@ public interface PostService {
                                                        final long page, final int pageSize);
 
     /**
+     * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the id asc
+     * The keyword should match the post title or description
+     * @param keyword - The keyword which should be matched
+     * @param category - The category we are searching in
+     * @param page - number of page
+     * @param pageSize - max number of results per page
+     * @return The list of plain post that match with the keyword.
+     */
+    public List<PlainPost> getPlainPostsByKeywordPaged(final String keyword, final Category category, final long page, final int pageSize);
+
+    /**
      * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
      * The keyword should match the post title or description
      * @param keyword - The keyword which should be matched
@@ -139,7 +166,16 @@ public interface PostService {
      * @param pageSize - max number of results per page
      * @return The list of plain post that match with the keyword.
      */
-    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, Category category, long page, int pageSize);
+    public List<PlainPost> getPlainPostsByKeywordPaged(final String keyword, final Location location, final Category category, final long page, final int pageSize);
+
+    /**
+     * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
+     * @param userId - ID of the creator
+     * @param page - number of page
+     * @param pageSize - max number of results per page
+     * @return List of post. Empty in case the user did not create any post
+     */
+    public List<PlainPost> getPlainPostsByUserIdPaged(final long userId, final long page, final int pageSize);
 
     /**
      * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
@@ -150,6 +186,17 @@ public interface PostService {
      * @return List of post. Empty in case the user did not create any post
      */
     public List<PlainPost> getPlainPostsByUserIdPaged(final long userId, final Location location,
+                                                      final long page, final int pageSize);
+
+    /**
+     * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
+     * @param userId - ID of the creator
+     * @param category - category we are searching
+     * @param page - number of page
+     * @param pageSize - max number of results per page
+     * @return List of post. Empty in case the user did not create any post
+     */
+    public List<PlainPost> getPlainPostsByUserIdPaged(final long userId, final Category category,
                                                       final long page, final int pageSize);
 
     /**
