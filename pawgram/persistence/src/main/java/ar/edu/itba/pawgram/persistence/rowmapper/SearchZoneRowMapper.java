@@ -12,13 +12,12 @@ import java.sql.SQLException;
 
 @Component
 public class SearchZoneRowMapper implements RowMapper<SearchZone.SearchZoneBuilder> {
-    /*@Autowired
-    private UserRowMapper userRowMapper;*/
+    @Autowired
+    private UserRowMapper userRowMapper;
 
     @Override
     public SearchZone.SearchZoneBuilder mapRow(ResultSet rs, int rowNum) throws SQLException {
-        /*final User user = userRowMapper.mapRow(rs, rowNum);*/
         return SearchZone.getBuilder(rs.getLong("zoneId"), new Location(rs.getDouble("longitude"),
-                rs.getDouble("latitude")),rs.getInt("range"));
+                rs.getDouble("latitude")),rs.getInt("range")).user(userRowMapper.mapRow(rs, rowNum));
     }
 }

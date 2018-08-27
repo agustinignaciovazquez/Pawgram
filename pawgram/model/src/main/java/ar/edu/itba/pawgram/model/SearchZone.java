@@ -14,6 +14,7 @@ public class SearchZone implements PlainSearchZone {
     private Location location;
     private int range;
     private List<PlainPost> posts;
+    private long max_page;
     private User user;
 
     public static SearchZoneBuilder getBuilder(long id, Location location, int range) {
@@ -30,6 +31,7 @@ public class SearchZone implements PlainSearchZone {
         this.range = builder.range;
         this.posts = builder.posts;
         this.user = builder.user;
+        this.max_page = builder.max_page;
     }
     @Override
     public long getId() {
@@ -47,6 +49,8 @@ public class SearchZone implements PlainSearchZone {
     public List<PlainPost> getPosts() {
         return posts;
     }
+
+    public long getMax_page() { return max_page; }
 
     public User getUser() {
         return user;
@@ -80,6 +84,7 @@ public class SearchZone implements PlainSearchZone {
         private int range;
         private User user;
         private List<PlainPost> posts = Collections.emptyList();
+        private long max_page;
 
         private SearchZoneBuilder(long id, Location location, int range) {
             this.id = id;
@@ -94,6 +99,11 @@ public class SearchZone implements PlainSearchZone {
 
         public SearchZoneBuilder posts(List<PlainPost> posts) {
             this.posts = posts;
+            return this;
+        }
+
+        public SearchZoneBuilder max_page(long max_page) {
+            this.max_page = max_page;
             return this;
         }
 

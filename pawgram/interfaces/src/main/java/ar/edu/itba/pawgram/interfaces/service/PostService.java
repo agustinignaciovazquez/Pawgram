@@ -103,7 +103,7 @@ public interface PostService {
      * @return {@link List} of the existing posts
      */
     public List<PlainPost> getPlainPostsPaged(final Location location, final int range,
-                                              final int page, final int pageSize);
+                                              final long page, final int pageSize);
 
     /**
      * Lists every nearby in range (Meters) existing {@link Post} as a {@link PlainPost} for a given {@link Category}
@@ -115,7 +115,7 @@ public interface PostService {
      * @return {@link List} of the existing posts
      */
     public List<PlainPost> getPlainPostsByCategoryPaged(final Location location, final int range, final Category category,
-                                                        final int page, final int pageSize);
+                                                        final long page, final int pageSize);
 
     /**
      * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
@@ -127,7 +127,7 @@ public interface PostService {
      * @return The list of plain post that match with the keyword.
      */
     public List<PlainPost> getPlainPostsByKeywordPaged(final String keyword, final Location location,
-                                                       final int page, final int pageSize);
+                                                       final long page, final int pageSize);
 
     /**
      * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
@@ -139,7 +139,7 @@ public interface PostService {
      * @param pageSize - max number of results per page
      * @return The list of plain post that match with the keyword.
      */
-    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, Category category, int page, int pageSize);
+    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, Category category, long page, int pageSize);
 
     /**
      * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
@@ -150,7 +150,7 @@ public interface PostService {
      * @return List of post. Empty in case the user did not create any post
      */
     public List<PlainPost> getPlainPostsByUserIdPaged(final long userId, final Location location,
-                                                      final int page, final int pageSize);
+                                                      final long page, final int pageSize);
 
     /**
      * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
@@ -162,15 +162,14 @@ public interface PostService {
      * @return List of post. Empty in case the user did not create any post
      */
     public List<PlainPost> getPlainPostsByUserIdPaged(final long userId, final Location location,final Category category,
-                                                      final int page, final int pageSize);
+                                                      final long page, final int pageSize);
 
     /**
      * Deletes a {@link Post} from the database.
      * @param postId - ID of the post to delete
-     * @param user - user calling the method to check if has privileges
      * @return true if a product was deleted
      */
-    public boolean deletePostById(final long postId, User user);
+    public boolean deletePostById(final long postId);
 
     /**
      * Retrieves the total amount of post registered.
@@ -231,4 +230,72 @@ public interface PostService {
      * @return The number of posts.
      */
     public long getTotalPostsByUserId(final long userId,final Category category);
+
+    /**
+     * Retrieves the max page of post nearby.
+     * @param pageSize - the quantity of post per page
+     * @return The number of posts.
+     */
+    public long getMaxPage(final int pageSize);
+
+    /**
+     * Retrieves the max page of post nearby.
+     * @param location - current location of the user
+     * @param pageSize - the quantity of post per page
+     * @param range - max range of search
+     * @return The number of posts.
+     */
+    public long getMaxPage(final int pageSize, final Location location,final int range);
+
+    /**
+     * Retrieves the max page of post registered for a given {@link Category}
+     * @param category - Category the posts belongs to
+     * @param pageSize - the quantity of post per page
+     * @return The number of posts.
+     */
+    public long getMaxPageByCategory(final int pageSize, final Category category);
+
+    /**
+     * Retrieves the max page of post nearby for a given {@link Category}
+     * @param location - current location of the user
+     * @param range - max range of search
+     * @param pageSize - the quantity of post per page
+     * @param category - Category the posts belongs to
+     * @return The number of posts.
+     */
+    public long getMaxPageByCategory(final int pageSize, final Location location,final int range,final Category category);
+
+    /**
+     * Retrieves the max page of post registered for a given keyword
+     * @param keyword - keyword search
+     * @param pageSize - the quantity of post per page
+     * @return The number of posts.
+     */
+    public long getMaxPageByKeyword(final int pageSize, final String keyword);
+
+    /**
+     * Retrieves the max page of post registered for a given {@link Category} and keyword
+     * @param keyword - keyword search
+     * @param category - the category we are searching
+     * @param pageSize - the quantity of post per page
+     * @return The number of posts.
+     */
+    public long getMaxPageByKeyword(final int pageSize, final String keyword,final Category category);
+
+    /**
+     * Retrieves the max page of post registered for a given {@link User}
+     * @param userId - the user id
+     * @param pageSize - the quantity of post per page
+     * @return The number of posts.
+     */
+    public long getMaxPageByUserId(final int pageSize, final long userId);
+
+    /**
+     * Retrieves the max page of post registered for a given {@link User}
+     * @param userId - the user id
+     * @param pageSize - the quantity of post per page
+     * @param category - the category we are searching
+     * @return The number of posts.
+     */
+    public long getMaxPageByUserId(final int pageSize, final long userId,final Category category);
 }

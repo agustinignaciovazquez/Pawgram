@@ -48,7 +48,7 @@ public class Post implements PlainPost {
 		this.commentFamilies = builder.commentFamilies;
 		this.distance = builder.distance;
 	}
-	
+
 	@Override
 	public long getId() {
 		return id;
@@ -64,27 +64,34 @@ public class Post implements PlainPost {
 	public String getImg_url() {
 		return img_url;
 	}
-	public String getContact_phone() {
-		return contact_phone;
-	}
-	public LocalDateTime getevent_date() {
-		return event_date;
-	}
+
 	@Override
 	public Category getCategory() {
 		return category;
 	}
+
 	@Override
 	public Pet getPet() {
 		return pet;
 	}
+
+	public String getContact_phone() {
+		return contact_phone;
+	}
+	public LocalDateTime getEvent_date() {
+		return event_date;
+	}
+
 	public boolean isMale() {
 		return is_male;
 	}
 	public Location getLocation(){return location;}
-	public User getOwner() {
-		return owner;
-	}
+
+	public User getOwner() { return owner; }
+
+	public int getDistance() { return distance; }
+
+	public List<CommentFamily> getCommentFamilies() { return commentFamilies; }
 
 	@Override
 	public boolean equals(Object obj) {

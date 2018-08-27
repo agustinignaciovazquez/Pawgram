@@ -24,8 +24,8 @@ public class SearchZoneServiceImpl implements SearchZoneService {
     }
 
     @Override
-    public boolean deleteZoneById(long zoneId, User user) {
-        return searchZoneDao.deleteZoneById(zoneId, user);
+    public boolean deleteZoneById(long zoneId) {
+        return searchZoneDao.deleteZoneById(zoneId);
     }
 
     @Override
@@ -34,48 +34,27 @@ public class SearchZoneServiceImpl implements SearchZoneService {
     }
 
     @Override
-    public List<SearchZone> getSearchZonesByUser(User user) {
-        List<SearchZone.SearchZoneBuilder> builders = searchZoneDao.getSearchZonesByUserId(user.getId());
-        List<SearchZone> searchZones = new ArrayList<>();
-        for(SearchZone.SearchZoneBuilder builder: builders){
-            List<PlainPost> posts = postService.getPlainPosts(builder.getLocation(),builder.getRange());
-            searchZones.add(builder.user(user).posts(posts).build());
-        }
-        return searchZones;
+    public SearchZone getFullSearchZoneById(long zoneId, long page, int pageSize) {
+        SearchZone.SearchZoneBuilder builder = searchZoneDao.getFullSearchZoneById(zoneId);
+        if(builder == null)
+            return null;
+        List<PlainPost> posts = postService.getPlainPostsPaged(builder.getLocation(),builder.getRange(),page,pageSize);
+        long max_page = postService.getMaxPage(pageSize,builder.getLocation(),builder.getRange());
+        return builder.posts(posts).max_page(max_page).build();
     }
 
     @Override
-    public List<SearchZone> getSearchZonesByUserPaged(User user, int page, int pageSize) {
-        List<SearchZone.SearchZoneBuilder> builders = searchZoneDao.getSearchZonesByUserId(user.getId());
-        List<SearchZone> searchZones = new ArrayList<>();
-        for(SearchZone.SearchZoneBuilder builder: builders){
-            List<PlainPost> posts = postService.getPlainPostsPaged(builder.getLocation(),builder.getRange(),page,pageSize);
-            searchZones.add(builder.user(user).posts(posts).build());
-        }
-        return searchZones;
+    public SearchZone getFullSearchZoneByIdAndCategory(long zoneId, Category category, long page, int pageSize) {
+        SearchZone.SearchZoneBuilder builder = searchZoneDao.getFullSearchZoneById(zoneId);
+        if(builder == null)
+            return null;
+        List<PlainPost> posts = postService.getPlainPostsByCategoryPaged(builder.getLocation(),builder.getRange(),
+                category,page,pageSize);
+        long max_page = postService.getMaxPageByCategory(pageSize,builder.getLocation(),builder.getRange(),category);
+        return builder.posts(posts).max_page(max_page).build();
     }
 
-    @Override
-    public List<SearchZone> getSearchZonesByUserAndCategory(User user, Category category) {
-        List<SearchZone.SearchZoneBuilder> builders = searchZoneDao.getSearchZonesByUserId(user.getId());
-        List<SearchZone> searchZones = new ArrayList<>();
-        for(SearchZone.SearchZoneBuilder builder: builders){
-            List<PlainPost> posts = postService.getPlainPostsByCategory(builder.getLocation(),builder.getRange(),category);
-            searchZones.add(builder.user(user).posts(posts).build());
-        }
-        return searchZones;
-    }
 
-    @Override
-    public List<SearchZone> getSearchZonesByUserAndCategoryPaged(User user, Category category,int page, int pageSize) {
-        List<SearchZone.SearchZoneBuilder> builders = searchZoneDao.getSearchZonesByUserId(user.getId());
-        List<SearchZone> searchZones = new ArrayList<>();
-        for(SearchZone.SearchZoneBuilder builder: builders){
-            List<PlainPost> posts = postService.getPlainPostsByCategoryPaged(builder.getLocation(),builder.getRange(),
-                    category,page,pageSize);
-            searchZones.add(builder.user(user).posts(posts).build());
-        }
-        return searchZones;
-    }
+
 
 }

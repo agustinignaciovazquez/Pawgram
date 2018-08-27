@@ -133,16 +133,12 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    public boolean deletePostById(long postId, User user) {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts, users WHERE postId = ? AND userId = ?",
-                Integer.class,postId,user.getId());
-        if(total == 0)
-            return false;
+    public boolean deletePostById(long postId) {
         return jdbcTemplate.update("DELETE FROM posts WHERE postId = ?", postId) == 1;
     }
 
     @Override
-    public List<PlainPost> getPlainPostsRange(Location location, int range, int limit, int offset) {
+    public List<PlainPost> getPlainPostsRange(Location location, int range, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE distance <= ? ORDER BY distance DESC LIMIT ? OFFSET ?",
@@ -150,7 +146,7 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByCategoryRange(Location location, int range, Category category, int limit, int offset) {
+    public List<PlainPost> getPlainPostsByCategoryRange(Location location, int range, Category category, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet, " +
                         "haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE distance <= ? AND category = ? ORDER BY distance DESC LIMIT ? OFFSET ?",
@@ -159,7 +155,7 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, int limit, int offset) {
+    public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE title LIKE %?% ORDER BY distance DESC LIMIT ? OFFSET ?",
@@ -167,7 +163,7 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, Category category, int limit, int offset) {
+    public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, Category category, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE category = ? AND title LIKE %?% ORDER BY distance DESC LIMIT ? OFFSET ?",
@@ -175,7 +171,7 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByUserIdRange(long userId, Location location, int limit, int offset) {
+    public List<PlainPost> getPlainPostsByUserIdRange(long userId, Location location, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE userId = ? ORDER BY distance DESC LIMIT ? OFFSET ?",
@@ -183,7 +179,7 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByUserIdRange(long userId, Location location, Category category, int limit, int offset) {
+    public List<PlainPost> getPlainPostsByUserIdRange(long userId, Location location, Category category, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE userId = ? AND category = ? ORDER BY distance DESC LIMIT ? OFFSET ?",

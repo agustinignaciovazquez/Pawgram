@@ -97,10 +97,9 @@ public interface PostDao {
     /**
      * Deletes a {@link Post} from the database.
      * @param postId - ID of the post to delete
-     * @param user - user calling the method to check if has privileges
      * @return true if a product was deleted
      */
-    public boolean deletePostById(final long postId, User user);
+    public boolean deletePostById(final long postId);
 
     /**
      * Lists every nearby in range KM existing {@link Post} as a {@link PlainPost} .
@@ -111,7 +110,7 @@ public interface PostDao {
      * @return {@link List} of the existing posts
      */
     public List<PlainPost> getPlainPostsRange(final Location location, final int range,
-                                              final int limit, final int offset);
+                                              final int limit, final long offset);
 
     /**
      * Lists every nearby in range (Meters) existing {@link Post} as a {@link PlainPost} for a given {@link Category}
@@ -123,7 +122,7 @@ public interface PostDao {
      * @return {@link List} of the existing posts
      */
     public List<PlainPost> getPlainPostsByCategoryRange(final Location location, final int range, final Category category,
-                                                        final int limit, final int offset);
+                                                        final int limit, final long offset);
 
     /**
      * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
@@ -135,7 +134,7 @@ public interface PostDao {
      * @return The list of plain post that match with the keyword.
      */
     public List<PlainPost> getPlainPostsByKeywordRange(final String keyword, final Location location,
-                                                       final int limit, final int offset);
+                                                       final int limit, final long offset);
 
     /**
      * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
@@ -147,7 +146,7 @@ public interface PostDao {
      * @param offset - post offset
      * @return The list of plain post that match with the keyword.
      */
-    public List<PlainPost> getPlainPostsByKeywordRange(final String keyword, final Location location, final Category category,final int limit, final int offset);
+    public List<PlainPost> getPlainPostsByKeywordRange(final String keyword, final Location location, final Category category,final int limit, final long offset);
 
     /**
      * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
@@ -158,7 +157,7 @@ public interface PostDao {
      * @return List of post. Empty in case the user did not create any post
      */
     public List<PlainPost> getPlainPostsByUserIdRange(final long userId, final Location location,
-                                                      final int limit, final int offset);
+                                                      final int limit, final long offset);
 
     /**
      * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
@@ -170,7 +169,7 @@ public interface PostDao {
      * @return List of post. Empty in case the user did not create any post
      */
     public List<PlainPost> getPlainPostsByUserIdRange(final long userId, final Location location,final Category category,
-                                                      final int limit, final int offset);
+                                                      final int limit, final long offset);
 
     /**
      * Retrieves the total amount of post registered.

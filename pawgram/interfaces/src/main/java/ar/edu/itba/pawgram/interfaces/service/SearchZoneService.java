@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.interfaces.service;
 
 import ar.edu.itba.pawgram.model.*;
+import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 
 import java.util.List;
@@ -17,11 +18,10 @@ public interface SearchZoneService {
 
     /**
      * Deletes a {@link SearchZone} from the database.
-     * @param zoneId - ID of the post to delete
-     * @param user - user calling the method to check if has privileges
+     * @param zoneId - ID of the zone to delete
      * @return true if a product was deleted
      */
-    public boolean deleteZoneById(final long zoneId, User user);
+    public boolean deleteZoneById(final long zoneId);
 
     /**
      * Lists searchZones of a specific {@link User} sorted by minor distance first,
@@ -31,38 +31,28 @@ public interface SearchZoneService {
     public List<PlainSearchZone> getPlainSearchZonesByUser(final User user);
 
     /**
-     * Lists searchZones of a specific {@link User} sorted by minor distance first,
-     * @param user - the user searching in his zones.
-     * @return {@link List} of searchZone associated with the {@link User}
-     * and in each {@link SearchZone} the list of {@link Post} that matches the criteria.
+     * Find a {@link SearchZone} by the id,
+     * @param zoneId - ID of the zone
+     * @param page - current page for {@link List} of {@link PlainPost}
+     * @param page - max size of page for {@link List} of {@link PlainPost}
+     * @return searchZone associated with the {@link User}(owner)
+     * and  the list of {@link PlainPost} paged with the params
+     * or null if the zoneId is invalid
      */
-    public List<SearchZone> getSearchZonesByUser(final User user);
+    public SearchZone getFullSearchZoneById(final long zoneId, final long page, final int pageSize);
 
     /**
-     * Lists searchZones of a specific {@link User} sorted by minor distance first,
-     * @param user - the user searching in his zones.
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @return {@link List} of searchZone associated with the {@link User}
-     * and in each {@link SearchZone} the list of {@link Post} that matches the criteria.
+     * Find a {@link SearchZone} by the id,
+     * @param zoneId - ID of the zone
+     * @param page - current page for {@link List} of {@link PlainPost}
+     * @param category - filter the {@link List} of {@link PlainPost} by this
+     * @param page - max size of page for {@link List} of {@link PlainPost}
+     * @return searchZone associated with the {@link User}(owner)
+     * and  the list of {@link PlainPost} paged with the params
+     * or null if the zoneId is invalid
      */
-    public List<SearchZone> getSearchZonesByUserPaged(final User user, final int page, final int pageSize);
-    /**
-     * Lists searchZones of a specific {@link User} sorted by minor distance first,
-     * @param user - the user searching in his zones.
-     * @return {@link List} of searchZone associated with the {@link User}
-     * and in each {@link SearchZone} the list of {@link Post} that matches the criteria.
-     */
-    public List<SearchZone> getSearchZonesByUserAndCategory(final User user, final Category category);
-    /**
-     * Lists searchZones of a specific {@link User} sorted by minor distance first,
-     * @param user - the user searching in his zones.
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @return {@link List} of searchZone associated with the {@link User}
-     * and in each {@link SearchZone} the list of {@link Post} that matches the criteria.
-     */
-    public List<SearchZone> getSearchZonesByUserAndCategoryPaged(final User user, final Category category,
-                                                                 final int page, final int pageSize);
+    public SearchZone getFullSearchZoneByIdAndCategory(final long zoneId, final Category category, final long page, final int pageSize);
+
+
 
 }
