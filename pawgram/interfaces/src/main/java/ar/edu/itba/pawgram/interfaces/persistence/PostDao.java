@@ -26,57 +26,40 @@ public interface PostDao {
                                        final Location location, final User owner);
 
     /**
-     * Lists every nearby in range KM existing {@link Post} as a {@link PlainPost} .
-     * @param location - current location of the user
-     * @param range - max range of search in meters
-     * @return {@link List} of the existing posts
+     * Lists every post {@link PlainPost}
+     * @param limit - max number of results
+     * @param offset - post offset
+     * @return {@link List} of the existing posts (distance as 0)
      */
-    public List<PlainPost> getPlainPosts(final Location location, final int range);
+    public List<PlainPost> getPlainPostsRange(final int limit, final long offset);
 
     /**
-     * Lists every nearby in range (Meters) existing {@link Post} as a {@link PlainPost} for a given {@link Category}
+     * Lists every post {@link PlainPost}
+     * @param limit - max number of results
      * @param location - current location of the user
-     * @param range - max range of search in meters
+     * @param offset - post offset
+     * @return {@link List} of the existing posts
+     */
+    public List<PlainPost> getPlainPostsRange(final Location location, final int limit, final long offset);
+
+    /**
+     * Lists every existing {@link PlainPost} for a given {@link Category}
+     * @param limit - max number of results
+     * @param offset - post offset
      * @param category - Category the posts belongs to
      * @return {@link List} of the existing posts
      */
-    public List<PlainPost> getPlainPostsByCategory(final Location location, final int range, final Category category);
+    public List<PlainPost> getPlainPostsByCategoryRange(final Category category,final int limit, final long offset);
 
     /**
-     * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
-     * The keyword should match the post title or description
-     * @param keyword - The keyword which should be matched
-     * @param location - Current user location
-     * @return The list of plain post that match with the keyword.
-     */
-    public List<PlainPost> getPlainPostsByKeyword(final String keyword, final Location location);
-
-    /**
-     * Retrieves a {@link List} of {@link PlainPost} given a keyword ordered by the distance descendent
-     * The keyword should match the post title or description
-     * @param keyword - The keyword which should be matched
-     * @param location - Current user location
-     * @param category - The category we are searching in
-     * @return The list of plain post that match with the keyword.
-     */
-    public List<PlainPost> getPlainPostsByKeyword(final String keyword, final Location location, final Category category);
-
-    /**
-     * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
-     * @param userId - ID of the creator
+     * Lists every existing {@link PlainPost} for a given {@link Category}
+     * @param limit - max number of results
+     * @param offset - post offset
      * @param location - current location of the user
-     * @return List of post. Empty in case the user did not create any post
+     * @param category - Category the posts belongs to
+     * @return {@link List} of the existing posts
      */
-    public List<PlainPost> getPlainPostsByUserId(final long userId, final Location location);
-
-    /**
-     * Lists post created by {@link User} as a {@link PlainPost} with the given userId.
-     * @param userId - ID of the creator
-     * @param category - The category we are searching in
-     * @param location - current location of the user
-     * @return List of post. Empty in case the user did not create any post
-     */
-    public List<PlainPost> getPlainPostsByUserId(final long userId, final Category category, final Location location);
+    public List<PlainPost> getPlainPostsByCategoryRange(final Location location, final Category category,final int limit, final long offset);
 
     /**
      * Retrieves a {@link Post.PostBuilder} with every attribute set except for

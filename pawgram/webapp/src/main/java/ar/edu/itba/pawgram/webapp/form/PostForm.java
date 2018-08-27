@@ -33,8 +33,11 @@ public class PostForm {
     private Category category = Category.LOST;
     private Pet pet = Pet.OTHER;
 
+    @NotNull
     private Boolean is_male;
+    @NotNull
     private Double latitude;
+    @NotNull
     private Double longitude;
 
     public String getTitle() {

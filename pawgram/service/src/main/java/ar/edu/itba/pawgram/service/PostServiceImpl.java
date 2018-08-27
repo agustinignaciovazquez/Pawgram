@@ -26,33 +26,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PlainPost> getPlainPosts(Location location, int range) {
-        return postDao.getPlainPosts(location,range);
+    public List<PlainPost> getPlainPostsPaged(long page, int pageSize) {
+        return postDao.getPlainPostsRange(pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByCategory(Location location, int range, Category category) {
-        return postDao.getPlainPostsByCategory(location,range,category);
+    public List<PlainPost> getPlainPostsPaged(Location location, long page, int pageSize) {
+        return postDao.getPlainPostsRange(location,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeyword(String keyword, Location location) {
-        return postDao.getPlainPostsByKeyword(keyword,location);
+    public List<PlainPost> getPlainPostsByCategoryPaged(Category category, long page, int pageSize) {
+        return postDao.getPlainPostsByCategoryRange(category,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeyword(String keyword, Location location, Category category) {
-        return postDao.getPlainPostsByKeyword(keyword, location, category);
-    }
-
-    @Override
-    public List<PlainPost> getPlainPostsByUserId(long userId, Location location) {
-        return postDao.getPlainPostsByUserId(userId, location);
-    }
-
-    @Override
-    public List<PlainPost> getPlainPostsByUserId(long userId, Category category, Location location) {
-        return postDao.getPlainPostsByUserId(userId, category, location);
+    public List<PlainPost> getPlainPostsByCategoryPaged(Location location, Category category, long page, int pageSize) {
+        return postDao.getPlainPostsByCategoryRange(location,category,pageSize,(page - 1) * pageSize);
     }
 
     @Override

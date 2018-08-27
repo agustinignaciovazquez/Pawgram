@@ -20,7 +20,7 @@ import java.util.List;
 
 @RequestMapping("/zone")
 @Controller
-public class ZoneController {
+public class SearchZoneController {
     private static final int PAGE_SIZE = 20;
 
     @Autowired

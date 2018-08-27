@@ -67,52 +67,36 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    public List<PlainPost> getPlainPosts(Location location, int range) {
+    public List<PlainPost> getPlainPostsRange(int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
-                        " haversine_distance(?,?,latitude,longitude) as distance" +
-                        " FROM posts WHERE distance <= ? ORDER BY distance DESC",
-                plainPostRowMapper,location.getLatitude(),location.getLongitude(),range);
+                        " 0 as distance" +
+                        " FROM posts ORDER BY postId ASC LIMIT ? OFFSET ?",
+                plainPostRowMapper,limit,offset);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByCategory(Location location, int range, Category category) {
+    public List<PlainPost> getPlainPostsRange(Location location, int limit, long offset) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+                        " haversine_distance(?,?,latitude,longitude) as distance" +
+                        " FROM posts ORDER BY distance DESC LIMIT ? OFFSET ?",
+                plainPostRowMapper,location.getLatitude(),location.getLongitude(),limit,offset);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByCategoryRange(Category category, int limit, long offset) {
+        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet, " +
+                        "0 as distance" +
+                        " FROM posts  category = ? ORDER BY postId ASC LIMIT ? OFFSET ?",
+                plainPostRowMapper,category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByCategoryRange(Location location, Category category, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet, " +
                         "haversine_distance(?,?,latitude,longitude) as distance" +
-                        " FROM posts WHERE distance <= ? AND category = ? ORDER BY distance DESC",
+                        " FROM posts WHERE category = ? ORDER BY distance DESC LIMIT ? OFFSET ?",
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),
-                range,category.getLowerName().toUpperCase(Locale.ENGLISH));
-    }
-
-    @Override
-    public List<PlainPost> getPlainPostsByKeyword(String keyword, Location location) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
-                        " haversine_distance(?,?,latitude,longitude) as distance" +
-                        " FROM posts WHERE title LIKE %?% ORDER BY distance DESC",
-                plainPostRowMapper,location.getLatitude(),location.getLongitude(),keyword);
-    }
-
-    @Override
-    public List<PlainPost> getPlainPostsByKeyword(String keyword, Location location, Category category) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
-                        " haversine_distance(?,?,latitude,longitude) as distance" +
-                        " FROM posts WHERE category = ? AND title LIKE %?% ORDER BY distance DESC",
-                plainPostRowMapper,location.getLatitude(),location.getLongitude(),category.getLowerName().toUpperCase(Locale.ENGLISH),keyword);
-    }
-
-    @Override
-    public List<PlainPost> getPlainPostsByUserId(long userId, Location location) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
-                        " haversine_distance(?,?,latitude,longitude) as distance" +
-                        " FROM posts WHERE userId = ? ORDER BY distance DESC",
-                plainPostRowMapper,location.getLatitude(),location.getLongitude(),userId);
-    }
-
-    @Override
-    public List<PlainPost> getPlainPostsByUserId(long userId, Category category, Location location) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
-                        " haversine_distance(?,?,latitude,longitude) as distance" +
-                        " FROM posts WHERE userId = ? AND category = ? ORDER BY distance DESC",
-                plainPostRowMapper,location.getLatitude(),location.getLongitude(),userId,category.getLowerName().toUpperCase(Locale.ENGLISH));
+                category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
     }
 
     @Override
