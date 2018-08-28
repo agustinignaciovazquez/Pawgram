@@ -386,3 +386,110 @@ body {
 .rspaced50{
 	padding-right: 50px;
 }
+
+.formoption:hover{
+	background-color: #e0e1e2;
+	cursor:pointer;
+    text-decoration: none;
+}
+
+.formtext{
+	font-size: 20px;
+	color: #000000;
+	font-weight: bold;
+}
+
+.formsubtext{
+	font-size: 18px;
+	color: #676768;
+}
+
+.formicon {
+    font-size: 40px;
+    
+}
+
+.formiconadopt{
+	color: blue;
+}
+
+.formiconhosp{
+	color: orange;
+	padding-left:4px; 
+}
+
+.formiconfound{
+	color: green;
+	padding-left:4px; 
+}
+
+.formiconlost{
+	color: red;
+	padding-left:4px; 
+}
+
+.uspaced10{
+	padding-top: 10px;
+}
+
+.formtitle{
+	font-size: 30px;
+}
+
+.uspaced200{
+	margin-top: 125px;
+}
+
+.optionblock{
+	width:600px;
+}
+
+.optionblock2{
+	width:300px;
+}
+
+.uspaced15{
+	margin-top: 15px;
+}
+
+.icon{
+  	height: 40px;
+  	width: 40px;
+}
+
+.bspaced50{
+	padding-bottom: 5px;
+}
+
+.uspaced50{
+	padding-top: 5px;
+}
+
+.radio.selected{
+	border: 2px solid;
+    border-color: #28a745;
+}
+
+.radio-group{
+    position: relative;
+}
+
+.radio{
+    display:inline-block;
+    cursor:pointer;  
+}
+
+
+.formiconfemale{
+	color: #ff9bfd;
+	padding-left:4px; 
+}
+
+.formiconmale{
+	color: #7ae6ff;
+	padding-left:4px; 
+}
+
+.formcontainer{
+	
+}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<head>
+
+	<meta charset="UTF-8">
+	<title>Pawgram - Create Post</title>
+
+	<!-- Para jsp
+
+	<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/pawgram.css"/>">
+
+	<script src="<c:url value="/resources/js/pawgram.js"/>"></script>
+	<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+	<script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
+
+	!-->
+
+    <link href="css/all.css" rel="stylesheet"/>
+	<link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+	<link rel="stylesheet" href="css/pawgramin.css"/>
+
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+    <script src="js/pawgram.js"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
+
+</head>
+
+
+<body>
+	
+	<!--HEADER-->
+    <div id="wrapper" class="animate">
+
+         <nav class="navbar header-top fixed-top navbar-expand-lg navbar-light pawnav">
+          <span class="navbar-toggler-icon leftmenutrigger"></span>
+          <img src="img/logo.png" class="logo-navbar"/>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+             <ul class="navbar-nav ml-md-auto d-md-flex">
+              <li class="nav-item">
+                <a class="nav-link pawlink text nav-sec" href="#">Busquedas
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="#">Adopciones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="#">Emergencias</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav animate side-nav">
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="#">Mi perfil
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="#">Mis Zonas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="#">Configuracion</a>
+              </li>             
+              <hr></hr>
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="#">Cerrar Sesion</a>
+              </li>
+            </ul>
+           
+          </div>
+        </nav>
+    </div>
+
+	<!--HEADER-->  
+
+		<div class="container-fluid titzon">
+			<div class="row">
+				<div class="col-md-3"></div>
+				<div class="text titsec">Crear anuncio</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-3">
+				<div class="fistcontainer">
+					<div class="row uspaced60">
+						<div class="text formtitle center">Selecciona una especie:</div>
+					</div>
+					<div class="row uspaced20">
+
+						<div class="container optionblock2 radio-group ">
+								<div class="container formoption uspaced50 bspaced50 radio">
+									<div class="row">
+										<div class="col-md-3">
+											<img src="./img/dog.jpg" class="icon">
+										</div>
+										<div class="col-md-9">
+											<div class="text formtext">Perro</div>
+										</div>	
+									</div>	
+								</div>
+								<div class="container formoption  uspaced50 bspaced50 radio">
+									<div class="row">
+										<div class="col-md-3">
+											<img src="./img/cat.jpg" class="icon">
+										</div>
+										<div class="col-md-9">
+											<div class="text formtext">Gato</div>
+										</div>	
+									</div>	
+								</div>
+								<div class="container formoption  uspaced50 bspaced50 radio">
+									<div class="row">
+										<div class="col-md-3">
+											<img src="./img/other.jpg" class="icon">
+										</div>
+										<div class="col-md-9">
+											<div class="text formtext ">Otro</div>
+										</div>	
+									</div>	
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+			<div clas="col-md-3">
+				<div class=" container step">
+					<div class="row uspaced60">
+						<div class="text formtitle center">Selecciona un sexo:</div>
+					</div>
+					<div class="row uspaced20">
+						
+						<div class="container optionblock2 radio-group ">
+								<div class="container formoption uspaced50 bspaced50 radio">
+									<div class="row">
+										<div class="col-md-3">
+											<i class="fas fa-mars formicon formiconmale "></i>
+										</div>
+										<div class="col-md-9">
+											<div class="text formtext">Macho</div>
+										</div>	
+									</div>	
+								</div>
+								<div class="container formoption  uspaced50 bspaced50 radio">
+									<div class="row">
+										<div class="col-md-3">
+											<i class="fas fa-venus formicon formiconfemale "></i>
+										</div>
+										<div class="col-md-9">
+											<div class="text formtext">Hembra</div>
+										</div>	
+									</div>	
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container uspaced5">
+            <div class="row">
+                <input id="searchInput" class="controls" type="text" placeholder="Enter a location">
+                <div id="map"></div>
+                <!--<ul id="geoData">
+                    <li>Direccion: <span id="location"></span></li>
+                    <li>Codigo Postal: <span id="postal_code"></span></li>
+                    <li>Pais: <span id="country"></span></li>
+                    <li>Latitud: <span id="lat"></span></li>
+                    <li>Longitud: <span id="lon"></span></li>
+                </ul>-->
+            </div>
+            
+        </div>
+		
+        <div class="row uspaced5">
+        	<div class="text formtitle center">Completa los datos:</div>
+        </div>
+        <div class="row uspaced20">
+        	<div class="containerform center">
+        		
+        	</div>
+        </div>
+
+
+	<!--FOOTER-->
+    <div class="row uspaced60"></div>
+    <div class="container-fluid footer">
+        <div class="text footertext">© 2018 Todos los derechos reservados pawgram.org</div> 
+    </div>
+    <!--FOOTER-->
+
+
+
+
+</body>
