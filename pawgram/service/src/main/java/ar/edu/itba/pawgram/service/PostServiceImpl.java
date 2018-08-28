@@ -19,10 +19,10 @@ public class PostServiceImpl implements PostService {
     private CommentService commentService;
 
     @Override
-    public Post createPost(String title, String description, String img_url, String contact_phone,
+    public Post createPost(String title, String description, List<String> img_urls, String contact_phone,
                            LocalDateTime event_date, Category category, Pet pet,
                            boolean is_male, Location location, User owner) {
-        return postDao.createPost(title,description,img_url,contact_phone,event_date,category,pet,is_male,location,owner).build();
+        return postDao.createPost(title,description,img_urls,contact_phone,event_date,category,pet,is_male,location,owner).build();
     }
 
     @Override

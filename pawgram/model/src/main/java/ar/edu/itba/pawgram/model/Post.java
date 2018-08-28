@@ -14,7 +14,6 @@ public class Post implements PlainPost {
 	private long id;
 	private String title;
 	private String description;
-	private String img_url;
 	private String contact_phone;
 	private LocalDateTime event_date;
 	private Category category;
@@ -24,20 +23,21 @@ public class Post implements PlainPost {
 	private User owner;
 	private int distance;
 	private List<CommentFamily> commentFamilies;
+	private List<PostImage> postImages;
 	
-	public static PostBuilder getBuilder(long id, String title, String img_url) {
+	public static PostBuilder getBuilder(long id, String title, List<PostImage> postImages) {
 		isTrue(id >= 0, "Post ID must be non negative: %d", id);
 		notBlank(title, "Post title must contain at least one non blank character");
 		notBlank(title, "Post img url must contain at least one non blank character");
 		
-		return new PostBuilder(id, title, img_url);
+		return new PostBuilder(id, title, postImages);
 	}
 	
 	private Post(PostBuilder builder) {
 		this.id = builder.id;
 		this.title = builder.title;
 		this.description = builder.description;
-		this.img_url = builder.img_url;
+		this.postImages = builder.postImages;
 		this.contact_phone = builder.contact_phone;
 		this.event_date = builder.event_date;
 		this.category = builder.category;
@@ -53,16 +53,10 @@ public class Post implements PlainPost {
 	public long getId() {
 		return id;
 	}
+
 	@Override
 	public String getTitle() {
 		return title;
-	}
-	public String getDescription() {
-		return description;
-	}
-	@Override
-	public String getImg_url() {
-		return img_url;
 	}
 
 	@Override
@@ -71,8 +65,17 @@ public class Post implements PlainPost {
 	}
 
 	@Override
+	public List<PostImage> getPostImages() {
+		return postImages;
+	}
+
+	@Override
 	public Pet getPet() {
 		return pet;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	public String getContact_phone() {
@@ -119,7 +122,6 @@ public class Post implements PlainPost {
 		private long id;
 		private String title;
 		private String description;
-		private String img_url;
 		private String contact_phone;
 		private LocalDateTime event_date;
 		private Category category;
@@ -129,11 +131,12 @@ public class Post implements PlainPost {
 		private User owner;
 		private int distance;
 		private List<CommentFamily> commentFamilies = Collections.emptyList();
+		private List<PostImage> postImages;
 
-		private PostBuilder(long id, String title, String img_url) {
+		private PostBuilder(long id, String title, List<PostImage> postImages) {
 			this.id = id;
 			this.title = title;
-			this.img_url = img_url;
+			this.postImages = postImages;
 		}
 		
 		public PostBuilder description(String description) {

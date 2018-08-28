@@ -11,7 +11,7 @@ public interface PostDao {
      * Creates a {@link Post.PostBuilder} inserting the {@link Post} data into the database.
      * @param title - Title of the post
      * @param description - Description of the post
-     * @param img_url - url img
+     * @param img_urls - img urls
      * @param contact_phone - contact phone of the owner
      * @param category - Category the post belongs to
      * @param event_date - Date of the event
@@ -21,7 +21,7 @@ public interface PostDao {
      * @param owner - owner id of the post
      * @return Post - The newly created post
      */
-    public Post.PostBuilder createPost(final String title, final String description, final String img_url, final String contact_phone,
+    public Post.PostBuilder createPost(final String title, final String description, final List<String> img_urls, final String contact_phone,
                                        final LocalDateTime event_date, final Category category, final Pet pet, final boolean is_male,
                                        final Location location, final User owner);
 

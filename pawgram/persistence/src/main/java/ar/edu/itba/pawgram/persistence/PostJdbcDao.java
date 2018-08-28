@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.persistence;
 
 import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
+import ar.edu.itba.pawgram.interfaces.persistence.PostImageDao;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.persistence.rowmapper.PlainPostRowMapper;
@@ -26,6 +27,9 @@ public class PostJdbcDao implements PostDao {
     @Autowired
     private PlainPostRowMapper plainPostRowMapper;
 
+    @Autowired
+    private PostImageDao postImageDao;
+
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
@@ -38,11 +42,10 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    public Post.PostBuilder createPost(String title, String description, String img_url, String contact_phone, LocalDateTime event_date,
+    public Post.PostBuilder createPost(String title, String description, List<String> img_urls, String contact_phone, LocalDateTime event_date,
                                        Category category, Pet pet, boolean is_male, Location location, User owner) {
         final Map<String, Object> args = new HashMap<String, Object>();
         args.put("title", title);
-        args.put("img_url", img_url);
         args.put("description", description);
         args.put("contact_phone", contact_phone);
         args.put("category", category.getLowerName().toUpperCase(Locale.ENGLISH));
@@ -55,7 +58,7 @@ public class PostJdbcDao implements PostDao {
 
         final Number postId = jdbcInsert.executeAndReturnKey(args);
 
-        return Post.getBuilder(postId.longValue(), title, img_url)
+        return Post.getBuilder(postId.longValue(), title, postImageDao.createPostImage(postId.longValue(),img_urls))
                 .category(category).pet(pet)
                 .description(description)
                 .contact_phone(contact_phone)

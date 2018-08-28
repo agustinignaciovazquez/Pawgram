@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.persistence.rowmapper;
 
+import ar.edu.itba.pawgram.interfaces.persistence.PostImageDao;
 import ar.edu.itba.pawgram.model.Location;
 import ar.edu.itba.pawgram.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,12 @@ public class PostBuilderRowMapper implements RowMapper<Post.PostBuilder> {
 
     @Autowired
     private UserRowMapper userRowMapper;
+    @Autowired
+    private PostImageDao postImageDao;
 
     public Post.PostBuilder mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-        return Post.getBuilder(rs.getLong("postId"), rs.getString("title"), rs.getString("img_url"))
+        final long postId = rs.getLong("postId");
+        return Post.getBuilder(postId, rs.getString("title"), postImageDao.getImagesIdByPostId(postId))
                 .category(rs.getString("category")).pet(rs.getString("pet"))
                 .description(rs.getString("description"))
                 .contact_phone(rs.getString("contact_phone"))
