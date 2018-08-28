@@ -1,18 +1,26 @@
 package ar.edu.itba.pawgram.model;
 
+import static org.apache.commons.lang3.Validate.isTrue;
+import static org.apache.commons.lang3.Validate.notBlank;
+import static org.apache.commons.lang3.Validate.notEmpty;
+
 public class User {
 	private long id;
 	private String name;
 	private String surname;
 	private String mail;
 	private String password;
-	public User(long id, String name, String surname, String mail, String password) {
+	private String profile_img_url;
+
+	public User(long id, String name, String surname, String mail, String password, String profile_img_url) {
 		super();
+		isTrue(id >= 0, "User ID must be non negative: %d", id);
 		this.id = id;
-		this.name = name;
-		this.surname = surname;
-		this.mail = mail;
-		this.password = password;
+		this.name = notBlank(name,"User name must have at least one non empty character");
+		this.surname = notBlank(surname,"User surname must have at least one non empty character");
+		this.mail = notBlank(mail,"User mail must have at least one non empty character");
+		this.password = notEmpty(password,"User password must have at least one character");
+		this.profile_img_url = profile_img_url;
 	}
 	public long getId() {
 		return id;
@@ -29,6 +37,7 @@ public class User {
 	public String getPassword() {
 		return password;
 	}
+	public String getProfile_img_url(){return profile_img_url;}
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this)

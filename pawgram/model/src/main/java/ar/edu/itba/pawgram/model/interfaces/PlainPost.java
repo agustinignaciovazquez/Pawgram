@@ -2,11 +2,14 @@ package ar.edu.itba.pawgram.model.interfaces;
 
 import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.Pet;
+import ar.edu.itba.pawgram.model.PostImage;
+
+import java.util.List;
 
 public interface PlainPost {
     public long getId();
     public String getTitle();
     public Category getCategory();
-    public String getImg_url();
+    public List<PostImage> getPostImages();
     public Pet getPet();
 }

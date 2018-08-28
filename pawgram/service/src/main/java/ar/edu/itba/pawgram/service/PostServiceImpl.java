@@ -1,8 +1,8 @@
 package ar.edu.itba.pawgram.service;
 
-import ar.edu.itba.pawgram.interfaces.CommentService;
-import ar.edu.itba.pawgram.interfaces.PostDao;
-import ar.edu.itba.pawgram.interfaces.PostService;
+import ar.edu.itba.pawgram.interfaces.service.CommentService;
+import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
+import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,40 +19,38 @@ public class PostServiceImpl implements PostService {
     private CommentService commentService;
 
     @Override
-    public Post createPost(String title, String description, String img_url, String contact_phone,
+    public Post createPost(String title, String description, List<String> img_urls, String contact_phone,
                            LocalDateTime event_date, Category category, Pet pet,
                            boolean is_male, Location location, User owner) {
-        return postDao.createPost(title,description,img_url,contact_phone,event_date,category,pet,is_male,location,owner).build();
+        return postDao.createPost(title,description,img_urls,contact_phone,event_date,category,pet,is_male,location,owner).build();
     }
 
     @Override
-    public List<PlainPost> getPlainPosts(Location location, int range) {
-        return postDao.getPlainPosts(location,range);
+    public List<PlainPost> getPlainPostsPaged(long page, int pageSize) {
+        return postDao.getPlainPostsRange(pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByCategory(Location location, int range, Category category) {
-        return postDao.getPlainPostsByCategory(location,range,category);
+    public List<PlainPost> getPlainPostsPaged(Location location, long page, int pageSize) {
+        return postDao.getPlainPostsRange(location,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeyword(String keyword, Location location) {
-        return postDao.getPlainPostsByKeyword(keyword,location);
+    public List<PlainPost> getPlainPostsByCategoryPaged(Category category, long page, int pageSize) {
+        return postDao.getPlainPostsByCategoryRange(category,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeyword(String keyword, Location location, Category category) {
-        return postDao.getPlainPostsByKeyword(keyword, location, category);
+    public List<PlainPost> getPlainPostsByCategoryPaged(Location location, Category category, long page, int pageSize) {
+        return postDao.getPlainPostsByCategoryRange(location,category,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByUserId(long userId, Location location) {
-        return postDao.getPlainPostsByUserId(userId, location);
-    }
-
-    @Override
-    public List<PlainPost> getPlainPostsByUserId(long userId, Category category, Location location) {
-        return postDao.getPlainPostsByUserId(userId, category, location);
+    public Post getFullPostById(long postId) {
+        Post.PostBuilder pb = postDao.getFullPostById(postId);
+        if(pb == null)
+            return null;
+        return pb.commentFamilies(commentService.getCommentsByPostId(postId)).build();
     }
 
     @Override
@@ -69,38 +67,58 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PlainPost> getPlainPostsPaged(Location location, int range, int page, int pageSize) {
+    public List<PlainPost> getPlainPostsPaged(Location location, int range, long page, int pageSize) {
         return postDao.getPlainPostsRange(location, range, pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByCategoryPaged(Location location, int range, Category category, int page, int pageSize) {
+    public List<PlainPost> getPlainPostsByCategoryPaged(Location location, int range, Category category, long page, int pageSize) {
         return postDao.getPlainPostsByCategoryRange(location, range, category, pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, int page, int pageSize) {
+    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, long page, int pageSize) {
+        return postDao.getPlainPostsByKeywordRange(keyword,pageSize,(page - 1) * pageSize);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, long page, int pageSize) {
         return postDao.getPlainPostsByKeywordRange(keyword, location, pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, Category category, int page, int pageSize) {
+    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Category category, long page, int pageSize) {
+        return postDao.getPlainPostsByKeywordRange(keyword,category,pageSize,(page - 1) * pageSize);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, Category category, long page, int pageSize) {
         return postDao.getPlainPostsByKeywordRange(keyword,location,category,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Location location, int page, int pageSize) {
+    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, long page, int pageSize) {
+        return postDao.getPlainPostsByUserIdRange(userId,pageSize,(page - 1) * pageSize);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Location location, long page, int pageSize) {
         return postDao.getPlainPostsByUserIdRange(userId, location, pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Location location, Category category, int page, int pageSize) {
+    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Category category, long page, int pageSize) {
+        return postDao.getPlainPostsByUserIdRange(userId,category,pageSize,(page - 1) * pageSize);
+    }
+
+    @Override
+    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Location location, Category category, long page, int pageSize) {
         return postDao.getPlainPostsByUserIdRange(userId, location, category, pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public boolean deletePostById(long postId, User user) {
-        return postDao.deletePostById(postId,user);
+    public boolean deletePostById(long postId) {
+        return postDao.deletePostById(postId);
     }
 
     @Override
@@ -141,5 +159,53 @@ public class PostServiceImpl implements PostService {
     @Override
     public long getTotalPostsByUserId(long userId, Category category) {
         return postDao.getTotalPostsByUserId(userId, category);
+    }
+
+    @Override
+    public long getMaxPage(int pageSize) {
+        long total = getTotalPosts();
+        return (long) Math.ceil((float) total / pageSize);
+    }
+
+    @Override
+    public long getMaxPage(int pageSize, Location location, int range) {
+        long total = getTotalPosts(location, range);
+        return (long) Math.ceil((float) total / pageSize);
+    }
+
+    @Override
+    public long getMaxPageByCategory(int pageSize, Category category) {
+        long total = getTotalPostsByCategory(category);
+        return (long) Math.ceil((float) total / pageSize);
+    }
+
+    @Override
+    public long getMaxPageByCategory(int pageSize, Location location, int range, Category category) {
+        long total = getTotalPostsByCategory(location, range, category);
+        return (long) Math.ceil((float) total / pageSize);
+    }
+
+    @Override
+    public long getMaxPageByKeyword(int pageSize, String keyword) {
+        long total = getTotalPostsByKeyword(keyword);
+        return (long) Math.ceil((float) total / pageSize);
+    }
+
+    @Override
+    public long getMaxPageByKeyword(int pageSize, String keyword, Category category) {
+        long total = getTotalPostsByKeyword(keyword,category);
+        return (long) Math.ceil((float) total / pageSize);
+    }
+
+    @Override
+    public long getMaxPageByUserId(int pageSize, long userId) {
+        long total = getTotalPostsByUserId(userId);
+        return (long) Math.ceil((float) total / pageSize);
+    }
+
+    @Override
+    public long getMaxPageByUserId(int pageSize, long userId, Category category) {
+        long total = getTotalPostsByUserId(userId,category);
+        return (long) Math.ceil((float) total / pageSize);
     }
 }

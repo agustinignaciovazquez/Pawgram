@@ -1,13 +1,11 @@
 package ar.edu.itba.pawgram.webapp.form;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class UserForm {
 	@Size(min = 3, max = 50)
@@ -20,7 +18,8 @@ public class UserForm {
     @Email
 	private String mail;
 	@Valid
-	private FormPassword passwordForm = new FormPassword();
+	private PasswordForm passwordForm = new PasswordForm();
+
 	public String getName() {
 		return name;
 	}
@@ -39,6 +38,6 @@ public class UserForm {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-	public FormPassword getPasswordForm() { return passwordForm; }
+	public PasswordForm getPasswordForm() { return passwordForm; }
 	
 }

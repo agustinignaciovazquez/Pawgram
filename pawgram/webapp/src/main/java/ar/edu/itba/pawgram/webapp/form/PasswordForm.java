@@ -4,13 +4,13 @@ import ar.edu.itba.pawgram.webapp.form.constraints.FieldMatch;
 
 import javax.validation.constraints.Size;
 
-@FieldMatch(first = "password", second = "passwordConf")
-public class FormPassword {
+@FieldMatch(first = "password", second = "repeatPassword")
+public class PasswordForm {
 
     @Size(min=6, max=60)
     private String password;
-
-    private String passwordConf;
+    @Size(min=6, max=60)
+    private String repeatPassword;
 
     public String getPassword() {
         return password;
@@ -20,11 +20,9 @@ public class FormPassword {
         this.password = password;
     }
 
-    public String getPasswordConf() {
-        return passwordConf;
+    public String getRepeatPassword() { return repeatPassword;
     }
 
-    public void setPasswordConf(String passwordConf) {
-        this.passwordConf = passwordConf;
+    public void setRepeatPassword(String repeatPassword) { this.repeatPassword = repeatPassword;
     }
 }

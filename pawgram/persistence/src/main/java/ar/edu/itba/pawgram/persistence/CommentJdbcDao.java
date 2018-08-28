@@ -13,8 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import ar.edu.itba.pawgram.interfaces.CommentDao;
-import ar.edu.itba.pawgram.interfaces.UserDao;
+import ar.edu.itba.pawgram.interfaces.persistence.CommentDao;
+import ar.edu.itba.pawgram.interfaces.persistence.UserDao;
 import ar.edu.itba.pawgram.model.Comment;
 import ar.edu.itba.pawgram.persistence.rowmapper.CommentRowMapper;
 

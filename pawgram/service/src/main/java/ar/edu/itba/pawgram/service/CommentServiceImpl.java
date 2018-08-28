@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ar.edu.itba.pawgram.interfaces.CommentDao;
-import ar.edu.itba.pawgram.interfaces.CommentService;
+import ar.edu.itba.pawgram.interfaces.persistence.CommentDao;
+import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.model.Comment;
 import ar.edu.itba.pawgram.model.CommentFamily;
 import org.springframework.stereotype.Service;

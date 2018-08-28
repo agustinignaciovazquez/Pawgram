@@ -3,6 +3,7 @@ package ar.edu.itba.pawgram.persistence.rowmapper;
 import ar.edu.itba.pawgram.model.Location;
 import ar.edu.itba.pawgram.model.SearchZone;
 import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 

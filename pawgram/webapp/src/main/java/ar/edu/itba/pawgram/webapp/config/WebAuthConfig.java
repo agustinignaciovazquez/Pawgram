@@ -2,6 +2,7 @@ package ar.edu.itba.pawgram.webapp.config;
 
 import java.util.concurrent.TimeUnit;
 
+import ar.edu.itba.pawgram.webapp.auth.RefererLoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import ar.edu.itba.pawgram.webapp.auth.PawgramUserDetailsService;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -28,27 +30,27 @@ private String remember_me_key;
 @Override
 protected void configure(final HttpSecurity http) throws Exception {
 	http.userDetailsService(userDetailsService)
-	.sessionManagement()
-	.invalidSessionUrl("/login")
+		.sessionManagement()
+		.invalidSessionUrl("/login")
 	.and().authorizeRequests()
-	.antMatchers("/login","/register","/register/**").anonymous()
-	.antMatchers("/admin/**").hasRole("ADMIN")
-	.antMatchers("/**").authenticated()
+		.antMatchers("/login","/register","/register/**").anonymous()
+		.antMatchers("/admin/**").hasRole("ADMIN")
+		.antMatchers("/**").authenticated()
 	.and().formLogin()
-	.usernameParameter("j_username")
-	.passwordParameter("j_password")
-	.defaultSuccessUrl("/", false)
-	.loginPage("/login")
+		.usernameParameter("j_username").passwordParameter("j_password")
+		.successHandler(successHandler())
+		.loginPage("/login")
+		.failureUrl("/login?error=1")
 	.and().rememberMe()
-	.rememberMeParameter("j_rememberme")
-	.userDetailsService(userDetailsService)
-	.key(remember_me_key)
-	.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
+		.rememberMeParameter("j_rememberme")
+		.userDetailsService(userDetailsService)
+		.key(remember_me_key)
+		.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
 	.and().logout()
-	.logoutUrl("/logout")
-	.logoutSuccessUrl("/login")
+		.logoutUrl("/logout")
+		.logoutSuccessUrl("/login")
 	.and().exceptionHandling()
-	.accessDeniedPage("/403")
+		.accessDeniedPage("/errors/403")
 	.and().csrf().disable();
 }
 
@@ -60,6 +62,11 @@ public void configure(final WebSecurity web) throws Exception {
 @Bean
 public BCryptPasswordEncoder bCryptPasswordEncoder(){
 	return new BCryptPasswordEncoder();
+}
+
+@Bean
+public AuthenticationSuccessHandler successHandler() {
+	return new RefererLoginSuccessHandler("/");
 }
 
 @Autowired

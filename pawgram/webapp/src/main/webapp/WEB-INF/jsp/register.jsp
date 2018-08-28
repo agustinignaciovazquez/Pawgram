@@ -44,13 +44,13 @@
 	          </div>
 
 	          <div>
-	          	<form:input type="password" path="password" placeholder="Password" class="form-control input-lg"/>
-				<form:errors path="password" cssClass="formError" element="p" />
+	          	<form:input type="password" path="passwordForm.password" placeholder="Password" class="form-control input-lg"/>
+				<form:errors path="passwordForm.password" cssClass="formError" element="p" />
 	          </div>
 
 	          <div>
-	          	<form:input type="repeatPassword" path="repeatPassword" placeholder="Repeat Password" class="form-control input-lg"/>
-				<form:errors path="repeatPassword" cssClass="formError" element="p" />
+	          	<form:input type="password" path="passwordForm.repeatPassword" placeholder="Repeat Password" class="form-control input-lg"/>
+				<form:errors path="passwordForm.repeatPassword" cssClass="formError" element="p" />
 	          </div>
 	          
 	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="Register"></input>

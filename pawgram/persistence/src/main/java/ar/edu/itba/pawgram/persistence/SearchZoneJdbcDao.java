@@ -1,6 +1,6 @@
 package ar.edu.itba.pawgram.persistence;
 
-import ar.edu.itba.pawgram.interfaces.SearchZoneDao;
+import ar.edu.itba.pawgram.interfaces.persistence.SearchZoneDao;
 import ar.edu.itba.pawgram.model.Location;
 import ar.edu.itba.pawgram.model.SearchZone;
 import ar.edu.itba.pawgram.model.User;
@@ -26,6 +26,7 @@ public class SearchZoneJdbcDao implements SearchZoneDao {
     private SearchZoneRowMapper ROW_MAPPER;
     @Autowired
     private PlainSearchZoneRowMapper PLAIN_ROW_MAPPER;
+
     @Autowired
     public SearchZoneJdbcDao(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
@@ -46,11 +47,7 @@ public class SearchZoneJdbcDao implements SearchZoneDao {
     }
 
     @Override
-    public boolean deleteZoneById(long zoneId, User user) {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM search_zones, users WHERE zoneId = ? AND userId = ?",
-                Integer.class,zoneId,user.getId());
-        if(total == 0)
-            return false;
+    public boolean deleteZoneById(long zoneId) {
         return jdbcTemplate.update("DELETE FROM search_zones WHERE zoneId = ?", zoneId) == 1;
     }
 
@@ -62,9 +59,12 @@ public class SearchZoneJdbcDao implements SearchZoneDao {
     }
 
     @Override
-    public List<SearchZone.SearchZoneBuilder> getSearchZonesByUserId(long userId) {
-        return jdbcTemplate.query("SELECT zoneId, latitude, longitude, range" +
-                        " FROM search_zones WHERE userId = ? ORDER BY id ASC",
-                ROW_MAPPER,userId);
+    public SearchZone.SearchZoneBuilder getFullSearchZoneById(long zoneId) {
+        List<SearchZone.SearchZoneBuilder> l = jdbcTemplate.query("SELECT * FROM search_zones,users " +
+                        "WHERE search_zones.userId = users.id AND zoneId = ? ORDER BY id ASC",
+                ROW_MAPPER,zoneId);
+        return (l.isEmpty())? null: l.get(0);
     }
+
+
 }
