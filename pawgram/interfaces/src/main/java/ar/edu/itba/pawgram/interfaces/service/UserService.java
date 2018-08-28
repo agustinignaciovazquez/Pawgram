@@ -28,11 +28,12 @@ public interface UserService {
 	 * @param surname The surname of the user.
 	 * @param mail The mail of the user.
 	 * @param password the password of the user.
+	 * @param profile_url url of the profile (if null default url is taken)
 	 * @return The created user.
 	 * @throws DuplicateEmailException - if user with given exception already exists
 	 */
-	public User create(final String name, final String surname, final String mail, final String password) throws DuplicateEmailException;
-
+	public User create(final String name, final String surname, final String mail, final String password,
+					   final String profile_url) throws DuplicateEmailException;
 	/**
 	 * Changes an [@link User] password
 	 * @param id - ID of the user

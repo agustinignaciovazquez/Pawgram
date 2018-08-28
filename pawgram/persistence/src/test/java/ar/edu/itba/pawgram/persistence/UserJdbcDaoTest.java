@@ -46,7 +46,7 @@ public class UserJdbcDaoTest {
 	public void testCreate() {
 		final User user;
 		try {
-			user = userDao.create(NAME,SURNAME,MAIL,PASSWORD);
+			user = userDao.create(NAME,SURNAME,MAIL,PASSWORD,null);
 			assertNotNull(user);
 			assertEquals(NAME, user.getName());
 			assertTrue(bCryptPasswordEncoder.matches(PASSWORD, user.getPassword()));

@@ -47,17 +47,18 @@ public class UserJdbcDao implements UserDao {
 	}
 
 	@Override
-	public User create(String name, String surname, String mail, String password) throws DuplicateEmailException {
+	public User create(String name, String surname, String mail, String password, String profile_url) throws DuplicateEmailException {
 		final Map<String, Object> args = new HashMap<>();
 		String enc_password = bCryptPasswordEncoder.encode(password);
 		args.put("name", name); 
 		args.put("surname", surname); 
 		args.put("mail", mail); 
-		args.put("password", enc_password); 
+		args.put("password", enc_password);
+		args.put("profile_img_url", profile_url);
 
 		try {
 			final Number userId = jdbcInsert.executeAndReturnKey(args);
-			return new User(userId.longValue(),name,surname,mail,enc_password);
+			return new User(userId.longValue(),name,surname,mail,enc_password,profile_url);
 		}
 		catch (DuplicateKeyException e) {
 			throw new DuplicateEmailException("There already exists an user with email: " + mail);

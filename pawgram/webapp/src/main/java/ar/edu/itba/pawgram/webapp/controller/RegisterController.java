@@ -41,7 +41,7 @@ public class RegisterController {
         }
         final User user;
         try {
-            user = securityUserService.registerUser(registerUserForm.getName(),registerUserForm.getSurname(),registerUserForm.getMail(),registerUserForm.getPasswordForm().getPassword());
+            user = securityUserService.registerUser(registerUserForm.getName(),registerUserForm.getSurname(),registerUserForm.getMail(),registerUserForm.getPasswordForm().getPassword(),null);
         } catch (DuplicateEmailException e) {
             errors.rejectValue("email", "DuplicateEmail");
             return errorState(registerUserForm, errors, attr);

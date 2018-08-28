@@ -26,8 +26,9 @@ public class PawgramUserService implements SecurityUserService {
     }
 
     @Override
-    public User registerUser(String name, String surname, String mail, String password) throws DuplicateEmailException {
-        return userService.create(name, surname, mail, password);
+    public User registerUser(String name, String surname, String mail, String password, String profile_url)
+            throws DuplicateEmailException {
+        return userService.create(name, surname, mail, password,profile_url);
     }
 
     @Override

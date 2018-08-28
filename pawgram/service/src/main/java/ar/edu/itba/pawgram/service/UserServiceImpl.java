@@ -19,8 +19,8 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User create(String name, String surname, String mail, String password) throws DuplicateEmailException {
-		return userDao.create(name, surname, mail, password);
+	public User create(String name, String surname, String mail, String password, String profile_url) throws DuplicateEmailException {
+		return userDao.create(name, surname, mail, password,profile_url);
 	}
 
 	@Override
