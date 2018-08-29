@@ -31,4 +31,11 @@ public interface PostImageService {
      * @return {@link List} with the post images ID. Could be empty if the post possesses no images
      */
     public List<PostImage> getImagesIdByPostId(final long postId);
+
+    /**
+     * Get raw bytes of a image
+     * @param filename - name of the image
+     * @return raw bytes of image
+     */
+    public byte[] getImage(final String filename) throws IOException;
 }

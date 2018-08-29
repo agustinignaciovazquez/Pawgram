@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 public class ChangePasswordForm {
     private String currentPassword;
+    private String currentPasswordConf;
 
     @Valid
     private PasswordForm passwordForm;
@@ -20,11 +21,15 @@ public class ChangePasswordForm {
         this.currentPassword = currentPassword;
     }
 
-    public PasswordForm getPasswordForm() {
-        return passwordForm;
+    public String getCurrentPasswordConf() {
+        return currentPasswordConf;
     }
 
-    public void setPasswordForm(PasswordForm passwordForm) {
-        this.passwordForm = passwordForm;
+    public void setCurrentPasswordConf(String currentPasswordConf) {
+        this.currentPasswordConf = currentPasswordConf;
+    }
+
+    public PasswordForm getPasswordForm() {
+        return passwordForm;
     }
 }

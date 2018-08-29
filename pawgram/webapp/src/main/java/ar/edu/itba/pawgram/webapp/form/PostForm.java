@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.webapp.form;
 
 import ar.edu.itba.pawgram.model.Category;
+import ar.edu.itba.pawgram.model.Location;
 import ar.edu.itba.pawgram.model.Pet;
 import ar.edu.itba.pawgram.webapp.form.wrapper.MultipartFileImageWrapper;
 import org.hibernate.validator.constraints.NotBlank;
@@ -36,7 +37,7 @@ public class PostForm {
     @DateTimeFormat(pattern="dd-MMM-yyyy")//check this later
     private String event_date;
 
-    private Category category = Category.LOST;
+    //private Category category = Category.LOST;
     private Pet pet = Pet.OTHER;
 
     @NotNull
@@ -91,13 +92,13 @@ public class PostForm {
         this.event_date = event_date;
     }
 
-    public Category getCategory() {
+    /*public Category getCategory() {
         return category;
     }
 
     public void setCategory(Category category) {
         this.category = category;
-    }
+    }*/
 
     public Pet getPet() {
         return pet;
@@ -130,4 +131,6 @@ public class PostForm {
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
+
+    public Location getLocation(){ return new Location(longitude,latitude); }
 }

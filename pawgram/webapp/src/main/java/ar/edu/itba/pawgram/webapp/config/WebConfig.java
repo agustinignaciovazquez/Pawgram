@@ -24,7 +24,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
-@ComponentScan({ "ar.edu.itba.pawgram.webapp.controller", "ar.edu.itba.pawgram.service" ,"ar.edu.itba.pawgram.persistence"})
+@ComponentScan({ "ar.edu.itba.pawgram.webapp.controller","ar.edu.itba.pawgram.webapp.validator", "ar.edu.itba.pawgram.service" ,"ar.edu.itba.pawgram.persistence"})
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 	@Value("classpath:schema.sql")

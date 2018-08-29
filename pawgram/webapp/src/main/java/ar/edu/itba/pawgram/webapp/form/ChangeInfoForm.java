@@ -3,7 +3,7 @@ package ar.edu.itba.pawgram.webapp.form;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class ChangeNameForm {
+public class ChangeInfoForm {
     @Size(min = 3, max = 50)
     @Pattern(regexp = "[a-zA-Z]+")
     private String name;

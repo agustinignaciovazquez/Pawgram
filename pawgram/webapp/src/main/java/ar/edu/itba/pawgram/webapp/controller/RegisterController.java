@@ -4,6 +4,8 @@ import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.webapp.form.UserForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,11 +22,14 @@ import javax.validation.Valid;
 @RequestMapping("/register")
 @Controller
 public class RegisterController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegisterController.class);
+
     @Autowired
     private SecurityUserService securityUserService;
 
     @ModelAttribute("registerForm")
     public UserForm registerForm() {
+        LOGGER.debug("Accessed register");
         return new UserForm();
     }
 
@@ -36,16 +41,22 @@ public class RegisterController {
     @RequestMapping(value = "/process", method = { RequestMethod.POST })
     public ModelAndView create(@ModelAttribute("registerForm") @Valid final UserForm registerUserForm,
                                final BindingResult errors, final RedirectAttributes attr) {
+        LOGGER.debug("Accessed register POST");
         if (errors.hasErrors()) {
+            LOGGER.warn("Failed to register user: form has error: {}", errors.getAllErrors());
             return errorState(registerUserForm, errors, attr);
         }
+
         final User user;
         try {
             user = securityUserService.registerUser(registerUserForm.getName(),registerUserForm.getSurname(),registerUserForm.getMail(),registerUserForm.getPasswordForm().getPassword(),null);
         } catch (DuplicateEmailException e) {
+            LOGGER.warn("Failed to register user: duplicate email {}", e.getMessage());
             errors.rejectValue("email", "DuplicateEmail");
             return errorState(registerUserForm, errors, attr);
         }
+
+        LOGGER.info("New user with id {} registered", user.getId());
 
         final Authentication auth = new UsernamePasswordAuthenticationToken(user.getMail(), user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(auth);

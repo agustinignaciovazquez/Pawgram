@@ -21,7 +21,7 @@ public interface SearchZoneDao {
     /**
      * Deletes a {@link SearchZone} from the database.
      * @param zoneId - ID of the post to delete
-     * @return true if a product was deleted
+     * @return true if a zone was deleted
      */
     public boolean deleteZoneById(final long zoneId);
 

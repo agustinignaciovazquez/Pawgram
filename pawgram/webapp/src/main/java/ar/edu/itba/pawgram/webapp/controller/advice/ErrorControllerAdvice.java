@@ -29,7 +29,7 @@ public class ErrorControllerAdvice {
 
     @ExceptionHandler(PostNotFoundException.class)
     @ResponseStatus(value=HttpStatus.NOT_FOUND)
-    public ModelAndView productNotFound() {
+    public ModelAndView postNotFound() {
         return buildModelAndView("error/404post");
     }
 

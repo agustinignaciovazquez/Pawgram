@@ -32,7 +32,7 @@ public class PawgramUserService implements SecurityUserService {
     }
 
     @Override
-    public User changePassword(int userId, String password) {
+    public User changePassword(long userId, String password) {
         return userService.changePassword(userId,password);
     }
 }

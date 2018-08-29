@@ -10,6 +10,8 @@ import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.webapp.exception.InvalidQueryException;
 import ar.edu.itba.pawgram.webapp.exception.PostNotFoundException;
 import ar.edu.itba.pawgram.webapp.exception.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,7 @@ import java.util.Optional;
 @RequestMapping("/search")
 @Controller
 public class SearchController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
     private static final int MIN_QUERY = 3;
     private static final int MAX_QUERY = 64;
     private static final int PAGE_SIZE = 20;
@@ -46,10 +49,13 @@ public class SearchController {
                                       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
                                       @RequestParam(value = "latitude", required = false) final Optional<Double> latitude,
                                       @RequestParam(value = "longitude", required = false) final Optional<Double> longitude) throws InvalidQueryException, ResourceNotFoundException {
+        LOGGER.debug("Accessed search with query {}", query);
 
         if (query == null || query.length() < MIN_QUERY) {
+            LOGGER.warn("Invalid query: too short");
             throw new InvalidQueryException();
         } else if (query.length() > MAX_QUERY) {
+            LOGGER.warn("Invalid query: too long");
             throw new InvalidQueryException();
         }
 
@@ -92,6 +98,7 @@ public class SearchController {
         final List<PlainPost> posts;
         final long max_page = postService.getMaxPageByKeyword(PAGE_SIZE,query,category);
         if (page < 1 || page > max_page && max_page > 0) {
+            LOGGER.warn("Search page out of bounds: {}", page);
             throw new ResourceNotFoundException();
         }
 

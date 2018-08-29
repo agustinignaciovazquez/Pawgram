@@ -197,7 +197,7 @@ public interface PostService {
     /**
      * Deletes a {@link Post} from the database.
      * @param postId - ID of the post to delete
-     * @return true if a product was deleted
+     * @return true if a post was deleted
      */
     public boolean deletePostById(final long postId);
 

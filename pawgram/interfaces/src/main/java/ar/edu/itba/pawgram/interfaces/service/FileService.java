@@ -11,4 +11,11 @@ public interface FileService {
      * @return file name (randomly generated)
      */
     public String createFile(final String path, final byte[] raw_file) throws IOException;
+
+    /**
+     * Get raw bytes of a file
+     * @param path - path where the file is stored
+     * @return raw bytes of file
+     */
+    public byte[] getFile(final String path) throws IOException;
 }

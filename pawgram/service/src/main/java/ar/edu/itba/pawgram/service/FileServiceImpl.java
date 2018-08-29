@@ -3,6 +3,7 @@ package ar.edu.itba.pawgram.service;
 import ar.edu.itba.pawgram.interfaces.service.FileService;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,6 +21,12 @@ public class FileServiceImpl implements FileService {
             Files.write(p, raw_file);
 
             return random_name;
+    }
+
+    @Override
+    public byte[] getFile(String path) throws IOException {
+        File serverFile = new File(path);
+        return Files.readAllBytes(serverFile.toPath());
     }
 
 

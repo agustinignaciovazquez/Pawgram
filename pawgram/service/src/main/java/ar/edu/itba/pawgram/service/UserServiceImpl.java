@@ -46,6 +46,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public byte[] getProfileImage(String filename) throws IOException {
+		return fileService.getFile(PROFILE_IMAGE_UPLOAD_FOLDER+"/"+filename);
+	}
+
+	@Override
 	public User findByMail(String mail) {
 		return userDao.findByMail(mail);
 	}

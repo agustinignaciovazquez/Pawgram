@@ -28,11 +28,11 @@ public interface CommentDao {
 	public Comment createComment(final String content, final LocalDateTime date,final long parentId, final long postId, final long userId);
 	
 	/**
-	 * Lists comments of a specific {@link Product} sorted by parent comments first, 
+	 * Lists comments of a specific {@link Post} sorted by parent comments first, 
 	 * then child comments of the first parent comment and so on.
 	 * @param postId - ID of the post the comments refer to.
-	 * @return {@link List} of comments associated with the {@link Product}. 
-	 * 		   Could be empty if there are no comments associated with the product.
+	 * @return {@link List} of comments associated with the {@link Post}. 
+	 * 		   Could be empty if there are no comments associated with the post.
 	 */
 	public List<Comment> getCommentsByPostId(final long id);
 }

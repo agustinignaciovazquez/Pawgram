@@ -62,4 +62,11 @@ public interface UserService {
 	 */
 	public User changeProfile(long id, byte[] data) throws IOException;
 
+	/**
+	 * Get raw bytes of a profile image
+	 * @param filename - name of the image
+	 * @return profile image raw bytes matrix
+	 */
+	public byte[] getProfileImage(final String filename) throws IOException;
+
 }

@@ -10,6 +10,8 @@ import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 import ar.edu.itba.pawgram.webapp.exception.ForbiddenException;
 import ar.edu.itba.pawgram.webapp.exception.ResourceNotFoundException;
 import ar.edu.itba.pawgram.webapp.util.CaseInsensitiveConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -22,7 +24,7 @@ import java.util.List;
 @Controller
 public class SearchZoneController {
     private static final int PAGE_SIZE = 20;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchZoneController.class);
     @Autowired
     private SearchZoneService searchZoneService;
     @Autowired
@@ -43,15 +45,18 @@ public class SearchZoneController {
     public ModelAndView showPostForZoneCategory(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
                                             @PathVariable(value = "category") Category category,
                                             @PathVariable(value = "zone") long zoneId) throws ResourceNotFoundException, ForbiddenException {
+        LOGGER.debug("Accessed category {} with page {}", category, page);
 
         final User user = securityUserService.getLoggedInUser();
         final SearchZone searchZone = searchZoneService.getFullSearchZoneByIdAndCategory(zoneId,category,page,PAGE_SIZE);
         if(searchZone == null)
             throw new ResourceNotFoundException();
         if(!user.equals(searchZone.getUser())){
+            LOGGER.warn("User not authorized: {}", user.getId());
             throw new ForbiddenException();
         }
         if (page < 1 || page > searchZone.getMax_page() && searchZone.getMax_page() > 0) {
+            LOGGER.warn("Category page out of bounds: {}", page);
             throw new ResourceNotFoundException();
         }
 
@@ -68,15 +73,17 @@ public class SearchZoneController {
     @RequestMapping(value = "/{zone}")
     public ModelAndView showPostForZone(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
                                                 @PathVariable(value = "zone") long zoneId) throws ResourceNotFoundException, ForbiddenException {
-
+        LOGGER.debug("Accessed zone (all categories) with page {}", page);
         final User user = securityUserService.getLoggedInUser();
         final SearchZone searchZone = searchZoneService.getFullSearchZoneById(zoneId,page,PAGE_SIZE);
         if(searchZone == null)
             throw new ResourceNotFoundException();
         if(!user.equals(searchZone.getUser())){
+            LOGGER.warn("User not authorized: {}", user.getId());
             throw new ForbiddenException();
         }
         if (page < 1 || page > searchZone.getMax_page() && searchZone.getMax_page() > 0) {
+            LOGGER.warn("Page out of bounds: {}", page);
             throw new ResourceNotFoundException();
         }
 

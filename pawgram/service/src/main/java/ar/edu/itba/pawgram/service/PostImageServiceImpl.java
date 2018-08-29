@@ -44,4 +44,9 @@ public class PostImageServiceImpl implements PostImageService {
     public List<PostImage> getImagesIdByPostId(long postId) {
         return postImageDao.getImagesIdByPostId(postId);
     }
+
+    @Override
+    public byte[] getImage(String filename) throws IOException {
+        return fileService.getFile(UPLOAD_FOLDER+"/"+filename);
+    }
 }
