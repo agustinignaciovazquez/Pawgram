@@ -14,13 +14,6 @@ public interface PostImageDao {
     public PostImage createPostImage(final long postId, String url);
 
     /**
-     * Creates an {@link PostImage} for every item in {@link List} for a single {@link Post} inserting it into the database.
-     * @param postId - ID of the post the image belongs to
-     * @return The all the created PostImage's
-     */
-    public List<PostImage> createPostImage(final long postId, final List<String> urls);
-
-    /**
      * Lists {@link PostImage} ID of a {@link Post}.
      * @param postId - ID of the post
      * @return {@link List} with the post images ID. Could be empty if the post possesses no images

@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.interfaces.service;
 
+import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 
@@ -11,7 +12,7 @@ public interface PostService {
      * Creates a {@link Post.PostBuilder} inserting the {@link Post} data into the database.
      * @param title - Title of the post
      * @param description - Description of the post
-     * @param img_urls -  imgs urls
+     * @param raw_images - raw img's
      * @param contact_phone - contact phone of the owner
      * @param category - Category the post belongs to
      * @param event_date - Date of the event
@@ -21,9 +22,8 @@ public interface PostService {
      * @param owner - owner id of the post
      * @return Post - The newly created post
      */
-    public Post createPost(final String title, final String description, final List<String> img_urls, final String contact_phone,
-                                       final LocalDateTime event_date, final Category category, final Pet pet, final boolean is_male,
-                                       final Location location, final User owner);
+    public Post createPost(String title, String description, List<byte[]> raw_images, String contact_phone, LocalDateTime event_date,
+                                       Category category, Pet pet, boolean is_male, Location location, User owner) throws PostCreateException;
 
     /**
      * Lists every post {@link PlainPost}

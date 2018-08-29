@@ -1,7 +1,9 @@
 package ar.edu.itba.pawgram.persistence;
 
+import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
 import ar.edu.itba.pawgram.interfaces.persistence.PostImageDao;
+import ar.edu.itba.pawgram.interfaces.service.PostImageService;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.persistence.rowmapper.PlainPostRowMapper;
@@ -10,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -28,7 +32,7 @@ public class PostJdbcDao implements PostDao {
     private PlainPostRowMapper plainPostRowMapper;
 
     @Autowired
-    private PostImageDao postImageDao;
+    private PostImageService postImageService;
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
@@ -42,8 +46,9 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    public Post.PostBuilder createPost(String title, String description, List<String> img_urls, String contact_phone, LocalDateTime event_date,
-                                       Category category, Pet pet, boolean is_male, Location location, User owner) {
+    @Transactional(rollbackFor = Exception.class)
+    public Post.PostBuilder createPost(String title, String description, List<byte[]> raw_images, String contact_phone, LocalDateTime event_date,
+                                       Category category, Pet pet, boolean is_male, Location location, User owner)  throws PostCreateException {
         final Map<String, Object> args = new HashMap<String, Object>();
         args.put("title", title);
         args.put("description", description);
@@ -58,7 +63,15 @@ public class PostJdbcDao implements PostDao {
 
         final Number postId = jdbcInsert.executeAndReturnKey(args);
 
-        return Post.getBuilder(postId.longValue(), title, postImageDao.createPostImage(postId.longValue(),img_urls))
+        final List<PostImage> postImages;
+        try {
+            postImages = postImageService.createPostImage(postId.longValue(),raw_images);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new PostCreateException(); //TODO Check if transactions rollback the post creation
+        }
+
+        return Post.getBuilder(postId.longValue(), title,postImages)
                 .category(category).pet(pet)
                 .description(description)
                 .contact_phone(contact_phone)

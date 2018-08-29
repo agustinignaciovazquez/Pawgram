@@ -41,4 +41,15 @@ public interface UserService {
 	 * @return The user with the modified password or null if user doesn't exist
 	 */
 	public User changePassword(final long id,final String password);
+
+	/**
+	 * Changes an [@link User] password
+	 * @param id - ID of the user
+	 * @param name - New user's name
+	 * @param surname - New user's surname
+	 * @return The user with the modified name or null if user doesn't exist
+	 */
+	public User changeName(final long id,final String name, final String surname);
+
+
 }

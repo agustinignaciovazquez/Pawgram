@@ -1,7 +1,9 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
+import ar.edu.itba.pawgram.interfaces.service.FileService;
 import ar.edu.itba.pawgram.webapp.form.UploadForm;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +23,9 @@ import java.util.StringJoiner;
 public class UploadController {
 
     // save uploaded file to this folder
-    private static String UPLOADED_FOLDER = "D://temp//";
+    private static String UPLOAD_FOLDER = "D://temp//";
+    @Autowired
+    private FileService fileService;
 
     @RequestMapping("/")
     public ModelAndView index() {
@@ -30,24 +34,18 @@ public class UploadController {
 
     @RequestMapping(value = "/uploadMulti", method = { RequestMethod.POST })
     public ModelAndView multiFileUpload(@ModelAttribute UploadForm form,
-                                  RedirectAttributes redirectAttributes) {
+                                        RedirectAttributes redirectAttributes) {
 
         StringJoiner sj = new StringJoiner(" , ");
 
         for (MultipartFile file : form.getFiles()) {
 
             if (file.isEmpty()) {
-                continue; //next pls
+                continue;
             }
 
             try {
-
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-                Files.write(path, bytes);
-
-                sj.add(file.getOriginalFilename());
-
+                fileService.createFile(UPLOAD_FOLDER,file.getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
             }

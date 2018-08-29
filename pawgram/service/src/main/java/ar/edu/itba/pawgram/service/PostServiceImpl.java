@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.service;
 
+import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
@@ -8,6 +9,7 @@ import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,10 +21,10 @@ public class PostServiceImpl implements PostService {
     private CommentService commentService;
 
     @Override
-    public Post createPost(String title, String description, List<String> img_urls, String contact_phone,
+    public Post createPost(String title, String description, List<byte[]> raw_images, String contact_phone,
                            LocalDateTime event_date, Category category, Pet pet,
-                           boolean is_male, Location location, User owner) {
-        return postDao.createPost(title,description,img_urls,contact_phone,event_date,category,pet,is_male,location,owner).build();
+                           boolean is_male, Location location, User owner) throws PostCreateException {
+        return postDao.createPost(title,description,raw_images,contact_phone,event_date,category,pet,is_male,location,owner).build();
     }
 
     @Override

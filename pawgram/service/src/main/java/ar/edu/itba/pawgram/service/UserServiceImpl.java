@@ -29,6 +29,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public User changeName(long id, String name, String surname) {
+		return userDao.changeName(id, name, surname);
+	}
+
+	@Override
 	public User findByMail(String mail) {
 		return userDao.findByMail(mail);
 	}

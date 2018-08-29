@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,15 +36,6 @@ public class PostImageJdbcDao implements PostImageDao {
 
         final Number postImageId = jdbcInsert.execute(args);
         return new PostImage(postImageId.longValue(),url, postId);
-    }
-
-    @Override
-    public List<PostImage> createPostImage(long postId, List<String> urls) {
-        List<PostImage> l = new ArrayList<>();
-        for(String url: urls){
-            l.add(createPostImage(postId,url));
-        }
-        return l;
     }
 
     @Override

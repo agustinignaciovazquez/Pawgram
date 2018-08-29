@@ -72,7 +72,16 @@ public class UserJdbcDao implements UserDao {
 		if (user != null)
 			jdbcTemplate.update("UPDATE users SET password = ? WHERE userId = ?", enc_password, id);
 
-		return user;
+		return new User(id,user.getName(),user.getSurname(),user.getMail(),enc_password,user.getProfile_img_url());
+	}
+
+	@Override
+	public User changeName(long id, String name, String surname) {
+		User user = findById(id);
+		if (user != null)
+			jdbcTemplate.update("UPDATE users SET name = ?, surname = ? WHERE userId = ?", name,surname, id);
+
+		return new User(id,name,surname,user.getMail(),user.getPassword(),user.getProfile_img_url());
 	}
 
 	@Override
