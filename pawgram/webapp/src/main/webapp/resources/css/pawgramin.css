@@ -466,8 +466,9 @@ body {
 }
 
 .radio.selected{
-	border: 2px solid;
-    border-color: #28a745;
+	border: 3px solid;
+    border-color: #a3d2ff;
+    border-radius: 3px;
 }
 
 .radio-group{
@@ -490,6 +491,24 @@ body {
 	padding-left:4px; 
 }
 
-.formcontainer{
-	
+.subformtitle{
+	color: #676768;
+	font-size: 18px;
 }
+
+.myformcontainer{
+	width:500px;
+}
+
+.form-area{
+    background-color: #FAFAFA;
+	padding: 10px 40px 60px;
+	margin: 10px 0px 60px;
+	border: 1px solid GREY;
+	border-radius: 3px;
+}
+
+.lspaced15{
+	margin-left:15px;
+}
+
