@@ -30,10 +30,10 @@ CREATE TABLE IF NOT EXISTS posts (
 );
 
 CREATE TABLE IF NOT EXISTS postImages (
-    postImageId INTEGER NOT NULL,
+    postImageId SERIAL PRIMARY KEY,
     postId INTEGER REFERENCES posts(postId) ON DELETE CASCADE NOT NULL,
     url VARCHAR(32) NOT NULL,
-    PRIMARY KEY (productImageId, productId)
+    UNIQUE(postId, url)
 );
 
 CREATE TABLE IF NOT EXISTS comments (
