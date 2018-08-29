@@ -3,7 +3,10 @@ package ar.edu.itba.pawgram.interfaces.service;
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.model.User;
 
+import java.io.IOException;
+
 public interface UserService {
+	public static String PROFILE_IMAGE_UPLOAD_FOLDER = "D://temp//";
 
 	/**
 	 * Find an existing [@link User] by id
@@ -51,5 +54,12 @@ public interface UserService {
 	 */
 	public User changeName(final long id,final String name, final String surname);
 
+	/**
+	 * Changes an [@link User] profile picture url
+	 * @param id - ID of the user
+	 * @param data - profile image raw data
+	 * @return The user with the modified profile url or null if user doesn't exist
+	 */
+	public User changeProfile(long id, byte[] data) throws IOException;
 
 }

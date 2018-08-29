@@ -44,7 +44,7 @@ public interface UserDao {
 	public User changePassword(final long id,final String password);
 
 	/**
-	 * Changes an [@link User] password
+	 * Changes an [@link User] name and surname
 	 * @param id - ID of the user
 	 * @param name - New user's name
 	 * @param surname - New user's surname
@@ -52,4 +52,11 @@ public interface UserDao {
 	 */
 	public User changeName(final long id,final String name, final String surname);
 
+	/**
+	 * Changes an [@link User] profile picture url
+	 * @param id - ID of the user
+	 * @param img_url - New user's profile url
+	 * @return The user with the modified profile url or null if user doesn't exist
+	 */
+	public User changeProfile(final long id,final String img_url);
 }

@@ -2,14 +2,21 @@ package ar.edu.itba.pawgram.webapp.form;
 
 import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.Pet;
+import ar.edu.itba.pawgram.webapp.form.wrapper.MultipartFileImageWrapper;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PostForm {
+    private static final int MAX_IMAGES = 4;
+
     @NotBlank
     @Size(max = 64)
     private String title;
@@ -18,9 +25,8 @@ public class PostForm {
     @Size(max = 2048)
     private String description;
 
-    @NotBlank
-    @Size(max = 32)
-    private String img_url;
+    @Valid
+    private MultipartFileImageWrapper[] images;
 
     @Size(max = 32)
     @Pattern(regexp = "/\\(?([0-9]{3})\\)?([ .-]?)([0-9]{3})\\2([0-9]{4})/")
@@ -40,13 +46,22 @@ public class PostForm {
     @NotNull
     private Double longitude;
 
+    public PostForm() {
+        images = new MultipartFileImageWrapper[MAX_IMAGES];
+    }
+    public List<byte[]> getAllRawImages() throws IOException {
+        List<byte[]> l = new ArrayList<>();
+        for(MultipartFileImageWrapper image: images){
+            l.add(image.getFile().getBytes());
+        }
+        return l;
+    }
+
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public void setTitle(String title) { this.title = title; }
 
     public String getDescription() {
         return description;
@@ -56,13 +71,9 @@ public class PostForm {
         this.description = description;
     }
 
-    public String getImg_url() {
-        return img_url;
-    }
+    public MultipartFileImageWrapper[] getImages() { return images; }
 
-    public void setImg_url(String img_url) {
-        this.img_url = img_url;
-    }
+    public void setImage(MultipartFileImageWrapper[] images) { this.images = images; }
 
     public String getContact_phone() {
         return contact_phone;

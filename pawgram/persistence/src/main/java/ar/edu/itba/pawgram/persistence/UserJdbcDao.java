@@ -85,6 +85,15 @@ public class UserJdbcDao implements UserDao {
 	}
 
 	@Override
+	public User changeProfile(long id, String img_url) {
+		User user = findById(id);
+		if (user != null)
+			jdbcTemplate.update("UPDATE users SET profile_img_url = ? WHERE userId = ?", img_url, id);
+
+		return new User(id,user.getName(),user.getSurname(),user.getMail(),user.getPassword(),img_url);
+	}
+
+	@Override
 	public User findByMail(String mail) {
 		final List<User> list = jdbcTemplate.query("SELECT * FROM users WHERE mail = ?", ROW_MAPPER, mail);
 		if (list.isEmpty()) {
