@@ -8,6 +8,7 @@ import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class PostServiceImpl implements PostService {
     private CommentService commentService;
 
     @Override
+    @Transactional(rollbackFor = PostCreateException.class)
     public Post createPost(String title, String description, List<byte[]> raw_images, String contact_phone,
                            LocalDateTime event_date, Category category, Pet pet,
                            boolean is_male, Location location, User owner) throws PostCreateException {
@@ -48,6 +50,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public Post getFullPostById(long postId) {
         Post.PostBuilder pb = postDao.getFullPostById(postId);
         if(pb == null)
@@ -56,6 +59,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public Post getFullPostById(long postId, Location location) {
         Post.PostBuilder pb = postDao.getFullPostById(postId, location);
         if(pb == null)

@@ -46,7 +46,6 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public Post.PostBuilder createPost(String title, String description, List<byte[]> raw_images, String contact_phone, LocalDateTime event_date,
                                        Category category, Pet pet, boolean is_male, Location location, User owner)  throws PostCreateException {
         final Map<String, Object> args = new HashMap<String, Object>();

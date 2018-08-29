@@ -11,10 +11,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -24,6 +27,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
+@EnableTransactionManagement
 @ComponentScan({ "ar.edu.itba.pawgram.webapp.controller","ar.edu.itba.pawgram.webapp.validator", "ar.edu.itba.pawgram.service" ,"ar.edu.itba.pawgram.persistence"})
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
@@ -82,6 +86,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return cmr;
 
 	}
+
+	@Bean
+	public PlatformTransactionManager transactionManager(final DataSource ds) {
+		return new DataSourceTransactionManager(ds);
+	}
+
 
 	private DatabasePopulator databasePopulator() {
 		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();

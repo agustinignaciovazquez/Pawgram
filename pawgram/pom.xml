@@ -23,6 +23,7 @@
 	<commons-fileupload.version>1.3.2</commons-fileupload.version>
 	<commons-lang3.version>3.5</commons-lang3.version>
 	<commons-beanutils.version>1.9.3</commons-beanutils.version>
+	<maven-war-plugin.version>2.6</maven-war-plugin.version>
 	</properties>
 	<build>
 		<plugins>
@@ -43,6 +44,14 @@
 			        <source>${maven-compiler-plugin-src.version}</source>
 			        <target>${maven-compiler-plugin-target.version}</target>
 			    </configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven-war-plugin.version}</version>
+				<configuration>
+					<packagingExcludes>**/logback-test.xml</packagingExcludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -190,9 +199,14 @@
     		  <version>${commons-fileupload.version}</version>
     	  </dependency>
     	  <dependency>
-	    <groupId>commons-beanutils</groupId>
-	    <artifactId>commons-beanutils</artifactId>
-	    <version>${commons-beanutils.version}</version>
+		    <groupId>commons-beanutils</groupId>
+		    <artifactId>commons-beanutils</artifactId>
+		    <version>${commons-beanutils.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${org.springframework.version}</version>
 		</dependency>
 		</dependencies>
 	</dependencyManagement>

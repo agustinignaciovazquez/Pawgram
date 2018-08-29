@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ar.edu.itba.pawgram.interfaces.persistence.UserDao;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
 import ar.edu.itba.pawgram.model.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	@Transactional(rollbackFor = DuplicateEmailException.class)
 	public User create(String name, String surname, String mail, String password, String profile_url) throws DuplicateEmailException {
 		return userDao.create(name, surname, mail, password,profile_url);
 	}
