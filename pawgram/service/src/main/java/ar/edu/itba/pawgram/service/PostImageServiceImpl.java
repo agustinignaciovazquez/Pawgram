@@ -6,6 +6,7 @@ import ar.edu.itba.pawgram.interfaces.service.PostImageService;
 import ar.edu.itba.pawgram.model.PostImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class PostImageServiceImpl implements PostImageService {
     }
 
     @Override
+    @Transactional(rollbackFor = IOException.class)
     public List<PostImage> createPostImage(long postId, List<byte[]> raw_images) throws IOException {
         List<PostImage> l = new ArrayList<>();
         List<String> uploadNames = new ArrayList<>();

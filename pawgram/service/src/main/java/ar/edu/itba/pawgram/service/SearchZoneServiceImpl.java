@@ -8,6 +8,7 @@ import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ public class SearchZoneServiceImpl implements SearchZoneService {
     }
 
     @Override
+    @Transactional
     public SearchZone getFullSearchZoneById(long zoneId, long page, int pageSize) {
         SearchZone.SearchZoneBuilder builder = searchZoneDao.getFullSearchZoneById(zoneId);
         if(builder == null)
@@ -45,6 +47,7 @@ public class SearchZoneServiceImpl implements SearchZoneService {
     }
 
     @Override
+    @Transactional
     public SearchZone getFullSearchZoneByIdAndCategory(long zoneId, Category category, long page, int pageSize) {
         SearchZone.SearchZoneBuilder builder = searchZoneDao.getFullSearchZoneById(zoneId);
         if(builder == null)

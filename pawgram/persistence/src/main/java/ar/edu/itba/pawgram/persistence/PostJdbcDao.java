@@ -67,7 +67,7 @@ public class PostJdbcDao implements PostDao {
             postImages = postImageService.createPostImage(postId.longValue(),raw_images);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new PostCreateException(); //TODO Check if transactions rollback the post creation
+            throw new PostCreateException();
         }
 
         return Post.getBuilder(postId.longValue(), title,postImages)
