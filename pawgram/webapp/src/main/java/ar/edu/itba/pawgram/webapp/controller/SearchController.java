@@ -59,7 +59,6 @@ public class SearchController {
             throw new InvalidQueryException();
         }
 
-        final User user = securityUserService.getLoggedInUser();
         final List<PlainPost> posts;
         final long max_page = postService.getMaxPageByKeyword(PAGE_SIZE,query);
         if (page < 1 || page > max_page && max_page > 0) {
@@ -75,7 +74,6 @@ public class SearchController {
         final ModelAndView mav = new ModelAndView("search-results");
         mav.addObject("posts", posts);
         mav.addObject("max_page",max_page);
-        mav.addObject("user", user);
         mav.addObject("categories", Category.values());
         mav.addObject("queryText", query);
         return mav;
@@ -94,7 +92,6 @@ public class SearchController {
             throw new InvalidQueryException();
         }
 
-        final User user = securityUserService.getLoggedInUser();
         final List<PlainPost> posts;
         final long max_page = postService.getMaxPageByKeyword(PAGE_SIZE,query,category);
         if (page < 1 || page > max_page && max_page > 0) {
@@ -111,7 +108,6 @@ public class SearchController {
         final ModelAndView mav = new ModelAndView("search-results");
         mav.addObject("posts", posts);
         mav.addObject("max_page",max_page);
-        mav.addObject("user", user);
         mav.addObject("currentCategory", category);
         mav.addObject("categories", Category.values());
         mav.addObject("queryText", query);

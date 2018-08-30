@@ -94,7 +94,7 @@ public class CustomizeController {
             userService.changeProfile(loggedUser.getId(), changeProfilePictureForm.getProfilePicture().getBytes());
         } catch (IOException e) {
             LOGGER.error("Failed to load profile picture: {}", e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace(); DEBUG ONLY
         }
 
         return mav;

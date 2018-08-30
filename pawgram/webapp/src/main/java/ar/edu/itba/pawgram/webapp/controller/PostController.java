@@ -137,8 +137,8 @@ public class PostController {
         try {
             img = postImageService.getImage(imageId);
         } catch (IOException e) {
-            e.printStackTrace();
-            LOGGER.warn("Failed to render image with id {}: image not found", imageId);
+            //e.printStackTrace(); DEBUG ONLY
+            LOGGER.warn("Failed to render image with id {}: image not found or view denied\nStack trace {}", imageId, e.getMessage());
             throw new ImageNotFoundException();
         }
         return img;

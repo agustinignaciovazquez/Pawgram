@@ -65,8 +65,8 @@ public class ProfileController {
         try {
             img = userService.getProfileImage(imageId);
         } catch (IOException e) {
-            e.printStackTrace();
-            LOGGER.warn("Failed to render profile image with id {}: image not found", imageId);
+            //e.printStackTrace(); DEBUG ONLY
+            LOGGER.warn("Failed to render profile image with id {}: image not found\n Stacktrace {}", imageId, e.getMessage());
             throw new ImageNotFoundException();
         }
         return img;

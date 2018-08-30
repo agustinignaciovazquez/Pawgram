@@ -31,28 +31,26 @@ public class SearchZoneController {
     private SecurityUserService securityUserService;
 
     @RequestMapping(value={"","/"})
-    public ModelAndView index() {
-        final User user = securityUserService.getLoggedInUser();
-        final List<PlainSearchZone> searchZones = searchZoneService.getPlainSearchZonesByUser(user);
+    public ModelAndView index(@ModelAttribute("loggedUser") final User loggedUser) {
+        final List<PlainSearchZone> searchZones = searchZoneService.getPlainSearchZonesByUser(loggedUser);
 
         ModelAndView mav = new ModelAndView("zones");
         mav.addObject("searchZones", searchZones);
-        mav.addObject("user", user);
         return mav;
     }
 
     @RequestMapping(value = "/{zone}/category/{category}")
     public ModelAndView showPostForZoneCategory(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-                                            @PathVariable(value = "category") Category category,
-                                            @PathVariable(value = "zone") long zoneId) throws ResourceNotFoundException, ForbiddenException {
+                                                @ModelAttribute("loggedUser") final User loggedUser,
+                                                @PathVariable(value = "category") Category category,
+                                                @PathVariable(value = "zone") long zoneId) throws ResourceNotFoundException, ForbiddenException {
         LOGGER.debug("Accessed category {} with page {}", category, page);
 
-        final User user = securityUserService.getLoggedInUser();
         final SearchZone searchZone = searchZoneService.getFullSearchZoneByIdAndCategory(zoneId,category,page,PAGE_SIZE);
         if(searchZone == null)
             throw new ResourceNotFoundException();
-        if(!user.equals(searchZone.getUser())){
-            LOGGER.warn("User not authorized: {}", user.getId());
+        if(!loggedUser.equals(searchZone.getUser())){
+            LOGGER.warn("User not authorized: {}", loggedUser.getId());
             throw new ForbiddenException();
         }
         if (page < 1 || page > searchZone.getMax_page() && searchZone.getMax_page() > 0) {
@@ -63,7 +61,6 @@ public class SearchZoneController {
         ModelAndView mav = new ModelAndView("index");
         mav.addObject("currentCategory", category);
         mav.addObject("categories", Category.values());
-        mav.addObject("user", user);
         mav.addObject("searchZone", searchZone);
         mav.addObject("currentPage", page);
         mav.addObject("totalPages", searchZone.getMax_page());//should remove this
@@ -72,14 +69,15 @@ public class SearchZoneController {
 
     @RequestMapping(value = "/{zone}")
     public ModelAndView showPostForZone(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-                                                @PathVariable(value = "zone") long zoneId) throws ResourceNotFoundException, ForbiddenException {
+                                        @ModelAttribute("loggedUser") final User loggedUser,
+                                        @PathVariable(value = "zone") long zoneId) throws ResourceNotFoundException, ForbiddenException {
         LOGGER.debug("Accessed zone (all categories) with page {}", page);
-        final User user = securityUserService.getLoggedInUser();
+
         final SearchZone searchZone = searchZoneService.getFullSearchZoneById(zoneId,page,PAGE_SIZE);
         if(searchZone == null)
             throw new ResourceNotFoundException();
-        if(!user.equals(searchZone.getUser())){
-            LOGGER.warn("User not authorized: {}", user.getId());
+        if(!loggedUser.equals(searchZone.getUser())){
+            LOGGER.warn("User not authorized: {}", loggedUser.getId());
             throw new ForbiddenException();
         }
         if (page < 1 || page > searchZone.getMax_page() && searchZone.getMax_page() > 0) {

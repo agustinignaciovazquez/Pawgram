@@ -66,7 +66,7 @@ public class PostJdbcDao implements PostDao {
         try {
             postImages = postImageService.createPostImage(postId.longValue(),raw_images);
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace(); DEBUG ONLY
             throw new PostCreateException();
         }
 
