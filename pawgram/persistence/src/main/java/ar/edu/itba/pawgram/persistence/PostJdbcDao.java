@@ -101,7 +101,7 @@ public class PostJdbcDao implements PostDao {
     public List<PlainPost> getPlainPostsByCategoryRange(Category category, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet, " +
                         "0 as distance" +
-                        " FROM posts  category = ? ORDER BY postId ASC LIMIT ? OFFSET ?",
+                        " FROM posts WHERE category = ? ORDER BY postId ASC LIMIT ? OFFSET ?",
                 plainPostRowMapper,category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
     }
 
@@ -126,8 +126,8 @@ public class PostJdbcDao implements PostDao {
     @Override
     public Post.PostBuilder getFullPostById(long postId, Location location) {
         List<Post.PostBuilder> l = jdbcTemplate.query("SELECT *," +
-                        " haversine_distance(?,?,latitude,longitude) as distance" +
-                        "FROM posts,users WHERE posts.userId = users.id AND postId = ?",
+                        " haversine_distance(?,?,latitude,longitude) as distance " +
+                        " FROM posts,users WHERE posts.userId = users.id AND postId = ?",
                 postBuilderRowMapper,location.getLatitude(),location.getLongitude(),postId);
         return (l.isEmpty())? null: l.get(0);
     }
@@ -166,7 +166,7 @@ public class PostJdbcDao implements PostDao {
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
                         " 0 as distance" +
-                        " FROM posts WHERE title LIKE %?% ORDER BY distance DESC LIMIT ? OFFSET ?",
+                        " FROM posts WHERE title LIKE %?% ORDER BY postId ASC LIMIT ? OFFSET ?",
                 plainPostRowMapper,keyword,limit,offset);
     }
 
@@ -275,7 +275,8 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public long getTotalPostsByUserId(long userId, Category category) {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE userId = ? AND category = ?", Integer.class,userId,category.getLowerName().toUpperCase(Locale.ENGLISH));
+        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE userId = ? AND category = ?",
+                Integer.class,userId,category.getLowerName().toUpperCase(Locale.ENGLISH));
         return total != null ? total : 0;
     }
 }

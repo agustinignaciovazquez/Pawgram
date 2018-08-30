@@ -56,7 +56,7 @@ protected void configure(final HttpSecurity http) throws Exception {
 
 @Override
 public void configure(final WebSecurity web) throws Exception {
-	web.ignoring().antMatchers("/resources/**","/favicon.ico", "/403");
+	web.ignoring().antMatchers("/resources/**","/favicon.ico", "/errors/**");
 }
 
 @Bean
