@@ -3,6 +3,7 @@ package ar.edu.itba.pawgram.service;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
+import ar.edu.itba.pawgram.interfaces.service.PostImageService;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
@@ -20,13 +21,25 @@ public class PostServiceImpl implements PostService {
     private PostDao postDao;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private PostImageService postImageService;
 
     @Override
     @Transactional(rollbackFor = PostCreateException.class)
     public Post createPost(String title, String description, List<byte[]> raw_images, String contact_phone,
                            LocalDateTime event_date, Category category, Pet pet,
                            boolean is_male, Location location, User owner) throws PostCreateException {
-        return postDao.createPost(title,description,raw_images,contact_phone,event_date,category,pet,is_male,location,owner).build();
+        Post.PostBuilder postBuilder = postDao.createPost(title,description,raw_images,contact_phone,event_date,category,pet,is_male,location,owner);
+        List<PostImage> postImages = null;
+        if(raw_images != null) {
+            try {
+                postImages = postImageService.createPostImage(postBuilder.getId(), raw_images);
+            } catch (IOException e) {
+                //e.printStackTrace(); DEBUG ONLY
+                throw new PostCreateException();
+            }
+        }
+        return postBuilder.postImages(postImages).build();
     }
 
     @Override

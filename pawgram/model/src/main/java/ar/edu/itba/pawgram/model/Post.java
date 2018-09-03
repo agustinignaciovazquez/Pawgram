@@ -131,14 +131,19 @@ public class Post implements PlainPost {
 		private User owner;
 		private int distance;
 		private List<CommentFamily> commentFamilies = Collections.emptyList();
-		private List<PostImage> postImages;
+		private List<PostImage> postImages = Collections.emptyList();
 
 		private PostBuilder(long id, String title, List<PostImage> postImages) {
 			this.id = id;
 			this.title = title;
-			this.postImages = postImages;
+			if(postImages != null)
+				this.postImages = postImages;
 		}
-		
+
+		public long getId(){
+			return this.id;
+		}
+
 		public PostBuilder description(String description) {
 			this.description = description;
 			return this;
@@ -197,6 +202,13 @@ public class Post implements PlainPost {
 			this.commentFamilies = commentFamilies;
 			return this;
 		}
+
+		public PostBuilder postImages(List<PostImage> postImages) {
+			if(postImages != null)
+				this.postImages = postImages;
+			return this;
+		}
+
 		public Post build() {
 			return new Post(this);
 		}

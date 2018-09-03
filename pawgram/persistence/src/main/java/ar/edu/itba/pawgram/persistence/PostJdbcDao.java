@@ -31,9 +31,6 @@ public class PostJdbcDao implements PostDao {
     @Autowired
     private PlainPostRowMapper plainPostRowMapper;
 
-    @Autowired
-    private PostImageService postImageService;
-
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
@@ -62,17 +59,7 @@ public class PostJdbcDao implements PostDao {
 
         final Number postId = jdbcInsert.executeAndReturnKey(args);
 
-        List<PostImage> postImages = null;
-        if(raw_images != null) {
-            try {
-                postImages = postImageService.createPostImage(postId.longValue(), raw_images);
-            } catch (IOException e) {
-                //e.printStackTrace(); DEBUG ONLY
-                throw new PostCreateException();
-            }
-        }
-
-        return Post.getBuilder(postId.longValue(), title,postImages)
+        return Post.getBuilder(postId.longValue(), title,null)
                 .category(category).pet(pet)
                 .description(description)
                 .contact_phone(contact_phone)
