@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.webapp.config;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
@@ -16,6 +17,8 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -90,6 +93,24 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public PlatformTransactionManager transactionManager(final DataSource ds) {
 		return new DataSourceTransactionManager(ds);
+	}
+
+	@Bean
+	public JavaMailSender getJavaMailSender() {
+		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+		mailSender.setHost("smtp.gmail.com");
+		mailSender.setPort(587);
+
+		mailSender.setUsername("my.gmail@gmail.com");
+		mailSender.setPassword("password");
+
+		Properties props = mailSender.getJavaMailProperties();
+		props.put("mail.transport.protocol", "smtp");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.debug", "true");
+
+		return mailSender;
 	}
 
 
