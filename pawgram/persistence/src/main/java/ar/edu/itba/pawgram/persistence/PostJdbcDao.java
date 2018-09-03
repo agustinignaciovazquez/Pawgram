@@ -62,12 +62,14 @@ public class PostJdbcDao implements PostDao {
 
         final Number postId = jdbcInsert.executeAndReturnKey(args);
 
-        final List<PostImage> postImages;
-        try {
-            postImages = postImageService.createPostImage(postId.longValue(),raw_images);
-        } catch (IOException e) {
-            //e.printStackTrace(); DEBUG ONLY
-            throw new PostCreateException();
+        List<PostImage> postImages = null;
+        if(raw_images != null) {
+            try {
+                postImages = postImageService.createPostImage(postId.longValue(), raw_images);
+            } catch (IOException e) {
+                //e.printStackTrace(); DEBUG ONLY
+                throw new PostCreateException();
+            }
         }
 
         return Post.getBuilder(postId.longValue(), title,postImages)

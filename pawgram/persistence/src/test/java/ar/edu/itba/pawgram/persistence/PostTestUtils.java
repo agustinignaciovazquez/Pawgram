@@ -34,7 +34,7 @@ public final class PostTestUtils {
 
     //TODO: chequear si hay que llenar todos los campos
     private static Post.PostBuilder postBuilder(int id) {
-        PostImage image = new PostImage(id,"http://www.postseek.com/" + id, id);
+        PostImage image = new PostImage(id,"TITLE", id);
         List<PostImage> postImages = new ArrayList<>();
         postImages.add(image);
         return Post.getBuilder(id, "Post " + id, postImages)
@@ -104,10 +104,6 @@ public final class PostTestUtils {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getTitle(), actual.getTitle());
         assertEquals(expected.getCategory(), actual.getCategory());
-    }
-
-    public static byte[] logoFromPost(Post post) {
-        return post.getTitle().getBytes();
     }
 }
 

@@ -1,11 +1,10 @@
 package ar.edu.itba.pawgram.persistence;
 
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
+import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
 import ar.edu.itba.pawgram.interfaces.persistence.UserDao;
-import ar.edu.itba.pawgram.model.Comment;
-import ar.edu.itba.pawgram.model.Post;
-import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +16,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static ar.edu.itba.pawgram.persistence.CommentTestUtils.*;
+import static ar.edu.itba.pawgram.persistence.PostTestUtils.dummyPost;
+import static ar.edu.itba.pawgram.persistence.UserTestUtils.dummyUser;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -123,19 +131,24 @@ public class CommentJdbcDaoTest {
 
     private Comment insertComment(Comment comment, int postId) {
         if (comment.hasParent())
-            return commentDao.createComment(comment.getContent(), comment.getCommentDate(), comment.getParentId(), postId, comment.getAuthor().getUserId());
-        return commentDao.createParentComment(comment.getContent(), comment.getCommentDate(), postId, comment.getAuthor().getUserId());
+            return commentDao.createComment(comment.getContent(), comment.getCommentDate(), comment.getParentId(), postId, comment.getAuthor().getId());
+        return commentDao.createParentComment(comment.getContent(), comment.getCommentDate(), postId, comment.getAuthor().getId());
     }
 
-    private void insertDummyPost() {
+    private void insertDummyPost() throws PostCreateException {
         Post dummy = dummyPost(0);
-        PostDao.createPost(dummy.getName(), dummy.getDescription(), dummy.getShortDescription(),
-                dummy.getWebsite(), dummy.getCategory().name(), dummy.getUploadDate(), logoFromPost(dummy), 0);
+        String now = "2016-11-09 10:30";
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        LocalDateTime formatDateTime = LocalDateTime.parse(now, formatter);
+        postDao.createPost("title","description",null,"011-4251-1695",
+                formatDateTime, Category.ADOPT, Pet.DOG,true,new Location(0,0),dummyUser(0));
     }
 
     private void insertDummyUser() throws DuplicateEmailException {
         User dummy = dummyUser(0);
-        userDao.createUser(dummy.getName(), dummy.getEmail(), dummy.getPassword(), profilePictureFromUser(dummy));
+        userDao.create(dummy.getName(),dummy.getSurname(),dummy.getMail(),dummy.getPassword(),dummy.getProfile_img_url());
     }
-}
+
 }
