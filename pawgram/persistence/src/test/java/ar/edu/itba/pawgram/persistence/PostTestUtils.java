@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.persistence;
 
 import ar.edu.itba.pawgram.model.Category;
+import ar.edu.itba.pawgram.model.Location;
 import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.PostImage;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
@@ -40,7 +41,10 @@ public final class PostTestUtils {
         return Post.getBuilder(id, "Post " + id, postImages)
                 .description("Description " + id)
                 .user(dummyUser(id))
-                .event_date(LocalDateTime.now().plusSeconds(id));
+                .event_date(LocalDateTime.now().plusSeconds(id))
+                .pet("OTHER") // TODO: make dummy
+                .location(new Location(0,0))
+                .contact_phone("1168218680");
     }
 
     public static List<Post> dummyPostList(int size, int initialId) {

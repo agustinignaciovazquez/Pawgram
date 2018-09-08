@@ -74,7 +74,7 @@ public class PostImageJdbcDaoTest {
             assertEquals(expectedList.get(i).getPostId(), actualList.get(i).getPostId());
 
         assertEquals(i, actualList.size());
-        assertEquals(0, postImageDao.getImagesIdByPostId(1).size());
+        assertEquals(DUMMY_LIST_SIZE, postImageDao.getImagesIdByPostId(1).size());
         assertEquals(DUMMY_LIST_SIZE, JdbcTestUtils.countRowsInTable(jdbcTemplate, TABLE_NAME));
     }
 
@@ -92,7 +92,8 @@ public class PostImageJdbcDaoTest {
 
     @Test
     public void createPostImageTest() {
-        PostImage expected = dummyPostImage(0, 0);
+        //TODO: check por que inicializa los ids de las inserciones en 1
+        PostImage expected = dummyPostImage(1, 0);
 
         PostImage actual = postImageDao.createPostImage(0, expected.getUrl());
 

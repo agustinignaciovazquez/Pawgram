@@ -18,10 +18,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class PostJdbcDao implements PostDao {
@@ -43,7 +40,7 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    public Post.PostBuilder createPost(String title, String description, List<byte[]> raw_images, String contact_phone, LocalDateTime event_date,
+    public Post.PostBuilder createPost(String title, String description, List<byte[]> images, String contact_phone, LocalDateTime event_date,
                                        Category category, Pet pet, boolean is_male, Location location, User owner)  throws PostCreateException {
         final Map<String, Object> args = new HashMap<String, Object>();
         args.put("title", title);
@@ -59,7 +56,19 @@ public class PostJdbcDao implements PostDao {
 
         final Number postId = jdbcInsert.executeAndReturnKey(args);
 
-        return Post.getBuilder(postId.longValue(), title,null)
+        //byte[] to PostImage FIX
+
+        List<PostImage> imgs = null;
+        if ( images != null ) {
+            imgs = new ArrayList<>();
+            PostImage pi;
+            for( byte[] b : images ){
+                pi = new PostImage(postId.longValue(), b.toString(), postId.longValue());
+                imgs.add(pi);
+            }
+        }
+
+        return Post.getBuilder(postId.longValue(), title, imgs)
                 .category(category).pet(pet)
                 .description(description)
                 .contact_phone(contact_phone)
@@ -70,6 +79,7 @@ public class PostJdbcDao implements PostDao {
                 .user(owner);
     }
 
+    //ERROR: java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: IMG_URL
     @Override
     public List<PlainPost> getPlainPostsRange(int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
@@ -86,6 +96,7 @@ public class PostJdbcDao implements PostDao {
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),limit,offset);
     }
 
+    //ERROR: java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: IMG_URL
     @Override
     public List<PlainPost> getPlainPostsByCategoryRange(Category category, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet, " +
@@ -103,11 +114,12 @@ public class PostJdbcDao implements PostDao {
                 category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
     }
 
+    //ERROR: java.sql.SQLSyntaxErrorException: duplicate column name in derived table
     @Override
     public Post.PostBuilder getFullPostById(long postId) {
         List<Post.PostBuilder> l = jdbcTemplate.query("SELECT *," +
                         " 0 as distance" +
-                        "FROM posts,users WHERE posts.userId = users.id AND postId = ?",
+                        " FROM posts,users WHERE posts.userId = users.id AND postId = ?",
                 postBuilderRowMapper,postId);
         return (l.isEmpty())? null: l.get(0);
     }
@@ -151,11 +163,12 @@ public class PostJdbcDao implements PostDao {
                 range,category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
     }
 
+    //ERROR: java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: IMG_URL
     @Override
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
                         " 0 as distance" +
-                        " FROM posts WHERE title LIKE %?% ORDER BY postId ASC LIMIT ? OFFSET ?",
+                        " FROM posts WHERE title LIKE '%?%' ORDER BY postId ASC LIMIT ? OFFSET ?",
                 plainPostRowMapper,keyword,limit,offset);
     }
 
@@ -183,6 +196,7 @@ public class PostJdbcDao implements PostDao {
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),category.getLowerName().toUpperCase(Locale.ENGLISH),keyword,limit,offset);
     }
 
+    //ERROR: java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: IMG_URL
     @Override
     public List<PlainPost> getPlainPostsByUserIdRange(long userId, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
