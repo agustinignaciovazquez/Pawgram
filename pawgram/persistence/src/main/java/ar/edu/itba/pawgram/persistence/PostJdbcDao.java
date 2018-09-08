@@ -79,10 +79,9 @@ public class PostJdbcDao implements PostDao {
                 .user(owner);
     }
 
-    //ERROR: java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: IMG_URL
     @Override
     public List<PlainPost> getPlainPostsRange(int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+        return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " 0 as distance" +
                         " FROM posts ORDER BY postId ASC LIMIT ? OFFSET ?",
                 plainPostRowMapper,limit,offset);
@@ -90,16 +89,15 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public List<PlainPost> getPlainPostsRange(Location location, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+        return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts ORDER BY distance DESC LIMIT ? OFFSET ?",
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),limit,offset);
     }
 
-    //ERROR: java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: IMG_URL
     @Override
     public List<PlainPost> getPlainPostsByCategoryRange(Category category, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet, " +
+        return jdbcTemplate.query("SELECT postId, title, category, pet, " +
                         "0 as distance" +
                         " FROM posts WHERE category = ? ORDER BY postId ASC LIMIT ? OFFSET ?",
                 plainPostRowMapper,category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
@@ -107,7 +105,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public List<PlainPost> getPlainPostsByCategoryRange(Location location, Category category, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet, " +
+        return jdbcTemplate.query("SELECT postId, title, category, pet, " +
                         "haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE category = ? ORDER BY distance DESC LIMIT ? OFFSET ?",
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),
@@ -135,7 +133,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public PlainPost getPlainPostById(long postId) {
-        List<PlainPost> l = jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+        List<PlainPost> l = jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " 0 as distance FROM posts WHERE postId = ?",
                 plainPostRowMapper,postId);
         return (l.isEmpty())? null: l.get(0);
@@ -148,7 +146,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public List<PlainPost> getPlainPostsRange(Location location, int range, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+        return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE distance <= ? ORDER BY distance DESC LIMIT ? OFFSET ?",
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),range,limit,offset);
@@ -156,17 +154,16 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public List<PlainPost> getPlainPostsByCategoryRange(Location location, int range, Category category, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet, " +
+        return jdbcTemplate.query("SELECT postId, title, category, pet, " +
                         "haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE distance <= ? AND category = ? ORDER BY distance DESC LIMIT ? OFFSET ?",
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),
                 range,category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
     }
 
-    //ERROR: java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: IMG_URL
     @Override
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+        return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " 0 as distance" +
                         " FROM posts WHERE title LIKE '%?%' ORDER BY postId ASC LIMIT ? OFFSET ?",
                 plainPostRowMapper,keyword,limit,offset);
@@ -174,7 +171,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+        return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE title LIKE %?% ORDER BY distance DESC LIMIT ? OFFSET ?",
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),keyword,limit,offset);
@@ -182,7 +179,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Category category, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+        return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " 0 as distance" +
                         " FROM posts WHERE category = ? AND title LIKE %?% ORDER BY postId ASC LIMIT ? OFFSET ?",
                 plainPostRowMapper,category.getLowerName().toUpperCase(Locale.ENGLISH),keyword,limit,offset);
@@ -190,16 +187,15 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, Category category, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+        return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE category = ? AND title LIKE %?% ORDER BY distance DESC LIMIT ? OFFSET ?",
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),category.getLowerName().toUpperCase(Locale.ENGLISH),keyword,limit,offset);
     }
 
-    //ERROR: java.sql.SQLSyntaxErrorException: user lacks privilege or object not found: IMG_URL
     @Override
     public List<PlainPost> getPlainPostsByUserIdRange(long userId, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+        return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " 0 as distance" +
                         " FROM posts WHERE userId = ? ORDER BY postId ASC LIMIT ? OFFSET ?",
                 plainPostRowMapper,userId,limit,offset);
@@ -207,7 +203,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public List<PlainPost> getPlainPostsByUserIdRange(long userId, Location location, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+        return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE userId = ? ORDER BY distance DESC LIMIT ? OFFSET ?",
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),userId,limit,offset);
@@ -215,7 +211,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public List<PlainPost> getPlainPostsByUserIdRange(long userId, Category category, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+        return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " 0 as distance" +
                         " FROM posts WHERE userId = ? AND category = ? ORDER BY postId ASC LIMIT ? OFFSET ?",
                 plainPostRowMapper,userId,category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
@@ -223,7 +219,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public List<PlainPost> getPlainPostsByUserIdRange(long userId, Location location, Category category, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, img_url, pet," +
+        return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE userId = ? AND category = ? ORDER BY distance DESC LIMIT ? OFFSET ?",
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),userId,category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
