@@ -93,7 +93,6 @@
 						<div class="text formtitle center">Selecciona una especie:</div>
 					</div>
 					<div class="row uspaced20">
-
 						<div class="container optionblock2 radio-group ">
 								<div class="container formoption uspaced50 bspaced50 radio " data-value="One">
 									<div class="row">
@@ -125,6 +124,7 @@
 										</div>	
 									</div>	
 								</div>
+								<input type="text" id="radio-value" name="radio-value" hidden="true" />
 						</div>
 					</div>
 				</div>
@@ -164,7 +164,10 @@
 			</div>
 		</div>
 
-		<div class="container uspaced5">
+		 <div class="row uspaced60">
+        	<div class="text formtitle center">Selecciona el lugar del evento:</div>
+        </div>
+		<div class="container">
             <div class="row">
                 <input id="searchInput" class="controls" type="text" placeholder="Enter a location">
                 <div id="map"></div>
@@ -218,7 +221,7 @@
 
 				            <div class="row uspaced50">
 				            	<div class="lspaced15">
-				            		<button><i class="fa fa-plus"></i></button>	
+				            		<button  type="button"><i class="fa fa-plus"></i></button>	
 				            	</div>
 				            </div>
 
@@ -226,7 +229,7 @@
 				            	<div class="col-md-10">
 				            		<input type="file" name="files" /><br/>
 				            	</div>
-				            	 <button><i class="fa fa-minus"></i></button>
+				            	 <button  type="button"><i class="fa fa-minus"></i></button>
 				            </div>
 				            
 				            
@@ -240,7 +243,7 @@
 
         <div class="row">
         	<div class="center">
-        		<button type="button" id="submit" name="submit" class="btn btn-lg btn-success pull-right">Crear anuncio</button>
+        		<button id="submit" name="submit" class="btn btn-lg btn-success pull-right">Crear anuncio</button>
         	</div>
         	
         </div>
