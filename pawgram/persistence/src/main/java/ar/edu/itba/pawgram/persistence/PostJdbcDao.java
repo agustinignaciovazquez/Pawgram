@@ -115,9 +115,8 @@ public class PostJdbcDao implements PostDao {
     //ERROR: java.sql.SQLSyntaxErrorException: duplicate column name in derived table
     @Override
     public Post.PostBuilder getFullPostById(long postId) {
-        List<Post.PostBuilder> l = jdbcTemplate.query("SELECT *," +
-                        " 0 as distance" +
-                        " FROM posts,users WHERE posts.userId = users.id AND postId = ?",
+        List<Post.PostBuilder> l = jdbcTemplate.query("SELECT X.*, 0 as distance "  +
+                        " FROM (SELECT * FROM posts,users WHERE posts.userId = users.id) X WHERE postId = ?",
                 postBuilderRowMapper,postId);
         return (l.isEmpty())? null: l.get(0);
     }
@@ -161,9 +160,11 @@ public class PostJdbcDao implements PostDao {
                 range,category.getLowerName().toUpperCase(Locale.ENGLISH),limit,offset);
     }
 
+    //TODO: el error es que en PlainPost tenemos la var de PostImage pero en el query no estamos trayendo img
+    // habria que ver si ponerle valor null o sacar la var del RowMapper
     @Override
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, int limit, long offset) {
-        return jdbcTemplate.query("SELECT postId, title, category, pet," +
+        return jdbcTemplate.query("SELECT postId, title, category, NULL, pet," +
                         " 0 as distance" +
                         " FROM posts WHERE title LIKE '%?%' ORDER BY postId ASC LIMIT ? OFFSET ?",
                 plainPostRowMapper,keyword,limit,offset);
