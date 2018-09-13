@@ -165,32 +165,33 @@ public class PostJdbcDao implements PostDao {
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " 0 as distance" +
-                        " FROM posts WHERE title LIKE '%?%' ORDER BY postId ASC LIMIT ? OFFSET ?",
-                plainPostRowMapper,keyword,limit,offset);
+                        " FROM posts WHERE title LIKE lower(?) ORDER BY postId ASC LIMIT ? OFFSET ?",
+                plainPostRowMapper,"%"+keyword+"%",limit,offset);
     }
 
     @Override
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
-                        " FROM posts WHERE title LIKE %?% ORDER BY distance DESC LIMIT ? OFFSET ?",
-                plainPostRowMapper,location.getLatitude(),location.getLongitude(),keyword,limit,offset);
+                        " FROM posts WHERE title LIKE lower(?) ORDER BY distance DESC LIMIT ? OFFSET ?",
+                plainPostRowMapper,location.getLatitude(),location.getLongitude(),"%"+keyword+"%",limit,offset);
     }
 
     @Override
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Category category, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " 0 as distance" +
-                        " FROM posts WHERE category = ? AND title LIKE %?% ORDER BY postId ASC LIMIT ? OFFSET ?",
-                plainPostRowMapper,category.getLowerName().toUpperCase(Locale.ENGLISH),keyword,limit,offset);
+                        " FROM posts WHERE category = ? AND title LIKE lower(?) ORDER BY postId ASC LIMIT ? OFFSET ?",
+                plainPostRowMapper,category.getLowerName().toUpperCase(Locale.ENGLISH),"%"+keyword+"%",limit,offset);
     }
 
     @Override
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, Category category, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, pet," +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
-                        " FROM posts WHERE category = ? AND title LIKE %?% ORDER BY distance DESC LIMIT ? OFFSET ?",
-                plainPostRowMapper,location.getLatitude(),location.getLongitude(),category.getLowerName().toUpperCase(Locale.ENGLISH),keyword,limit,offset);
+                        " FROM posts WHERE category = ? AND title LIKE lower(?) ORDER BY distance DESC LIMIT ? OFFSET ?",
+                plainPostRowMapper,location.getLatitude(),location.getLongitude(),
+                category.getLowerName().toUpperCase(Locale.ENGLISH),"%"+keyword+"%",limit,offset);
     }
 
     @Override
@@ -255,14 +256,15 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public long getTotalPostsByKeyword(String keyword) {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE title LIKE %?%", Integer.class,keyword);
+        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE title LIKE lower(?)",
+                Integer.class,"%"+keyword+"%");
         return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPostsByKeyword(String keyword, Category category) {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE category = ? AND title LIKE %?%", Integer.class,
-                category.getLowerName().toUpperCase(Locale.ENGLISH),keyword);
+        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE category = ? AND title LIKE lower(?)",
+                Integer.class, category.getLowerName().toUpperCase(Locale.ENGLISH),"%"+keyword+"%");
         return total != null ? total : 0;
     }
 
