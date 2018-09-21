@@ -7,6 +7,64 @@ body {
     overflow-x: hidden; 
 }
 
+#myCarousel .list-inline {
+    white-space:nowrap;
+    overflow-x:auto;
+}
+
+#myCarousel .carousel-indicators {
+    position: static;
+    width: initial;
+}
+
+#myCarousel .carousel-indicators > li {
+    width: initial;
+    height: initial;
+    text-indent: initial;
+}
+
+#myCarousel .carousel-indicators > li.active img {
+    opacity: 0.7;
+}
+
+
+.carrouselimg{
+	width:800px;
+	height: 500px;
+}
+
+.postcontactinfo{
+	font-size: 20px;
+}
+
+.postcontent{
+	background: rgba(255, 255, 255, 0.8); 
+	border-radius: 5px;
+}
+
+.posttitle{
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.postdate{
+	font-size: 20px;
+}
+
+.postmaininfo{
+	font-size: 24px;
+	font-style: italic;
+}
+
+.postcontact{
+	font-size: 26px;
+}
+
+.postdescription{
+	font-size: 18px;	
+}
+
+
 #wrapper{
 	padding:90px 15px;
 }
@@ -100,6 +158,7 @@ body {
 .uspaced5{
 	padding-top: 50px;
 }
+
 
 #map {
     width: 100%;
@@ -260,6 +319,11 @@ body {
 .lspaced50{
 	padding-left: 50px;
 }
+
+.lspaced10{
+	padding-left: 10px;
+}
+
 
 .profilebanner{
 	background: url(../img/dark-title-background.jpg) no-repeat center center fixed;

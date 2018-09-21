@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<head>
+
+	<meta charset="UTF-8">
+	<title>Pawgram - Post</title>
+
+	<!-- Para jsp
+
+	<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
+	<link rel="stylesheet" href="<c:url value="/resources/css/pawgram.css"/>">
+
+	<script src="<c:url value="/resources/js/pawgram.js"/>"></script>
+	<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+	<script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
+
+	!-->
+
+  <link href="css/all.css" rel="stylesheet"/>
+	<link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+	<link rel="stylesheet" href="css/pawgramin.css"/>
+
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+  <script src="js/pawgram.js"></script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
+
+</head>
+
+
+<body>
+	
+	<!--HEADER-->
+    <div id="wrapper" class="animate">
+
+         <nav class="navbar header-top fixed-top navbar-expand-lg navbar-light pawnav">
+          <span class="navbar-toggler-icon leftmenutrigger"></span>
+          <img src="img/logo.png" class="logo-navbar"/>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+             <ul class="navbar-nav ml-md-auto d-md-flex">
+              <li class="nav-item">
+                <a class="nav-link pawlink text nav-sec" href="#">Busquedas
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="#">Adopciones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="#">Emergencias</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav animate side-nav">
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="#">Mi perfil
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="#">Mis Zonas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="#">Configuracion</a>
+              </li>             
+              <hr></hr>
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="#">Cerrar Sesion</a>
+              </li>
+            </ul>
+           
+          </div>
+        </nav>
+    </div>
+
+	<!--HEADER-->  
+       <!-- main slider carousel -->
+        <div class="row uspaced20">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5" id="slider">
+              <div class="container postcontent">  
+                      <div id="myCarousel" class="carousel slide">
+                          <!-- main slider carousel items -->
+                          <div class="carousel-inner">
+                              <div class="active item carousel-item" data-slide-number="0">
+                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mgsUGEdhzwiNL_Q0AFYONG-JHKR5SetOJVKCedYQG3U6oyLoyw" class="center img-fluid carrouselimg">
+                              </div>
+                              <div class="item carousel-item" data-slide-number="1">
+                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mgsUGEdhzwiNL_Q0AFYONG-JHKR5SetOJVKCedYQG3U6oyLoyw" class="center img-fluid carrouselimg">
+                              </div>
+                              <div class="item carousel-item" data-slide-number="2">
+                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mgsUGEdhzwiNL_Q0AFYONG-JHKR5SetOJVKCedYQG3U6oyLoyw" class="center img-fluid carrouselimg">
+                              </div>
+                              <div class="item carousel-item" data-slide-number="3">
+                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mgsUGEdhzwiNL_Q0AFYONG-JHKR5SetOJVKCedYQG3U6oyLoyw" class="center img-fluid carrouselimg">
+                              </div>
+                              <div class="item carousel-item" data-slide-number="4">
+                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mgsUGEdhzwiNL_Q0AFYONG-JHKR5SetOJVKCedYQG3U6oyLoyw" class="center img-fluid carrouselimg">
+                              </div>
+                              
+
+                              <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              </a>
+                              <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              </a>
+
+                          </div>
+                          <!-- main slider carousel nav controls -->
+
+
+                          <ul class="carousel-indicators uspaced20">
+                              <li class="list-inline-item active">
+                                  <a id="carousel-selector-0" class="selected" data-slide-to="0" data-target="#myCarousel">
+                                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mgsUGEdhzwiNL_Q0AFYONG-JHKR5SetOJVKCedYQG3U6oyLoyw" class="img-fluid">
+                                  </a>
+                              </li>
+                              <li class="list-inline-item">
+                                  <a id="carousel-selector-1" data-slide-to="1" data-target="#myCarousel">
+                                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mgsUGEdhzwiNL_Q0AFYONG-JHKR5SetOJVKCedYQG3U6oyLoyw" class="img-fluid">
+                                  </a>
+                              </li>
+                              <li class="list-inline-item">
+                                  <a id="carousel-selector-2" data-slide-to="2" data-target="#myCarousel">
+                                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mgsUGEdhzwiNL_Q0AFYONG-JHKR5SetOJVKCedYQG3U6oyLoyw" class="img-fluid">
+                                  </a>
+                              </li>
+                              <li class="list-inline-item">
+                                  <a id="carousel-selector-3" data-slide-to="3" data-target="#myCarousel">
+                                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mgsUGEdhzwiNL_Q0AFYONG-JHKR5SetOJVKCedYQG3U6oyLoyw" class="img-fluid">
+                                  </a>
+                              </li>
+                              <li class="list-inline-item">
+                                  <a id="carousel-selector-4" data-slide-to="4" data-target="#myCarousel">
+                                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mgsUGEdhzwiNL_Q0AFYONG-JHKR5SetOJVKCedYQG3U6oyLoyw" class="img-fluid">
+                                  </a>
+                              </li>
+
+                          </ul>
+                  </div>
+                  <div class="row uspaced20"></div>
+                </div>  
+            </div>
+            <div class="col-lg-5">
+              <div class="container postcontent">
+                
+                <div class="text posttitle">Tomy - Perro esta en celo y necesita ponerla</div>
+                
+                <div class="text postdate uspaced10"> El evento ocurrio el 14/12/2018</div>
+                
+                <div class="text postmaininfo uspaced10"><span class="badge badge-pill badge-primary text postmaininfo">En Adopcion</span><em class="lspaced10">A 0,7 kms</em> <em> / </em> <em>Especie</em><em>:</em> <em>Perro</em> <em> / </em> <em>Sexo</em><em>:</em> <em>Macho</em>
+                </div>
+
+                <div class="text postdescription uspaced20"> Ultimamente Tomy se encuentra con mucho tiempo libre y no sabe que hacer. Es por ello que decidimos conseguirle una hembra para poder aparearse y asi liberar sus tensiones. No tenemos preferencia alguna; Tomy no es muy exigente y cualquiera le viene bien (color de pelo, tamaño, raza, todo le es indiferente). Solamente solicitamos que la perra este dispuesta a hacerlo sin compromiso. Dejamos en claro, que ante cualquier inconveniente que pueda surgir luego del apareamiento, Tomy queda exento de toda responsabilidad, y su patrimonio no sera puesto en juego.</div>
+
+                <div class="uspaced20">
+                  <div class="text postcontact"> Lugar del evento: </div>
+                  <input id="searchInput" class="controls" type="text" placeholder="Enter a location">
+                   <div id="map"></div>
+                          <!--<ul id="geoData">
+                              <li>Direccion: <span id="location"></span></li>
+                              <li>Codigo Postal: <span id="postal_code"></span></li>
+                              <li>Pais: <span id="country"></span></li>
+                              <li>Latitud: <span id="lat"></span></li>
+                              <li>Longitud: <span id="lon"></span></li>
+                          </ul>-->
+                </div>
+
+                <div class="text postcontact uspaced20"> Datos de contacto:</div>
+                <div class="text postcontactinfo"> Nombre: Santiago Manganaro</div>
+                <div class="text postcontactinfo"> Telefono: 135314124 </div>
+                <div class="text postcontactinfo"> E-mail: tesdaasf@gmail.com</div>
+
+
+
+                <div class="row uspaced20"></div>
+
+             </div>
+            <div class="col-lg-1"></div>
+
+        </div>
+        <!--/main slider carousel--> 
+
+  
+  
+    		
+
+	<!--FOOTER-->
+    <div class="row uspaced60"></div>
+    <div class="container-fluid footer">
+        <div class="text footertext">© 2018 Todos los derechos reservados pawgram.org</div> 
+    </div>
+  <!--FOOTER-->
+
+
+
+
+</body>
