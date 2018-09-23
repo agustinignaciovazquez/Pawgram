@@ -84,14 +84,14 @@ public class Post implements PlainPost {
 	public LocalDateTime getEvent_date() {
 		return event_date;
 	}
-
+	@Override
 	public boolean isMale() {
 		return is_male;
 	}
 	public Location getLocation(){return location;}
 
 	public User getOwner() { return owner; }
-
+	@Override
 	public int getDistance() { return distance; }
 
 	public List<CommentFamily> getCommentFamilies() { return commentFamilies; }

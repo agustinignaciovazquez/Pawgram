@@ -18,6 +18,6 @@ public class PlainPostRowMapper implements RowMapper<PlainPost> {
         final long postId = rs.getLong("postId");
         return Post.getBuilder(postId, rs.getString("title"), postImageDao.getImagesIdByPostId(postId))
                 .category(rs.getString("category")).pet(rs.getString("pet")).distance(rs.getInt("distance"))
-                .build();
+                .is_male(rs.getBoolean("is_male")).build();
     }
 }
