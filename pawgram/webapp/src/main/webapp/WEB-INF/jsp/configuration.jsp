@@ -1,28 +1,21 @@
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <head>
 
 	<meta charset="UTF-8">
-	<title>Pawgram - Configuration</title>
+	<title><spring:message code="Pawgram - Configuration"/></title>
 
-	<!-- Para jsp
-
+  <link href="<c:url value="/resources/css/all.css"/>" rel="stylesheet" id="font-awesome">
 	<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
-	<link rel="stylesheet" href="<c:url value="/resources/css/pawgram.css"/>">
+	<link rel="stylesheet" href="<c:url value="/resources/css/pawgramin.css"/>">
 
-	<script src="<c:url value="/resources/js/pawgram.js"/>"></script>
+	
+  <script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
 	<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
-	<script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
-
-	!-->
-
-  <link href="css/all.css" rel="stylesheet"/>
-	<link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
-	<link rel="stylesheet" href="css/pawgramin.css"/>
-
-	<script src="js/jquery-3.3.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-  <script src="js/pawgram.js"></script>
+  <script src="<c:url value="/resources/js/pawgram.js"/>"></script>
 
   <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
 
