@@ -36,7 +36,7 @@
 	          </div>
 
 	          <div>
-	          	<input type="password" name="j_password" placeholder="Password" class="form-control input-lg"/>
+	          	<input type="password" name="j_password" placeholder="<spring:msg" class="form-control input-lg"/>
 	          </div>         
 	          <div>
 				<label><input name="j_rememberme" type="checkbox"/> <spring:message code="remember_me"/> Recuerdame</label>
