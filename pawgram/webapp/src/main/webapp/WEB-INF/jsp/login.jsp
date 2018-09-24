@@ -5,7 +5,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Pawgram - Login</title>
+	<title><spring:message code="pageName"/> - <spring:message code="login"/></title>
 
 	<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
 	<link rel="stylesheet" href="<c:url value="/resources/css/pawgram.css"/>">
@@ -32,18 +32,18 @@
 	          <img src="<c:url value="/resources/img/logo.png"/>" class="img-responsive" alt="" />
 	          
 			  <div>
-	          	<input type="text" name="j_username" placeholder="Email" class="form-control input-lg"/>
+	          	<input type="text" name="j_username" placeholder="<spring:message code="mail"/>" class="form-control input-lg"/>
 	          </div>
 
 	          <div>
-	          	<input type="password" name="j_password" placeholder="<spring:msg" class="form-control input-lg"/>
+	          	<input type="password" name="j_password" placeholder="<spring:message code="password"/>" class="form-control input-lg"/>
 	          </div>         
 	          <div>
-				<label><input name="j_rememberme" type="checkbox"/> <spring:message code="remember_me"/> Recuerdame</label>
+				<label><input name="j_rememberme" type="checkbox"/> <spring:message code="remember_me"/></label>
 			</div>
-	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="Sign in"></input>
+	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="<spring:message code="login"/>"></input>
 	          <div>
-	            <a href="${registerUrl}">Create account</a> or <a href="#">reset password</a>
+	            <a href="${registerUrl}"><spring:message code="create.account"/></a> <spring:message code="or"/> <a href="#"><spring:message code="resetpw"/></a>
 	          </div>
 	        </form>
 	      </section>  

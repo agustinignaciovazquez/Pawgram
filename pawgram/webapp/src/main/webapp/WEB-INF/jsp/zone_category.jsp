@@ -97,9 +97,8 @@
                 
             <c:choose>
             <c:when test="${searchZone.posts.isEmpty()}">
-                  <h2><spring:message code="msg.sorry"/></h2>
-                  <h3><spring:message code="msg.nopost"/></h3>
-    
+                  <div class="text center"><spring:message code="msg.sorry"/></div>
+                  <div class="text center"><spring:message code="msg.nopost"/></div>
             </c:when>
             <c:otherwise>
           

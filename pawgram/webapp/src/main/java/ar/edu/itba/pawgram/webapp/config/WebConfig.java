@@ -1,5 +1,4 @@
 package ar.edu.itba.pawgram.webapp.config;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 

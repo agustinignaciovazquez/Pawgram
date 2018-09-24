@@ -6,7 +6,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Pawgram - Register</title>
+	<title><spring:message code="pageName"/> - <spring:message code="register"/></title>
 
 	<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
 	<link rel="stylesheet" href="<c:url value="/resources/css/pawgram.css"/>">
@@ -32,31 +32,37 @@
 	          <img src="<c:url value="/resources/img/logo.png"/>" class="img-responsive" alt="" />
 
 	          <div>
-	          	<form:input type="text" path="name" placeholder="Name" class="form-control input-lg"/>
+	          	<spring:message code="name" var="name"/>
+	          	<form:input type="text" path="name" placeholder="${name}" class="form-control input-lg"/>
 				<form:errors path="name" cssClass="formError" element="p" />
 	          </div>
 
 	          <div>
-	          	<form:input type="text" path="surname" placeholder="Surname" class="form-control input-lg"/>
+	          	<spring:message code="surname" var="surname"/>
+	          	<form:input type="text" path="surname" placeholder="${surname}" class="form-control input-lg"/>
 				<form:errors path="surname" cssClass="formError" element="p" />
 	          </div>
 
 	          <div>
-	          	<form:input type="text" path="mail" placeholder="Email" class="form-control input-lg"/>
+	          	<spring:message code="mail" var="mail"/>
+	          	<form:input type="text" path="mail" placeholder="${mail}" class="form-control input-lg"/>
 				<form:errors path="mail" cssClass="formError" element="p" />
 	          </div>
 
 	          <div>
-	          	<form:input type="password" path="passwordForm.password" placeholder="Password" class="form-control input-lg"/>
+	          	<spring:message code="password" var="password"/>
+	          	<form:input type="password" path="passwordForm.password" placeholder="${password}" class="form-control input-lg"/>
 				<form:errors path="passwordForm.password" cssClass="formError" element="p" />
 	          </div>
 
 	          <div>
-	          	<form:input type="password" path="passwordForm.repeatPassword" placeholder="Repeat Password" class="form-control input-lg"/>
+	          	<spring:message code="confirmpw" var="confirmpw"/>
+	          	<form:input type="password" path="passwordForm.repeatPassword" placeholder="${confirmpw}" class="form-control input-lg"/>
 				<form:errors path="passwordForm.repeatPassword" cssClass="formError" element="p" />
 	          </div>
 	          
-	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="Register"></input>
+	          <spring:message code="register" var="register"/>
+	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value=${register}></input>
 	          
 	        </form:form>
 	      </section>  
