@@ -7,9 +7,9 @@
 
 	<meta charset="UTF-8">
   <c:choose>
-         <c:when test="${empty currentCategory}"><title>Pawgram - INICIO INTERNACIONALIZAR SANTI"/></title></c:when>
+         <c:when test="${empty currentCategory}"><title><spring:message code="pageName"/>  - ZONE </title></c:when>
          <c:otherwise>
-          <title>Pawgram - <spring:message code="category.${category.lowerName}"/></title>
+          <title><spring:message code="pageName"/> - ZONE - <spring:message code="category.${currentCategory.lowerName}"/></title>
          </c:otherwise>
   </c:choose>  
 	
@@ -47,7 +47,7 @@
                <c:choose>
                      <c:when test="${empty currentCategory}">
                       <li class="nav-item">
-                        <a class="nav-link text nav-sec" href="<c:out value="${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
+                        <a class="nav-link text nav-sec" href="<c:url value="/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
                       </li>
                    </c:when>
                      <c:otherwise>
@@ -62,17 +62,17 @@
             </ul>
             <ul class="navbar-nav animate side-nav">
               <li class="nav-item">
-                <a class="nav-link text nav-sec" href="#">Mi perfil</a>
+                <a class="nav-link text nav-sec" href="<c:url value="/profile/${loggedUser.id}"/>">Mi perfil</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text nav-sec" href="#">Mis Zonas</a>
+                <a class="nav-link text nav-sec" href="<c:url value="/my_zones"/>">Mis Zonas</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text nav-sec" href="#">Configuracion</a>
+                <a class="nav-link text nav-sec" href="<c:url value="/customize"/>">Configuracion</a>
               </li>             
               <hr></hr>
               <li class="nav-item">
-                <a class="nav-link text nav-sec" href="#">Cerrar Sesion</a>
+                <a class="nav-link text nav-sec" href="<c:url value="/logout"/>">Cerrar Sesion</a>
               </li>
             </ul>
            
@@ -88,32 +88,15 @@
 				<div class="text titsec"><c:choose>
          <c:when test="${empty currentCategory}"><spring:message code="category.all"/></c:when>
          <c:otherwise>
-          <spring:message code="category.${currentCategory.lowerName}"/>
+          <spring:message code="category.all"/> - <spring:message code="category.${currentCategory.lowerName}"/>
          </c:otherwise>
   </c:choose> </div>
 			</div>
 		</div>
 
-		<div class="row uspaced60">
-			<div class="center">
-			 <div class="text noposttext"> Aun no tienes ninguna emergencia en proceso </div>
-			</div>     
-		</div>
-
-		<div class="row uspaced20">
-			<div class="center">
-				<button type="submit" class="btn btn-success newbutton">
-	    			<i class="fas fa-plus"></i> Iniciar nueva emergencia
-				</button>  	
-			</div>
-			    
-		</div>
 
 		<div class="container uspaced5">
 
-            <div class="row">
-                <div class="text zonetext "> Cerca de Quilmes</div>
-            </div>
             <div class="row uspaced20">
                 
             <c:choose>
@@ -139,12 +122,12 @@
 
                             <div class="card-img-overlay"> <span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text categorytext"><spring:message code="pill.${post.category.lowerName}"/></span> </div>
                             <div class="card-body">
-                                <p class="card-text"><small class="text  text-time"><em>Distancia</em><em>:</em> <em> <c:out value="${post.distance}"/> kms</em> <em> / </em> <em>Especie</em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em>Sexo</em><em>:</em> <em>CAMBIAR DESPUES</em> </small></p>
+                                <p class="card-text"><small class="text  text-time"><em><spring:message code="distance"/></em><em>:</em> <em> <c:out value="${post.distance}"/> <spring:message code="kms"/></em> <em> / </em> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em>CAMBIAR DESPUES</em> </small></p>
                                 <div class="news-title">
                                     <h2 class="text title-small"><c:out value="${post.title}"/></h2>
                                 </div>
                                 <div class="card-exp">
-                                    <i class="far fa-eye"> <div class="text seemoretext">Ver Detalles</div></i>
+                                    <i class="far fa-eye"> <div class="text seemoretext"><spring:message code="details"/></div></i>
                                 </div>
                                 
                             </div>
@@ -167,7 +150,7 @@
 	<!--FOOTER-->
     <div class="row uspaced60"></div>
     <div class="container-fluid footer">
-        <div class="text footertext">© 2018 Todos los derechos reservados pawgram.org</div> 
+        <div class="text footertext"><spring:message code="footer"/></div> 
     </div>
     <!--FOOTER-->
 
