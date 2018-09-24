@@ -85,7 +85,7 @@ public class SearchZoneController {
             throw new ResourceNotFoundException();
         }
 
-        ModelAndView mav = new ModelAndView("index");
+        ModelAndView mav = new ModelAndView("zone_category");
         mav.addObject("categories", Category.values());
         mav.addObject("searchZone", searchZone);
         mav.addObject("currentPage", page);
