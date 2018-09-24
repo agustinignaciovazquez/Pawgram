@@ -1,10 +1,12 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
+import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.interfaces.service.SearchZoneService;
 import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
 import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.SearchZone;
 import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 import ar.edu.itba.pawgram.webapp.exception.ForbiddenException;
 import ar.edu.itba.pawgram.webapp.exception.ResourceNotFoundException;
@@ -26,18 +28,21 @@ public class SearchZonesController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchZoneController.class);
     @Autowired
     private SearchZoneService searchZoneService;
-
+    @Autowired
+    private PostService postService;
     @RequestMapping(value = "/category/{category}")
     public ModelAndView showZonesByCategory(@ModelAttribute("loggedUser") final User loggedUser,
                                                 @PathVariable(value = "category") Category category)  {
         LOGGER.debug("Accessed all zones category {} ", category);
 
         final List<SearchZone> searchZones = searchZoneService.getFullSearchZonesByIdAndCategory(loggedUser, category,1,PAGE_SIZE);
+        final List<PlainPost> userPosts = postService.getPlainPostsByUserIdPaged(loggedUser.getId(),category,1,PAGE_SIZE);
 
         ModelAndView mav = new ModelAndView("zone_all");
         mav.addObject("currentCategory", category);
         mav.addObject("categories", Category.values());
         mav.addObject("searchZones", searchZones);
+        mav.addObject("userPosts", userPosts);
         return mav;
     }
 
@@ -46,10 +51,12 @@ public class SearchZonesController {
         LOGGER.debug("Accessed all zones");
 
         final List<SearchZone> searchZones = searchZoneService.getFullSearchZonesById(loggedUser,1,PAGE_SIZE);
+        final List<PlainPost> userPosts = postService.getPlainPostsByUserIdPaged(loggedUser.getId(),1,PAGE_SIZE);
 
         ModelAndView mav = new ModelAndView("zone_all");
         mav.addObject("categories", Category.values());
         mav.addObject("searchZones", searchZones);
+        mav.addObject("userPosts", userPosts);
         return mav;
     }
 
