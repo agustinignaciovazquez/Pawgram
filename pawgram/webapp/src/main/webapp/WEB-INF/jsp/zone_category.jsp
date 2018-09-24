@@ -47,13 +47,13 @@
                <c:choose>
                      <c:when test="${empty currentCategory}">
                       <li class="nav-item">
-                        <a class="nav-link text nav-sec" href="<c:url value="/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
+                        <a class="nav-link text nav-sec" href="<c:url value="/zones/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
                       </li>
                    </c:when>
                      <c:otherwise>
                       <c:set var="active" value="${category eq currentCategory}"/>
                       <li class="nav-item ${active ? 'active' : ''}">
-                        <a class="nav-link text nav-sec" href="<c:out value="${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
+                        <a class="nav-link text nav-sec" href="<c:out value="/zones/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
                       </li>
                      </c:otherwise>
               </c:choose>  
@@ -62,17 +62,17 @@
             </ul>
             <ul class="navbar-nav animate side-nav">
               <li class="nav-item">
-                <a class="nav-link text nav-sec" href="<c:url value="/profile/${loggedUser.id}"/>">Mi perfil</a>
+                <a class="nav-link text nav-sec" href="<c:url value="/profile/${loggedUser.id}"/>"><spring:message code="title.myprofile"/></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text nav-sec" href="<c:url value="/my_zones"/>">Mis Zonas</a>
+                <a class="nav-link text nav-sec" href="<c:url value="/my_zones"/>"><spring:message code="title.myzones"/></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text nav-sec" href="<c:url value="/customize"/>">Configuracion</a>
+                <a class="nav-link text nav-sec" href="<c:url value="/customize"/>"><spring:message code="title.configuration"/></a>
               </li>             
               <hr></hr>
               <li class="nav-item">
-                <a class="nav-link text nav-sec" href="<c:url value="/logout"/>">Cerrar Sesion</a>
+                <a class="nav-link text nav-sec" href="<c:url value="/logout"/>"><spring:message code="title.logout"/></a>
               </li>
             </ul>
            
@@ -101,8 +101,7 @@
                 
             <c:choose>
             <c:when test="${searchZone.posts.isEmpty()}">
-                  <div class="text center"><spring:message code="msg.sorry"/></div>
-                  <div class="text center"><spring:message code="msg.nopost"/></div>
+                  <div class="text center noposttext"><spring:message code="msg.sorry"/> <spring:message code="msg.nopost"/></div>
             </c:when>
             <c:otherwise>
           

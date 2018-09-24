@@ -7,9 +7,9 @@
 
   <meta charset="UTF-8">
   <c:choose>
-         <c:when test="${empty currentCategory}"><title><spring:message code="pageName"/>  - ZONE </title></c:when>
+         <c:when test="${empty currentCategory}"><title><spring:message code="pageName"/>  </title></c:when>
          <c:otherwise>
-          <title><spring:message code="pageName"/> - ZONE - <spring:message code="category.${currentCategory.lowerName}"/></title>
+          <title><spring:message code="pageName"/> <spring:message code="category.${currentCategory.lowerName}"/></title>
          </c:otherwise>
   </c:choose>  
   
@@ -47,13 +47,13 @@
                <c:choose>
                      <c:when test="${empty currentCategory}">
                       <li class="nav-item">
-                        <a class="nav-link text nav-sec" href="<c:url value="/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
+                        <a class="nav-link text nav-sec" href="<c:url value="/zones/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
                       </li>
                    </c:when>
                      <c:otherwise>
                       <c:set var="active" value="${category eq currentCategory}"/>
                       <li class="nav-item ${active ? 'active' : ''}">
-                        <a class="nav-link text nav-sec" href="<c:out value="${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
+                        <a class="nav-link text nav-sec" href="<c:out value="/zones/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
                       </li>
                      </c:otherwise>
               </c:choose>  
@@ -62,17 +62,17 @@
             </ul>
             <ul class="navbar-nav animate side-nav">
               <li class="nav-item">
-                <a class="nav-link text nav-sec" href="<c:url value="/profile/${loggedUser.id}"/>">Mi perfil</a>
+                <a class="nav-link text nav-sec" href="<c:url value="/profile/${loggedUser.id}"/>"><spring:message code="title.myprofile"/></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text nav-sec" href="<c:url value="/my_zones"/>">Mis Zonas</a>
+                <a class="nav-link text nav-sec" href="<c:url value="/my_zones"/>"><spring:message code="title.myzones"/></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text nav-sec" href="<c:url value="/customize"/>">Configuracion</a>
+                <a class="nav-link text nav-sec" href="<c:url value="/customize"/>"><spring:message code="title.configuration"/></a>
               </li>             
               <hr></hr>
               <li class="nav-item">
-                <a class="nav-link text nav-sec" href="<c:url value="/logout"/>">Cerrar Sesion</a>
+                <a class="nav-link text nav-sec" href="<c:url value="/logout"/>"><spring:message code="title.logout"/></a>
               </li>
             </ul>
            
@@ -81,52 +81,124 @@
     </div>
 
   <!--HEADER-->  
+    <c:choose>
+      <c:when test="${empty currentCategory}"></c:when>
+      <c:otherwise>
+      <div class="container-fluid titzon">
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="text titsec">
+            <spring:message code="category.${currentCategory.lowerName}"/>
+          </div>
+        </div>
+      </div>
+      </c:otherwise>
+    </c:choose> 
 
-    <div class="container-fluid titzon">
-      <div class="row">
-        <div class="col-md-3"></div>
-        <div class="text titsec"><c:choose>
-         <c:when test="${empty currentCategory}"><spring:message code="category.all"/></c:when>
+
+    <c:choose>
+         <c:when test="${empty currentCategory}"></c:when>
          <c:otherwise>
-          <spring:message code="category.all"/> - <spring:message code="category.${currentCategory.lowerName}"/>
+          <c:choose>
+            <c:when test="${userPosts.isEmpty()}">
+              <div class="row uspaced60">
+                <div class="center">
+                 <div class="text noposttext"> <spring:message code="empty.${currentCategory.lowerName}"/> </div>
+                </div>     
+              </div>
+            </c:when>
+            <c:otherwise>
+            <div class="container ">
+              <div class="row uspaced5"> 
+                <div class="text zonetext "> <spring:message code="my.${currentCategory.lowerName}"/> </div>
+              </div>
+              <div class="row uspaced20">
+              <c:forEach items="${userPosts}" var="post">
+                <div class="col-md-4">                  
+                      <a href="<c:url value="/post/${post.id}"/>" class="">
+                          <div class="card uspaced20"> 
+                            <c:choose>
+                              <c:when test="${post.postImages.isEmpty()}">
+                                   <img class="img-fluid card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" alt="">
+                              </c:when>
+                              <c:otherwise>
+                                    <img class="img-fluid card-img" src="<c:url value="/post/images/${post.postImages[0]}"/>" alt="">
+                             </c:otherwise>
+                           </c:choose>
+                             
+
+                              <div class="card-img-overlay"> <span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text categorytext"><spring:message code="pill.${post.category.lowerName}"/></span> </div>
+                              <div class="card-body">
+                                  <p class="card-text"><small class="text  text-time"> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em>CAMBIAR DESPUES</em> </small></p>
+                                  <div class="news-title">
+                                      <h2 class="text title-small"><c:out value="${post.title}"/></h2>
+                                  </div>
+                                  <div class="card-exp">
+                                      <i class="far fa-eye"> <div class="text seemoretext"><spring:message code="details"/></div></i>
+                                  </div>
+                                  
+                              </div>
+                          </div>
+                      </a>
+                  </div>  
+                            
+                  
+              </c:forEach>
+            </div>
+          </div>
+            </c:otherwise>  
+          </c:choose> 
+
+          <div class="row uspaced5">
+            <div class="center">
+              <button type="submit" class="btn btn-success newbutton">
+                  <i class="fas fa-plus"></i> <spring:message code="init.${currentCategory.lowerName}"/>
+              </button>   
+            </div>
+          </div>
          </c:otherwise>
-  </c:choose> </div>
+  </c:choose> 
+
+  <div class="row uspaced60">
+    <div class="col-md-3"></div>  
+    <div class="col-md-6">
+      <div id="custom-search-input">
+        <label for="validationCustom03" class="text filttext"><spring:message code="search.post"/></label>
+        <div class="input-group col-md-12 ">
+                                
+         <input type="text" class="  search-query form-control form-control-md text" placeholder="Search" />
+          <span class="input-group-btn">
+            <button class="btn uspacedfa" type="button">
+              <i class=" fas fa-search"></i>
+            </button>
+          </span>
+        </div>
       </div>
     </div>
-
-    <div class="row uspaced60">
-      <div class="center">
-       <div class="text noposttext"> Aun no tienes ninguna emergencia en proceso </div>
-      </div>     
-    </div>
-
-    <div class="row uspaced20">
-      <div class="center">
-        <button type="submit" class="btn btn-success newbutton">
-            <i class="fas fa-plus"></i> Iniciar nueva emergencia
-        </button>   
-      </div>
+  </div>
+    
           
-    </div>
+    
 
-    <div class="container uspaced5">
+    <div class="container ">
             <c:forEach items="${searchZones}" var="searchZone">
-            <div class="row">
-                <div class="text zonetext "> Cerca de ZONE</div>
+            <div class="row uspaced5">
+                <div class="text zonetext "> <spring:message code="near"/> ZONE</div>
+                <div class="col-md-1"></div>
+                <a href="AGUSTIN HACELO" class="text seemoretext uspaced50"><spring:message code="seemore"/></a>
             </div>
             <div class="row uspaced20">
                 
             <c:choose>
             <c:when test="${searchZone.posts.isEmpty()}">
-                  <div class="text center"><spring:message code="msg.sorry"/></div>
-                  <div class="text center"><spring:message code="msg.nopost"/></div>
+                  <div class="text center noposttext"><spring:message code="msg.sorry"/> <spring:message code="msg.nopost"/></div>
             </c:when>
             <c:otherwise>
           
               <c:forEach items="${searchZone.posts}" var="post">
               <div class="col-md-4">                  
                     <a href="<c:url value="/post/${post.id}"/>" class="">
-                        <div class="card"> 
+                        <div class="card uspaced20"> 
                           <c:choose>
                             <c:when test="${post.postImages.isEmpty()}">
                                  <img class="img-fluid card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" alt="">
