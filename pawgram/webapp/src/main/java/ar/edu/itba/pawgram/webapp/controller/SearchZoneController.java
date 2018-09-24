@@ -31,12 +31,8 @@ public class SearchZoneController {
     private SecurityUserService securityUserService;
 
     @RequestMapping(value={"","/"})
-    public ModelAndView index(@ModelAttribute("loggedUser") final User loggedUser) {
-        final List<PlainSearchZone> searchZones = searchZoneService.getPlainSearchZonesByUser(loggedUser);
-
-        ModelAndView mav = new ModelAndView("zones");
-        mav.addObject("searchZones", searchZones);
-        return mav;
+    public ModelAndView index() {
+        return new ModelAndView("redirect:/zones/");
     }
 
     @RequestMapping(value = "/{zone}/category/{category}")

@@ -53,6 +53,29 @@ public interface SearchZoneService {
      */
     public SearchZone getFullSearchZoneByIdAndCategory(final long zoneId, final Category category, final long page, final int pageSize);
 
+    /**
+     * Find all the {@link SearchZone} by the user,
+     * @param user - the user in question
+     * @param page - current page for {@link List} of {@link PlainPost}
+     * @param page - max size of page for {@link List} of {@link PlainPost}
+     * @return searchZone associated with the {@link User}(owner)
+     * and  the list of {@link PlainPost} paged with the params
+     * or null if the zoneId is invalid
+     */
+    public List<SearchZone> getFullSearchZonesById(final User user, final long page, final int pageSize);
+
+    /**
+     * Find all the {@link SearchZone} by the user and category,
+     * @param user - the user in question
+     * @param page - current page for {@link List} of {@link PlainPost}
+     * @param category - filter the {@link List} of {@link PlainPost} by this
+     * @param page - max size of page for {@link List} of {@link PlainPost}
+     * @return searchZone associated with the {@link User}(owner)
+     * and  the list of {@link PlainPost} paged with the params
+     * or null if the zoneId is invalid
+     */
+    public List<SearchZone> getFullSearchZonesByIdAndCategory(final User user, final Category category, final long page, final int pageSize);
+
 
 
 }

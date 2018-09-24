@@ -58,7 +58,27 @@ public class SearchZoneServiceImpl implements SearchZoneService {
         return builder.posts(posts).max_page(max_page).build();
     }
 
+    @Override
+    @Transactional
+    public List<SearchZone> getFullSearchZonesById(User user, long page, int pageSize) {
+        List<PlainSearchZone> searchZonesPlain = searchZoneDao.getPlainSearchZonesByUser(user.getId());
+        List<SearchZone> searchZones = new ArrayList<>();
+        for(PlainSearchZone searchZone: searchZonesPlain){
+            searchZones.add(getFullSearchZoneById(searchZone.getId(),page,pageSize));
+        }
+        return searchZones;
+    }
 
+    @Override
+    @Transactional
+    public List<SearchZone> getFullSearchZonesByIdAndCategory(User user, Category category, long page, int pageSize) {
+        List<PlainSearchZone> searchZonesPlain = searchZoneDao.getPlainSearchZonesByUser(user.getId());
+        List<SearchZone> searchZones = new ArrayList<>();
+        for(PlainSearchZone searchZone: searchZonesPlain){
+            searchZones.add(getFullSearchZoneByIdAndCategory(searchZone.getId(),category,page,pageSize));
+        }
+        return searchZones;
+    }
 
 
 }

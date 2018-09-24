@@ -56,14 +56,14 @@ public class SearchZoneJdbcDao implements SearchZoneDao {
     @Override
     public List<PlainSearchZone> getPlainSearchZonesByUser(long userId) {
         return jdbcTemplate.query("SELECT zoneId, latitude, longitude, range" +
-                        " FROM search_zones WHERE userId = ? ORDER BY id ASC",
+                        " FROM search_zones WHERE userId = ? ORDER BY zoneId ASC",
                 PLAIN_ROW_MAPPER,userId);
     }
 
     @Override
     public SearchZone.SearchZoneBuilder getFullSearchZoneById(long zoneId) {
         List<SearchZone.SearchZoneBuilder> l = jdbcTemplate.query("SELECT * FROM search_zones,users " +
-                        "WHERE search_zones.userId = users.id AND zoneId = ? ORDER BY id ASC",
+                        "WHERE search_zones.userId = users.id AND zoneId = ? ORDER BY zoneId ASC",
                 ROW_MAPPER,zoneId);
         return (l.isEmpty())? null: l.get(0);
     }
