@@ -6,7 +6,13 @@
 <head>
 
 	<meta charset="UTF-8">
-	<title>Pawgram - Emergency</title>
+  <c:choose>
+         <c:when test="${empty currentCategory}"><title>Pawgram - INICIO INTERNACIONALIZAR SANTI"/></title></c:when>
+         <c:otherwise>
+          <title>Pawgram - <spring:message code="category.${category.lowerName}"/></title>
+         </c:otherwise>
+  </c:choose>  
+	
 
   <link href="<c:url value="/resources/css/all.css"/>" rel="stylesheet" id="font-awesome">
   <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
@@ -38,10 +44,20 @@
             
              <ul class="navbar-nav ml-md-auto d-md-flex">
                <c:forEach items="${categories}" var="category">
-                <c:set var="active" value="${category eq currentCategory}"/>
-                <li class="nav-item ${active ? 'active' : ''}">
-                  <a class="nav-link text nav-sec" href="<c:out value="${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
-                </li>
+               <c:choose>
+                     <c:when test="${empty currentCategory}">
+                      <li class="nav-item">
+                        <a class="nav-link text nav-sec" href="<c:out value="${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
+                      </li>
+                   </c:when>
+                     <c:otherwise>
+                      <c:set var="active" value="${category eq currentCategory}"/>
+                      <li class="nav-item ${active ? 'active' : ''}">
+                        <a class="nav-link text nav-sec" href="<c:out value="${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
+                      </li>
+                     </c:otherwise>
+              </c:choose>  
+                
               </c:forEach>
             </ul>
             <ul class="navbar-nav animate side-nav">
@@ -69,7 +85,12 @@
 		<div class="container-fluid titzon">
 			<div class="row">
 				<div class="col-md-3"></div>
-				<div class="text titsec"><spring:message code="category.${category.lowerName}"/></div>
+				<div class="text titsec"><c:choose>
+         <c:when test="${empty currentCategory}"><spring:message code="category.all"/></c:when>
+         <c:otherwise>
+          <spring:message code="category.${currentCategory.lowerName}"/>
+         </c:otherwise>
+  </c:choose> </div>
 			</div>
 		</div>
 
