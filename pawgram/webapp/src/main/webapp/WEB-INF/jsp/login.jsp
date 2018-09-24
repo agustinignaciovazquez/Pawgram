@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <head>
 	<meta charset="UTF-8">
@@ -34,10 +36,10 @@
 	          </div>
 
 	          <div>
-	          	<input type="password" name="j_password" placeholder="Password" class="form-control input-lg"/>
+	          	<input type="password" name="j_password" placeholder="<spring:msg" class="form-control input-lg"/>
 	          </div>         
 	          <div>
-				<label><input name="j_rememberme" type="checkbox"/> <spring:message code="remember_me"/> Recuerdame Coco</label>
+				<label><input name="j_rememberme" type="checkbox"/> <spring:message code="remember_me"/> Recuerdame</label>
 			</div>
 	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="Sign in"></input>
 	          <div>
