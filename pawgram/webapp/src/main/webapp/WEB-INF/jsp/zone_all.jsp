@@ -190,7 +190,7 @@
                          <a href="<c:url value="/zone/${searchZone.id}"/>" class="text seemoretext uspaced50"><spring:message code="seemore"/></a>
                        </c:when>
                        <c:otherwise>
-                          <a href="<c:url value="/zone/${searchZone.id}/category/${currentCategory.lowername}"/>" class="text seemoretext uspaced50"><spring:message code="seemore"/></a>
+                          <a href="<c:url value="/zone/${searchZone.id}/category/${currentCategory.lowerName}"/>" class="text seemoretext uspaced50"><spring:message code="seemore"/></a>
                        </c:otherwise>
                 </c:choose> 
                 
