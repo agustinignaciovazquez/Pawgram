@@ -12,6 +12,6 @@ public interface PlainPost {
     public Category getCategory();
     public List<PostImage> getPostImages();
     public int getDistance();
-    public boolean isMale();
+    public boolean isIs_male();
     public Pet getPet();
 }

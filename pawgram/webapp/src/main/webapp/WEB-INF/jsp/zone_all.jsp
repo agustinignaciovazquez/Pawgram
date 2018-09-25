@@ -122,14 +122,14 @@
                                    <img class="img-fluid card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" alt="">
                               </c:when>
                               <c:otherwise>
-                                    <img class="img-fluid card-img" src="<c:url value="/post/images/${post.postImages[0]}"/>" alt="">
+                                    <img class="img-fluid card-img" src="<c:url value="/post/images/${post.postImages[0].url}"/>" alt="">
                              </c:otherwise>
                            </c:choose>
                              
 
                               <div class="card-img-overlay"> <span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text categorytext"><spring:message code="pill.${post.category.lowerName}"/></span> </div>
                               <div class="card-body">
-                                  <p class="card-text"><small class="text  text-time"> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em>CAMBIAR DESPUES</em> </small></p>
+                                  <p class="card-text"><small class="text  text-time"> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em>${post.is_male ? 'MACHO' : 'HEMBRA'}</em> </small></p>
                                   <div class="news-title">
                                       <h2 class="text title-small"><c:out value="${post.title}"/></h2>
                                   </div>
@@ -185,7 +185,15 @@
             <div class="row uspaced5">
                 <div class="text zonetext "> <spring:message code="near"/> ZONE</div>
                 <div class="col-md-1"></div>
-                <a href="AGUSTIN HACELO" class="text seemoretext uspaced50"><spring:message code="seemore"/></a>
+                <c:choose>
+                       <c:when test="${empty currentCategory}">
+                         <a href="<c:url value="/zone/${searchZone.id}"/>" class="text seemoretext uspaced50"><spring:message code="seemore"/></a>
+                       </c:when>
+                       <c:otherwise>
+                          <a href="<c:url value="/zone/${searchZone.id}/category/${currentCategory.lowername}"/>" class="text seemoretext uspaced50"><spring:message code="seemore"/></a>
+                       </c:otherwise>
+                </c:choose> 
+                
             </div>
             <div class="row uspaced20">
                 
@@ -204,7 +212,7 @@
                                  <img class="img-fluid card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" alt="">
                             </c:when>
                             <c:otherwise>
-                                  <img class="img-fluid card-img" src="<c:url value="/post/images/${post.postImages[0]}"/>" alt="">
+                                  <img class="img-fluid card-img" src="<c:url value="/post/images/${post.postImages[0].url}"/>" alt="">
                            </c:otherwise>
                          </c:choose>
                            

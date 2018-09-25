@@ -25,7 +25,7 @@ import java.util.List;
 @Controller
 public class SearchZonesController {
     private static final int PAGE_SIZE = 5;
-    private static final Logger LOGGER = LoggerFactory.getLogger(SearchZoneController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SearchZonesController.class);
     @Autowired
     private SearchZoneService searchZoneService;
     @Autowired

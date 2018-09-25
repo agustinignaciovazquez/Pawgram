@@ -193,7 +193,7 @@ public class PostJdbcDaoTest {
         }
         try {
             return postDao.createPost(post.getTitle(), post.getDescription(), raw_imgs, post.getContact_phone(),
-                    post.getEvent_date(), post.getCategory(), post.getPet(), post.isMale(), post.getLocation(), post.getOwner()).build();
+                    post.getEvent_date(), post.getCategory(), post.getPet(), post.isIs_male(), post.getLocation(), post.getOwner()).build();
         } catch (PostCreateException e) {
             //TODO: que hacemos con la excep?
             e.printStackTrace();

@@ -123,7 +123,7 @@ public class PostImageJdbcDaoTest {
         }
         try {
             postDao.createPost(dummy.getTitle(), dummy.getDescription(), raw_imgs, dummy.getContact_phone(),
-                    dummy.getEvent_date(), dummy.getCategory(), dummy.getPet(), dummy.isMale(), dummy.getLocation(), dummy.getOwner());
+                    dummy.getEvent_date(), dummy.getCategory(), dummy.getPet(), dummy.isIs_male(), dummy.getLocation(), dummy.getOwner());
         } catch (PostCreateException e) {
             e.printStackTrace();
         }

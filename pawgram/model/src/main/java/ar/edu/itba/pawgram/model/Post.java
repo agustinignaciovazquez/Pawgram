@@ -73,6 +73,13 @@ public class Post implements PlainPost {
 	public Pet getPet() {
 		return pet;
 	}
+	@Override
+	public boolean isIs_male() {
+		return is_male;
+	}
+
+	@Override
+	public int getDistance() { return distance; }
 
 	public String getDescription() {
 		return description;
@@ -84,15 +91,12 @@ public class Post implements PlainPost {
 	public LocalDateTime getEvent_date() {
 		return event_date;
 	}
-	@Override
-	public boolean isMale() {
-		return is_male;
-	}
+
+
 	public Location getLocation(){return location;}
 
 	public User getOwner() { return owner; }
-	@Override
-	public int getDistance() { return distance; }
+
 
 	public List<CommentFamily> getCommentFamilies() { return commentFamilies; }
 

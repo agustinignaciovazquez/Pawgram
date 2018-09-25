@@ -3,10 +3,7 @@ package ar.edu.itba.pawgram.webapp.controller;
 import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.interfaces.service.PostImageService;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
-import ar.edu.itba.pawgram.model.Comment;
-import ar.edu.itba.pawgram.model.Location;
-import ar.edu.itba.pawgram.model.Post;
-import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.webapp.exception.ImageNotFoundException;
 import ar.edu.itba.pawgram.webapp.exception.PostNotFoundException;
@@ -68,6 +65,7 @@ public class PostController {
         final ModelAndView mav = new ModelAndView("post");
 
         mav.addObject("post", post);
+        mav.addObject("categories", Category.values());
         mav.addObject("parentComments", post.getCommentFamilies());
 
         return mav;
