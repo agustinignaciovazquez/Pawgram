@@ -51,7 +51,7 @@ $( document ).ready(function() {
         var request = new XMLHttpRequest();
 
         var method = 'GET';
-        var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude+'&sensor=true';
+        var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude+'&sensor=true&key=AIzaSyAsqLEThGLQ6T4Ayox_K7Em1S4DuAT-wm8';
         var async = true;
 
         request.open(method, url, async);
@@ -65,7 +65,12 @@ $( document ).ready(function() {
         request.send();
     };
 
-    function initMap() {
+  
+    
+   /* 
+    ONLY FOR NEW POST JSP
+    API : AIzaSyAsqLEThGLQ6T4Ayox_K7Em1S4DuAT-wm8
+   function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: -33.8688, lng: 151.2195},
       zoom: 13
@@ -132,7 +137,9 @@ $( document ).ready(function() {
         document.getElementById('location').innerHTML = place.formatted_address;
         document.getElementById('lat').innerHTML = place.geometry.location.lat();
         document.getElementById('lon').innerHTML = place.geometry.location.lng();
-    });
-    }
 
+    });
+
+    }
+*/
 

@@ -17,8 +17,6 @@
   <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
   <script src="<c:url value="/resources/js/pawgram.js"/>"></script>
 
-  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
-
 </head>
 
 
@@ -105,11 +103,11 @@
                              
                               <c:choose>
                               <c:when test="${post.postImages.isEmpty()}">
-                                  <li class="list-inline-item active">
+                                  <!-- NOT NECESARY <li class="list-inline-item active">
                                     <a id="carousel-selector-0" class="selected" data-slide-to="0" data-target="#myCarousel">
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" class="img-fluid">
                                     </a>
-                                  </li>
+                                  </li>!-->
                               </c:when>
                               <c:otherwise>
                                   <c:forEach items="${post.postImages}" var="postImage" varStatus="loop">
@@ -133,15 +131,15 @@
                 <div class="text posttitle"><c:out value="${post.title}"/></div>
                 
                 <div class="text postdate uspaced10"> El evento ocurrio el <c:out value="${post.event_date}"/></div>
-                
-                <div class="text postmaininfo uspaced10"><span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text postmaininfo"><spring:message code="pill.${post.category.lowerName}"/></span><em class="lspaced10">A <c:out value="${post.distance}"/> kms</em> <em> / </em> <em>Especie</em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em>Sexo</em><em>:</em> <em>${post.is_male ? 'MACHO' : 'HEMBRA'}</em>
+                <spring:message code="gender.male" var="male_gender"/>
+                <spring:message code="gender.female" var="female_gender"/>
+                <div class="text postmaininfo uspaced10"><span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text postmaininfo"><spring:message code="pill.${post.category.lowerName}"/></span><em class="lspaced10">A <c:out value="${post.distance}"/> kms</em> <em> / </em> <em>Especie</em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em>Sexo</em><em>:</em> <em>${post.is_male ? male_gender : female_gender }</em>
                 </div>
 
                 <div class="text postdescription uspaced20"> <c:out value="${post.description}"/></div>
 
                 <div class="uspaced20">
                   <div class="text postcontact"> Lugar del evento: </div>
-                  <input id="searchInput" class="controls" type="text" placeholder="Enter a location">
                    <div id="map"></div>
                           <!--<ul id="geoData">
                               <li>Direccion: <span id="location"></span></li>
@@ -151,7 +149,7 @@
                               <li>Longitud: <span id="lon"></span></li>
                           </ul>-->
                 </div>
-
+               
                 <div class="text postcontact uspaced20"> Datos de contacto:</div>
                 <div class="text postcontactinfo"> Nombre: <c:out value="${post.owner.name} ${post.owner.surname}"/> </div>
                 <div class="text postcontactinfo"> Telefono: <c:out value="${post.contact_phone}"/> </div>
@@ -256,9 +254,23 @@
         <div class="row uspaced20"></div>
 
 
-  
-  
-    		
+  <!--GOOGLE MAPS-->
+  <script>
+// Initialize and add the map
+function initMap() {
+  // The location of Uluru
+  var uluru = {lat: <c:out value="${post.location.latitude}"/>, lng: <c:out value="${post.location.longitude}"/>};
+  // The map, centered at Uluru
+  var map = new google.maps.Map(
+      document.getElementById('map'), {zoom: 14, center: uluru});
+  // The marker, positioned at Uluru
+  var marker = new google.maps.Marker({position: uluru, map: map});
+}
+  </script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsqLEThGLQ6T4Ayox_K7Em1S4DuAT-wm8&callback=initMap">
+  </script>
+  <!--GOOGLE MAPS-->  		
 
 	<!--FOOTER-->
     <div class="row uspaced60"></div>

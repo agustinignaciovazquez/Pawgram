@@ -23,8 +23,6 @@
   <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
   <script src="<c:url value="/resources/js/pawgram.js"/>"></script>
 
-  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
-
 </head>
 
 
@@ -129,7 +127,7 @@
 
                               <div class="card-img-overlay"> <span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text categorytext"><spring:message code="pill.${post.category.lowerName}"/></span> </div>
                               <div class="card-body">
-                                  <p class="card-text"><small class="text  text-time"> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em>${post.is_male ? 'MACHO' : 'HEMBRA'}</em> </small></p>
+                                  <p class="card-text"><small class="text  text-time"> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em>${post.is_male ? '<spring:message code="gender.male"/>' : '<spring:message code="gender.female"/>'}</em> </small></p>
                                   <div class="news-title">
                                       <h2 class="text title-small"><c:out value="${post.title}"/></h2>
                                   </div>
@@ -216,10 +214,11 @@
                            </c:otherwise>
                          </c:choose>
                            
-
+                            <spring:message code="gender.male" var="male_gender"/>
+                            <spring:message code="gender.female" var="female_gender"/>
                             <div class="card-img-overlay"> <span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text categorytext"><spring:message code="pill.${post.category.lowerName}"/></span> </div>
                             <div class="card-body">
-                                <p class="card-text"><small class="text  text-time"><em><spring:message code="distance"/></em><em>:</em> <em> <c:out value="${post.distance}"/> <spring:message code="kms"/></em> <em> / </em> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em>CAMBIAR DESPUES</em> </small></p>
+                                <p class="card-text"><small class="text  text-time"><em><spring:message code="distance"/></em><em>:</em> <em> <c:out value="${post.distance}"/> <spring:message code="kms"/></em> <em> / </em> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em> ${post.is_male ? male_gender : female_gender }</em> </small></p>
                                 <div class="news-title">
                                     <h2 class="text title-small"><c:out value="${post.title}"/></h2>
                                 </div>
