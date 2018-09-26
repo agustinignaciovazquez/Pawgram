@@ -36,7 +36,7 @@ public class PostJdbcDao implements PostDao {
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("posts")
-                .usingGeneratedKeyColumns("postId");
+                .usingGeneratedKeyColumns("postid");
     }
 
     @Override

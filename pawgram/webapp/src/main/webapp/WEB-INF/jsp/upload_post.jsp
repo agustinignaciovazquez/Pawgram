@@ -27,7 +27,7 @@
 <body>
 	
 	<%@include file="includes/header.jsp"%>   
-	<c:url value="/post/create/category/${currentCategory}" var="postPath"/>
+	<c:url value="/post/create/category/${currentCategory}/process" var="postPath"/>
 	
 		<div class="container-fluid titzon">
 			<div class="row">
@@ -46,9 +46,9 @@
 					</div>
 					<div class="row uspaced20">
 						<div class="container optionblock2 radio-group ">
-								
+								<form:errors path="pet" cssClass="form-error" element="p"/>
 								<c:forEach items="${pets}" var="pet">
-									<div class="container formoption uspaced50 bspaced50 radio" data-value="<c:out value="${pet.lowerName}"/>">
+									<div class="container formoption uspaced50 bspaced50 radio" data-value="<c:out value="${pet}"/>">
 										<div class="row">
 											<div class="col-md-3">
 												<img src="<c:url value="/resources/img/${pet.lowerName}.jpg"/>" class="icon">
@@ -74,6 +74,7 @@
 					<div class="row uspaced20">
 						
 						<div class="container optionblock2 radio-group ">
+							<form:errors path="is_male" cssClass="form-error" element="p"/>
 								<div class="container formoption uspaced50 bspaced50 radio" data-value="true"> 
 									<div class="row">
 										<div class="col-md-3">
@@ -115,6 +116,7 @@
                     <li>Latitud: <span id="lat"></span></li>
                     <li>Longitud: <span id="lon"></span></li>
                 </ul>-->
+                <form:errors path="latitude" cssClass="form-error" element="p"/>
                 <form:hidden path="latitude" class="form-control" id="lat" name="latitude"  />
                 <form:hidden path="longitude" class="form-control" id="lon" name="longitude" />
             </div>
@@ -127,9 +129,8 @@
         <div class="row">
         		<div class=" myformcontainer center">
 				    <div class="form-area">  
-				        <form role="form">
 				        	<div class=" text subformtitle uspaced20">
-				        		Nombre de tu mascota:
+				        		Titulo:
 				        	</div>
 				    		<div class="form-group">
 								<form:input path="title" type="text" class="form-control" id="name" name="name" placeholder="eg: Tomy"  />
@@ -143,7 +144,7 @@
 								<form:errors path="event_date" cssClass="form-error" element="p"/>
 							</div>
 							<div class=" text subformtitle">
-				        		Titulo:
+				        		Telefono de contacto:
 				        	</div>
 							<div class="form-group">
 								<form:input path="contact_phone" type="text" class="form-control" id="mobile" name="mobile" placeholder="Escribe tu titulo aqui..."  />
@@ -167,7 +168,7 @@
 				            		<button  type="button"><i class="fa fa-plus"></i></button>	
 				            	</div>
 				            </div>
-
+				            <form:errors path="images" cssClass="form-error" element="p"/>
 				            <div class="row uspaced50">
 				            	<div class="col-md-10">
 				            		<input type="file" name="files" /><br/>
@@ -177,7 +178,6 @@
 				            
 				            
 
-				        </form>
 				    </div>  
         	</div>
         </div>
@@ -186,16 +186,24 @@
 
         <div class="row">
         	<div class="center">
-        		<button id="submit" name="submit" class="btn btn-lg btn-success pull-right">Crear anuncio</button>
+        		<input id="submit" type="submit" name="submit" class="btn btn-lg btn-success pull-right" value="Crear anuncio"></input>
         	</div>
         	
         </div>
     </form:form>
     <script>
-    	
+    var latitude = parseFloat(document.getElementById('lat').value);
+   	var longitude = parseFloat(document.getElementById('lon').value);
    function initMap() {
+   	
+   	if(isNaN(latitude) || isNaN(longitude)){
+   		latitude = -34.6031933;
+   		longitude = -58.3677853;
+   	}else{
+   		var uluru = {lat: latitude, lng: longitude};
+   	}
     var map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: -33.8688, lng: 151.2195},
+      center: {lat: latitude, lng: longitude},
       zoom: 13
     });
     var input = document.getElementById('searchInput');
@@ -205,10 +213,14 @@
     autocomplete.bindTo('bounds', map);
 
     var infowindow = new google.maps.InfoWindow();
-    var marker = new google.maps.Marker({
-        map: map,
-        anchorPoint: new google.maps.Point(0, -29)
-    });
+    if (typeof uluru !== 'undefined') {
+    	var marker = new google.maps.Marker({position: uluru, map: map});
+    }else{
+	    var marker = new google.maps.Marker({
+	        map: map,
+	        anchorPoint: new google.maps.Point(0, -29)
+	    });
+	}
 
     autocomplete.addListener('place_changed', function() {
         infowindow.close();

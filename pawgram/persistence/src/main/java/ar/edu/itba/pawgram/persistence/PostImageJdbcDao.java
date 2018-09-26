@@ -26,7 +26,7 @@ public class PostImageJdbcDao implements PostImageDao {
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("postImages")
-                .usingGeneratedKeyColumns("postImageId");
+                .usingGeneratedKeyColumns("postimageid");
     }
     @Override
     public PostImage createPostImage(long postId, String url) {

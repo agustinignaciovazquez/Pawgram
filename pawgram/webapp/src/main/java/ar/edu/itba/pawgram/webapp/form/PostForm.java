@@ -30,14 +30,15 @@ public class PostForm {
     private MultipartFileImageWrapper[] images;
 
     @Size(max = 32)
-    @Pattern(regexp = "/\\(?([0-9]{3})\\)?([ .-]?)([0-9]{3})\\2([0-9]{4})/")
+    @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$")//regex phone number
     private String contact_phone;
 
     @NotBlank
-    @DateTimeFormat(pattern="dd-MMM-yyyy")//check this later
+    @DateTimeFormat(pattern="yyyy-MM-dd")//check this later
     private String event_date;
 
     //private Category category = Category.LOST;
+    @NotNull
     private Pet pet;
 
     @NotNull
@@ -53,7 +54,8 @@ public class PostForm {
     public List<byte[]> getAllRawImages() throws IOException {
         List<byte[]> l = new ArrayList<>();
         for(MultipartFileImageWrapper image: images){
-            l.add(image.getFile().getBytes());
+            if(image != null && image.hasFile())
+                l.add(image.getFile().getBytes());
         }
         return l;
     }

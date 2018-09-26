@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -70,8 +71,8 @@ public class UploadPostController {
             return errorState(formPost,category, errors, attr);
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
-        LocalDateTime dateTime = LocalDateTime.parse(formPost.getEvent_date(), formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime dateTime = LocalDate.parse(formPost.getEvent_date(), formatter).atStartOfDay();
         final Post post =  postService.createPost(formPost.getTitle(),formPost.getDescription(),formPost.getAllRawImages(),
                 formPost.getContact_phone(),dateTime,
                 category,formPost.getPet(),formPost.getIs_male(),
@@ -85,7 +86,7 @@ public class UploadPostController {
     private ModelAndView errorState(PostForm form, Category category, final BindingResult errors, RedirectAttributes attr) {
         attr.addFlashAttribute("org.springframework.validation.BindingResult.uploadForm", errors);
         attr.addFlashAttribute("uploadForm", form);
-        return new ModelAndView("redirect:/post/create/"+category);
+        return new ModelAndView("redirect:/post/create/category/"+category);
     }
 
     @InitBinder

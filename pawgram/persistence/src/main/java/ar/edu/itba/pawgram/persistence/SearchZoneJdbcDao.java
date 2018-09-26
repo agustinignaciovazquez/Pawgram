@@ -33,7 +33,7 @@ public class SearchZoneJdbcDao implements SearchZoneDao {
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("search_zones")
-                .usingGeneratedKeyColumns("zoneId");
+                .usingGeneratedKeyColumns("zoneid");
 
     }
 
