@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -45,10 +46,12 @@ public class CommentJdbcDao implements CommentDao {
 	}
 	
 	@Override
-	public Comment createComment(final String content, final LocalDateTime date,final long parentId, final long postId, final long userId) {
+	public Comment createComment(final String content, final LocalDateTime date,final long parentId, final long postId, final long userId) throws InvalidCommentException {
 		final Map<String, Object> args = argsMap(content, date, postId, userId);
 		args.put("parentId", parentId);
-		
+		if(!isParentComment(parentId))
+			throw new InvalidCommentException();
+
 		final Number commentId = jdbcInsert.executeAndReturnKey(args);
 
 		return new Comment(commentId.intValue(), parentId, userDao.findById(userId), content, date);
@@ -57,10 +60,18 @@ public class CommentJdbcDao implements CommentDao {
 	@Override
 	public Comment createParentComment(final String content,final LocalDateTime date,final long postId, final long userId) {
 		final Map<String, Object> args = argsMap(content, date, postId, userId);
-		
+
 		final Number commentId = jdbcInsert.executeAndReturnKey(args);
 
 		return new Comment(commentId.intValue(), userDao.findById(userId), content, date);
+	}
+
+
+	private boolean isParentComment(long commentId) {
+		Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM comments WHERE commentId = ? AND parentId IS NULL", Integer.class,commentId);
+		if(total == null)
+			return false;
+		return (total == 0)? false : true;
 	}
 
 	private Map<String, Object> argsMap(final String content, final LocalDateTime date, final long postId, final long userId) {

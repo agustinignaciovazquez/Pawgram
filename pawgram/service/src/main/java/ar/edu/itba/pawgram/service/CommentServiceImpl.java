@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.edu.itba.pawgram.interfaces.persistence.CommentDao;
@@ -23,7 +24,7 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
-	public Comment createComment(String content, long parentId, long postId, long userId) {
+	public Comment createComment(String content, long parentId, long postId, long userId) throws InvalidCommentException {
 		return commentDao.createComment(content, LocalDateTime.now(), parentId, postId, userId);
 	}
 
@@ -33,11 +34,11 @@ public class CommentServiceImpl implements CommentService{
 		List<CommentFamily> parents = new ArrayList<>();
 		int parentIndex = 0;
 		int commentIndex = 0;
-		
+
 		while (commentIndex < comments.size()) {
 			Comment c = comments.get(commentIndex);
-			
-			if (!c.hasParent()) {	
+
+			if (!c.hasParent()) {
 				CommentFamily commentFamily = new CommentFamily(c);
 				parents.add(commentFamily);
 				commentIndex++;
@@ -47,9 +48,9 @@ public class CommentServiceImpl implements CommentService{
 				commentIndex++;
 			}
 			else
-				parentIndex++;	
+				parentIndex++;
 		}
-				
+
 		return parents;
 	}
 

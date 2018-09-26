@@ -228,56 +228,56 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public long getTotalPosts() {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts", Integer.class);
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts", Long.class);
         return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPostsByCategory(Category category) {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE category = ?",
-                Integer.class, category.getLowerName().toUpperCase(Locale.ENGLISH));
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE category = ?",
+                Long.class, category.getLowerName().toUpperCase(Locale.ENGLISH));
         return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPosts(Location location, int range) {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM (SELECT haversine_distance(?,?,latitude,longitude) as distance" +
-                " FROM posts ) ss WHERE distance <= ?", Integer.class,location.getLatitude(),location.getLongitude(),range);
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM (SELECT haversine_distance(?,?,latitude,longitude) as distance" +
+                " FROM posts ) ss WHERE distance <= ?", Long.class,location.getLatitude(),location.getLongitude(),range);
         return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPostsByCategory(Location location, int range, Category category) {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM (SELECT haversine_distance(?,?,latitude,longitude) as distance" +
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM (SELECT haversine_distance(?,?,latitude,longitude) as distance" +
                         " FROM posts WHERE category = ?) ss WHERE distance <= ?",
-                Integer.class, location.getLatitude(),location.getLongitude(), category.getLowerName().toUpperCase(Locale.ENGLISH),range);
+                Long.class, location.getLatitude(),location.getLongitude(), category.getLowerName().toUpperCase(Locale.ENGLISH),range);
         return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPostsByKeyword(String keyword) {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE title LIKE ?",
-                Integer.class,"%"+keyword+"%");
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE title LIKE ?",
+                Long.class,"%"+keyword+"%");
         return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPostsByKeyword(String keyword, Category category) {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE category = ? AND title LIKE ?",
-                Integer.class, category.getLowerName().toUpperCase(Locale.ENGLISH),"%"+keyword+"%");
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE category = ? AND title LIKE ?",
+                Long.class, category.getLowerName().toUpperCase(Locale.ENGLISH),"%"+keyword+"%");
         return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPostsByUserId(long userId) {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE userId = ?", Integer.class,userId);
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE userId = ?", Long.class,userId);
         return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPostsByUserId(long userId, Category category) {
-        Integer total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE userId = ? AND category = ?",
-                Integer.class,userId,category.getLowerName().toUpperCase(Locale.ENGLISH));
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE userId = ? AND category = ?",
+                Long.class,userId,category.getLowerName().toUpperCase(Locale.ENGLISH));
         return total != null ? total : 0;
     }
 }

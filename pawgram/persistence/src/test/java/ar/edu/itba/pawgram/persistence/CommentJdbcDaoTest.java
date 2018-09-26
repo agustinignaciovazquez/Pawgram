@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.persistence;
 
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
 import ar.edu.itba.pawgram.interfaces.persistence.UserDao;
@@ -130,8 +131,13 @@ public class CommentJdbcDaoTest {
     }
 
     private Comment insertComment(Comment comment, int postId) {
-        if (comment.hasParent())
-            return commentDao.createComment(comment.getContent(), comment.getCommentDate(), comment.getParentId(), postId, comment.getAuthor().getId());
+        if (comment.hasParent()) {
+            try {
+                return commentDao.createComment(comment.getContent(), comment.getCommentDate(), comment.getParentId(), postId, comment.getAuthor().getId());
+            } catch (InvalidCommentException e) {
+                //e.printStackTrace();
+            }
+        }
         return commentDao.createParentComment(comment.getContent(), comment.getCommentDate(), postId, comment.getAuthor().getId());
     }
 

@@ -1,14 +1,12 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
 import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.interfaces.service.PostImageService;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
-import ar.edu.itba.pawgram.webapp.exception.ImageNotFoundException;
-import ar.edu.itba.pawgram.webapp.exception.PostNotFoundException;
-import ar.edu.itba.pawgram.webapp.exception.ResourceNotFoundException;
-import ar.edu.itba.pawgram.webapp.exception.UnauthorizedException;
+import ar.edu.itba.pawgram.webapp.exception.*;
 import ar.edu.itba.pawgram.webapp.form.CommentForm;
 import ar.edu.itba.pawgram.webapp.form.CommentsForm;
 import org.slf4j.Logger;
@@ -78,7 +76,7 @@ public class PostController {
                                      @RequestParam(value = "index", required = false) final Optional<Integer> replyCommentIndex,
                                      @Valid @ModelAttribute("commentsForm") final CommentsForm form,
                                      final BindingResult errors,
-                                     final RedirectAttributes attr) throws PostNotFoundException {
+                                     final RedirectAttributes attr) throws PostNotFoundException, InvalidQueryException {
 
         final PlainPost post = postService.getPlainPostById(postId);
 
@@ -110,8 +108,16 @@ public class PostController {
 
         final Comment comment;
         if (parentId.isPresent()) {
-            comment = commentService.createComment(postedForm.getContent(), parentId.get(), postId, loggedUser.getId());
-            LOGGER.info("User with id {} posted comment with id {} in reply to comment with id {}", loggedUser.getId(), comment.getId(), parentId.get());
+
+            try {
+                comment = commentService.createComment(postedForm.getContent(), parentId.get(), postId, loggedUser.getId());
+                LOGGER.info("User with id {} posted comment with id {} in reply to comment with id {}", loggedUser.getId(), comment.getId(), parentId.get());
+            } catch (InvalidCommentException e) {
+                //e.printStackTrace();
+                LOGGER.info("User with id {} try to post invalid comment  in reply to comment with id {}", loggedUser.getId(), parentId.get());
+                throw new InvalidQueryException();
+            }
+
         }
         else {
             comment = commentService.createParentComment(postedForm.getContent(), postId, loggedUser.getId());

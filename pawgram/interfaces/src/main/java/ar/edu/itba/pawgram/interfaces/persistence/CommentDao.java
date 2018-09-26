@@ -3,6 +3,7 @@ package ar.edu.itba.pawgram.interfaces.persistence;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
 import ar.edu.itba.pawgram.model.Comment;
 
 public interface CommentDao {
@@ -25,7 +26,7 @@ public interface CommentDao {
 	 * @param userId - ID of the {@link User} the posted this comment
 	 * @return The created {@link Comment}
 	 */
-	public Comment createComment(final String content, final LocalDateTime date,final long parentId, final long postId, final long userId);
+	public Comment createComment(final String content, final LocalDateTime date,final long parentId, final long postId, final long userId) throws InvalidCommentException;
 	
 	/**
 	 * Lists comments of a specific {@link Post} sorted by parent comments first, 

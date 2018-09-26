@@ -62,4 +62,5 @@ public class ErrorControllerAdvice {
     public ModelAndView invalidQuery() {
         return buildModelAndView("error/400badQuery");
     }
+
 }

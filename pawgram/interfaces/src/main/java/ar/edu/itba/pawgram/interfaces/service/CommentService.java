@@ -2,6 +2,7 @@ package ar.edu.itba.pawgram.interfaces.service;
 
 import java.util.List;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
 import ar.edu.itba.pawgram.model.Comment;
 import ar.edu.itba.pawgram.model.CommentFamily;
 
@@ -24,7 +25,7 @@ public interface CommentService {
 	 * @param userId - ID of the {@link User} the posted this comment
 	 * @return The created {@link Comment}
 	 */
-	public Comment createComment(final String content,final long parentId, final long postId, final long userId);
+	public Comment createComment(final String content,final long parentId, final long postId, final long userId) throws InvalidCommentException;
 	
 	/**
 	 * Retrieves a {@link List} of parent comments sorted by post date and associated with it's corresponding child comments.
