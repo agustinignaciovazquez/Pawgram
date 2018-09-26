@@ -22,47 +22,8 @@
 
 <body>
 	
-	<!--HEADER-->
-    <div id="wrapper" class="animate">
-
-         <nav class="navbar header-top fixed-top navbar-expand-lg navbar-light pawnav">
-          <span class="navbar-toggler-icon leftmenutrigger"></span>
-          <img src="<c:url value="/resources/img/logo.png"/>" class="logo-navbar"/>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarText">
-             <ul class="navbar-nav ml-md-auto d-md-flex">
-               <c:forEach items="${categories}" var="category">
-                  <li class="nav-item">
-                    <a class="nav-link text nav-sec" href="<c:url value="/zones/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
-                  </li>
-              </c:forEach>
-            </ul>
-            <ul class="navbar-nav animate side-nav">
-              <li class="nav-item">
-                <a class="nav-link text nav-sec" href="#">Mi perfil
-                  <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text nav-sec" href="#">Mis Zonas</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text nav-sec" href="#">Configuracion</a>
-              </li>             
-              <hr></hr>
-              <li class="nav-item">
-                <a class="nav-link text nav-sec" href="#">Cerrar Sesion</a>
-              </li>
-            </ul>
-           
-          </div>
-        </nav>
-    </div>
-
-	<!--HEADER-->  
+	<%@include file="includes/header.jsp"%>
+   
        <!-- main slider carousel -->
         <div class="row uspaced20">
             <div class="col-lg-1"></div>

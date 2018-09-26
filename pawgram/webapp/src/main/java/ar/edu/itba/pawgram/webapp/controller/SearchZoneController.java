@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/zone")
 @Controller
 public class SearchZoneController {
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 9;
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchZoneController.class);
     @Autowired
     private SearchZoneService searchZoneService;
@@ -43,6 +43,7 @@ public class SearchZoneController {
         LOGGER.debug("Accessed category {} with page {}", category, page);
 
         final SearchZone searchZone = searchZoneService.getFullSearchZoneByIdAndCategory(zoneId,category,page,PAGE_SIZE);
+
         if(searchZone == null)
             throw new ResourceNotFoundException();
         if(!loggedUser.equals(searchZone.getUser())){
@@ -53,6 +54,7 @@ public class SearchZoneController {
             LOGGER.warn("Category page out of bounds: {}", page);
             throw new ResourceNotFoundException();
         }
+        LOGGER.debug("Quantity of post {} in category {} with page {} ", searchZone.getPosts().size(),category,page);
 
         ModelAndView mav = new ModelAndView("zone_category");
         mav.addObject("currentCategory", category);
@@ -70,6 +72,8 @@ public class SearchZoneController {
         LOGGER.debug("Accessed zone (all categories) with page {}", page);
 
         final SearchZone searchZone = searchZoneService.getFullSearchZoneById(zoneId,page,PAGE_SIZE);
+
+
         if(searchZone == null)
             throw new ResourceNotFoundException();
         if(!loggedUser.equals(searchZone.getUser())){
@@ -80,6 +84,8 @@ public class SearchZoneController {
             LOGGER.warn("Page out of bounds: {}", page);
             throw new ResourceNotFoundException();
         }
+
+        LOGGER.debug("Quantity of post {} in all categories with page {} ", searchZone.getPosts().size(),page);
 
         ModelAndView mav = new ModelAndView("zone_category");
         mav.addObject("categories", Category.values());

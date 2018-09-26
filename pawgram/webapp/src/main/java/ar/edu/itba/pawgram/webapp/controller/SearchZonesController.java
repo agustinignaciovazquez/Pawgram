@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/zones")
 @Controller
 public class SearchZonesController {
-    private static final int PAGE_SIZE = 5;
+    private static final int PAGE_SIZE = 6;
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchZonesController.class);
     @Autowired
     private SearchZoneService searchZoneService;
