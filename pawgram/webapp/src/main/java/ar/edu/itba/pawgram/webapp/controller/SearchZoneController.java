@@ -49,7 +49,7 @@ public class SearchZoneController {
         }
         LOGGER.debug("Quantity of post {} in category {} with page {} ", searchZone.getPosts().size(),category,page);
 
-        ModelAndView mav = new ModelAndView("zone_category");
+        ModelAndView mav = new ModelAndView("zone_detail");
         mav.addObject("currentCategory", category);
         mav.addObject("categories", Category.values());
         mav.addObject("searchZone", searchZone);
@@ -80,7 +80,7 @@ public class SearchZoneController {
 
         LOGGER.debug("Quantity of post {} in all categories with page {} ", searchZone.getPosts().size(),page);
 
-        ModelAndView mav = new ModelAndView("zone_category");
+        ModelAndView mav = new ModelAndView("zone_detail");
         mav.addObject("categories", Category.values());
         mav.addObject("searchZone", searchZone);
         mav.addObject("currentPage", page);

@@ -39,15 +39,17 @@ public class SearchController {
     @Autowired
     private SecurityUserService securityUserService;
 
+   /*
+    WTF IS THIS
     @RequestMapping(value = {"", "/"})
     public ModelAndView index() {
         final User user = securityUserService.getLoggedInUser();
         ModelAndView mav = new ModelAndView("post");
         mav.addObject("user", user);
         return mav;
-    }
+    }*/
 
-    @RequestMapping("/all")
+    @RequestMapping("/")
     public ModelAndView searchResults(@RequestParam(value = "query") String query,
                                       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
                                       @RequestParam(value = "latitude", required = false) final Optional<Double> latitude,
@@ -76,9 +78,13 @@ public class SearchController {
 
         final ModelAndView mav = new ModelAndView("search-results");
         mav.addObject("posts", posts);
-        mav.addObject("max_page",max_page);
+        mav.addObject("totalPages",max_page);
         mav.addObject("categories", Category.values());
         mav.addObject("queryText", query);
+        if(longitude.isPresent() && latitude.isPresent()) {
+            mav.addObject("latitude", latitude.get());
+            mav.addObject("longitude", longitude.get());
+        }
         return mav;
     }
 
@@ -110,7 +116,7 @@ public class SearchController {
 
         final ModelAndView mav = new ModelAndView("search-results");
         mav.addObject("posts", posts);
-        mav.addObject("max_page",max_page);
+        mav.addObject("totalPages",max_page);
         mav.addObject("currentCategory", category);
         mav.addObject("categories", Category.values());
         mav.addObject("queryText", query);

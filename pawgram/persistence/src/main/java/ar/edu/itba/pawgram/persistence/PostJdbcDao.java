@@ -173,25 +173,25 @@ public class PostJdbcDao implements PostDao {
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, int limit, long offset) {
         return jdbcTemplate.query("SELECT * FROM (SELECT postId, title, category, pet, is_male, " +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
-                        " FROM posts WHERE title LIKE ? LIMIT ? OFFSET ?) ss ORDER BY distance DESC",
-                plainPostRowMapper,location.getLatitude(),location.getLongitude(),"%"+keyword+"%",limit,offset);
+                        " FROM posts WHERE title LIKE ? OR description LIKE ? LIMIT ? OFFSET ?) ss ORDER BY distance DESC",
+                plainPostRowMapper,location.getLatitude(),location.getLongitude(),"%"+keyword+"%","%"+keyword+"%",limit,offset);
     }
 
     @Override
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Category category, int limit, long offset) {
         return jdbcTemplate.query("SELECT postId, title, category, pet, is_male, " +
                         " 0 as distance" +
-                        " FROM posts WHERE category = ? AND title LIKE ? ORDER BY postId ASC LIMIT ? OFFSET ?",
-                plainPostRowMapper,category.getLowerName().toUpperCase(Locale.ENGLISH),"%"+keyword+"%",limit,offset);
+                        " FROM posts WHERE category = ? AND (title LIKE ? OR description LIKE ?) ORDER BY postId ASC LIMIT ? OFFSET ?",
+                plainPostRowMapper,category.getLowerName().toUpperCase(Locale.ENGLISH),"%"+keyword+"%","%"+keyword+"%",limit,offset);
     }
 
     @Override
     public List<PlainPost> getPlainPostsByKeywordRange(String keyword, Location location, Category category, int limit, long offset) {
         return jdbcTemplate.query("SELECT * FROM (SELECT postId, title, category, pet, is_male, " +
                         " haversine_distance(?,?,latitude,longitude) as distance" +
-                        " FROM posts WHERE category = ? AND title LIKE ? LIMIT ? OFFSET ?) ss ORDER BY distance DESC",
+                        " FROM posts WHERE category = ? AND (title LIKE ? OR description LIKE ?) LIMIT ? OFFSET ?) ss ORDER BY distance DESC",
                 plainPostRowMapper,location.getLatitude(),location.getLongitude(),
-                category.getLowerName().toUpperCase(Locale.ENGLISH),"%"+keyword+"%",limit,offset);
+                category.getLowerName().toUpperCase(Locale.ENGLISH),"%"+keyword+"%","%"+keyword+"%",limit,offset);
     }
 
     @Override

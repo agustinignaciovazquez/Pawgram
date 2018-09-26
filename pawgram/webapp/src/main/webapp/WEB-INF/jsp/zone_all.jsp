@@ -29,7 +29,7 @@
 <body>
   
   <%@include file="includes/header.jsp"%>
-   
+
     <c:choose>
       <c:when test="${empty currentCategory}"></c:when>
       <c:otherwise>
@@ -62,6 +62,8 @@
                 <div class="text zonetext "> <spring:message code="my.${currentCategory.lowerName}"/> </div>
               </div>
               <div class="row uspaced20">
+              <spring:message code="gender.male" var="male_gender"/>
+              <spring:message code="gender.female" var="female_gender"/>
               <c:forEach items="${userPosts}" var="post">
                 <div class="col-md-4">                  
                       <a href="<c:url value="/post/${post.id}"/>" class="">
@@ -75,10 +77,10 @@
                              </c:otherwise>
                            </c:choose>
                              
-
+                              
                               <div class="card-img-overlay"> <span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text categorytext"><spring:message code="pill.${post.category.lowerName}"/></span> </div>
                               <div class="card-body">
-                                  <p class="card-text"><small class="text  text-time"> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em>${post.is_male ? '<spring:message code="gender.male"/>' : '<spring:message code="gender.female"/>'}</em> </small></p>
+                                  <p class="card-text"><small class="text  text-time"> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em>${post.is_male ? male_gender : female_gender}</em> </small></p>
                                   <div class="news-title">
                                       <h2 class="text title-small"><c:out value="${post.title}"/></h2>
                                   </div>
@@ -100,9 +102,9 @@
 
           <div class="row uspaced5">
             <div class="center">
-              <button type="submit" class="btn btn-success newbutton">
+              <a href="<c:url value="/post/create/category/${currentCategory.lowerName}" />" type="submit" class="btn btn-success newbutton">
                   <i class="fas fa-plus"></i> <spring:message code="init.${currentCategory.lowerName}"/>
-              </button>   
+              </a>   
             </div>
           </div>
          </c:otherwise>
@@ -154,7 +156,7 @@
           
               <c:forEach items="${searchZone.posts}" var="post">
               <div class="col-md-4">                  
-                    <a href="<c:url value="/post/${post.id}"/>" class="">
+                    <a href="<c:url value="/post/${post.id}?latitude=${searchZone.location.latitude}&longitude=${searchZone.location.longitude}"/>" class="">
                         <div class="card uspaced20"> 
                           <c:choose>
                             <c:when test="${post.postImages.isEmpty()}">
@@ -165,8 +167,6 @@
                            </c:otherwise>
                          </c:choose>
                            
-                            <spring:message code="gender.male" var="male_gender"/>
-                            <spring:message code="gender.female" var="female_gender"/>
                             <div class="card-img-overlay"> <span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text categorytext"><spring:message code="pill.${post.category.lowerName}"/></span> </div>
                             <div class="card-body">
                                 <p class="card-text"><small class="text  text-time"><em><spring:message code="distance"/></em><em>:</em> <em> <c:out value="${post.distance}"/> <spring:message code="kms"/></em> <em> / </em> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em> ${post.is_male ? male_gender : female_gender }</em> </small></p>

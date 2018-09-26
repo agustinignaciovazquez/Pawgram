@@ -30,7 +30,7 @@
 	
 
     <%@include file="includes/header.jsp"%>
-    
+
 		<div class="container-fluid titzon">
 			<div class="row">
 				<div class="col-md-3"></div>
@@ -49,21 +49,29 @@
             <div class="row uspaced20">
                 
             <c:choose>
-            <c:when test="${searchZone.posts.isEmpty()}">
+            <c:when test="${posts.isEmpty()}">
                   <div class="text center noposttext"><spring:message code="msg.sorry"/> <spring:message code="msg.nopost"/></div>
             </c:when>
             <c:otherwise>
           
-              <c:forEach items="${searchZone.posts}" var="post">
-              <div class="col-md-4">                  
-                    <a href="<c:url value="/post/${post.id}"/>" class="">
+              <c:forEach items="${posts}" var="post">
+              <div class="col-md-4">    
+              		<c:choose>
+                            <c:when test="${empty latitude}">
+                                 <a href="<c:url value="/post/${post.id}"/>" class="">
+                            </c:when>
+                            <c:otherwise>
+                            	<a href="<c:url value="/post/${post.id}?latitude=${latitude}&longitude=${longitude}"/>" class="">
+                           </c:otherwise>
+                 	</c:choose>              
+                    
                         <div class="card"> 
                           <c:choose>
                             <c:when test="${post.postImages.isEmpty()}">
                                  <img class="img-fluid card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" alt="">
                             </c:when>
                             <c:otherwise>
-                                  <img class="img-fluid card-img" src="<c:url value="/post/images/${post.postImages[0]}"/>" alt="">
+                                  <img class="img-fluid card-img" src="<c:url value="/post/images/${post.postImages[0].url}"/>" alt="">
                            </c:otherwise>
                          </c:choose>
                            
