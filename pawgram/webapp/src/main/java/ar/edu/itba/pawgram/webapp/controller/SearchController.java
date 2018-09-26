@@ -39,9 +39,8 @@ public class SearchController {
     @Autowired
     private SecurityUserService securityUserService;
 
-   /*
-    WTF IS THIS
-    @RequestMapping(value = {"", "/"})
+
+    /*@RequestMapping(value = {"", "/"})
     public ModelAndView index() {
         final User user = securityUserService.getLoggedInUser();
         ModelAndView mav = new ModelAndView("post");
@@ -50,7 +49,7 @@ public class SearchController {
     }*/
 
     @RequestMapping("/")
-    public ModelAndView searchResults(@RequestParam(value = "query") String query,
+    public ModelAndView searchResults(@RequestParam(value = "query", required = true) String query,
                                       @RequestParam(value = "page", required = false, defaultValue = "1") int page,
                                       @RequestParam(value = "latitude", required = false) final Optional<Double> latitude,
                                       @RequestParam(value = "longitude", required = false) final Optional<Double> longitude) throws InvalidQueryException, ResourceNotFoundException {
@@ -120,6 +119,10 @@ public class SearchController {
         mav.addObject("currentCategory", category);
         mav.addObject("categories", Category.values());
         mav.addObject("queryText", query);
+        if(longitude.isPresent() && latitude.isPresent()) {
+            mav.addObject("latitude", latitude.get());
+            mav.addObject("longitude", longitude.get());
+        }
         return mav;
     }
 

@@ -110,26 +110,7 @@
          </c:otherwise>
   </c:choose> 
 
-  <div class="row uspaced60">
-    <div class="col-md-3"></div>  
-    <div class="col-md-6">
-      <div id="custom-search-input">
-        <label for="validationCustom03" class="text filttext"><spring:message code="search.post"/></label>
-        <div class="input-group col-md-12 ">
-                                
-         <input type="text" class="  search-query form-control form-control-md text" placeholder="Search" />
-          <span class="input-group-btn">
-            <button class="btn uspacedfa" type="button">
-              <i class=" fas fa-search"></i>
-            </button>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-    
-          
-    
+  <%@include file="includes/search.jsp"%>
 
     <div class="container ">
             <c:forEach items="${searchZones}" var="searchZone">

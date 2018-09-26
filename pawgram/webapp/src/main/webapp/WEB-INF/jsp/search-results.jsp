@@ -43,7 +43,7 @@
 			</div>
 		</div>
 
-
+	<%@include file="includes/search.jsp"%>
 		<div class="container uspaced5">
 
             <div class="row uspaced20">
