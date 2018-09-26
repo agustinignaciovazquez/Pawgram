@@ -8,7 +8,7 @@
 <head>
 
 	<meta charset="UTF-8">
-	<title>Pawgram - Create Post</title>
+	<title><spring:message code="pageName"/> - <spring:message code="title.createpost"/></title>
 
 		<link href="<c:url value="/resources/css/all.css"/>" rel="stylesheet" id="font-awesome">
   <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
@@ -32,7 +32,7 @@
 		<div class="container-fluid titzon">
 			<div class="row">
 				<div class="col-md-3"></div>
-				<div class="text titsec">Crear anuncio</div>
+				<div class="text titsec"><spring:message code="createpost"/></div>
 			</div>
 		</div>
 		<form:form modelAttribute="uploadForm" action="${postPath}" method="post" enctype="multipart/form-data">
@@ -42,7 +42,7 @@
 			<div class="col-md-3">
 				<div class="fistcontainer">
 					<div class="row uspaced60">
-						<div class="text formtitle center">Selecciona una especie:</div>
+						<div class="text formtitle center"><spring:message code="select.specie"/></div>
 					</div>
 					<div class="row uspaced20">
 						<div class="container optionblock2 radio-group ">
@@ -69,7 +69,7 @@
 			<div clas="col-md-3">
 				<div class=" container step">
 					<div class="row uspaced60">
-						<div class="text formtitle center">Selecciona un sexo:</div>
+						<div class="text formtitle center"><spring:message code="select.gender"/></div>
 					</div>
 					<div class="row uspaced20">
 						
@@ -103,11 +103,11 @@
 		</div>
 
 		 <div class="row uspaced60">
-        	<div class="text formtitle center">Selecciona el lugar del evento:</div>
+        	<div class="text formtitle center"><spring:message code="select.place"/></div>
         </div>
 		<div class="container">
             <div class="row">
-                <input id="searchInput" class="controls" type="text" placeholder="Enter a location">
+                <input id="searchInput" class="controls" type="text" placeholder="<spring:message code="enter.location"/>">
                 <div id="map"></div>
                 <!--<ul id="geoData">
                     <li>Direccion: <span id="location"></span></li>
@@ -124,42 +124,42 @@
         </div>
 		
         <div class="row uspaced60">
-        	<div class="text formtitle center">Completa los datos:</div>
+        	<div class="text formtitle center"><spring:message code="complete.data"/></div>
         </div>
         <div class="row">
         		<div class=" myformcontainer center">
 				    <div class="form-area">  
 				        	<div class=" text subformtitle uspaced20">
-				        		Titulo:
+				        		<spring:message code="post.title"/>
 				        	</div>
 				    		<div class="form-group">
 								<form:input path="title" type="text" class="form-control" id="name" name="name" placeholder="eg: Tomy"  />
 								<form:errors path="title" cssClass="form-error" element="p"/>
 							</div>
 							<div class=" text subformtitle">
-				        		Fecha del evento:
+				        		<spring:message code="post.date"/>
 				        	</div>
 							<div class="form-group">
 								<form:input path="event_date" type="date" class="form-control" id="date" name="date"  />
 								<form:errors path="event_date" cssClass="form-error" element="p"/>
 							</div>
 							<div class=" text subformtitle">
-				        		Telefono de contacto:
+				        		<spring:message code="post.phone"/>
 				        	</div>
 							<div class="form-group">
-								<form:input path="contact_phone" type="text" class="form-control" id="mobile" name="mobile" placeholder="Escribe tu titulo aqui..."  />
+								<form:input path="contact_phone" type="text" class="form-control" id="mobile" name="mobile" placeholder="<spring:message code="write.title"/>"  />
 								<form:errors path="contact_phone" cssClass="form-error" element="p"/>
 							</div>
 							<div class=" text subformtitle">
-				        		Descripcion:
+				        		<spring:message code="post.description"/>
 				        	</div>
 				            <div class="form-group">
-				            <form:textarea path="description" class="form-control" type="textarea" id="message" placeholder="Escribe tu descripcion aqui..." maxlength="140" rows="7"></form:textarea>
+				            <form:textarea path="description" class="form-control" type="textarea" id="message" placeholder="<spring:message code="write.description"/>" maxlength="140" rows="7"></form:textarea>
 				            <form:errors path="description" cssClass="form-error" element="p"/>
 				               <!--<span class="help-block"><p id="characterLeft" class="help-block ">llegaste al limite</p></span>-->                    
 				            </div>
 				            <div class=" text subformtitle">
-				        		Imagenes (opcional):
+				        		<spring:message code="post.image"/>
 				        	</div>
 				            <!--<input type="file" name="files" /><br/>
 
@@ -297,7 +297,7 @@
 	<!--FOOTER-->
     <div class="row uspaced60"></div>
     <div class="container-fluid footer">
-        <div class="text footertext">© 2018 Todos los derechos reservados pawgram.org</div> 
+        <div class="text footertext"><spring:message code="footer"/></div> 
     </div>
     <!--FOOTER-->
 

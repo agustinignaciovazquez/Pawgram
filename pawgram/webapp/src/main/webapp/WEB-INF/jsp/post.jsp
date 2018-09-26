@@ -6,7 +6,7 @@
 <head>
 
 	<meta charset="UTF-8">
-	<title>Pawgram - Post</title>
+	<title><spring:message code="pageName"/> - <spring:message code="title.post"/></title>
 
   <link href="<c:url value="/resources/css/all.css"/>" rel="stylesheet" id="font-awesome">
   <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
@@ -91,7 +91,7 @@
                 
                 <div class="text posttitle"><c:out value="${post.title}"/></div>
                 
-                <div class="text postdate uspaced10"> El evento ocurrio el <c:out value="${post.event_date}"/></div>
+                <div class="text postdate uspaced10"> <spring:message code="post.ocurred"/> <c:out value="${post.event_date}"/></div>
                 <spring:message code="gender.male" var="male_gender"/>
                 <spring:message code="gender.female" var="female_gender"/>
                 <div class="text postmaininfo uspaced10"><span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text postmaininfo"><spring:message code="pill.${post.category.lowerName}"/></span><em class="lspaced10">A <c:out value="${post.distance}"/> kms</em> <em> / </em> <em>Especie</em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em>Sexo</em><em>:</em> <em>${post.is_male ? male_gender : female_gender }</em>
@@ -100,7 +100,7 @@
                 <div class="text postdescription uspaced20"> <c:out value="${post.description}"/></div>
 
                 <div class="uspaced20">
-                  <div class="text postcontact"> Lugar del evento: </div>
+                  <div class="text postcontact"> <spring:message code="post.place"/> </div>
                    <div id="map"></div>
                           <!--<ul id="geoData">
                               <li>Direccion: <span id="location"></span></li>
@@ -111,11 +111,10 @@
                           </ul>-->
                 </div>
                
-                <div class="text postcontact uspaced20"> Datos de contacto:</div>
-                <div class="text postcontactinfo"> Nombre: <c:out value="${post.owner.name} ${post.owner.surname}"/> </div>
-                <div class="text postcontactinfo"> Telefono: <c:out value="${post.contact_phone}"/> </div>
-                <div class="text postcontactinfo"> E-mail: <c:out value="${post.owner.mail}"/></div>
-
+                <div class="text postcontact uspaced20"> <spring:message code="post.contact"/> </div>
+                <div class="text postcontactinfo"> <spring:message code="post.name"/> <c:out value="${post.owner.name} ${post.owner.surname}"/> </div>
+                <div class="text postcontactinfo"> <spring:message code="post.phonee"/> <c:out value="${post.contact_phone}"/> </div>
+                <div class="text postcontactinfo"> <spring:message code="post.mail"/> <c:out value="${post.owner.mail}"/></div>
 
 
                 <div class="row uspaced20"></div>
@@ -129,11 +128,11 @@
           <div class="col-lg-3"></div>
           <div class="col-lg-6">
             <div class="container postcontent">
-              <div class="text postcontact">Comentarios:</div>
+              <div class="text postcontact"><spring:message code="post.comentaries"/></div>
               <c:url value="/post/${post.id}/comment" var="postPath" />
               <form:form modelAttribute="commentsForm" class="comment-form" action="${postPath}" method="post">
                             <div class="form-group">
-                                <form:textarea type="text" class="form-control" rows="3" path="parentForm.content" placeholder="Tu comentario" maxlength="512"/>
+                                <form:textarea type="text" class="form-control" rows="3" path="parentForm.content" placeholder="<spring:message code="your.comment"/>" maxlength="512"/>
                                 <form:errors path="parentForm.content" element="p" cssClass="form-error"/>
                             </div>
                             <div class="btn-place">
@@ -175,7 +174,7 @@
                                     <div class="col-md-4">
                                         <p class="reply-btn">
                                             <span class="glyphicon glyphicon-share-alt"></span>
-                                            REPLY
+                                            <spring:message code="reply"/>
                                         </p>
                                     </div>
                                 </div>
@@ -291,7 +290,7 @@ function initMap() {
 	<!--FOOTER-->
     <div class="row uspaced60"></div>
     <div class="container-fluid footer">
-        <div class="text footertext">© 2018 Todos los derechos reservados pawgram.org</div> 
+        <div class="text footertext"><spring:message code="footer"/></div> 
     </div>
   <!--FOOTER-->
 

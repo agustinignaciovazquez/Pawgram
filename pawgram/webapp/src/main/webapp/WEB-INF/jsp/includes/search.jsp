@@ -15,7 +15,7 @@
         
          <input type="hidden" id="latitude_input" name="latitude" /><br>
          <input type="hidden" id="longitude_input" name="longitude" />    
-         <input type="text" name="query" class="search-query form-control form-control-md text" placeholder="Search" value="<c:out value="${empty queryText ? '' : queryText}" />" />
+         <input type="text" name="query" class="search-query form-control form-control-md text" placeholder="<spring:message code="search"/>" value="<c:out value="${empty queryText ? '' : queryText}" />" />
           </form>
           <span class="input-group-btn">
             <button class="btn uspacedfa" type="button">
