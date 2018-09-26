@@ -38,7 +38,7 @@ public class PostForm {
     private String event_date;
 
     //private Category category = Category.LOST;
-    private Pet pet = Pet.OTHER;
+    private Pet pet;
 
     @NotNull
     private Boolean is_male;

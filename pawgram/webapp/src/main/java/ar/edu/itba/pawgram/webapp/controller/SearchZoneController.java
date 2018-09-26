@@ -1,12 +1,9 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
-import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.interfaces.service.SearchZoneService;
-import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
 import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.SearchZone;
 import ar.edu.itba.pawgram.model.User;
-import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 import ar.edu.itba.pawgram.webapp.exception.ForbiddenException;
 import ar.edu.itba.pawgram.webapp.exception.ResourceNotFoundException;
 import ar.edu.itba.pawgram.webapp.util.CaseInsensitiveConverter;
@@ -18,8 +15,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-
 @RequestMapping("/zone")
 @Controller
 public class SearchZoneController {
@@ -27,8 +22,6 @@ public class SearchZoneController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchZoneController.class);
     @Autowired
     private SearchZoneService searchZoneService;
-    @Autowired
-    private SecurityUserService securityUserService;
 
     @RequestMapping(value={"","/"})
     public ModelAndView index() {

@@ -3,19 +3,19 @@ package ar.edu.itba.pawgram.webapp.controller;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.Category;
+import ar.edu.itba.pawgram.model.Pet;
 import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.webapp.exception.UnauthorizedException;
 import ar.edu.itba.pawgram.webapp.form.PostForm;
+import ar.edu.itba.pawgram.webapp.util.CaseInsensitiveConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,26 +37,27 @@ public class UploadPostController {
         return new PostForm();
     }
 
-    @RequestMapping("/")
+    @RequestMapping(value={"","/"})
     public ModelAndView showCategories(@ModelAttribute("loggedUser") final User loggedUser) {
         LOGGER.debug("User with id {} accessed upload categories", loggedUser.getId());
 
-        final ModelAndView mav = new ModelAndView("show_categories");
+        final ModelAndView mav = new ModelAndView("upload_select_category");
         mav.addObject("categories", Category.values());
         return mav;
     }
 
-    @RequestMapping("/{category}")
-    public ModelAndView formCompletion(@PathVariable(value = "category") Category category,
-                                       @ModelAttribute("loggedUser") final User loggedUser) {
-        LOGGER.debug("User with id {} accessed upload", loggedUser.getId());
+    @RequestMapping(value = "/category/{category}")
+    public ModelAndView formCompletion(@ModelAttribute("loggedUser") final User loggedUser, @PathVariable(value = "category") Category category) {
+        LOGGER.debug("User with id {} accessed upload category {}", loggedUser.getId(),category);
 
-        final ModelAndView mav = new ModelAndView("upload");
-        mav.addObject("category", category);
+        final ModelAndView mav = new ModelAndView("upload_post");
+        mav.addObject("currentCategory", category);
+        mav.addObject("categories", Category.values());
+        mav.addObject("pets", Pet.values());
         return mav;
     }
 
-    @RequestMapping(value= "/{category}/process", method = {RequestMethod.POST})
+    @RequestMapping(value= "/category/{category}/process", method = {RequestMethod.POST})
     public ModelAndView upload(@PathVariable(value = "category") Category category,
                                                 @Valid @ModelAttribute("uploadForm") final PostForm formPost,
                                                 final BindingResult errors, @ModelAttribute("loggedUser") final User loggedUser,
@@ -85,5 +86,10 @@ public class UploadPostController {
         attr.addFlashAttribute("org.springframework.validation.BindingResult.uploadForm", errors);
         attr.addFlashAttribute("uploadForm", form);
         return new ModelAndView("redirect:/post/create/"+category);
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Category.class,new CaseInsensitiveConverter<>(Category.class));
     }
 }

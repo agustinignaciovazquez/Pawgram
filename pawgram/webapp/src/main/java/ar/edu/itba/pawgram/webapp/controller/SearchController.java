@@ -10,10 +10,13 @@ import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.webapp.exception.InvalidQueryException;
 import ar.edu.itba.pawgram.webapp.exception.PostNotFoundException;
 import ar.edu.itba.pawgram.webapp.exception.ResourceNotFoundException;
+import ar.edu.itba.pawgram.webapp.util.CaseInsensitiveConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -112,5 +115,10 @@ public class SearchController {
         mav.addObject("categories", Category.values());
         mav.addObject("queryText", query);
         return mav;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Category.class,new CaseInsensitiveConverter<>(Category.class));
     }
 }
