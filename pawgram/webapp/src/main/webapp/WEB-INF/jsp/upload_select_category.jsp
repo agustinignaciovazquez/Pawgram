@@ -6,7 +6,7 @@
 <head>
 
 	<meta charset="UTF-8">
-	<title>Pawgram - Create Post</title>
+	<title><spring:message code="pageName"/> - <spring:message code="title.createpost"/></title>
 
 	<link href="<c:url value="/resources/css/all.css"/>" rel="stylesheet" id="font-awesome">
   <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
@@ -27,12 +27,12 @@
 		<div class="container-fluid titzon">
 			<div class="row">
 				<div class="col-md-3"></div>
-				<div class="text titsec">Crear anuncio</div>
+				<div class="text titsec"><spring:message code="createpost"/></div>
 			</div>
 		</div>
 		<div class=" container step center">
 			<div class="row uspaced200">
-				<div class="text formtitle center">Selecciona una categoria:</div>
+				<div class="text formtitle center"><spring:message code="select.category"/></div>
 			</div>
 			<div class="row uspaced20">
 				<div class="container optionblock center ">
@@ -59,7 +59,7 @@
 	<!--FOOTER-->
     <div class="row uspaced60"></div>
     <div class="container-fluid footer">
-        <div class="text footertext">© 2018 Todos los derechos reservados pawgram.org</div> 
+        <div class="text footertext"><spring:message code="footer"/></div> 
     </div>
     <!--FOOTER-->
 
