@@ -159,23 +159,36 @@
 				               <!--<span class="help-block"><p id="characterLeft" class="help-block ">llegaste al limite</p></span>-->                    
 				            </div>
 				            <div class=" text subformtitle">
-				        		Selecciona al menos una imagen:
+				        		Imagenes (opcional):
 				        	</div>
-				            <input type="file" name="files" /><br/>
+				            <!--<input type="file" name="files" /><br/>
 
 				            <div class="row uspaced50">
 				            	<div class="lspaced15">
 				            		<button  type="button"><i class="fa fa-plus"></i></button>	
 				            	</div>
-				            </div>
-				            <form:errors path="images" cssClass="form-error" element="p"/>
+				            </div> 
+				          
 				            <div class="row uspaced50">
 				            	<div class="col-md-10">
 				            		<input type="file" name="files" /><br/>
 				            	</div>
 				            	 <button  type="button"><i class="fa fa-minus"></i></button>
-				            </div>
-				            
+				            </div>!-->
+				            <c:forEach items="${uploadForm.images}" varStatus="status">
+										<div class="col-md-3"> 
+											<form:input class="image-input" type="file" path="images[${status.index}].file" accept="image/*"/>
+											<form:label path="images[${status.index}].file">
+												<div class="preview-container">
+													<span class="add-img-text">
+														<button  type="button"><i class="fa fa-plus"></i></button>
+													</span>
+													<button  type="button"><i class="fa fa-minus"></i></button>
+												</div>
+											</form:label>
+											<form:errors path="images[${status.index}].file" cssClass="form-error" element="p"/>
+										</div>
+							</c:forEach>
 				            
 
 				    </div>  

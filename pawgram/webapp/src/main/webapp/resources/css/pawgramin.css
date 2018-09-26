@@ -30,7 +30,11 @@ body {
 
 .carrouselimg{
 	width:800px;
-	height: 500px;
+	height: auto;
+}
+
+.carrouselimglittle{
+	max-width: 90px;
 }
 
 .postcontactinfo{

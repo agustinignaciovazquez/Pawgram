@@ -23,7 +23,7 @@
 <body>
 	
 	<%@include file="includes/header.jsp"%>
-   
+
        <!-- main slider carousel -->
         <div class="row uspaced20">
             <div class="col-lg-1"></div>
@@ -41,7 +41,7 @@
                               <c:otherwise>
                                   <c:forEach items="${post.postImages}" var="postImage" varStatus="loop">
                                     <div class="${loop.first ? 'active' : ''} item carousel-item" data-slide-number="${loop.index}">
-                                   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" class="center img-fluid carrouselimg">
+                                   <img src="<c:url value="/post/images/${postImage.url}"/>" class="center img-fluid carrouselimg">
                                   </div>
                                 </c:forEach>
                              </c:otherwise>
@@ -66,7 +66,7 @@
                               <c:when test="${post.postImages.isEmpty()}">
                                   <!-- NOT NECESARY <li class="list-inline-item active">
                                     <a id="carousel-selector-0" class="selected" data-slide-to="0" data-target="#myCarousel">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" class="img-fluid">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" class="img-fluid carrouselimglittle">
                                     </a>
                                   </li>!-->
                               </c:when>
@@ -74,7 +74,7 @@
                                   <c:forEach items="${post.postImages}" var="postImage" varStatus="loop">
                                   <li class="list-inline-item active">
                                     <a id="carousel-selector-${loop.index}" class="${loop.first ? 'selected' : ''}" data-slide-to="${loop.index}" data-target="#myCarousel">
-                                        <img src="<c:url value="/post/images/${postImage.url}"/>" class="img-fluid">
+                                        <img src="<c:url value="/post/images/${postImage.url}"/>" class="img-fluid center carrouselimglittle">
                                     </a>
                                   </li>
                                 </c:forEach>

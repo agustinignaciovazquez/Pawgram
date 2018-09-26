@@ -79,7 +79,10 @@ public class Post implements PlainPost {
 	}
 
 	@Override
-	public int getDistance() { return distance; }
+	public int getDistance() {
+		//TO RETURN DISTANCE IN KM!
+		 return distance/1000;
+	}
 
 	public String getDescription() {
 		return description;

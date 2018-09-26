@@ -40,7 +40,7 @@ public class PostImageJdbcDao implements PostImageDao {
 
     @Override
     public List<PostImage> getImagesIdByPostId(long postId) {
-        return jdbcTemplate.query("SELECT postImageId, postId, url FROM postImages " +
-                "ORDER BY postImageId DESC", postImageRowMapper);
+        return jdbcTemplate.query("SELECT postImageId, postId, url FROM postImages WHERE postId = ?" +
+                "ORDER BY postImageId DESC", postImageRowMapper,postId);
     }
 }
