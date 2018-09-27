@@ -146,15 +146,17 @@
 							<div class=" text subformtitle">
 				        		<spring:message code="post.phone"/>
 				        	</div>
+				        	<spring:message code="write.title" var="writetitle"/>
 							<div class="form-group">
-								<form:input path="contact_phone" type="text" class="form-control" id="mobile" name="mobile" placeholder="<spring:message code="write.title"/>"  />
+								<form:input path="contact_phone" type="text" class="form-control" id="mobile" name="mobile" placeholder="${writetitle}"  />
 								<form:errors path="contact_phone" cssClass="form-error" element="p"/>
 							</div>
 							<div class=" text subformtitle">
 				        		<spring:message code="post.description"/>
 				        	</div>
+				        	<spring:message code="write.description" var="writedesc"/>
 				            <div class="form-group">
-				            <form:textarea path="description" class="form-control" type="textarea" id="message" placeholder="<spring:message code="write.description"/>" maxlength="140" rows="7"></form:textarea>
+				            <form:textarea path="description" class="form-control" type="textarea" id="message" placeholder="${writedesc}" maxlength="140" rows="7"></form:textarea>
 				            <form:errors path="description" cssClass="form-error" element="p"/>
 				               <!--<span class="help-block"><p id="characterLeft" class="help-block ">llegaste al limite</p></span>-->                    
 				            </div>

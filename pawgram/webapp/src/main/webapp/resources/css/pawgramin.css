@@ -580,6 +580,10 @@ body {
 	margin-left:15px;
 }
 
+.btn-place{
+	float: right;
+}
+
 
 /*Comment styles*/
 .comment {

@@ -129,137 +129,111 @@
           <div class="col-lg-6">
             <div class="container postcontent">
               <div class="text postcontact"><spring:message code="post.comentaries"/></div>
+
               <c:url value="/post/${post.id}/comment" var="postPath" />
               <form:form modelAttribute="commentsForm" class="comment-form" action="${postPath}" method="post">
-                            <div class="form-group">
-                                <form:textarea type="text" class="form-control" rows="3" path="parentForm.content" placeholder="<spring:message code="your.comment"/>" maxlength="512"/>
-                                <form:errors path="parentForm.content" element="p" cssClass="form-error"/>
-                            </div>
-                            <div class="btn-place">
-                                <input type="submit" class="btn btn-default post-comment-btn" value="enviar" />
-                            </div>
+                <div class="form-group">
+                  <spring:message code="your.comment" var="yourcomment"/>
+                  <form:textarea type="text" class="form-control" rows="3" path="parentForm.content" placeholder="${yourcomment}" maxlength="512"/>
+                  <form:errors path="parentForm.content" element="p" cssClass="form-error"/>
+                </div>
+                 <spring:message code="comment.comm" var="comment"/>
+                <div class="btn-place">
+                  <input type="submit" class="btn btn-default post-comment-btn" value="${comment}" />
+                </div>
               </form:form>
+                
               <div class="comments-container">
-                <c:forEach items="${parentComments}" var="commentFamily" varStatus="status">
+                <ul id="comments-list" class="comments-list">
+                  <c:forEach items="${parentComments}" var="commentFamily" varStatus="status">
+                  <li>
+                    <div class="comment-main-level" id="comment${commentFamily.parentComment.id}">
+                      <!-- Avatar -->
+                      <div class="comment-avatar"><img src="<c:url value="/profile/images/${commentFamily.parentComment.author.profile_img_url}"/>" alt=""></div>
+                      <!-- Contenedor del Comentario -->
+                      <div class="comment-box">
+                        <div class="comment-head">
+                          <h6 class="comment-name by-author"><a href="<c:url value="/profile/${commentFamily.parentComment.author.id}"/>"> <c:out value="${commentFamily.parentComment.author.name} ${commentFamily.parentComment.author.surname}" /></a></h6>
+                          <span><c:out value="${commentFamily.parentComment.commentDate}"/></span>
+                          
+                          <!--
 
-                            <div class="comment-and-replies">
-                            <div class="parent-comment" id="comment${commentFamily.parentComment.id}">
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <a href="<c:url value="/profile/${commentFamily.parentComment.author.id}"/>">
-                                            <img class="profile-img-circle" src="<c:url value="/profile/${commentFamily.parentComment.author.id}/profilePicture"/>">
-                                        </a>
-                                    </div>
-                                    <div class="col-md-10 parent-name-mail-holder">
-                                        <div class="row col-md-12 profile-name-holder">
-                                            <a class="profile-name" href="<c:url value="/profile/${commentFamily.parentComment.author.id}"/>"> 
-                                                <c:out value="${commentFamily.parentComment.author.name}" />
-                                            </a>                              </div>
-                                        <div class="row col-md-12">
-                                            <a class="creator-mail" href="mailto:<c:out value="${commentFamily.parentComment.author.mail}"/>">
-                                                <span class="glyphicon glyphicon-envelope"></span>
-                                                <p><c:out value="${commentFamily.parentComment.author.mail}"/></p>
-                                            </a>
-                                        </div>                    
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 comment-content">
-                                        <p>
-                                            <c:out value="${commentFamily.parentComment.content}" />
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row reply-button-holder">
-                                    <div class="col-md-4">
-                                        <p class="reply-btn">
-                                            <span class="glyphicon glyphicon-share-alt"></span>
-                                            <spring:message code="reply"/>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row comment-divider">
-                                    <div class="col-md-12"></div>
-                                </div>
+                            <span>hace 10 minutos</span>
+                            <i class="fa fa-reply"></i>
+                            <i class="fa fa-heart"></i>
+
+                           -->
+
+                        </div>
+                        <div class="comment-content">
+                          <c:out value="${commentFamily.parentComment.content}" />
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Respuestas de los comentarios -->
+                    <ul class="comments-list reply-list " id="comment${child.id}">
+                      <c:forEach items="${commentFamily.childComments}" var="child">
+                      <li>
+                        <!-- Avatar -->
+                        <div class="comment-avatar"><img src="<c:url value="/profile/images/${child.author.profile_img_url}"/>" alt=""></div>
+                        <!-- Contenedor del Comentario -->
+                        <div class="comment-box">
+                          <div class="comment-head">
+                            <h6 class="comment-name"><a href="<c:url value="/profile/${child.author.id}"/>"><c:out value="${child.author.name} ${child.author.surname}" /></a></h6>
+                            
+                            <!--
+                            
+                            <span>hace 10 minutos</span>
+                            <i class="fa fa-reply"></i>
+                            <i class="fa fa-heart"></i>
+
+                            -->
+
+                          </div>
+                          <div class="comment-content">
+                            <c:out value="${child.content}" />
+                          </div>
+                        </div>
+                      </li>
+                      </c:forEach>
+
+
+                      <li>
+                        <!-- Avatar -->
+                        <form:form modelAttribute="commentsForm" id="form${status.index}" class="comment-form reply-comment" action="${postPath}?parentid=${commentFamily.parentComment.id}&index=${status.index}" method="post">
+                        <div class="comment-avatar"><img src="<c:url value="/profile/images/${loggedUser.profile_img_url}"/>" alt=""></div>
+                        <!-- Contenedor del Comentario -->
+                        <div class="comment-box">
+                          <div class="comment-head">
+                            <h6 class="comment-name"><a href="<c:url value="/profile/${loggedUser.id}"/>"><c:out value="${loggedUser.name} ${loggedUser.surname}" /></a></h6>
+                            
+                            <!--
+                            
+                            <span>hace 10 minutos</span>
+                            <i class="fa fa-reply"></i>
+                            <i class="fa fa-heart"></i>
+
+                            -->
+
+                          </div>
+                          <div class="comment-content">
+                            <form:textarea type="text" class="form-control" rows="3" path="childForms[${status.index}].content" placeholder="${replyPlaceholder}"  maxlength="512"/>
+                            <form:errors path="childForms[${status.index}].content" element="p" cssClass="form-error"/>
+                          </div>
+
+                          <spring:message code="reply" var="reply"/>
+                            <div class="btn-place">
+                              <input type="submit" class="btn btn-default post-comment-btn" value="${reply}" />
                             </div>
 
-                            <c:forEach items="${commentFamily.childComments}" var="child">
-                                <div class="row child-comment" id="comment${child.id}">
-                                    <div class="col-md-10 col-md-offset-2">
-                                        <div class="row">
-                                            <div class="col-md-1">
-                                                <a href="<c:url value="/profile/${child.author.id}"/>">
-                                                    <img class="profile-img-circle" src="<c:url value="/profile/${child.author.id}/profilePicture"/>">
-                                                </a>
-                                            </div>
-                                            <div class="col-md-10 child-name-mail-holder">
-                                                <div class="row col-md-12 profile-name-holder">
-                                                    <a class="profile-name" href="<c:url value="/profile/${child.author.id}"/>"> 
-                                                        <c:out value="${child.author.name}" />
-                                                    </a>
-                                                </div>
-                                                <div class="row col-md-12">
-                                                    <a class="creator-mail" href="mailto:<c:out value="${child.author.mail}"/>">
-                                                        <span class="glyphicon glyphicon-envelope"></span>
-                                                        <p><c:out value="${child.author.mail}"/></p>
-                                                    </a>
-                                                </div>                    
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12 comment-content">
-                                                <p>
-                                                    <c:out value="${child.content}" />
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="row comment-divider">
-                                            <div class="col-md-12"></div>
-                                        </div>
-                                    </div>
-                                </div>  
-                            </c:forEach>                
-                           
-                           <div class="row child-comment-row">
-                                <div class="col-md-10 col-md-offset-2">
-                                    <form:form modelAttribute="commentsForm" id="form${status.index}" class="comment-form reply-comment" action="${postPath}?parentid=${commentFamily.parentComment.id}&index=${status.index}" method="post">
-                                        <div class="row">
-                                            <div class="col-md-1">
-                                                <a href="<c:url value="/profile/${loggedUser.id}"/>">
-                                                    <img class="profile-img-circle" src="<c:url value="/profile/${loggedUser.id}/profilePicture"/>">
-                                                </a>
-                                            </div>
-                                            <div class="col-md-10 child-name-mail-holder">
-                                                <div class="row col-md-12 profile-name-holder">
-                                                    <a class="profile-name" href="<c:url value="/profile/${loggedUser.id}"/>"> 
-                                                        <c:out value="${loggedUser.name}" />
-                                                    </a>
-                                                </div>
-                                                <div class="row col-md-12">
-                                                    <a class="creator-mail" href="mailto:<c:out value="${loggedUser.mail}"/>">
-                                                        <span class="glyphicon glyphicon-envelope"></span>
-                                                        <p><c:out value="${loggedUser.mail}"/></p>
-                                                    </a>
-                                                </div>                    
-                                            </div>
-                                        </div>  
-                                        <div class="form-group comment-form-fields">
-                                            <spring:message code="postPage.replyTo" arguments="${commentFamily.parentComment.author.name}" var="replyPlaceholder"/>
-                                            <form:textarea type="text" class="form-control" rows="3" path="childForms[${status.index}].content" placeholder="${replyPlaceholder}"  maxlength="512"/>
-                                            <form:errors path="childForms[${status.index}].content" element="p" cssClass="form-error"/>
-                                        </div>
-                                        <div class="btn-place">
-                                            <input type="submit" class="btn btn-default post-comment-btn" value="REPLY" />
-                                        </div>
-                                        <div class="row comment-divider">
-                                            <div class="col-md-12"></div>
-                                        </div>
-                                    </form:form>
-                                </div>
-                            </div>
-                        
-                            </div>
-                        </c:forEach>
+                        </div>
+                      </form:form>
+                      </li>
+
+
+                    </ul>
+                  </li>             
+                  </c:forEach>  
               </div>
               <div class="row uspaced5"></div>        
             </div>
