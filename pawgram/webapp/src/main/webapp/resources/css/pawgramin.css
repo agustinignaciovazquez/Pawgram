@@ -680,8 +680,7 @@ transition: .3s ease all;
  * Lista de Comentarios
  =======================*/
 .comments-container {
-	margin: 20px auto 15px;
-	width: 768px;
+	width: 650px;
 }
 
 .comments-container h1 {
@@ -797,7 +796,7 @@ transition: .3s ease all;
  * Caja del Comentario
  ---------------------------*/
 .comments-list .comment-box {
-	width: 680px;
+	width: 560px;
 	float: right;
 	position: relative;
 	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
@@ -825,7 +824,7 @@ transition: .3s ease all;
 }
 
 .reply-list .comment-box {
-	width: 610px;
+	width: 490px;
 }
 .comment-box .comment-head {
 	background: #FCFCFC;
@@ -900,7 +899,7 @@ transition: .3s ease all;
 /** =====================
  * Responsive
  ========================*/
-@media only screen and (max-width: 766px) {
+@media only screen and (max-width: 646px) {
 	.comments-container {
 		width: 440px;
 	}

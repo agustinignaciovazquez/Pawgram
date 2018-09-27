@@ -181,7 +181,7 @@
                         <!-- Contenedor del Comentario -->
                         <div class="comment-box">
                           <div class="comment-head">
-                            <h6 class="comment-name ${post.owner eq commentFamily.parentComment.author ? 'by-author' : 'duki'}"><a href="<c:url value="/profile/${child.author.id}"/>"><c:out value="${child.author.name} ${child.author.surname}" /></a></h6>
+                            <h6 class="comment-name ${post.owner eq child.author ? 'by-author' : 'duki'}"><a href="<c:url value="/profile/${child.author.id}"/>"><c:out value="${child.author.name} ${child.author.surname}" /></a></h6>
                             
                             <!--
                             
