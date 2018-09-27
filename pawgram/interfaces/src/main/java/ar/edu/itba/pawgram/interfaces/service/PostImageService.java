@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface PostImageService {
-    public static String UPLOAD_FOLDER = "C:/Users/Santiago/Desktop/asd/"; /*tiene que terminar en / */
+    public static String UPLOAD_FOLDER = "/Users/agustinvazquez/Downloads/"; /*tiene que terminar en / */
 
     /**
      * Creates an {@link PostImage} for a {@link Post} saving the file

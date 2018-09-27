@@ -3,7 +3,9 @@ package ar.edu.itba.pawgram.service;
 import ar.edu.itba.pawgram.interfaces.service.FileService;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,8 +19,16 @@ public class FileServiceImpl implements FileService {
     @Override
     public String createFile(String path, byte[] raw_file) throws IOException {
             String random_name = randomAlphaNumeric(32);
-            Path p = Paths.get(path + random_name);
-            Files.write(p, raw_file);
+            //Path p = Paths.get(path + File.separator + random_name);
+            // Files.write(p, raw_file);
+            File dir = new File(path + File.separator);
+            if(!dir.exists())
+                throw new IOException();
+            File serverFile = new File(dir.getAbsolutePath() + File.separator + random_name);
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+            stream.write(raw_file);
+            stream.close();
+
 
             return random_name;
     }
