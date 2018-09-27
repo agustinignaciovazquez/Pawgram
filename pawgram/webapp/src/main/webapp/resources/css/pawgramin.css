@@ -417,6 +417,15 @@ body {
 	overflow: hidden;
 }
 
+.bspaced1{
+	padding-bottom: 10px;
+
+}
+
+.rspaced1{
+	padding-right: 10px;
+}
+
 .bspaced2{
 	padding-bottom: 20px;
 }
@@ -756,7 +765,6 @@ transition: .3s ease all;
 	width: 65px;
 	height: 65px;
 	position: relative;
-	z-index: 99;
 	float: left;
 	border: 3px solid #FFF;
 	-webkit-border-radius: 4px;
@@ -894,14 +902,14 @@ transition: .3s ease all;
  ========================*/
 @media only screen and (max-width: 766px) {
 	.comments-container {
-		width: 480px;
+		width: 440px;
 	}
 
 	.comments-list .comment-box {
-		width: 390px;
+		width: 350px;
 	}
 
 	.reply-list .comment-box {
-		width: 320px;
+		width: 280px;
 	}
 }
