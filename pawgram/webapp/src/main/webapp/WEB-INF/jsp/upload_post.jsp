@@ -178,7 +178,7 @@
 				            	 <button  type="button"><i class="fa fa-minus"></i></button>
 				            </div>!-->
 				            <c:forEach items="${uploadForm.images}" varStatus="status">
-										<div class="col-md-3"> 
+										<div class="col-md-3 image-div"> 
 											<form:input class="image-input" type="file" path="images[${status.index}].file" accept="image/*"/>
 											<form:label path="images[${status.index}].file">
 												<div class="preview-container">
@@ -207,6 +207,17 @@
         </div>
     </form:form>
     <script>
+
+    	var index = 0;
+
+    	$(document).ready(function(){
+    		$('image-div').each(function(index){
+    			if(index > 0){
+    				
+    				//$( this ).css("display", "none");
+    			}
+    		});
+    	});
     var latitude = parseFloat(document.getElementById('lat').value);
    	var longitude = parseFloat(document.getElementById('lon').value);
    function initMap() {

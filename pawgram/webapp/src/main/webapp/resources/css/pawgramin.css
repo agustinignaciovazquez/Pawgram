@@ -405,9 +405,13 @@ body {
 
 .zonedata{
 	overflow: hidden;
-	padding-top: 5px;
+	padding-top: 10px;
 }
 
+.pagination>li>a { 
+	border-radius: 50% !important;
+	margin: 0 5px;
+}
 
 .zoneel1{
 	overflow: hidden;

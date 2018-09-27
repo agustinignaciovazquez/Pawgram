@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/zone")
 @Controller
 public class SearchZoneController {
-    private static final int PAGE_SIZE = 9;
+    private static final int PAGE_SIZE = 2;
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchZoneController.class);
     @Autowired
     private SearchZoneService searchZoneService;

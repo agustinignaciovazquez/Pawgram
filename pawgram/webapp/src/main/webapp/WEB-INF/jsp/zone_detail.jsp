@@ -88,9 +88,21 @@
               </c:forEach>
             </c:otherwise>
         </c:choose>
-          <%@include file="includes/pagination.jsp"%>
-        </div>    
+      </div>
+
     </div>
+    <div class="row uspaced20">
+        <div class="col-lg-5"></div>
+        <div class="col-lg-2">
+          <div class="container">
+            <div class="text-xs-center">
+              <%@include file="includes/pagination.jsp"%>
+            </div>   
+          </div>
+        </div>
+        <div class="col-lg-5"></div>
+      </div>
+    </div> 
 
 
 
