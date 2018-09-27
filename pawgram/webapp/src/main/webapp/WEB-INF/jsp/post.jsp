@@ -207,7 +207,7 @@
                         <!-- Contenedor del Comentario -->
                         <div class="comment-box">
                           <div class="comment-head">
-                            <h6 class="comment-name ${post.owner eq commentFamily.parentComment.author ? 'by-author' : 'duki'}"><a href="<c:url value="/profile/${loggedUser.id}"/>"><c:out value="${loggedUser.name} ${loggedUser.surname}" /></a></h6>
+                            <h6 class="comment-name ${post.owner eq loggedUser ? 'by-author' : 'duki'}"><a href="<c:url value="/profile/${loggedUser.id}"/>"><c:out value="${loggedUser.name} ${loggedUser.surname}" /></a></h6>
                             
                             <!--
                             
@@ -240,7 +240,7 @@
               <div class="row uspaced5"></div>        
             </div>
           </div>
-          <div class="col-lg-3"></div>
+         <!-- MALISIMO AMIGO <div class="col-lg-3"></div> !-->
         </div>
         <div class="row uspaced20"></div>
 

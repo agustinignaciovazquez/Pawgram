@@ -38,7 +38,7 @@
 				<div class="container optionblock center ">
 					<c:forEach items="${categories}" var="category">
 	             
-	                     <a href="<c:out value="/post/create/category/${category.lowerName}"/>" class="formoption">
+	                     <a href="<c:url value="/post/create/category/${category.lowerName}"/>" class="formoption">
 							<div class="container formoption">
 								<div class="row">
 									<div class="col-md-2">

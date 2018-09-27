@@ -29,7 +29,8 @@
 <body>
   
   <%@include file="includes/header.jsp"%>
-
+  <spring:message code="gender.male" var="male_gender"/>
+  <spring:message code="gender.female" var="female_gender"/>
     <c:choose>
       <c:when test="${empty currentCategory}"></c:when>
       <c:otherwise>
@@ -62,8 +63,7 @@
                 <div class="text zonetext "> <spring:message code="my.${currentCategory.lowerName}"/> </div>
               </div>
               <div class="row uspaced20">
-              <spring:message code="gender.male" var="male_gender"/>
-              <spring:message code="gender.female" var="female_gender"/>
+              
               <c:forEach items="${userPosts}" var="post">
                 <div class="col-md-4">                  
                       <a href="<c:url value="/post/${post.id}"/>" class="">

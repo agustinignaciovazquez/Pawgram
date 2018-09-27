@@ -1,7 +1,7 @@
 <div class="col-md-12 page-numbers">
 	<!--	chevron left-->
 	<c:if test="${currentPage > 1}">
-		<a href="<c:out value="?page=${currentPage-1}"/>" class="glyphicon glyphicon-chevron-left"></a>
+		<a href="<c:out value="?page=${currentPage-1}"/>"> <span class="glyphicon glyphicon-chevron-left"></span></a>
 	</c:if>
 	<!--	first page-->
 	<c:if test="${currentPage > 3}">
@@ -28,6 +28,6 @@
 	</c:if>
 	<!--	chevron right-->
 	<c:if test="${currentPage < totalPages}">
-		<a href="<c:out value="?page=${currentPage+1}"/>" class="glyphicon glyphicon-chevron-right"></a>
+		<a href="<c:out value="?page=${currentPage+1}"/>"> <span class="glyphicon glyphicon-chevron-right"> </span></a>
 	</c:if>
 </div>

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @RequestMapping("/post/create")
 @Controller
@@ -65,14 +66,21 @@ public class UploadPostController {
                                                 final RedirectAttributes attr) throws UnauthorizedException, PostCreateException, IOException {
 
         LOGGER.debug("User with id {} accessed upload POST", loggedUser.getId());
+        LocalDateTime dateTime;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            dateTime = LocalDate.parse(formPost.getEvent_date(), formatter).atStartOfDay();
+        }catch(DateTimeParseException ex){
+            LOGGER.warn("User with id {} failed to post post: form has errors: {}", loggedUser.getId(), errors.getAllErrors());
+            return errorState(formPost,category, errors, attr);
+        }
 
         if (errors.hasErrors()) {
             LOGGER.warn("User with id {} failed to post post: form has errors: {}", loggedUser.getId(), errors.getAllErrors());
             return errorState(formPost,category, errors, attr);
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime dateTime = LocalDate.parse(formPost.getEvent_date(), formatter).atStartOfDay();
+
         final Post post =  postService.createPost(formPost.getTitle(),formPost.getDescription(),formPost.getAllRawImages(),
                 formPost.getContact_phone(),dateTime,
                 category,formPost.getPet(),formPost.getIs_male(),

@@ -21,7 +21,7 @@
                      <c:otherwise>
                       <c:set var="active" value="${category eq currentCategory}"/>
                       <li class="nav-item ${active ? 'active' : ''}">
-                        <a class="nav-link text nav-sec" href="<c:out value="/zones/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
+                        <a class="nav-link text nav-sec" href="<c:url value="/zones/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
                       </li>
                      </c:otherwise>
               </c:choose>  
