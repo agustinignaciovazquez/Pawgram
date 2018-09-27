@@ -142,9 +142,11 @@
                   <input type="submit" class="btn btn-default post-comment-btn" value="${comment}" />
                 </div>
               </form:form>
-                
-              <div class="comments-container">
-                <ul id="comments-list" class="comments-list">
+               
+              <div class="row uspaced60"></div>  
+
+              <div class="comments-container ">
+                <ul id="comments-list" class="comments-list uspaced60 ">
                   <c:forEach items="${parentComments}" var="commentFamily" varStatus="status">
                   <li>
                     <div class="comment-main-level" id="comment${commentFamily.parentComment.id}">
@@ -222,7 +224,7 @@
                           </div>
 
                           <spring:message code="reply" var="reply"/>
-                            <div class="btn-place">
+                            <div class="btn-place bspaced1 rspaced1">
                               <input type="submit" class="btn btn-default post-comment-btn" value="${reply}" />
                             </div>
 
