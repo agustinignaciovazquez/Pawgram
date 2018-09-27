@@ -153,7 +153,7 @@
                       <!-- Contenedor del Comentario -->
                       <div class="comment-box">
                         <div class="comment-head">
-                          <h6 class="comment-name by-author"><a href="<c:url value="/profile/${commentFamily.parentComment.author.id}"/>"> <c:out value="${commentFamily.parentComment.author.name} ${commentFamily.parentComment.author.surname}" /></a></h6>
+                          <h6 class="comment-name ${post.owner eq commentFamily.parentComment.author ? 'by-author' : 'duki'}"><a href="<c:url value="/profile/${commentFamily.parentComment.author.id}"/>"> <c:out value="${commentFamily.parentComment.author.name} ${commentFamily.parentComment.author.surname}" /></a></h6>
                           <span><c:out value="${commentFamily.parentComment.commentDate}"/></span>
                           
                           <!--
@@ -179,7 +179,7 @@
                         <!-- Contenedor del Comentario -->
                         <div class="comment-box">
                           <div class="comment-head">
-                            <h6 class="comment-name"><a href="<c:url value="/profile/${child.author.id}"/>"><c:out value="${child.author.name} ${child.author.surname}" /></a></h6>
+                            <h6 class="comment-name ${post.owner eq commentFamily.parentComment.author ? 'by-author' : 'duki'}"><a href="<c:url value="/profile/${child.author.id}"/>"><c:out value="${child.author.name} ${child.author.surname}" /></a></h6>
                             
                             <!--
                             
@@ -205,7 +205,7 @@
                         <!-- Contenedor del Comentario -->
                         <div class="comment-box">
                           <div class="comment-head">
-                            <h6 class="comment-name"><a href="<c:url value="/profile/${loggedUser.id}"/>"><c:out value="${loggedUser.name} ${loggedUser.surname}" /></a></h6>
+                            <h6 class="comment-name ${post.owner eq commentFamily.parentComment.author ? 'by-author' : 'duki'}"><a href="<c:url value="/profile/${loggedUser.id}"/>"><c:out value="${loggedUser.name} ${loggedUser.surname}" /></a></h6>
                             
                             <!--
                             

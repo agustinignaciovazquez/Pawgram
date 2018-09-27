@@ -37,7 +37,10 @@ public class User {
 	public String getPassword() {
 		return password;
 	}
-	public String getProfile_img_url(){return profile_img_url;}
+	public String getProfile_img_url(){
+		if(profile_img_url == null || profile_img_url.equals(""))
+			return "DEFAULT";
+		return profile_img_url;}
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this)
