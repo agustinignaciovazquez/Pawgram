@@ -93,6 +93,7 @@ public class SearchController {
                                                 @RequestParam(value = "page", required = false, defaultValue = "1") int page,
                                                 @RequestParam(value = "latitude", required = false) final Optional<Double> latitude,
                                                 @RequestParam(value = "longitude", required = false) final Optional<Double> longitude) throws InvalidQueryException, ResourceNotFoundException {
+        LOGGER.debug("Accessed search with query {} and category {}", query, category);
 
         if (query == null || query.length() < MIN_QUERY) {
             throw new InvalidQueryException();
