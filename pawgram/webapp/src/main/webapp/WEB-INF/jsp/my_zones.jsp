@@ -39,7 +39,7 @@
 
     <c:choose>
          <c:when test="${searchZones.size() lt maxSearchZones}">
-      <div class="row uspaced20">
+      <div class="row uspaced60">
         <div class=" center">
           <button type="submit" class="btn btn-success newbutton" onclick="location.href='<c:url value="/my_zones/create"/>'">
               <i class="fas fa-plus"></i> Agregar nueva zona
@@ -55,7 +55,7 @@
 
     <c:choose>
          <c:when test="${searchZones.isEmpty()}">
-           <div class="row uspaced60">
+           <div class="row uspaced20">
             <div class="center">
              <div class="text noposttext"> Aun no tienes ninguna zona </div>
             </div>     

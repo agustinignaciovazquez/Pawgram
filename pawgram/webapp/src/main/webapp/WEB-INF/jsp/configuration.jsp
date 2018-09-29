@@ -45,19 +45,18 @@
         <div class="row uspaced20">
           <div class="col-lg-12">
               
-            <div class="text"><spring:message code="name"/></div class="text">
             <div class="form-group"> 
               <spring:message code="newname" var="newname"/>
               <form:input path="name" type="text" class="form-control" placeholder="${newname}" /> 
               <form:errors path="name" element="p" cssClass="form-error"/>
             </div> 
-            <div class="text"><spring:message code="surname"/></div class="text">
             <div class="form-group"> 
               <spring:message code="newsurname" var="newsurname"/>
               <form:input path="surname" type="text" class="form-control" placeholder="${newsurname}" /> 
               <form:errors path="surname" element="p" cssClass="form-error"/>
-            </div> 
-             <input id="submit" type="submit" name="submit" class="btn btn-lg btn-success pull-right" value="CAMBIAR NOMBRE"></input>
+            </div>
+             <spring:message code="configuration.change.info" var="changename"/> 
+             <input id="submit" type="submit" name="submit" class="btn btn-lg btn-success fright" value="${changename}"></input>
           </div>  
         </div>
     </form:form>
@@ -73,49 +72,53 @@
       <hr class="divider">
       <div class="row uspaced20">
         <div class="col-lg-12">
-            
-            <div class="text"><spring:message code="currentpw"/></div class="text">
+
             <div class="form-group pass_show"> 
                     <spring:message code="currentpw" var="currentpw"/>
                     <form:input path="currentPasswordConf" type="password"  class="form-control" placeholder="${currentpw}" /> 
                     <form:errors path="currentPasswordConf" element="p" cssClass="form-error"/>
                 </div> 
                 <spring:message code="newpw" var="newpw1"/>
-               <div class="text">${newpw1}</div class="text">
+
                 <div class="form-group pass_show"> 
                     
                     <form:input path="passwordForm.password" type="password"  class="form-control" placeholder="${newpw1}" /> 
                     <form:errors path="passwordForm.password" element="p" cssClass="form-error"/>
                 </div> 
-               <div class="text"><spring:message code="confirmnewpw"/></div class="text">
+
                 <div class="form-group pass_show"> 
                     <spring:message code="confirmnewpw" var="confirmnewpw"/>
                     <form:input path="passwordForm.repeatPassword" type="password"  class="form-control" placeholder="${confirmnewpw}" /> 
                     <form:errors path="passwordForm.repeatPassword" element="p" cssClass="form-error"/>
                 </div> 
-                <input id="submit" type="submit" name="submit" class="btn btn-lg btn-success pull-right" value="CAMBIAR PASSRADISE"></input>
+                <spring:message code="changepw" var="changepw"/>
+                <input id="submit" type="submit" name="submit" class="btn btn-lg btn-success fright " value="${changepw}"></input>
         </div>  
       </div>
     </form:form>
     </div>
 
     <div class="container uspaced60">
-      <!--- SANTI PONELE ESTILO A ESTO !--->
       <c:url value="/customize/profilePicture" var="postPathPicture" />
-    <form:form modelAttribute="changeProfilePictureForm" action="${postPathPicture}" method="post"  enctype="multipart/form-data">
+      <form:form modelAttribute="changeProfilePictureForm" action="${postPathPicture}" method="post"  enctype="multipart/form-data">
       <div class="row">
-        <div class="text zonetext uspaced60 lspaced20">CAMBIAR FOTITO</div>
+        <spring:message code="changepic" var="changepic"/>
+        <div class="text zonetext uspaced60 lspaced20">${changepic}</div>
       </div>
       <hr class="divider">
       <div class="row uspaced20">
         <div class="col-lg-12">
-               <div class="text">FOTITO</div class="text">
-                <form:input class="image-input" type="file" path="profilePicture" accept="image/*"/>
-                    <form:errors path="profilePicture" element="p" cssClass="form-error"/>
-                
-                <input id="submit" type="submit" name="submit" class="btn btn-lg btn-success pull-right" value="CAMBIAR FOTITO"></input>
-        </div>  
+          <form:input class="image-input" type="file" path="profilePicture" accept="image/*"/>
+          <form:errors path="profilePicture" element="p" cssClass="form-error"/>
+        </div>            
       </div>
+      <div class="row uspaced20">
+        <div class="col-lg-12">
+          <input id="submit" type="submit" name="submit" class="btn btn-lg btn-success fright" value="${changepic}"></input>
+        </div>
+        
+      </div> 
+        
     </form:form>
     </div>
 

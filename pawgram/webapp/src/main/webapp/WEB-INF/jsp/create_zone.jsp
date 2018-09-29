@@ -38,13 +38,14 @@
 
     <c:url value="/my_zones/create/process" var="postPath" />
     <form:form modelAttribute="searchZoneForm" class="comment-form" action="${postPath}" method="post">
-    <div class="row">
+    <div class="row uspaced15">
     	<div class="col-md-3"></div>
-        <input id="searchInput" onkeypress="return noenter()" class="controls" type="text" placeholder="Enter a location">
-        <form:errors path="latitude" element="p" cssClass="form-error"/>
-        <div id="map" class="mapround"></div>
-        <form:hidden path="latitude" class="form-control" id="lat" name="latitude"  />
-        <form:hidden path="longitude" class="form-control" id="lon" name="longitude" />
+        <div class="col-md-6">
+            <input id="searchInput" onkeypress="return noenter()" class="controls" type="text" placeholder="Enter a location">
+            <form:errors path="latitude" element="p" cssClass="form-error"/>
+            <div id="map"></div>
+            <form:hidden path="latitude" class="form-control" id="lat" name="latitude"  />
+            <form:hidden path="longitude" class="form-control" id="lon" name="longitude" />
         <!--<ul id="geoData">
             	<li>Direccion: <span id="location"></span></li>
                 <li>Codigo Postal: <span id="postal_code"></span></li>
@@ -52,10 +53,11 @@
                 <li>Latitud: <span id="lat"></span></li>
                 <li>Longitud: <span id="lon"></span></li>
             </ul>-->
+        </div>    
     </div>
 
 
-	<div class="row uspaced20">
+	<div class="row uspaced5">
 		<div class="col-md-3"></div>
 		<div class="col-md-6">
 			<div class="text zonetext zoneel1 rspaced2"><spring:message code="select.range"/></div>
@@ -74,7 +76,7 @@
     <div class="row uspaced60">
     	 <spring:message code="savezone" var="savezone"/>
        	<div class="center">
-        	<input id="submit" type="submit" name="submit" class="btn btn-lg btn-success pull-right" value="${savezone}"></input>
+        	<input id="submit" type="submit" name="submit" class="btn btn-lg btn-success" value="${savezone}"></input>
         </div>
         	
     </div>
