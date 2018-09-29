@@ -6,7 +6,7 @@
 <head>
 
   <meta charset="UTF-8">
-  <title><spring:message code="pageName"/>-<spring:message code="title.addzone"/></title> 
+  <title><spring:message code="pageName"/>- NAME </title> 
   
 
   <link href="<c:url value="/resources/css/all.css"/>" rel="stylesheet" id="font-awesome">
@@ -15,6 +15,7 @@
 
   
   <script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
+   <script src="<c:url value="/resources/js/popper.js"/>"></script>
   <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
   <script src="<c:url value="/resources/js/pawgram.js"/>"></script>
 
@@ -38,9 +39,6 @@
 			</div>
 			<div class="row">
 				<div class="text email">insanecoding@gmail.com</div>
-			</div>
-			<div class="row bspaced5">
-				<div class="text email">(011) 4074-0641</div>
 			</div>
 
 		</div>
@@ -66,13 +64,34 @@
 
             <div class="row">
               <div class="col-md-6">
-                <div class="text zonetext ">Mis Posts</div>
+                <div class="text zonetext ">
+
+                	<spring:message code="myposts"/>
+
+
+
+                	<spring:message code="otherposts"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
               </div>
               <div class="col-md-6">
 
                 <div class="btn-group dropright fright">
                   <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     Filtra por categoria
+                     <spring:message code="filter.by.category"/>
                   </button>
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Perdidos</a>
@@ -84,64 +103,67 @@
 
               </div>  
             </div>
-            <div class="row uspaced20">
-                <div class="col-md-4">                  
-                    <a href="#post" class="">
-                        <div class="card"> 
-                            <img class="img-fluid card-img" src="https://s7d1.scene7.com/is/image/PETCO/puppy-090517-dog-featured-355w-200h-d" alt="">
-                            <div class="card-img-overlay"> <span class="badge badge-pill badge-danger text categorytext">Perdido</span> </div>
-                            <div class="card-body">
-                                <p class="card-text"><small class="text  text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em><em>:</em> <em>Perro</em> <em> / </em> <em>Sexo</em><em>:</em> <em>Macho</em> </small></p>
-                                <div class="news-title">
-                                    <h2 class="text title-small">Tomy se perdio en la concha de tu hermana</h2>
-                                </div>
-                                <div class="card-exp">
-                                    <i class="far fa-eye"> <div class="text seemoretext">Ver Detalles</div></i>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="#post" class="">
-                        <div class="card"> 
-                            <img class="img-fluid card-img" src="https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg" alt="">
-                            <div class="card-img-overlay"> <span class="badge badge-pill badge-success text categorytext ">Encontrado</span> </div>
-                            <div class="card-body">
-                                <p class="card-text"><small class="text text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em><em>:</em> <em>Perro</em> <em> / </em> <em>Sexo</em><em>:</em> <em>Macho</em> </small></p>
-                                <div class="news-title">
-                                    <h2 class="text title-small">Tomy se perdio en la concha de tu hermana</h2>
-                                </div>
-                                <div class="card-exp">
-                                    <i class="far fa-eye"> <div class="text seemoretext">Ver Detalles</div></i>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </a>
-                </div> 
+            
+			<div class="container uspaced5">
 
-                <div class="col-md-4">
-                    <a href="#post" class="">
-                        <div class="card"> 
-                            <img class="img-fluid card-img" src="https://i.kinja-img.com/gawker-media/image/upload/s--WFkXeene--/c_scale,f_auto,fl_progressive,q_80,w_800/ol9ceoqxidudap8owlwn.jpg" alt="">
-                            <div class="card-img-overlay"> <span class="badge badge-pill badge-danger text categorytext">Perdido</span> </div>
-                            <div class="card-body">
-                                <p class="card-text"><small class=" text text-time"><em>A 0,7 kms</em> <em> / </em> <em>Especie</em><em>:</em> <em>Perro</em> <em> / </em> <em>Sexo</em><em>:</em> <em>Macho</em> </small></p>
-                                <div class="news-title">
-                                    <h2 class=" text title-small">Tomy se perdio en la concha de tu hermana</h2>
-                                </div>
-                                <div class="card-exp">
-                                    <i class="far fa-eye"> <div class="text seemoretext">Ver Detalles</div></i>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </a>
-                </div>
+			            <div class="row uspaced20">
+			                
+			            <c:choose>
+			            <c:when test="${searchZone.posts.isEmpty()}">
+			                  <div class="text center noposttext"><spring:message code="empty.post"/></div>
+			            </c:when>
+			            <c:otherwise>
+			          
+			              <c:forEach items="${searchZone.posts}" var="post">
+			              <div class="col-md-4">                  
+			                    <a href="<c:url value="/post/${post.id}?latitude=${searchZone.location.latitude}&longitude=${searchZone.location.longitude}"/>" class="">
+			                        <div class="card"> 
+			                          <c:choose>
+			                            <c:when test="${post.postImages.isEmpty()}">
+			                                 <img class="img-fluid card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" alt="">
+			                            </c:when>
+			                            <c:otherwise>
+			                                  <img class="img-fluid card-img" src="<c:url value="/post/images/${post.postImages[0].url}"/>" alt="">
+			                           </c:otherwise>
+			                         </c:choose>
+			                           
+			                            <spring:message code="gender.male" var="male_gender"/>
+			                            <spring:message code="gender.female" var="female_gender"/>
+			                            <div class="card-img-overlay"> <span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text categorytext"><spring:message code="pill.${post.category.lowerName}"/></span> <button type="button" class="btn btn-danger btn-circle " onclick=""><i class="fas fa-trash-alt"></i></button></div>
+			                            <div class="card-body">
+			                                <p class="card-text"><small class="text  text-time"><em><spring:message code="distance"/></em><em>:</em> <em> <c:out value="${post.distance}"/> <spring:message code="kms"/></em> <em> / </em> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em>${post.is_male ? male_gender : female_gender }</em> </small></p>
+			                                <div class="news-title">
+			                                    <h2 class="text title-small"><c:out value="${post.title}"/></h2>
+			                                </div>
+			                                <div class="card-exp">
+			                                    <i class="far fa-eye"> <div class="text seemoretext"><spring:message code="details"/></div></i>
+			                                </div>
+			                                
+			                            </div>
+			                        </div>
+			                    </a>
+			                </div>  
+			                          
+			                
+			              </c:forEach>
+			            </c:otherwise>
+			        </c:choose>
+			      </div>
 
-        </div>  
+			    </div>
+			      <div class="row uspaced20">
+			        <div class="col-lg-5"></div>
+			        <div class="col-lg-2">
+			          <div class="container">
+			            <div class="text-xs-center">
+			              <%@include file="includes/pagination.jsp"%>
+			            </div>   
+			          </div>
+			        </div>
+			        <div class="col-lg-5"></div>
+			      </div>
+			    </div> 
+
 
     </div>
 
@@ -152,7 +174,7 @@
 	<!--FOOTER-->
     <div class="row uspaced60"></div>
     <div class="container-fluid footer">
-        <div class="text footertext">© 2018 Todos los derechos reservados pawgram.org</div> 
+        <div class="text footertext"><spring:message code="footer"/></div> 
     </div>
     <!--FOOTER-->
 

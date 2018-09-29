@@ -42,7 +42,7 @@ public class ProfileController {
         return new ChangeInfoForm();
     }
 
-    @RequestMapping("/profile/{userId}")
+    @RequestMapping("/{userId}")
     public ModelAndView user(@PathVariable final long userId) throws UserNotFoundException {
         LOGGER.debug("Accessed user profile with ID: {}", userId);
 
