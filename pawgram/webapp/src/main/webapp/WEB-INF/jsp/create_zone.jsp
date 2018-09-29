@@ -27,7 +27,7 @@
 	<div class="container-fluid titzon">
 	 	<div class="row">
 			<div class="col-md-3"></div>
-			<div class="text titsec">Mis Zonas</div>
+			<div class="text titsec">Agregar Zona</div>
 		</div>
 	</div>
 
