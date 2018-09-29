@@ -7,9 +7,9 @@
 
   <meta charset="UTF-8">
   <c:choose>
-         <c:when test="${empty currentCategory}"><title><spring:message code="pageName"/>  </title></c:when>
+         <c:when test="${empty currentCategory}"><title><spring:message code="pageName"/> - <spring:message code="title.index"/> </title></c:when>
          <c:otherwise>
-          <title><spring:message code="pageName"/> <spring:message code="category.${currentCategory.lowerName}"/></title>
+          <title><spring:message code="pageName"/> - <spring:message code="category.${currentCategory.lowerName}"/></title>
          </c:otherwise>
   </c:choose>  
   
