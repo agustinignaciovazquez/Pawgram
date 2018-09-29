@@ -30,7 +30,10 @@
 				<div class="row uspaced5">
 					<div class="avatarwrapper avatar">
 						<img class="avatar" alt="" src="<c:url value="/profile/images/${profileUser.profile_img_url}"/>">
-	                	<i class="fas fa-edit editicon"></i>
+						<c:if test="${profileUser eq loggedUser}">
+							<!--- SANTI FIJATE PORQUE ESTE BOTON NO FUNCIONA SA !--->
+	                		<i class="fas fa-edit editicon" href="<c:url value="/customize/"/>"></i>
+	               		 </c:if>
 					</div>
 				</div>
 			</a>
@@ -50,7 +53,6 @@
                 <div class="text zonetext ">
                 	<c:choose>
                      <c:when test="${profileUser eq loggedUser}">
-	              	<!--- SANADIR UN BOTON ACA EDITAR PERFIL CON HREF A CUSTOMIZER PERROTEE !--->
 						<div class="row uspaced20">
 							<div class=" center">
 								<button type="submit" class="btn btn-success newbutton" onclick="location.href='<c:url value="/post/create/"/>'"
