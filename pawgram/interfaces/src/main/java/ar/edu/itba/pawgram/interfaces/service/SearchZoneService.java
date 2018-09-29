@@ -31,6 +31,14 @@ public interface SearchZoneService {
     public List<PlainSearchZone> getPlainSearchZonesByUser(final User user);
 
     /**
+     * Lists {@link SearchZone} with a specific id,
+     * no posts, only user location and range
+     * @param id - the search zone id.
+     * @return searchZone associated with the id
+     */
+    public SearchZone getFullSearchZonesByIdWithoutPosts(final long id);
+
+    /**
      * Retrieves the quantity of {@link SearchZone} registered for a given {@link User}
      * @param user - the user searching in his zones.
      * @return The number of {@link SearchZone}.

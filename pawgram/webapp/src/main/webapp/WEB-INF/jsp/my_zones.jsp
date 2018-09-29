@@ -19,7 +19,9 @@
   <script src="<c:url value="/resources/js/popper.js"/>"></script>
   <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
   <script src="<c:url value="/resources/js/pawgram.js"/>"></script>
-
+  <script>
+    var initmaps = [];
+  </script>
 </head>
 
 
@@ -50,49 +52,44 @@
 			    
 		</div>
       <div class="container uspaced60">
+        <c:forEach items="${searchZones}" var="searchZone" varStatus="status">
+        
         <div class="row">
-            <div class="text zonetext zoneel1 rspaced2">Zona 1</div>
+            <div class="text zonetext zoneel1 rspaced2">Zona <c:out value="${searchZone.id}"/></div>
             <div class="lspaced20"></div>
-            <button type="button" class="btn btn-danger btn-circle uspaced4"><i class="fas fa-trash-alt"></i></button>
+            <button type="button" class="btn btn-danger btn-circle uspaced4" onclick="location.href='<c:url value="/my_zones/delete/${searchZone.id}"/>'"><i class="fas fa-trash-alt"></i></button>
         </div>
         <div class="row uspaced20">
           <div class="col-md-12">
             <div class=" zonecard">
               <div class="container">
                 <div class="row">
-                  <input id="searchInput" class="controls" type="text" placeholder="Enter a location">
-                   <div id="map" class="mapround"></div>
-                          <!--<ul id="geoData">
-                              <li>Direccion: <span id="location"></span></li>
-                              <li>Codigo Postal: <span id="postal_code"></span></li>
-                              <li>Pais: <span id="country"></span></li>
-                              <li>Latitud: <span id="lat"></span></li>
-                              <li>Longitud: <span id="lon"></span></li>
-                          </ul>-->
+                   <div id="<c:out value="map${status.index}"/>" class="mapround"></div>
+        
                 </div>
                 <div class="row uspaced10">
                   <div class="col-lg-4">
                     <div class="zonewrapper">
                       <div class="text zonetitle"> Zona: </div>
-                      <div class="text zonedata">&nbsp Quilmes</div>
+                      <div class="text zonedata">&nbsp <c:out value="${status.index}"/></div>
                     </div>  
                   </div>
                   <div class="col-lg-3">
                     <div class="zonewrapper">
                       <div class="text zonetitle"> Latitud: </div>
-                      <div class="text zonedata">&nbsp 9.912301</div>
+                      <div class="text zonedata">&nbsp <c:out value="${searchZone.location.latitude}"/></div>
                     </div>
                   </div>
                   <div class="col-lg-3">
                     <div class="zonewrapper">
                       <div class="text zonetitle"> Longitud: </div>
-                      <div class="text zonedata">&nbsp  53.131455</div>
+                      <div class="text zonedata">&nbsp  <c:out value="${searchZone.location.longitude}"/></div>
                     </div>
                   </div>
                   <div class="col-lg-2">
                     <div class="zonewrapper">
                       <div class="text zonetitle"> Rango: </div>
-                      <div class="text zonedata">&nbsp 10km</div>
+                      <div class="text zonedata"><c:out value="${searchZone.range}"/> km</div>
                     </div>
                   </div>
                 </div>
@@ -102,9 +99,49 @@
             </div>
           </div>
         </div>
+        <!--GOOGLE MAPS-->
+        
+          <script>
+
+        // Initialize and add the map
+            function <c:out value="initMap${status.index}"/>() {
+              // Create the map.
+              var map = new google.maps.Map(document.getElementById('<c:out value="map${status.index}"/>'), {
+                zoom: 12,
+                center: {lat: <c:out value="${searchZone.location.latitude}"/>, lng: <c:out value="${searchZone.location.longitude}"/>},
+                mapTypeId: 'terrain'
+              });
+
+              var cityCircle = new google.maps.Circle({
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35,
+                map: map,
+                center: {lat: <c:out value="${searchZone.location.latitude}"/>, lng: <c:out value="${searchZone.location.longitude}"/>},
+                radius: <c:out value="${searchZone.range}"/>
+              });
+            
+          }
+          initmaps.push(<c:out value="initMap${status.index}"/>);
+          </script>
+          
+          <!--GOOGLE MAPS--> 
+        </c:forEach>
     </div>
 
 
+  <script>
+    function initMap() {
+      for (i = 0; i < initmaps.length; i++) {
+            initmaps[i]();
+      }  
+    }
+  </script>
+  <script async defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsqLEThGLQ6T4Ayox_K7Em1S4DuAT-wm8&callback=initMap">
+  </script>
   <!--FOOTER-->
     <div class="row uspaced60"></div>
     <div class="container-fluid footer">

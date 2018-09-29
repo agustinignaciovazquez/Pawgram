@@ -33,6 +33,12 @@ public class ErrorControllerAdvice {
         return buildModelAndView("error/404post");
     }
 
+    @ExceptionHandler(ZoneNotFoundException.class)
+    @ResponseStatus(value=HttpStatus.NOT_FOUND)
+    public ModelAndView zoneNotFound() {
+        return buildModelAndView("error/404zone");
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(value=HttpStatus.NOT_FOUND)
     public ModelAndView userNotFound() {

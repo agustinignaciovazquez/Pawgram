@@ -2,8 +2,11 @@ package ar.edu.itba.pawgram.webapp.controller;
 
 import ar.edu.itba.pawgram.interfaces.service.SearchZoneService;
 import ar.edu.itba.pawgram.model.Category;
+import ar.edu.itba.pawgram.model.SearchZone;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
+import ar.edu.itba.pawgram.webapp.exception.ForbiddenException;
+import ar.edu.itba.pawgram.webapp.exception.ZoneNotFoundException;
 import ar.edu.itba.pawgram.webapp.form.CommentsForm;
 import ar.edu.itba.pawgram.webapp.form.SearchZoneForm;
 import org.slf4j.Logger;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,6 +47,28 @@ public class MyZonesController {
         mav.addObject("categories", Category.values());
         mav.addObject("searchZones", searchZones);
         return mav;
+    }
+
+    @RequestMapping("/delete/{zoneId}")
+    public ModelAndView deleteeMyZone(@PathVariable final long zoneId,
+                                      @ModelAttribute("loggedUser") final User loggedUser) throws ZoneNotFoundException, ForbiddenException {
+        LOGGER.debug("Accessed delete search zones with id {}",zoneId);
+
+        final SearchZone searchZone = searchZoneService.getFullSearchZonesByIdWithoutPosts(zoneId);
+        if (searchZone == null) {
+            LOGGER.warn("Failed to delete zone with id {}: zone not found", zoneId);
+            throw new ZoneNotFoundException();
+        }
+        if(!loggedUser.equals(searchZone.getUser())){
+            LOGGER.warn("Failed to delete zone with id {}: logged user with id {} is not zone creator with id {}",
+                    zoneId, loggedUser.getId(), searchZone.getUser().getId());
+            throw new ForbiddenException();
+        }
+
+        if (searchZoneService.deleteZoneById(zoneId))
+            LOGGER.info("Product with id {} deleted by user with id {}", zoneId, loggedUser.getId());
+
+        return new ModelAndView("redirect:/my_zones/");
     }
 
     @RequestMapping("/create")

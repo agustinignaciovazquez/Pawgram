@@ -36,6 +36,11 @@ public class SearchZoneServiceImpl implements SearchZoneService {
     }
 
     @Override
+    public SearchZone getFullSearchZonesByIdWithoutPosts(long id) {
+        return searchZoneDao.getFullSearchZoneById(id).build();
+    }
+
+    @Override
     public long getTotalSearchZonesByUser(User user) {
         return searchZoneDao.getTotalSearchZonesByUser(user);
     }
