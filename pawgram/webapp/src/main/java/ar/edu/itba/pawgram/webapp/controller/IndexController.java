@@ -18,7 +18,7 @@ public class IndexController {
 	@Autowired
 	private UserService us;
 
-	@RequestMapping("/")
+	@RequestMapping(value={"","/"})
 	public ModelAndView index() {
 		return new ModelAndView("index");
 	}

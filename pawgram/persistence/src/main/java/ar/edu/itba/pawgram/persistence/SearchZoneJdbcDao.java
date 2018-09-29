@@ -68,5 +68,12 @@ public class SearchZoneJdbcDao implements SearchZoneDao {
         return (l.isEmpty())? null: l.get(0);
     }
 
+    @Override
+    public long getTotalSearchZonesByUser(User user) {
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM search_zones WHERE userId = ?",
+                Long.class, user.getId());
+        return total != null ? total : 0;
+    }
+
 
 }

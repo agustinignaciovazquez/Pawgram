@@ -36,6 +36,11 @@ public class SearchZoneServiceImpl implements SearchZoneService {
     }
 
     @Override
+    public long getTotalSearchZonesByUser(User user) {
+        return searchZoneDao.getTotalSearchZonesByUser(user);
+    }
+
+    @Override
     @Transactional
     public SearchZone getFullSearchZoneById(long zoneId, long page, int pageSize) {
         SearchZone.SearchZoneBuilder builder = searchZoneDao.getFullSearchZoneById(zoneId);
