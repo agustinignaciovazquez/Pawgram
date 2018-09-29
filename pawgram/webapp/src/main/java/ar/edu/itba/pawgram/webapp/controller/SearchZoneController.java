@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/zone")
 @Controller
 public class SearchZoneController {
-    private static final int PAGE_SIZE = 2;
+    private static final int PAGE_SIZE = 9;
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchZoneController.class);
     @Autowired
     private SearchZoneService searchZoneService;
@@ -39,10 +39,12 @@ public class SearchZoneController {
 
         if(searchZone == null)
             throw new ResourceNotFoundException();
+
         if(!loggedUser.equals(searchZone.getUser())){
             LOGGER.warn("User not authorized: {}", loggedUser.getId());
             throw new ForbiddenException();
         }
+
         if (page < 1 || page > searchZone.getMax_page() && searchZone.getMax_page() > 0) {
             LOGGER.warn("Category page out of bounds: {}", page);
             throw new ResourceNotFoundException();
@@ -54,7 +56,7 @@ public class SearchZoneController {
         mav.addObject("categories", Category.values());
         mav.addObject("searchZone", searchZone);
         mav.addObject("currentPage", page);
-        mav.addObject("totalPages", searchZone.getMax_page());//should remove this
+        mav.addObject("totalPages", searchZone.getMax_page());
         return mav;
     }
 
@@ -69,10 +71,12 @@ public class SearchZoneController {
 
         if(searchZone == null)
             throw new ResourceNotFoundException();
+
         if(!loggedUser.equals(searchZone.getUser())){
             LOGGER.warn("User not authorized: {}", loggedUser.getId());
             throw new ForbiddenException();
         }
+
         if (page < 1 || page > searchZone.getMax_page() && searchZone.getMax_page() > 0) {
             LOGGER.warn("Page out of bounds: {}", page);
             throw new ResourceNotFoundException();
