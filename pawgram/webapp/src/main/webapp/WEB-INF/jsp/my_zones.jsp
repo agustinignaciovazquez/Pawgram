@@ -54,7 +54,7 @@
       <div class="container uspaced60">
         <c:forEach items="${searchZones}" var="searchZone" varStatus="status">
         
-        <div class="row">
+        <div class="row uspaced5">
             <div class="text zonetext zoneel1 rspaced2">Zona <c:out value="${searchZone.id}"/></div>
             <div class="lspaced20"></div>
             <button type="button" class="btn btn-danger btn-circle uspaced4" onclick="location.href='<c:url value="/my_zones/delete/${searchZone.id}"/>'"><i class="fas fa-trash-alt"></i></button>
