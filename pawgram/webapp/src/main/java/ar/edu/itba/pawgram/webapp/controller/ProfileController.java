@@ -11,11 +11,13 @@ import ar.edu.itba.pawgram.webapp.exception.ResourceNotFoundException;
 import ar.edu.itba.pawgram.webapp.exception.UserNotFoundException;
 import ar.edu.itba.pawgram.webapp.form.ChangeInfoForm;
 import ar.edu.itba.pawgram.webapp.form.ChangePasswordForm;
+import ar.edu.itba.pawgram.webapp.util.CaseInsensitiveConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,23 +36,7 @@ public class ProfileController {
     @Autowired
     private PostService postService;
 
-    @ModelAttribute("changePasswordForm")
-    public ChangePasswordForm passwordForm(@ModelAttribute("loggedUser") final User loggedUser){
-        return new ChangePasswordForm();
-    }
-
-    @ModelAttribute("changeProfilePictureForm")
-    public ChangePasswordForm pictureForm(@ModelAttribute("loggedUser") final User loggedUser){
-        return new ChangePasswordForm();
-    }
-
-    @ModelAttribute("changeInfoForm")
-    public ChangeInfoForm infoForm(@ModelAttribute("loggedUser") final User loggedUser){
-        return new ChangeInfoForm();
-    }
-
     @RequestMapping("/{userId}")
-
     public ModelAndView user(@PathVariable final long userId,
                              @RequestParam(value = "page", required = false, defaultValue = "1") int page,
                              @RequestParam(value = "latitude", required = false) final Optional<Double> latitude,
@@ -148,5 +134,10 @@ public class ProfileController {
             throw new ImageNotFoundException();
         }
         return img;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Category.class,new CaseInsensitiveConverter<>(Category.class));
     }
 }

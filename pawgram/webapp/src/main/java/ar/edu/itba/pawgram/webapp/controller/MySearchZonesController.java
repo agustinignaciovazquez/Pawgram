@@ -7,7 +7,6 @@ import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 import ar.edu.itba.pawgram.webapp.exception.ForbiddenException;
 import ar.edu.itba.pawgram.webapp.exception.ZoneNotFoundException;
-import ar.edu.itba.pawgram.webapp.form.CommentsForm;
 import ar.edu.itba.pawgram.webapp.form.SearchZoneForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +25,15 @@ import java.util.List;
 
 @RequestMapping("/my_zones")
 @Controller
-public class MyZonesController {
+public class MySearchZonesController {
     private static final int MAX_SEARCH_ZONES = 3;
-    private static final Logger LOGGER = LoggerFactory.getLogger(MyZonesController.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MySearchZonesController.class);
     @Autowired
     private SearchZoneService searchZoneService;
 
     @ModelAttribute("searchZoneForm")
-    public SearchZoneForm formComments() {
+    public SearchZoneForm formSearchZone() {
         return new SearchZoneForm();
     }
 
@@ -45,12 +45,13 @@ public class MyZonesController {
 
         ModelAndView mav = new ModelAndView("my_zones");
         mav.addObject("categories", Category.values());
+        mav.addObject("maxSearchZones", MAX_SEARCH_ZONES);
         mav.addObject("searchZones", searchZones);
         return mav;
     }
 
     @RequestMapping("/delete/{zoneId}")
-    public ModelAndView deleteeMyZone(@PathVariable final long zoneId,
+    public ModelAndView deleteMyZone(@PathVariable final long zoneId,
                                       @ModelAttribute("loggedUser") final User loggedUser) throws ZoneNotFoundException, ForbiddenException {
         LOGGER.debug("Accessed delete search zones with id {}",zoneId);
 
@@ -76,12 +77,14 @@ public class MyZonesController {
         LOGGER.debug("Accessed create search zones");
 
         final List<PlainSearchZone> searchZones = searchZoneService.getPlainSearchZonesByUser(loggedUser);
+        if(searchZones.size() >= MAX_SEARCH_ZONES){
+            return new ModelAndView("redirect:/my_zones/");
+        }
 
         ModelAndView mav = new ModelAndView("create_zone");
         mav.addObject("categories", Category.values());
         mav.addObject("searchZones", searchZones);
         mav.addObject("userTotalSearchZones",searchZones.size());
-
         return mav;
     }
 
@@ -97,9 +100,9 @@ public class MyZonesController {
 
         final ModelAndView mav = new ModelAndView("redirect:/my_zones/create");
 
-        if (errors.hasErrors() || userTotalSearchZones > MAX_SEARCH_ZONES) {
+        if (errors.hasErrors() || userTotalSearchZones >= MAX_SEARCH_ZONES) {
             LOGGER.warn("User {} failed to create new search zone: form has errors: {}", loggedUser.getId(), errors.getAllErrors());
-            if(userTotalSearchZones > MAX_SEARCH_ZONES)
+            if(userTotalSearchZones >= MAX_SEARCH_ZONES)
                 LOGGER.warn("User {} failed to create new search zone: user has achieve maximum number of search zones (current) {} (max) {} ",
                         loggedUser.getId(), userTotalSearchZones, MAX_SEARCH_ZONES);
             setErrorState(form, errors, attr);
@@ -112,7 +115,7 @@ public class MyZonesController {
     }
 
     private void setErrorState(SearchZoneForm form, final BindingResult errors, RedirectAttributes attr) {
-        attr.addFlashAttribute("org.springframework.validation.BindingResult.commentsForm", errors)
+        attr.addFlashAttribute("org.springframework.validation.BindingResult.searchZoneForm", errors)
                 .addFlashAttribute("searchZoneForm", form);
     }
 

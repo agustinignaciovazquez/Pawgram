@@ -1,0 +1,4 @@
+Hacer que se actualice el circulo de radio en crear zona
+Hacer que aparezca el nombre de c/ zona debido a cercania en muchos jsp
+Hacer que +/- funcionen en create post
+Invitar a salir a tuvi

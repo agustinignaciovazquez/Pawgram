@@ -1,18 +1,21 @@
 package ar.edu.itba.pawgram.webapp.form;
 
 import ar.edu.itba.pawgram.model.Location;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class SearchZoneForm {
+    private static final int DEFAULT_RANGE_KM = 3;
     @NotNull
     private Double latitude;
     @NotNull
     private Double longitude;
+
     @NotNull
-    @Size(min = 1, max = 20)
-    private int range;
+    @Range(min = 1, max = 20)
+    private Integer range = DEFAULT_RANGE_KM;
 
     @NotNull
     public Double getLatitude() {
@@ -36,13 +39,13 @@ public class SearchZoneForm {
         this.longitude = longitude;
     }
 
-    public int getRange() {
+    public Integer getRange() {
         return range;
     }
-    public int getRangeInMeters(){
+    public Integer getRangeInMeters(){
         return range*1000;
     }
-    public void setRange(int range) {
+    public void setRange(Integer range) {
         this.range = range;
     }
 }

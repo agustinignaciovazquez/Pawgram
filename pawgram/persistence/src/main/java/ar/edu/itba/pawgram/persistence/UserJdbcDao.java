@@ -70,7 +70,7 @@ public class UserJdbcDao implements UserDao {
 		User user = findById(id);
 		String enc_password = bCryptPasswordEncoder.encode(password);
 		if (user != null)
-			jdbcTemplate.update("UPDATE users SET password = ? WHERE userId = ?", enc_password, id);
+			jdbcTemplate.update("UPDATE users SET password = ? WHERE id = ?", enc_password, id);
 
 		return new User(id,user.getName(),user.getSurname(),user.getMail(),enc_password,user.getProfile_img_url());
 	}
@@ -79,7 +79,7 @@ public class UserJdbcDao implements UserDao {
 	public User changeName(long id, String name, String surname) {
 		User user = findById(id);
 		if (user != null)
-			jdbcTemplate.update("UPDATE users SET name = ?, surname = ? WHERE userId = ?", name,surname, id);
+			jdbcTemplate.update("UPDATE users SET name = ?, surname = ? WHERE id = ?", name,surname, id);
 
 		return new User(id,name,surname,user.getMail(),user.getPassword(),user.getProfile_img_url());
 	}
@@ -88,7 +88,7 @@ public class UserJdbcDao implements UserDao {
 	public User changeProfile(long id, String img_url) {
 		User user = findById(id);
 		if (user != null)
-			jdbcTemplate.update("UPDATE users SET profile_img_url = ? WHERE userId = ?", img_url, id);
+			jdbcTemplate.update("UPDATE users SET profile_img_url = ? WHERE id = ?", img_url, id);
 
 		return new User(id,user.getName(),user.getSurname(),user.getMail(),user.getPassword(),img_url);
 	}

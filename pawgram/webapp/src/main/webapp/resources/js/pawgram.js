@@ -67,10 +67,8 @@ $( document ).ready(function() {
         };
         request.send();
     };
-
-
-
-  
+    function noenter() {
+  return !(window.event && window.event.keyCode == 13); }  
     
    /* 
     ONLY FOR NEW POST JSP

@@ -38,14 +38,35 @@ public class CustomizeController {
     @Autowired
     private PasswordChangeValidator passwordChangeValidator;
 
-    @RequestMapping(value = "/profile/password", method = {RequestMethod.POST})
+    @ModelAttribute("changePasswordForm")
+    public ChangePasswordForm passwordForm(@ModelAttribute("loggedUser") final User loggedUser){
+        return new ChangePasswordForm();
+    }
+
+    @ModelAttribute("changeProfilePictureForm")
+    public ChangeProfileImageForm pictureForm(@ModelAttribute("loggedUser") final User loggedUser){
+        return new ChangeProfileImageForm();
+    }
+
+    @ModelAttribute("changeInfoForm")
+    public ChangeInfoForm infoForm(@ModelAttribute("loggedUser") final User loggedUser){
+        return new ChangeInfoForm();
+    }
+
+
+    @RequestMapping(value={"","/"})
+    public ModelAndView index() {
+        return new ModelAndView("configuration");
+    }
+
+    @RequestMapping(value = "/password", method = {RequestMethod.POST})
     public ModelAndView changePassword(@Valid @ModelAttribute("changePasswordForm") final ChangePasswordForm changePasswordForm,
                                        final BindingResult errors, @ModelAttribute("loggedUser") final User loggedUser,
                                        RedirectAttributes attr) throws UnauthorizedException {
 
         LOGGER.debug("User with id {} accessed change password POST", loggedUser.getId());
 
-        final ModelAndView mav = new ModelAndView("redirect:/profile/" + loggedUser.getId());
+        final ModelAndView mav = new ModelAndView("redirect:/customize/");
 
         changePasswordForm.setCurrentPassword(loggedUser.getPassword());
         passwordChangeValidator.validate(changePasswordForm, errors);
@@ -63,7 +84,7 @@ public class CustomizeController {
 
         LOGGER.info("User with id {} successfully changed his password", loggedUser.getId());
 
-        return mav;
+        return new ModelAndView("redirect:/profile/" + loggedUser.getId());
     }
 
     private void setErrorState(final ChangePasswordForm changePasswordForm, final BindingResult errors,
@@ -73,15 +94,14 @@ public class CustomizeController {
         attr.addFlashAttribute("passError", true);
     }
 
-    @RequestMapping(value="/profile/profilePicture", method = {RequestMethod.POST})
+    @RequestMapping(value="/profilePicture", method = {RequestMethod.POST})
     public ModelAndView changeProfilePicture(@Valid @ModelAttribute("changeProfilePictureForm") final ChangeProfileImageForm changeProfilePictureForm ,
                                              final BindingResult errors, @ModelAttribute("loggedUser") final User loggedUser,
                                              final RedirectAttributes attr) throws UnauthorizedException {
 
         LOGGER.debug("User with id {} accessed change profile picture POST", loggedUser.getId());
 
-        final ModelAndView mav = new ModelAndView("redirect:/profile/" + loggedUser.getId());
-
+        final ModelAndView mav = new ModelAndView("redirect:/customize/");
         if (errors.hasErrors()) {
             LOGGER.warn("Failed to change profile picture: form has errors: {}", errors.getAllErrors());
             setErrorState(changeProfilePictureForm, errors, attr, loggedUser);
@@ -97,7 +117,7 @@ public class CustomizeController {
             //e.printStackTrace(); DEBUG ONLY
         }
 
-        return mav;
+        return new ModelAndView("redirect:/profile/" + loggedUser.getId());
     }
 
     private void setErrorState(final ChangeProfileImageForm changeProfilePictureForm, final BindingResult errors,
@@ -107,14 +127,14 @@ public class CustomizeController {
         attr.addFlashAttribute("imgError", true);
     }
 
-    @RequestMapping(value="/profile/info", method = {RequestMethod.POST})
+    @RequestMapping(value="/info", method = {RequestMethod.POST})
     public ModelAndView changeNameAndSurname(@Valid @ModelAttribute("changeInfoForm") final ChangeInfoForm changeInfoForm ,
                                              final BindingResult errors, @ModelAttribute("loggedUser") final User loggedUser,
-                                             final RedirectAttributes attr) throws UnauthorizedException {
+                                             final RedirectAttributes attr) {
 
         LOGGER.debug("User with id {} accessed change info POST", loggedUser.getId());
 
-        final ModelAndView mav = new ModelAndView("redirect:/profile/" + loggedUser.getId());
+        final ModelAndView mav = new ModelAndView("redirect:/customize/");
 
         if (errors.hasErrors()) {
             LOGGER.warn("Failed to change info: form has errors: {}", errors.getAllErrors());
@@ -122,9 +142,9 @@ public class CustomizeController {
             return mav;
         }
         userService.changeName(loggedUser.getId(),changeInfoForm.getName(),changeInfoForm.getSurname());
-        attr.addFlashAttribute("changeInfoForm", new ChangeInfoForm());
+        //attr.addFlashAttribute("changeInfoForm", new ChangeInfoForm());
 
-        return mav;
+        return new ModelAndView("redirect:/profile/"+ loggedUser.getId());
     }
     private void setErrorState(final ChangeInfoForm changeInfoForm, final BindingResult errors,
                                final RedirectAttributes attr, final User loggedUser) {

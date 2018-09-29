@@ -37,21 +37,32 @@
 			</div>
 		</div>
 
-		<div class="row uspaced60">
-			<div class="center">
-			 <div class="text noposttext"> Aun no tienes ninguna zona </div>
-			</div>     
-		</div>
+    <c:choose>
+         <c:when test="${searchZones.size() lt maxSearchZones}">
+      <div class="row uspaced20">
+        <div class=" center">
+          <button type="submit" class="btn btn-success newbutton" onclick="location.href='<c:url value="/my_zones/create"/>'">
+              <i class="fas fa-plus"></i> Agregar nueva zona
+          </button>   
+        </div>
+      </div>
+         </c:when>
+         <c:otherwise>
 
-		<div class="row uspaced20">
-			<div class=" center">
-				<button type="submit" class="btn btn-success newbutton">
-	    			<i class="fas fa-plus"></i> Agregar nueva zona
-				</button>  	
-			</div>
-			    
-		</div>
-      <div class="container uspaced60">
+    </c:otherwise>
+  </c:choose>
+    
+
+    <c:choose>
+         <c:when test="${searchZones.isEmpty()}">
+           <div class="row uspaced60">
+            <div class="center">
+             <div class="text noposttext"> Aun no tienes ninguna zona </div>
+            </div>     
+          </div>
+         </c:when>
+         <c:otherwise>
+         <div class="container uspaced60">
         <c:forEach items="${searchZones}" var="searchZone" varStatus="status">
         
         <div class="row uspaced5">
@@ -130,6 +141,13 @@
           <!--GOOGLE MAPS--> 
         </c:forEach>
     </div>
+		</c:otherwise>
+  </c:choose>
+
+		
+			    
+		
+      
 
 
   <script>

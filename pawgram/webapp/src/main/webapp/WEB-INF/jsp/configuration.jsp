@@ -34,33 +34,39 @@
 		</div>
 
 		<div class="container">
-      <div class="row">
-        <div class="text zonetext uspaced60 lspaced20"><spring:message code="configuration.change.info"/></div>
-      </div>
-      
-      <hr class="divider">
+    <c:url value="/customize/info" var="postPathName" />
+    <form:form modelAttribute="changeInfoForm" action="${postPathName}" method="post">
+        <div class="row">
+          <div class="text zonetext uspaced60 lspaced20"><spring:message code="configuration.change.info"/></div>
+        </div>
+        
+        <hr class="divider">
 
-      <div class="row uspaced20">
-        <div class="col-lg-12">
-            
-          <div class="text"><spring:message code="name"/></div class="text">
-          <div class="form-group"> 
-            <spring:message code="newname" var="newname"/>
-            <input type="text" value="Roberto" class="form-control" placeholder="${newname}"> 
-          </div> 
-          <div class="text"><spring:message code="surname"/></div class="text">
-          <div class="form-group"> 
-            <spring:message code="newsurname" var="newsurname"/>
-            <input type="text" value="Carlos" class="form-control" placeholder="${newsurname}"> 
-          </div> 
-                
-        </div>  
-      </div>
-
+        <div class="row uspaced20">
+          <div class="col-lg-12">
+              
+            <div class="text"><spring:message code="name"/></div class="text">
+            <div class="form-group"> 
+              <spring:message code="newname" var="newname"/>
+              <form:input path="name" type="text" class="form-control" placeholder="${newname}" /> 
+              <form:errors path="name" element="p" cssClass="form-error"/>
+            </div> 
+            <div class="text"><spring:message code="surname"/></div class="text">
+            <div class="form-group"> 
+              <spring:message code="newsurname" var="newsurname"/>
+              <form:input path="surname" type="text" class="form-control" placeholder="${newsurname}" /> 
+              <form:errors path="surname" element="p" cssClass="form-error"/>
+            </div> 
+             <input id="submit" type="submit" name="submit" class="btn btn-lg btn-success pull-right" value="CAMBIAR NOMBRE"></input>
+          </div>  
+        </div>
+    </form:form>
     </div>
 
 
     <div class="container uspaced60">
+      <c:url value="/customize/password" var="postPathPassword" />
+    <form:form modelAttribute="changePasswordForm" action="${postPathPassword}" method="post">
       <div class="row">
         <div class="text zonetext uspaced60 lspaced20"><spring:message code="changepw"/></div>
       </div>
@@ -71,22 +77,48 @@
             <div class="text"><spring:message code="currentpw"/></div class="text">
             <div class="form-group pass_show"> 
                     <spring:message code="currentpw" var="currentpw"/>
-                    <input type="password" value="faisalkhan@123" class="form-control" placeholder="${currentpw}"> 
+                    <form:input path="currentPasswordConf" type="password"  class="form-control" placeholder="${currentpw}" /> 
+                    <form:errors path="currentPasswordConf" element="p" cssClass="form-error"/>
                 </div> 
-               <div class="text"><spring:message code="newpw"/></div class="text">
+                <spring:message code="newpw" var="newpw1"/>
+               <div class="text">${newpw1}</div class="text">
                 <div class="form-group pass_show"> 
-                    <spring:message code="newpw" var="newpw"/>
-                    <input type="password" value="faisal.khan@123" class="form-control" placeholder="${newpw}"> 
+                    
+                    <form:input path="passwordForm.password" type="password"  class="form-control" placeholder="${newpw1}" /> 
+                    <form:errors path="passwordForm.password" element="p" cssClass="form-error"/>
                 </div> 
                <div class="text"><spring:message code="confirmnewpw"/></div class="text">
                 <div class="form-group pass_show"> 
                     <spring:message code="confirmnewpw" var="confirmnewpw"/>
-                    <input type="password" value="faisal.khan@123" class="form-control" placeholder="${confirmnewpw}"> 
+                    <form:input path="passwordForm.repeatPassword" type="password"  class="form-control" placeholder="${confirmnewpw}" /> 
+                    <form:errors path="passwordForm.repeatPassword" element="p" cssClass="form-error"/>
                 </div> 
-                
+                <input id="submit" type="submit" name="submit" class="btn btn-lg btn-success pull-right" value="CAMBIAR PASSRADISE"></input>
         </div>  
       </div>
+    </form:form>
     </div>
+
+    <div class="container uspaced60">
+      <!--- SANTI PONELE ESTILO A ESTO !--->
+      <c:url value="/customize/profilePicture" var="postPathPicture" />
+    <form:form modelAttribute="changeProfilePictureForm" action="${postPathPicture}" method="post"  enctype="multipart/form-data">
+      <div class="row">
+        <div class="text zonetext uspaced60 lspaced20">CAMBIAR FOTITO</div>
+      </div>
+      <hr class="divider">
+      <div class="row uspaced20">
+        <div class="col-lg-12">
+               <div class="text">FOTITO</div class="text">
+                <form:input class="image-input" type="file" path="profilePicture" accept="image/*"/>
+                    <form:errors path="profilePicture" element="p" cssClass="form-error"/>
+                
+                <input id="submit" type="submit" name="submit" class="btn btn-lg btn-success pull-right" value="CAMBIAR FOTITO"></input>
+        </div>  
+      </div>
+    </form:form>
+    </div>
+
 
 	<!--FOOTER-->
     <div class="row uspaced60"></div>

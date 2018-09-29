@@ -29,35 +29,18 @@
 			<a href="">
 				<div class="row uspaced5">
 					<div class="avatarwrapper avatar">
-						<img class="avatar" alt="" src="./img/profilepic2.jpg">
+						<img class="avatar" alt="" src="<c:url value="/profile/images/${profileUser.profile_img_url}"/>">
 	                	<i class="fas fa-edit editicon"></i>
 					</div>
 				</div>
 			</a>
 			<div class="row">
-				<div class="text name">Tomas Zorraco</div>
+				<div class="text name"><c:out value="${profileUser.name} ${profileUser.surname}"/></div>
 			</div>
 			<div class="row">
-				<div class="text email">insanecoding@gmail.com</div>
+				<div class="text email"><c:out value="${profileUser.mail}"/></div>
 			</div>
 
-		</div>
-
-		<div class="row uspaced60">
-			<div class="center">
-				<div class="text noposttext"> Aun no tienes ningun post en proceso </div>
-			</div>
-			
-			      
-		</div>
-
-		<div class="row uspaced20">
-			<div class=" center">
-				<button type="submit" class="btn btn-success newbutton">
-	    			<i class="fas fa-plus"></i> Iniciar nuevo post
-				</button>  	
-			</div>
-			    
 		</div>
 
 		<div class="container uspaced5">
@@ -65,42 +48,39 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="text zonetext ">
-
-                	<spring:message code="myposts"/>
-
-
-
-                	<spring:message code="otherposts"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
+                	<c:choose>
+                     <c:when test="${profileUser eq loggedUser}">
+	              	<!--- SANADIR UN BOTON ACA EDITAR PERFIL CON HREF A CUSTOMIZER PERROTEE !--->
+						<div class="row uspaced20">
+							<div class=" center">
+								<button type="submit" class="btn btn-success newbutton" onclick="location.href='<c:url value="/post/create/"/>'"
+					    			<i class="fas fa-plus"></i> Iniciar nuevo post
+								</button>  	
+							</div>
+							    
+						</div>
+                     	 <spring:message code="myposts"/>
+                   </c:when>
+                     <c:otherwise>
+                    	 <spring:message code="otherposts"/>
+                     </c:otherwise>
+              		</c:choose> 
 
                 </div>
               </div>
               <div class="col-md-6">
-
+              	<!--- SANTII MOVEME EL FILTER DE ACA !--->
                 <div class="btn-group dropright fright">
                   <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      <spring:message code="filter.by.category"/>
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Perdidos</a>
-                      <a class="dropdown-item" href="#">Encontrados</a>
-                      <a class="dropdown-item" href="#">Adopciones</a>
-                      <a class="dropdown-item" href="#">Emergencias</a>
+                      <c:forEach items="${categories}" var="category">
+		           			<a class="dropdown-item" href="<c:url value="/profile/${profileUser.id}/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
+		              </c:forEach>
                   </div>
                 </div>
-
+                <!--- PEGA LA MERCAAA MOVEME EL FILTER DE ACA Y PONELO DONDE ESTA EL COMMENT ABAJO NO NECESITAMOS EL FILTER SI NO HY POST JEJE xd !--->	
               </div>  
             </div>
             
@@ -109,14 +89,22 @@
 			            <div class="row uspaced20">
 			                
 			            <c:choose>
-			            <c:when test="${searchZone.posts.isEmpty()}">
-			                  <div class="text center noposttext"><spring:message code="empty.post"/></div>
+			            <c:when test="${userPosts.isEmpty()}">
+			            		<c:choose>
+			                     <c:when test="${profileUser eq loggedUser}">
+									 <div class="text center noposttext"><spring:message code="my.empty.post"/></div>
+			                   </c:when>
+			                     <c:otherwise>
+			                    	  <div class="text center noposttext"><spring:message code="empty.post"/></div>
+			                     </c:otherwise>
+			              		</c:choose> 
+			                 
 			            </c:when>
 			            <c:otherwise>
-			          
-			              <c:forEach items="${searchZone.posts}" var="post">
+			          	<!--- SANTII PONEME EL FILTER ACA !--->
+			              <c:forEach items="${userPosts}" var="post">
 			              <div class="col-md-4">                  
-			                    <a href="<c:url value="/post/${post.id}?latitude=${searchZone.location.latitude}&longitude=${searchZone.location.longitude}"/>" class="">
+			                    <a href="<c:url value="/post/${post.id}"/>" class="">
 			                        <div class="card"> 
 			                          <c:choose>
 			                            <c:when test="${post.postImages.isEmpty()}">

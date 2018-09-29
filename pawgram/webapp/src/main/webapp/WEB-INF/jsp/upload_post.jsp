@@ -107,7 +107,7 @@
         </div>
 		<div class="container">
             <div class="row">
-                <input id="searchInput" class="controls" type="text" placeholder="<spring:message code="enter.location"/>">
+                <input id="searchInput" onkeypress="return noenter()" class="controls" type="text" placeholder="<spring:message code="enter.location"/>">
                 <div id="map"></div>
                 <!--<ul id="geoData">
                     <li>Direccion: <span id="location"></span></li>
