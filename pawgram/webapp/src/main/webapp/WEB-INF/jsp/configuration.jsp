@@ -45,11 +45,13 @@
             
           <div class="text"><spring:message code="name"/></div class="text">
           <div class="form-group"> 
-            <input type="text" value="Roberto" class="form-control" placeholder="<spring:message code="newname"/>"> 
+            <spring:message code="newname" var="newname"/>
+            <input type="text" value="Roberto" class="form-control" placeholder="${newname}"> 
           </div> 
           <div class="text"><spring:message code="surname"/></div class="text">
           <div class="form-group"> 
-            <input type="text" value="Carlos" class="form-control" placeholder="<spring:message code="newsurname"/>"> 
+            <spring:message code="newsurname" var="newsurname"/>
+            <input type="text" value="Carlos" class="form-control" placeholder="${newsurname}"> 
           </div> 
                 
         </div>  
@@ -68,15 +70,18 @@
             
             <div class="text"><spring:message code="currentpw"/></div class="text">
             <div class="form-group pass_show"> 
-                    <input type="password" value="faisalkhan@123" class="form-control" placeholder="<spring:message code="currentpw"/>"> 
+                    <spring:message code="currentpw" var="currentpw"/>
+                    <input type="password" value="faisalkhan@123" class="form-control" placeholder="${currentpw}"> 
                 </div> 
                <div class="text"><spring:message code="newpw"/></div class="text">
                 <div class="form-group pass_show"> 
-                    <input type="password" value="faisal.khan@123" class="form-control" placeholder="<spring:message code="newpw"/>"> 
+                    <spring:message code="newpw" var="newpw"/>
+                    <input type="password" value="faisal.khan@123" class="form-control" placeholder="${newpw}"> 
                 </div> 
                <div class="text"><spring:message code="confirmnewpw"/></div class="text">
                 <div class="form-group pass_show"> 
-                    <input type="password" value="faisal.khan@123" class="form-control" placeholder="<spring:message code="confirmnewpw"/>"> 
+                    <spring:message code="confirmnewpw" var="confirmnewpw"/>
+                    <input type="password" value="faisal.khan@123" class="form-control" placeholder="${confirmnewpw}"> 
                 </div> 
                 
         </div>  
