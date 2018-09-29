@@ -200,8 +200,9 @@
 
 
         <div class="row">
+        	 <spring:message code="createpost" var="createpost"/>
         	<div class="center">
-        		<input id="submit" type="submit" name="submit" class="btn btn-lg btn-success pull-right" value="Crear anuncio"></input>
+        		<input id="submit" type="submit" name="submit" class="btn btn-lg btn-success pull-right" value="${createpost}"></input>
         	</div>
         	
         </div>

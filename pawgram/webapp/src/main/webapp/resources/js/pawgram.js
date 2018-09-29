@@ -35,6 +35,9 @@ $( document ).ready(function() {
 
     $('.pass_show').append('<span class="ptxt">Mostrar</span>');  
 
+
+    
+
 });
 
       
@@ -64,6 +67,8 @@ $( document ).ready(function() {
         };
         request.send();
     };
+
+
 
   
     
