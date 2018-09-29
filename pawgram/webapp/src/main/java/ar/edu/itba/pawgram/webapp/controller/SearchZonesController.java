@@ -46,7 +46,7 @@ public class SearchZonesController {
         return mav;
     }
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value={"","/"})
     public ModelAndView showZones(@ModelAttribute("loggedUser") final User loggedUser)  {
         LOGGER.debug("Accessed all zones");
 

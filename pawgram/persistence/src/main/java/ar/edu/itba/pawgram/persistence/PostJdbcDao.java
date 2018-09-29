@@ -256,15 +256,15 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public long getTotalPostsByKeyword(String keyword) {
-        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE title LIKE ?",
-                Long.class,"%"+keyword+"%");
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE lower(title) LIKE lower(?) OR lower(description) LIKE lower(?)",
+                Long.class,"%"+keyword+"%","%"+keyword+"%");
         return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPostsByKeyword(String keyword, Category category) {
-        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE category = ? AND title LIKE ?",
-                Long.class, category.getLowerName().toUpperCase(Locale.ENGLISH),"%"+keyword+"%");
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM posts WHERE category = ? AND (lower(title) LIKE lower(?) OR lower(description) LIKE lower(?))",
+                Long.class, category.getLowerName().toUpperCase(Locale.ENGLISH),"%"+keyword+"%","%"+keyword+"%");
         return total != null ? total : 0;
     }
 

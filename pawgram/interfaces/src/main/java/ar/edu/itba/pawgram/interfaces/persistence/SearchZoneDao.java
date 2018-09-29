@@ -39,4 +39,11 @@ public interface SearchZoneDao {
      * 		   null if the id does not exists
      */
     public SearchZone.SearchZoneBuilder getFullSearchZoneById(final long zoneId);
+
+    /**
+     * Retrieves the quantity of {@link SearchZone} registered for a given {@link User}
+     * @param user - the user searching in his zones.
+     * @return The number of {@link SearchZone}.
+     */
+    public long getTotalSearchZonesByUser(final User user);
 }
