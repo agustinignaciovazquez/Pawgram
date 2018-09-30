@@ -71,6 +71,28 @@ public class PostController {
         return mav;
     }
 
+    @RequestMapping("/delete/{postId}")
+    public ModelAndView deleteMyPost(@PathVariable final long postId,
+                                     @ModelAttribute("loggedUser") final User loggedUser) throws PostNotFoundException, ForbiddenException {
+        LOGGER.debug("Accessed delete post with id {}",postId);
+
+        final Post post = postService.getFullPostById(postId);
+        if (post == null) {
+            LOGGER.warn("Failed to delete post with id {}: post not found", postId);
+            throw new PostNotFoundException();
+        }
+        if(!loggedUser.equals(post.getOwner())){
+            LOGGER.warn("Failed to delete post with id {}: logged user with id {} is not post creator with id {}",
+                    postId, loggedUser.getId(), post.getOwner().getId());
+            throw new ForbiddenException();
+        }
+
+        if (postService.deletePostById(postId))
+            LOGGER.info("Post with id {} deleted by user with id {}", postId, loggedUser.getId());
+
+        return new ModelAndView("redirect:/profile/" + loggedUser.getId());
+    }
+
     @RequestMapping(value = "/{postId}/comment", method = RequestMethod.POST)
     public ModelAndView postComment (@PathVariable final long postId,
                                      @ModelAttribute("loggedUser") final User loggedUser,

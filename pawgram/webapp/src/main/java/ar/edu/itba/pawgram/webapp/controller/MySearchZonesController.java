@@ -67,7 +67,7 @@ public class MySearchZonesController {
         }
 
         if (searchZoneService.deleteZoneById(zoneId))
-            LOGGER.info("Product with id {} deleted by user with id {}", zoneId, loggedUser.getId());
+            LOGGER.info("Zone with id {} deleted by user with id {}", zoneId, loggedUser.getId());
 
         return new ModelAndView("redirect:/my_zones/");
     }

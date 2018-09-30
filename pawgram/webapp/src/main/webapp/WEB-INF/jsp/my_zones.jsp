@@ -67,7 +67,7 @@
         <c:forEach items="${searchZones}" var="searchZone" varStatus="status">
         
         <div class="row uspaced60">
-            <div class="text zonetext zoneel1 rspaced2">Zona <c:out value="${searchZone.id}"/></div>
+            <div class="text zonetext zoneel1 rspaced2">Zona <c:out value="${status.index+1}"/></div>
             <div class="lspaced20"></div>
             <button type="button" class="btn btn-danger btn-circle uspaced4" onclick="location.href='<c:url value="/my_zones/delete/${searchZone.id}"/>'"><i class="fas fa-trash-alt"></i></button>
         </div>
@@ -81,19 +81,19 @@
                 </div>
                 <div class="row uspaced10">
                   <div class="col-lg-4">
-                    <div class="zonewrapper">
+                    <div class="zonewrapper sr-only">
                       <div class="text zonetitle"> Zona: </div>
-                      <div class="text zonedata">&nbsp <c:out value="${status.index}"/></div>
+                      <div class="text zonedata">&nbsp <c:out value="${status.index+1}"/></div>
                     </div>  
                   </div>
                   <div class="col-lg-3">
-                    <div class="zonewrapper">
+                    <div class="zonewrapper sr-only">
                       <div class="text zonetitle"> Latitud: </div>
                       <div class="text zonedata">&nbsp <c:out value="${searchZone.location.latitude}"/></div>
                     </div>
                   </div>
                   <div class="col-lg-3">
-                    <div class="zonewrapper">
+                    <div class="zonewrapper sr-only">
                       <div class="text zonetitle"> Longitud: </div>
                       <div class="text zonedata">&nbsp  <c:out value="${searchZone.location.longitude}"/></div>
                     </div>
@@ -101,7 +101,7 @@
                   <div class="col-lg-2">
                     <div class="zonewrapper">
                       <div class="text zonetitle"> Rango: </div>
-                      <div class="text zonedata"><c:out value="${searchZone.range}"/> km</div>
+                      <div class="text zonedata"><c:out value="${searchZone.range/1000}"/> km</div>
                     </div>
                   </div>
                 </div>

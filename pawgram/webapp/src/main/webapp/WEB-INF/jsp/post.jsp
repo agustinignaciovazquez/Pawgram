@@ -35,7 +35,7 @@
                             <c:choose>
                               <c:when test="${post.postImages.isEmpty()}">
                                   <div class="active item carousel-item" data-slide-number="0">
-                                   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" class="center img-fluid carrouselimg">
+                                   <img src="<c:url value="/resources/img/no-image.svg"/>" class="center img-fluid carrouselimg">
                                   </div>
                               </c:when>
                               <c:otherwise>
@@ -66,7 +66,7 @@
                               <c:when test="${post.postImages.isEmpty()}">
                                   <!-- NOT NECESARY <li class="list-inline-item active">
                                     <a id="carousel-selector-0" class="selected" data-slide-to="0" data-target="#myCarousel">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" class="img-fluid carrouselimglittle">
+                                        <img src="<c:url value="/resources/img/no-image.svg"/>" class="img-fluid carrouselimglittle">
                                     </a>
                                   </li>!-->
                               </c:when>

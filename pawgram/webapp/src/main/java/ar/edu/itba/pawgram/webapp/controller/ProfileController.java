@@ -144,7 +144,7 @@ public class ProfileController {
             LOGGER.info("Failed to render profile image with id {}: image not found\n Stacktrace {}", imageId, e.getMessage());
             //Here we could throw not found exception or return the default image
             throw new ImageNotFoundException();
-            
+
            /* try {
                 return Files.readAllBytes(defaultImage.toPath());
             } catch (IOException e1) {

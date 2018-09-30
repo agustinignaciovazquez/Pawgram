@@ -118,12 +118,12 @@
 			            <c:otherwise>			         
 			              <c:forEach items="${userPosts}" var="post">
 			              <div class="col-md-4">
-			              		<button type="button" class="btn btn-danger fright " onclick=""><i class="fas fa-trash-alt"></i></button>                  
+			              		<button type="button" class="btn btn-danger fright " onclick="location.href='<c:url value="/post/delete/${post.id}"/>'"><i class="fas fa-trash-alt"></i></button>                  
 			                    <a href="<c:url value="/post/${post.id}"/>">
 			                        <div class="card">
 				                        <c:choose>
 				                            <c:when test="${post.postImages.isEmpty()}">
-				                                 <img class="img-fluid card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" alt="">
+				                                 <img class="img-fluid card-img" src="<c:url value="/resources/img/no-image.svg"/>" alt="">
 				                            </c:when>
 				                            <c:otherwise>
 				                                <img class="img-fluid card-img" src="<c:url value="/post/images/${post.postImages[0].url}"/>" alt="">

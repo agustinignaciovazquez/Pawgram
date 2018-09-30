@@ -70,7 +70,7 @@
                           <div class="card uspaced20"> 
                             <c:choose>
                               <c:when test="${post.postImages.isEmpty()}">
-                                   <img class="img-fluid card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" alt="">
+                                   <img class="img-fluid card-img" src="<c:url value="/resources/img/no-image.svg"/>" alt="">
                               </c:when>
                               <c:otherwise>
                                     <img class="img-fluid card-img" src="<c:url value="/post/images/${post.postImages[0].url}"/>" alt="">
@@ -141,7 +141,7 @@
                         <div class="card uspaced20"> 
                           <c:choose>
                             <c:when test="${post.postImages.isEmpty()}">
-                                 <img class="img-fluid card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" alt="">
+                                 <img class="img-fluid card-img" src="<c:url value="/resources/img/no-image.svg"/>" alt="">
                             </c:when>
                             <c:otherwise>
                                   <img class="img-fluid card-img" src="<c:url value="/post/images/${post.postImages[0].url}"/>" alt="">
