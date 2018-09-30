@@ -45,3 +45,10 @@ CREATE TABLE IF NOT EXISTS comments (
     parentId INTEGER REFERENCES comments(commentId) ON DELETE CASCADE,
     UNIQUE(commentDate, userId, postId)
 );
+
+CREATE TABLE IF NOT EXISTS fileDump(
+    pathId VARCHAR(64) NOT NULL,
+    imageId VARCHAR(32) NOT NULL,
+    data BYTEA NOT NULL,
+    PRIMARY KEY (pathId, imageId)
+);

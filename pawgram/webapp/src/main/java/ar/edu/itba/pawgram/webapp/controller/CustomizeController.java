@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
+import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
 import ar.edu.itba.pawgram.model.User;
@@ -112,9 +113,12 @@ public class CustomizeController {
 
         try {
             userService.changeProfile(loggedUser.getId(), changeProfilePictureForm.getProfilePicture().getBytes());
-        } catch (IOException e) {
-            LOGGER.error("Failed to load profile picture: {}", e.getMessage());
+        } catch (FileUploadException e) {
+            LOGGER.error("Failed to upload profile picture: {}", e.getMessage());
             //e.printStackTrace(); DEBUG ONLY
+        } catch (IOException e) {
+            LOGGER.error("Failed to upload profile picture IOException: {}", e.getMessage());
+            //e.printStackTrace();
         }
 
         return new ModelAndView("redirect:/profile/" + loggedUser.getId());

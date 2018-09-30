@@ -1,5 +1,7 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
+import ar.edu.itba.pawgram.interfaces.exception.FileException;
+import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
 import ar.edu.itba.pawgram.model.Category;
@@ -128,7 +130,7 @@ public class ProfileController {
         final byte[] img;
         try {
             img = userService.getProfileImage(imageId);
-        } catch (IOException e) {
+        } catch (FileException e) {
             //e.printStackTrace(); DEBUG ONLY
             LOGGER.warn("Failed to render profile image with id {}: image not found\n Stacktrace {}", imageId, e.getMessage());
             throw new ImageNotFoundException();

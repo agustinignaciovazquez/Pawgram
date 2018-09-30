@@ -1,5 +1,7 @@
 package ar.edu.itba.pawgram.interfaces.service;
 
+import ar.edu.itba.pawgram.interfaces.exception.FileException;
+import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.PostImage;
 
@@ -15,7 +17,7 @@ public interface PostImageService {
      * @param postId - ID of the post the image belongs to
      * @return The upload image name (randomly generated)
      */
-    public String createPostImage(final long postId, byte[] raw_image) throws IOException;
+    public String createPostImage(final long postId, byte[] raw_image) throws FileUploadException;
 
     /**
      * Creates an {@link PostImage} for every item in {@link List} for a single {@link Post}
@@ -23,7 +25,7 @@ public interface PostImageService {
      * @param postId - ID of the post the image belongs to
      * @return The all the created PostImage's
      */
-    public List<PostImage> createPostImage(final long postId, final List<byte[]> raw_images) throws IOException;
+    public List<PostImage> createPostImage(final long postId, final List<byte[]> raw_images) throws FileUploadException;
 
     /**
      * Lists {@link PostImage} ID of a {@link Post}.
@@ -37,5 +39,5 @@ public interface PostImageService {
      * @param filename - name of the image
      * @return raw bytes of image
      */
-    public byte[] getImage(final String filename) throws IOException;
+    public byte[] getImage(final String filename) throws FileException;
 }

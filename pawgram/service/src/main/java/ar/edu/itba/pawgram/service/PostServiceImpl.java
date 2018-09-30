@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.service;
 
+import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
@@ -34,7 +35,7 @@ public class PostServiceImpl implements PostService {
         if(raw_images != null) {
             try {
                 postImages = postImageService.createPostImage(postBuilder.getId(), raw_images);
-            } catch (IOException e) {
+            } catch (FileUploadException e) {
                 //e.printStackTrace(); DEBUG ONLY
                 throw new PostCreateException();
             }

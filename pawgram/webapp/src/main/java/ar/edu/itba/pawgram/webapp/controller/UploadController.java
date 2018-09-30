@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
+import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.service.FileService;
 import ar.edu.itba.pawgram.webapp.form.UploadForm;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +19,7 @@ import java.util.StringJoiner;
 @RequestMapping("/upload")
 @Controller
 public class UploadController {
-
+    //TODO REMOVE THIS CONTROLLER IN PRODUCTION
     // save uploaded file to this folder
     private static String UPLOAD_FOLDER = "D://temp//";
     @Autowired
@@ -43,6 +44,8 @@ public class UploadController {
 
             try {
                 fileService.createFile(UPLOAD_FOLDER,file.getBytes());
+            } catch (FileUploadException e) {
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }

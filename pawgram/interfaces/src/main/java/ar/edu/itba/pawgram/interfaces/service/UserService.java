@@ -1,6 +1,8 @@
 package ar.edu.itba.pawgram.interfaces.service;
 
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
+import ar.edu.itba.pawgram.interfaces.exception.FileException;
+import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.model.User;
 
 import java.io.IOException;
@@ -60,13 +62,13 @@ public interface UserService {
 	 * @param data - profile image raw data
 	 * @return The user with the modified profile url or null if user doesn't exist
 	 */
-	public User changeProfile(long id, byte[] data) throws IOException;
+	public User changeProfile(long id, byte[] data) throws FileUploadException;
 
 	/**
 	 * Get raw bytes of a profile image
 	 * @param filename - name of the image
 	 * @return profile image raw bytes matrix
 	 */
-	public byte[] getProfileImage(final String filename) throws IOException;
+	public byte[] getProfileImage(final String filename) throws FileException;
 
 }

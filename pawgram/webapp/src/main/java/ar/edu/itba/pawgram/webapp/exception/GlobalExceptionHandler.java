@@ -9,12 +9,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class GlobalExceptionHandler {
 
     //commons-fileupload
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
+
+   /*TODO CHECK THIS
+   @ExceptionHandler(MaxUploadSizeExceededException.class)
     public String handleError2(MaxUploadSizeExceededException e, RedirectAttributes redirectAttributes) {
 
         redirectAttributes.addFlashAttribute("message", e.getCause().getMessage());
         return "redirect:/uploadStatus";
 
-    }
+    }*/
 
 }

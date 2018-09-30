@@ -1,6 +1,8 @@
 package ar.edu.itba.pawgram.service;
 
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
+import ar.edu.itba.pawgram.interfaces.exception.FileException;
+import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,14 +44,14 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User changeProfile(long id, byte[] data) throws IOException {
+	public User changeProfile(long id, byte[] data) throws FileUploadException {
 		final String img_url = fileService.createFile(PROFILE_IMAGE_UPLOAD_FOLDER,data);
 		return userDao.changeProfile(id,img_url);
 	}
 
 	@Override
-	public byte[] getProfileImage(String filename) throws IOException {
-		return fileService.getFile(PROFILE_IMAGE_UPLOAD_FOLDER+"/"+filename);
+	public byte[] getProfileImage(String filename) throws FileException {
+		return fileService.getFile(PROFILE_IMAGE_UPLOAD_FOLDER,filename);
 	}
 
 	@Override

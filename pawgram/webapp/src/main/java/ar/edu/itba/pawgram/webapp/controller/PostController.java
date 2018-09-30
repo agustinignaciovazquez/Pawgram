@@ -1,5 +1,7 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
+import ar.edu.itba.pawgram.interfaces.exception.FileException;
+import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
 import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.interfaces.service.PostImageService;
@@ -140,7 +142,7 @@ public class PostController {
         final byte[] img;
         try {
             img = postImageService.getImage(imageId);
-        } catch (IOException e) {
+        } catch (FileException e) {
             //e.printStackTrace(); DEBUG ONLY
             LOGGER.warn("Failed to render image with id {}: image not found or view denied\nStack trace {}", imageId, e.getMessage());
             throw new ImageNotFoundException();
