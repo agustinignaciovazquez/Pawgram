@@ -19,11 +19,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +41,11 @@ public class ProfileController {
     private UserService userService;
     @Autowired
     private PostService postService;
+
+    @RequestMapping(value={"","/"})
+    public ModelAndView redirectToMyProfilee(@ModelAttribute("loggedUser") final User loggedUser) {
+        return new ModelAndView("redirect:/profile/" +loggedUser.getId());
+    }
 
     @RequestMapping("/{userId}")
     public ModelAndView user(@PathVariable final long userId,
@@ -126,16 +135,42 @@ public class ProfileController {
 
     @ResponseBody
     @RequestMapping(value = "/images/{imageId}", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
-    public byte[] getProfileImage(@PathVariable final String imageId) throws ImageNotFoundException {
+    public byte[] getProfileImage(@PathVariable final String imageId) throws ImageNotFoundException, FileNotFoundException {
         final byte[] img;
         try {
             img = userService.getProfileImage(imageId);
         } catch (FileException e) {
-            //e.printStackTrace(); DEBUG ONLY
-            LOGGER.warn("Failed to render profile image with id {}: image not found\n Stacktrace {}", imageId, e.getMessage());
+            File defaultImage = ResourceUtils.getFile("classpath:master_default_pic.jpg");
+            LOGGER.info("Failed to render profile image with id {}: image not found\n Stacktrace {}", imageId, e.getMessage());
+            //Here we could throw not found exception or return the default image
             throw new ImageNotFoundException();
+            
+           /* try {
+                return Files.readAllBytes(defaultImage.toPath());
+            } catch (IOException e1) {
+                LOGGER.warn("Failed to render default profile image with id {}: IOException not found\n Stacktrace {}", imageId, e.getMessage());
+                throw new ImageNotFoundException();
+            }*/
+
         }
         return img;
+    }
+
+    @RequestMapping("/images")
+    public ModelAndView redirectToDefaultProfile() {
+        return new ModelAndView("redirect:/profile/images/default");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/images/default", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
+    public byte[] getDefaultProfileImage() throws ImageNotFoundException, FileNotFoundException {
+        File defaultImage = ResourceUtils.getFile("classpath:master_default_pic.jpg");
+            try {
+                return Files.readAllBytes(defaultImage.toPath());
+            } catch (IOException e) {
+                LOGGER.warn("Failed to render default profile image: IOException not found\n Stacktrace {}", e.getMessage());
+                throw new ImageNotFoundException();
+            }
     }
 
     @InitBinder
