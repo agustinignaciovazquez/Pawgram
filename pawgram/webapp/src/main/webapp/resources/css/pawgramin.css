@@ -262,7 +262,7 @@ body {
 	font-weight: bold;
 }
 
-.zonetext{
+.zonetext,.cattext{
 	font-size: 24px;
 	font-style: italic;
 	font-weight: bold;

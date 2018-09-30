@@ -118,7 +118,9 @@
 			            <c:otherwise>			         
 			              <c:forEach items="${userPosts}" var="post">
 			              <div class="col-md-4">
-			              		<button type="button" class="btn btn-danger fright " onclick="location.href='<c:url value="/post/delete/${post.id}"/>'"><i class="fas fa-trash-alt"></i></button>                  
+			              		<c:if test="${profileUser eq loggedUser}">
+			              			<button type="button" class="btn btn-danger fright " onclick="location.href='<c:url value="/post/delete/${post.id}"/>'"><i class="fas fa-trash-alt"></i></button>    
+			              		</c:if>              
 			                    <a href="<c:url value="/post/${post.id}"/>">
 			                        <div class="card">
 				                        <c:choose>

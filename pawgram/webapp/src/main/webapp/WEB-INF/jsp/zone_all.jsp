@@ -60,7 +60,7 @@
             <c:otherwise>
             <div class="container ">
               <div class="row uspaced5"> 
-                <div class="text zonetext "> <spring:message code="my.${currentCategory.lowerName}"/> </div>
+                <div class="text cattext "> <spring:message code="my.${currentCategory.lowerName}"/> </div>
               </div>
               <div class="row uspaced20">
               
@@ -113,9 +113,9 @@
   <%@include file="includes/search.jsp"%>
 
     <div class="container ">
-            <c:forEach items="${searchZones}" var="searchZone">
+            <c:forEach items="${searchZones}" var="searchZone" varStatus="status">
             <div class="row uspaced5">
-                <div class="text zonetext "> <spring:message code="near"/> ZONE</div>
+                <div class="text zonetext "><spring:message code="zone"/> <c:out value="${status.index+1}"/><input class="sr-only latitudeZone" value="<c:out value="${searchZone.location.latitude}"/>" /><input class="sr-only longitudeZone" value="<c:out value="${searchZone.location.longitude}"/>" /></div>
                 <div class="col-md-1"></div>
                 <c:choose>
                        <c:when test="${empty currentCategory}">
@@ -173,9 +173,11 @@
     </div>
     
 
-
-    
-
+  <script>
+    $( document ).ready(function() {
+          showZoneNames('<spring:message code="zone.near"/>');
+    });
+  </script>
   <!--FOOTER-->
     <div class="row uspaced60"></div>
     <div class="container-fluid footer">

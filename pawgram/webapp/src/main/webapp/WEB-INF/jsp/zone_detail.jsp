@@ -7,9 +7,9 @@
 
 	<meta charset="UTF-8">
   <c:choose>
-         <c:when test="${empty currentCategory}"><title><spring:message code="pageName"/>  - ZONE </title></c:when>
+         <c:when test="${empty currentCategory}"><title><spring:message code="pageName"/></title></c:when>
          <c:otherwise>
-          <title><spring:message code="pageName"/> - ZONE - <spring:message code="category.${currentCategory.lowerName}"/></title>
+          <title><spring:message code="pageName"/> - <spring:message code="category.${currentCategory.lowerName}"/></title>
          </c:otherwise>
   </c:choose>  
 	
@@ -35,9 +35,12 @@
 			<div class="row">
 				<div class="col-md-3"></div>
 				<div class="text titsec"><c:choose>
-         <c:when test="${empty currentCategory}"><spring:message code="category.all"/></c:when>
+         <c:when test="${empty currentCategory}">
+         <div class="zonetext2 "><spring:message code="zone"/> <c:out value="${status.index+1}"/><input class="sr-only latitudeZone" value="<c:out value="${searchZone.location.latitude}"/>" /><input class="sr-only longitudeZone" value="<c:out value="${searchZone.location.longitude}"/>" /></div>
+                <div class="col-md-1"></div>
+          </c:when>
          <c:otherwise>
-          <spring:message code="category.all"/> - <spring:message code="category.${currentCategory.lowerName}"/>
+          <div class="zonetext2 "><spring:message code="zone"/> <c:out value="${status.index+1}"/><input class="sr-only latitudeZone" value="<c:out value="${searchZone.location.latitude}"/>" /><input class="sr-only longitudeZone" value="<c:out value="${searchZone.location.longitude}"/>" /></div> - <spring:message code="category.${currentCategory.lowerName}"/>
          </c:otherwise>
   </c:choose> </div>
 			</div>
@@ -104,10 +107,12 @@
       </div>
     </div> 
 
-
-
-		
-
+ <script>
+    $( document ).ready(function() {
+          showZoneNames('<spring:message code="zone.near"/>');
+    });
+  </script>
+  
 	<!--FOOTER-->
     <div class="row uspaced60"></div>
     <div class="container-fluid footer">

@@ -67,7 +67,7 @@
         <c:forEach items="${searchZones}" var="searchZone" varStatus="status">
         
         <div class="row uspaced60">
-            <div class="text zonetext zoneel1 rspaced2">Zona <c:out value="${status.index+1}"/></div>
+            <div class="text zonetext zoneel1 rspaced2"><spring:message code="zone"/> <c:out value="${status.index+1}"/><input class="sr-only latitudeZone" value="<c:out value="${searchZone.location.latitude}"/>" /><input class="sr-only longitudeZone" value="<c:out value="${searchZone.location.longitude}"/>" /></div>
             <div class="lspaced20"></div>
             <button type="button" class="btn btn-danger btn-circle uspaced4" onclick="location.href='<c:url value="/my_zones/delete/${searchZone.id}"/>'"><i class="fas fa-trash-alt"></i></button>
         </div>
@@ -152,6 +152,9 @@
 
 
   <script>
+     $( document ).ready(function() {
+            showZoneNames('<spring:message code="zone.near"/>');
+      });
     function initMap() {
       for (i = 0; i < initmaps.length; i++) {
             initmaps[i]();
