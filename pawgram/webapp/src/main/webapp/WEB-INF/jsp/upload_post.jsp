@@ -133,7 +133,8 @@
 				        		<spring:message code="post.title"/>
 				        	</div>
 				    		<div class="form-group">
-								<form:input path="title" type="text" class="form-control" id="name" name="name" placeholder="eg: Tomy"  />
+				    			<spring:message code="write.title" var="writetitle"/>
+								<form:input path="title" type="text" class="form-control" id="name" name="name" placeholder="${writetitle}"  />
 								<form:errors path="title" cssClass="form-error" element="p"/>
 							</div>
 							<div class=" text subformtitle">
@@ -146,9 +147,9 @@
 							<div class=" text subformtitle">
 				        		<spring:message code="post.phone"/>
 				        	</div>
-				        	<spring:message code="write.title" var="writetitle"/>
+				        	
 							<div class="form-group">
-								<form:input path="contact_phone" type="text" class="form-control" id="mobile" name="mobile" placeholder="${writetitle}"  />
+								<form:input path="contact_phone" type="text" class="form-control" id="mobile" name="mobile" placeholder=""  />
 								<form:errors path="contact_phone" cssClass="form-error" element="p"/>
 							</div>
 							<div class=" text subformtitle">
