@@ -107,6 +107,9 @@
       </div>
       <hr class="divider">
       <div class="row uspaced20">
+        <img class="configimg" src="<c:url value="/profile/images/${profileUser.profile_img_url}"/>" />
+      </div>
+      <div class="row uspaced10">
         <div class="col-lg-12">
           <form:input class="image-input" type="file" path="profilePicture" accept="image/*"/>
           <form:errors path="profilePicture" element="p" cssClass="form-error"/>
