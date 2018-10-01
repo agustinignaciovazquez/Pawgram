@@ -6,7 +6,7 @@
 <head>
 
   <meta charset="UTF-8">
-  <title><spring:message code="pageName"/> - ${profileUser.name} ${profileUser.surname}</title> 
+  <title><spring:message code="pageName"/> - <c:out value="${profileUser.name} ${profileUser.surname}" /></title> 
   
 
   <link href="<c:url value="/resources/css/all.css"/>" rel="stylesheet" id="font-awesome">
