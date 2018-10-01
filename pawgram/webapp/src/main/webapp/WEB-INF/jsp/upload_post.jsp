@@ -183,9 +183,9 @@
 											<form:label path="images[${status.index}].file">
 												<div class="preview-container">
 													<span class="add-img-text">
-														<button  type="button"><i class="fa fa-plus"></i></button>
+														<button  type="button"><i class="fa fa-plus add-img"></i></button>
 													</span>
-													<button  type="button"><i class="fa fa-minus"></i></button>
+													<button  type="button"><i class="fa fa-minus remove-img"></i></button>
 												</div>
 											</form:label>
 											<form:errors path="images[${status.index}].file" cssClass="form-error" element="p"/>
@@ -209,15 +209,38 @@
     </form:form>
     <script>
 
-    	var index = 0;
-
-    	$(document).ready(function(){
-    		$('image-div').each(function(index){
-    			if(index > 0){
-    				
-    				//$( this ).css("display", "none");
+    	var total_img = 1;
+    	function hideImagesDiv(){
+    		$('.image-div').each(function(index){
+    			if(index >= total_img){
+    				$( this ).hide();
     			}
     		});
+    	}
+    	function hideButtonFixPeruano(){
+    		$('.image-div').each(function(){
+			  		$(this).find('.add-img').hide();
+			  	});
+    		if($('.image-div:hidden:last').length){
+		  		$('.image-div:visible:last').find('.add-img').show();
+		  	}
+    	}
+    	$(document).ready(function(){
+    		hideImagesDiv();
+    		$( ".add-img" ).click(function() {
+    			if($('.image-div:hidden:last').length){
+					  $('.image-div:hidden:last').show();
+					  hideButtonFixPeruano();
+					  total_img++;
+				}
+			});
+			$( ".remove-img" ).click(function() {
+			  if(total_img > 1){
+			  	$(this).parents('.image-div').hide();
+			  	hideButtonFixPeruano();
+				total_img--;
+				}
+			});
     	});
     var latitude = parseFloat(document.getElementById('lat').value);
    	var longitude = parseFloat(document.getElementById('lon').value);

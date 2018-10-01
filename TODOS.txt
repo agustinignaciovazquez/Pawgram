@@ -1,4 +1,3 @@
 Hacer que se actualice el circulo de radio en crear zona
 Hacer recuperar password
-Hacer que +/- funcionen en create post
 Invitar a salir a tuvi
