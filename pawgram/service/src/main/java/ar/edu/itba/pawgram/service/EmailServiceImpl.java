@@ -33,7 +33,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendWelcomeEmail(User user) throws SendMailException{
-        sendSimpleMessage(user.getMail(), "Bienvenido a Gran-DT", "Te damos la bienvenida a Pawgram "+user.getName());
+        sendSimpleMessage(user.getMail(), "Bienvenido a Pawgram", "Te damos la bienvenida a Pawgram "+user.getName()+" "+user.getSurname());
     }
 
     @Override
