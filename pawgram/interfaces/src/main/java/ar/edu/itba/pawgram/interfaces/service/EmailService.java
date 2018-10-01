@@ -1,6 +1,8 @@
 package ar.edu.itba.pawgram.interfaces.service;
 
+import ar.edu.itba.pawgram.interfaces.exception.SendMailException;
 import ar.edu.itba.pawgram.model.Comment;
+import ar.edu.itba.pawgram.model.User;
 
 public interface EmailService {
 
@@ -11,6 +13,19 @@ public interface EmailService {
      * @param text - Content of the e-mail
      * @return void
      */
-    public void sendSimpleMessage(String to, String subject, String text);
+    public void sendSimpleMessage(String to, String subject, String text) throws SendMailException;
 
+    /**
+     * Sends a welcome mail to the newly user
+     * @param user - Message receiver
+     * @return void
+     */
+    public void sendWelcomeEmail(User user) throws SendMailException;
+
+    /**
+     * Sends reset token to the user
+     * @param user - Message receiver
+     * @return void
+     */
+    public void sendRecoverEmail(User user) throws SendMailException;
 }

@@ -71,4 +71,11 @@ public interface UserService {
 	 */
 	public byte[] getProfileImage(final String filename) throws FileException;
 
+	/**
+	 * Get unique reset token (always the same until password is changed)
+	 * @param user - user to get the token
+	 * @return token
+	 */
+	public String getResetToken(final User user);
+
 }

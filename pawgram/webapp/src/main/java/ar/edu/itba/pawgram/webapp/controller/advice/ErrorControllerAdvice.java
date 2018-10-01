@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.webapp.controller.advice;
 
+import ar.edu.itba.pawgram.interfaces.exception.SendMailException;
 import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
 import ar.edu.itba.pawgram.webapp.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,12 @@ public class ErrorControllerAdvice {
     @ResponseStatus(value=HttpStatus.UNAUTHORIZED)
     public ModelAndView unauthorized() {
         return buildModelAndView("error/401");
+    }
+
+    @ExceptionHandler(SendMailException.class)
+    @ResponseStatus(value=HttpStatus.SERVICE_UNAVAILABLE)
+    public ModelAndView oops() {
+        return buildModelAndView("error/500");
     }
 
     @ExceptionHandler(ForbiddenException.class)

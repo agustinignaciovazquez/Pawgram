@@ -27,32 +27,37 @@
 	    
 	    <div class="col-md-4">
 	      <section class="login-form">
-	      	<form method="post" role="login">
+	      	<c:url value="/login/forget/recover/process" var="postPathName" />
+	      	<form:form modelAttribute="recoverForm" action="${postPathName}" method="post">
 	          <img src="<c:url value="/resources/img/logo.png"/>" class="img-responsive" alt="" />
 	          
 			  <div>
 			  	<spring:message code="mail" var="mail"/>
-	          	<input type="text" placeholder="${mail}" class="form-control input-lg"></input>
+	          	<form:input path="mail" type="text" placeholder="${mail}" class="form-control input-lg" />
+	          	<form:errors path="mail" element="p" cssClass="form-error"/>
 	          </div>
 
 	          <div>
 	          	<spring:message code="token" var="token"/>
-	         	<input path="token" type="text" placeholder="${token}" class="form-control input-lg"></input>
+	         	<form:input path="currentToken" type="text" placeholder="${token}" class="form-control input-lg" />
+	         	<form:errors path="currentToken" element="p" cssClass="form-error"/>
 	          </div>
 
 	          <div>
 	          	<spring:message code="newpw" var="newpw"/>
-	          	<input path="password" type="password" name="j_password" placeholder="${newpw}" class="form-control input-lg"></input>
+	          	<form:input path="passwordForm.password" type="password" placeholder="${newpw}" class="form-control input-lg" />
+	          	<form:errors path="passwordForm.password" element="p" cssClass="form-error"/>
 	          </div> 
 
 	          <div>
 	          	<spring:message code="confirmnewpw" var="confpw"/>
-	          	<input path="repeatpassword" type="password" name="j_password" placeholder="${confpw}" class="form-control input-lg"></input>
+	          	<form:input path="passwordForm.repeatPassword" type="password" placeholder="${confpw}" class="form-control input-lg" />
+	          	<form:errors path="passwordForm.repeatPassword" element="p" cssClass="form-error"/>
 	          </div>         
 	          
 	          <spring:message code="resetpw" var="resetpw"/>
 	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="${resetpw}"></input> 
-	      </form>
+	      </form:form>
 	      </section>  
 	    </div>
 	      

@@ -1,3 +1,2 @@
 Hacer que se actualice el circulo de radio en crear zona
-Hacer recuperar password
 Invitar a salir a tuvi

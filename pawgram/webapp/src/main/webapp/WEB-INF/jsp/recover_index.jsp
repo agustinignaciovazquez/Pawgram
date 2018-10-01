@@ -3,9 +3,10 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
+
 <head>
 	<meta charset="UTF-8">
-	<title><spring:message code="pageName"/> - <spring:message code="login"/></title>
+	<title><spring:message code="pageName"/> - <spring:message code="resetpw"/></title>
 
 	<link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
 	<link rel="stylesheet" href="<c:url value="/resources/css/pawgram.css"/>">
@@ -26,31 +27,22 @@
 	    
 	    <div class="col-md-4">
 	      <section class="login-form">
-	      	<c:url value="/login/" var="loginUrl" />
-	      	<c:url value="/register/" var="registerUrl" />
-	      	<c:url value="/login/forget/" var="forgetUrl" />
-			<form  method="post" action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded" role="login">
+	      	<c:url value="/login/forget/process" var="postPathName" />
+	      	<form:form modelAttribute="forgetForm" action="${postPathName}" method="post">
 	          <img src="<c:url value="/resources/img/logo.png"/>" class="img-responsive" alt="" />
 	          
 			  <div>
-	          	<input type="text" name="j_username" placeholder="<spring:message code="mail"/>" class="form-control input-lg"/>
+			  	<spring:message code="mail" var="mail"/>
+	          	<form:input path="mail" type="text" placeholder="${mail}" class="form-control input-lg" />
+	          	<form:errors path="mail" element="p" cssClass="form-error"/>
 	          </div>
 
-	          <div>
-	          	<input type="password" name="j_password" placeholder="<spring:message code="password"/>" class="form-control input-lg"/>
-	          </div>         
-	          <div>
-				<label><input name="j_rememberme" type="checkbox"/> <spring:message code="remember_me"/></label>
-			</div>
-	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="<spring:message code="login"/>"></input>
-	          <div>
-	            <a href="${registerUrl}"><spring:message code="create.account"/></a> <spring:message code="or"/> <a href="${forgetUrl}"><spring:message code="resetpw"/></a>
-	          </div>
-	        </form>
+	          <spring:message code="sendtoken" var="resetpw"/>
+	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="${resetpw}"></input> 
+	      </form:form>
 	      </section>  
 	    </div>
 	      
-
 	     <div class="col-md-4"></div>
 	      
 

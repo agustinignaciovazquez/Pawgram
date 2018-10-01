@@ -1,6 +1,8 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
+import ar.edu.itba.pawgram.interfaces.exception.SendMailException;
+import ar.edu.itba.pawgram.interfaces.service.EmailService;
 import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.webapp.form.UserForm;
@@ -26,6 +28,8 @@ public class RegisterController {
 
     @Autowired
     private SecurityUserService securityUserService;
+    @Autowired
+    private EmailService ms;
 
     @ModelAttribute("registerForm")
     public UserForm registerForm() {
@@ -57,7 +61,11 @@ public class RegisterController {
         }
 
         LOGGER.info("New user with id {} registered", user.getId());
-
+        try {
+            ms.sendWelcomeEmail(user);
+        } catch (SendMailException e) {
+            LOGGER.warn("Could not send welcome email registered \n Stacktrace {}", e.getMessage());
+        }
         final Authentication auth = new UsernamePasswordAuthenticationToken(user.getMail(), user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(auth);
         return new ModelAndView("redirect:/");

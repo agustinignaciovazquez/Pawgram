@@ -27,5 +27,9 @@ public class ErrorController {
 		return new ModelAndView("error/404");
 	}
 
+	@RequestMapping("/500")
+	public ModelAndView opps() {
+		return new ModelAndView("error/500");
+	}
 
 }

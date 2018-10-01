@@ -85,7 +85,7 @@ public class CustomizeController {
 
         LOGGER.info("User with id {} successfully changed his password", loggedUser.getId());
 
-        return new ModelAndView("redirect:/profile/" + loggedUser.getId());
+        return mav;
     }
 
     private void setErrorState(final ChangePasswordForm changePasswordForm, final BindingResult errors,
@@ -121,7 +121,7 @@ public class CustomizeController {
             //e.printStackTrace();
         }
 
-        return new ModelAndView("redirect:/profile/" + loggedUser.getId());
+        return mav;
     }
 
     private void setErrorState(final ChangeProfileImageForm changeProfilePictureForm, final BindingResult errors,
@@ -148,7 +148,7 @@ public class CustomizeController {
         userService.changeName(loggedUser.getId(),changeInfoForm.getName(),changeInfoForm.getSurname());
         //attr.addFlashAttribute("changeInfoForm", new ChangeInfoForm());
 
-        return new ModelAndView("redirect:/profile/"+ loggedUser.getId());
+        return mav;
     }
     private void setErrorState(final ChangeInfoForm changeInfoForm, final BindingResult errors,
                                final RedirectAttributes attr, final User loggedUser) {

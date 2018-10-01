@@ -33,7 +33,7 @@ protected void configure(final HttpSecurity http) throws Exception {
 		.sessionManagement()
 		.invalidSessionUrl("/login")
 	.and().authorizeRequests()
-		.antMatchers("/login","/register","/register/**").anonymous()
+		.antMatchers("/login","/login/**","/register","/register/**").anonymous()
 		.antMatchers("/admin/**").hasRole("ADMIN")
 		.antMatchers("/**").authenticated()
 	.and().formLogin()

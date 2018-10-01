@@ -11,6 +11,7 @@ import ar.edu.itba.pawgram.interfaces.persistence.UserDao;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
 import ar.edu.itba.pawgram.model.User;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +53,14 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public byte[] getProfileImage(String filename) throws FileException {
 		return fileService.getFile(PROFILE_IMAGE_UPLOAD_FOLDER,filename);
+	}
+
+	@Override
+	public String getResetToken(User user) {
+		StringBuilder token = new StringBuilder(user.getPassword());
+		token.append("SOME_SECRET_HASH_TO_DIGEST");
+		token.append(user.getMail());
+		return DigestUtils.md5DigestAsHex(token.toString().getBytes());
 	}
 
 	@Override
