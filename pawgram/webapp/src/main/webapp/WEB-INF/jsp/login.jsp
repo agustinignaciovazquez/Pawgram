@@ -26,7 +26,7 @@
 	    
 	    <div class="col-md-4">
 	      <section class="login-form">
-	      	<c:url value="/login/" var="loginUrl" />
+	      	<c:url value="/login/process" var="loginUrl" />
 	      	<c:url value="/register/" var="registerUrl" />
 	      	<c:url value="/login/forget/" var="forgetUrl" />
 			<form  method="post" action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded" role="login">

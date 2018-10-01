@@ -39,7 +39,7 @@ protected void configure(final HttpSecurity http) throws Exception {
 	.and().formLogin()
 		.usernameParameter("j_username").passwordParameter("j_password")
 		.successHandler(successHandler())
-		.loginPage("/login")
+		.loginPage("/login/process")
 		.failureUrl("/login?error=1")
 	.and().rememberMe()
 		.rememberMeParameter("j_rememberme")
