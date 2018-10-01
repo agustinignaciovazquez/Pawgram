@@ -1167,3 +1167,9 @@ transition: .3s ease all;
 background-color: white;height:603px;}
 
 .chatimg{ max-width:100%;}
+
+.configimg{
+	height: 200px;
+	width: 200px;
+	margin-left: 20px;
+}

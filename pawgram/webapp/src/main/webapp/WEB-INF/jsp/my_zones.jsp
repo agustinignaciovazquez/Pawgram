@@ -33,7 +33,7 @@
 		<div class="container-fluid titzon">
 			<div class="row">
 				<div class="col-md-3"></div>
-				<div class="text titsec">Mis Zonas</div>
+				<div class="text titsec"><spring:message code="title.myzones"/></div>
 			</div>
 		</div>
 
@@ -42,7 +42,7 @@
       <div class="row uspaced60">
         <div class=" center">
           <button type="submit" class="btn btn-success newbutton" onclick="location.href='<c:url value="/my_zones/create"/>'">
-              <i class="fas fa-plus"></i> Agregar nueva zona
+              <i class="fas fa-plus"></i> <spring:message code="add.zone"/>
           </button>   
         </div>
       </div>
@@ -57,7 +57,7 @@
          <c:when test="${searchZones.isEmpty()}">
            <div class="row uspaced20">
             <div class="center">
-             <div class="text noposttext"> Aun no tienes ninguna zona </div>
+             <div class="text noposttext"> <spring:message code="empty.zones"/></div>
             </div>     
           </div>
          </c:when>
@@ -82,26 +82,26 @@
                 <div class="row uspaced10">
                   <div class="col-lg-4">
                     <div class="zonewrapper sr-only">
-                      <div class="text zonetitle"> Zona: </div>
+                      <div class="text zonetitle"> <spring:message code="detail.zone.zone"/> </div>
                       <div class="text zonedata">&nbsp <c:out value="${status.index+1}"/></div>
                     </div>  
                   </div>
                   <div class="col-lg-3">
                     <div class="zonewrapper sr-only">
-                      <div class="text zonetitle"> Latitud: </div>
+                      <div class="text zonetitle"> <spring:message code="detail.zone.latitude"/> </div>
                       <div class="text zonedata">&nbsp <c:out value="${searchZone.location.latitude}"/></div>
                     </div>
                   </div>
                   <div class="col-lg-3">
                     <div class="zonewrapper sr-only">
-                      <div class="text zonetitle"> Longitud: </div>
+                      <div class="text zonetitle"> <spring:message code="detail.zone.longitude"/> </div>
                       <div class="text zonedata">&nbsp  <c:out value="${searchZone.location.longitude}"/></div>
                     </div>
                   </div>
                   <div class="col-lg-2">
                     <div class="zonewrapper">
-                      <div class="text zonetitle"> Rango: </div>
-                      <div class="text zonedata"><c:out value="${searchZone.range/1000}"/> km</div>
+                      <div class="text zonetitle"> <spring:message code="detail.zone.range"/> </div>
+                      <div class="text zonedata"><c:out value="${searchZone.range/1000}"/> &nbsp<spring:message code="km"/></div>
                     </div>
                   </div>
                 </div>
