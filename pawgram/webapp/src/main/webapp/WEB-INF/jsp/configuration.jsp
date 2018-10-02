@@ -17,7 +17,6 @@
 	<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
   <script src="<c:url value="/resources/js/pawgram.js"/>"></script>
 
-  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
 
 </head>
 
@@ -56,7 +55,7 @@
               <form:errors path="surname" element="p" cssClass="form-error"/>
             </div>
              <spring:message code="configuration.change.info" var="changename"/> 
-             <input id="submit" type="submit" name="submit" class="btn btn-lg btn-success fright" value="${changename}"></input>
+             <input type="submit" name="submit" class="btn btn-lg btn-success fright" value="${changename}"></input>
           </div>  
         </div>
     </form:form>
@@ -92,7 +91,7 @@
                     <form:errors path="passwordForm.repeatPassword" element="p" cssClass="form-error"/>
                 </div> 
                 <spring:message code="changepw" var="changepw"/>
-                <input id="submit" type="submit" name="submit" class="btn btn-lg btn-success fright " value="${changepw}"></input>
+                <input type="submit" name="submit" class="btn btn-lg btn-success fright " value="${changepw}"></input>
         </div>  
       </div>
     </form:form>
@@ -117,7 +116,7 @@
       </div>
       <div class="row uspaced20">
         <div class="col-lg-12">
-          <input id="submit" type="submit" name="submit" class="btn btn-lg btn-success fright" value="${changepic}"></input>
+          <input type="submit" name="submit" class="btn btn-lg btn-success fright" value="${changepic}"></input>
         </div>
         
       </div> 
