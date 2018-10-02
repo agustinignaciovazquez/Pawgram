@@ -40,7 +40,7 @@ public class MessageJdbcDao implements MessageDao {
     @Override
     public List<Message> getMessages(User origin, User destination) {
         final List<Message> messages = jdbcTemplate.query("SELECT * FROM messages" +
-                        " WHERE (origId = ? AND destId = ?) OR (destId = ? AND origId = ?) ORDER BY messageDate DESC",
+                        " WHERE (origId = ? AND destId = ?) OR (destId = ? AND origId = ?) ORDER BY messageDate ASC",
                 messageRowMapper, origin.getId(),destination.getId(),origin.getId(),destination.getId());
         return messages;
     }
