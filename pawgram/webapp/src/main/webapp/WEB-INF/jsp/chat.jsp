@@ -17,6 +17,8 @@
   <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
   <script src="<c:url value="/resources/js/pawgram.js"/>"></script>
 
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
+
 </head>
 
 
@@ -41,125 +43,71 @@
             </div>
           </div>
           <div class="inbox_chat">
-            <div class="chat_list active_chat">
-              <div class="chat_people">
-                <div class="chat_img"> <img class="chatimg" src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
+            <c:forEach items="${messagedUsers}" var="userM">
+              <div class="chat_list active_chat">
+                <div class="chat_people">
+                
+                  <div href="<c:url value="/messages/user/${chat.other.id}/" />" class="chat_img"> <img class="chatimg" src="<c:url value="/profile/images/${userM.profile_img_url}" />" alt="sunil"> </div>
+                  <div class="chat_ib">
+                    <h5><c:out value="${userM.name} ${userM.surname}"/> <span class="chat_date sr-only"></span></h5>
+                    <p></p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img class="chatimg" src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img class="chatimg" src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img class="chatimg" src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img class="chatimg" src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img class="chatimg" src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img class="chatimg" src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
+           </c:forEach>
           </div>
         </div>
         <div class="mesgs">
           <div class="msg_history">
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img class="chatimg" src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>Test which is a new approach to have all
-                    solutions</p>
-                  <span class="time_date"> 11:01 AM    |    June 9</span></div>
-              </div>
-            </div>
-            <div class="outgoing_msg">
-              <div class="sent_msg">
-                <p>Test which is a new approach to have all
-                  solutions</p>
-                <span class="time_date"> 11:01 AM    |    June 9</span> </div>
-            </div>
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img class="chatimg" src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>Test, which is a new approach to have</p>
-                  <span class="time_date"> 11:01 AM    |    Yesterday</span></div>
-              </div>
-            </div>
-            <div class="outgoing_msg">
-              <div class="sent_msg">
-                <p>Apollo University, Delhi, India Test</p>
-                <span class="time_date"> 11:01 AM    |    Today</span> </div>
-            </div>
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img class="chatimg" src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>We work directly with our designers and suppliers,
-                    and sell direct to you, which means quality, exclusive
-                    products, at a price anyone can afford.</p>
-                  <span class="time_date"> 11:01 AM    |    Today</span></div>
-              </div>
-            </div>
+          <c:choose>
+             <c:when test="${empty chat}">
+              PONER ACA QUE SELECIONE UN USUARIO A HABLAR
+           </c:when>
+             <c:otherwise>
+            <c:choose>
+              <c:when test="${chat.messages.isEmpty()}">
+              PONER ACA QUE NO HAY MENSAJES
+              </c:when>
+              <c:otherwise>
+              <c:forEach items="${chat.messages}" var="message">
+                <c:choose>
+                  <c:when test="${message.orig_user_id eq loggedUser.id}">
+                  <div class="outgoing_msg">
+                    <div class="sent_msg">
+                      <p><c:out value="${message.message}" /></p>
+                      <span class="time_date"><c:out value="${message.messageDate}" /></span> </div>
+                  </div>
+                 </c:when>
+                 <c:otherwise>
+                  <div class="incoming_msg">
+                    <div class="incoming_msg_img"> <img class="chatimg" src="<c:url value="/profile/images/${chat.other.profile_img_url}" />" alt="sunil"> </div>
+                    <div class="received_msg">
+                      <div class="received_withd_msg">
+                        <p><c:out value="${message.message}" /></p>
+                        <span class="time_date"> <c:out value="${message.messageDate}" /></span></div>
+                    </div>
+                  </div>
+                  </c:otherwise>
+                </c:choose>
+                </c:forEach>
+              </c:otherwise>
+            </c:choose>
+            </c:otherwise>
+          </c:choose>
+          
+
           </div>
+          <c:if test="${not empty chat}">
           <div class="type_msg">
             <div class="input_msg_write">
-              <input type="text" class="write_msg" placeholder="Type a message" />
-              <button class="msg_send_btn" type="button"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+              <c:url value="/messages/user/${chat.other.id}/send" var="postPathName" />
+              <form:form modelAttribute="messageForm" action="${postPathName}" method="post">
+                <form:input path="message" class="write_msg" placeholder="Type a message" />
+                <button type="submit" class="msg_send_btn" type="button"><i class="fas fa-paper-plane" aria-hidden="true"></i></butonn>
+             </form:form>
             </div>
           </div>
+        </c:if>
         </div>
       </div>
       

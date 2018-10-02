@@ -62,7 +62,7 @@ public class MessageJdbcDao implements MessageDao {
     @Override
     public List<User> getMessageUsers(User origin) {
         final List<User> users = jdbcTemplate.query("SELECT DISTINCT users.* FROM users,messages " +
-                " WHERE (origId = ? OR destId = ?) ORDER BY messageDate DESC",
+                " WHERE (users.id = messages.origId OR users.id = messages.destId) AND (origId = ? OR destId = ?)",
                 userRowMapper,origin.getId(),origin.getId());
         return users;
     }
