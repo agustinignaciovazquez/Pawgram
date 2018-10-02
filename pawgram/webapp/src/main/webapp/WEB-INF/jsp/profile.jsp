@@ -45,7 +45,7 @@
 			<div class="row uspaced10 bspaced1">
                 <spring:message code="sendmsg" var="sendmsg"/>
                 <c:if test="${profileUser ne loggedUser}">
-                	<button type="button" class="btn btn-info post-comment-btn center" href="<c:url value="/messages/user/${profileUser.id}"/>">${sendmsg}</button>
+                	<button type="button" class="btn btn-info post-comment-btn center" onclick="location.href='<c:url value="/messages/user/${profileUser.id}"/>'">${sendmsg}</button>
             	</c:if>
             </div>
 

@@ -117,7 +117,9 @@
                 <div class="text postcontactinfo"> <spring:message code="post.mail"/> <c:out value="${post.owner.mail}"/></div>
                 <div class="row">
                   <spring:message code="sendmsg" var="sendmsg"/>
-                  <button type="button" class="btn btn-info post-comment-btn center" href="<c:url value="/messages/user/${post.owner.id}"/>">${sendmsg}</button>
+                  <c:if test="${post.owner ne loggedUser}">
+                    <button type="button" class="btn btn-info post-comment-btn center" onclick="location.href='<c:url value="/messages/user/${post.owner.id}"/>'">${sendmsg}</button>
+                  </c:if>
                 </div>
 
 
