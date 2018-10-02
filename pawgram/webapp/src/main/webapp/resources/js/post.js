@@ -43,6 +43,7 @@ $(document).ready(function(){
 	$( ".remove-img" ).click(function() {
 	  if(total_img > 1){
 	  	$(this).parents('.image-div').hide();
+        $(this).siblings('.image-input').val('');
 	  	hideButtonFixPeruano();
 		total_img--;
 		}

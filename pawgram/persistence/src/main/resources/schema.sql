@@ -46,6 +46,15 @@ CREATE TABLE IF NOT EXISTS comments (
     UNIQUE(commentDate, userId, postId)
 );
 
+CREATE TABLE IF NOT EXISTS messages (
+    messageId SERIAL PRIMARY KEY NOT NULL,
+    message VARCHAR(1024) NOT NULL,
+    messageDate TIMESTAMP NOT NULL,
+    origId INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    destId INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    UNIQUE(messageDate, userId, destId)
+);
+
 CREATE TABLE IF NOT EXISTS fileDump(
     pathId VARCHAR(64) NOT NULL,
     imageId VARCHAR(32) NOT NULL,

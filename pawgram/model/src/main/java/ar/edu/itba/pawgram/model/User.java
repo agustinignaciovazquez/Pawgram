@@ -5,12 +5,12 @@ import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notEmpty;
 
 public class User {
-	private long id;
-	private String name;
-	private String surname;
-	private String mail;
-	private String password;
-	private String profile_img_url;
+	private final long id;
+	private final String name;
+	private final String surname;
+	private final String mail;
+	private final String password;
+	private final String profile_img_url;
 
 	public User(long id, String name, String surname, String mail, String password, String profile_img_url) {
 		super();

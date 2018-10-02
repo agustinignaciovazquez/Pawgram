@@ -5,6 +5,8 @@ import java.util.List;
 
 import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
 import ar.edu.itba.pawgram.model.Comment;
+import ar.edu.itba.pawgram.model.Post;
+import ar.edu.itba.pawgram.model.User;
 
 public interface CommentDao {
 	/**
