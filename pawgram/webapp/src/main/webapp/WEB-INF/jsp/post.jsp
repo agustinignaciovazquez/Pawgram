@@ -110,11 +110,15 @@
                               <li>Longitud: <span id="lon"></span></li>
                           </ul>-->
                 </div>
-               
+                  
                 <div class="text postcontact uspaced20"> <spring:message code="post.contact"/> </div>
                 <div class="text postcontactinfo"> <spring:message code="post.name"/> <c:out value="${post.owner.name} ${post.owner.surname}"/> </div>
                 <div class="text postcontactinfo"> <spring:message code="post.phonee"/> <c:out value="${post.contact_phone}"/> </div>
                 <div class="text postcontactinfo"> <spring:message code="post.mail"/> <c:out value="${post.owner.mail}"/></div>
+                <div class="row">
+                  <spring:message code="sendmsg" var="sendmsg"/>
+                  <button type="button" class="btn btn-info post-comment-btn center" href="<c:url value="/messages/user/${post.owner.id}"/>">${sendmsg}</button>
+                </div>
 
 
                 <div class="row uspaced20"></div>
@@ -182,6 +186,7 @@
                         <div class="comment-box">
                           <div class="comment-head">
                             <h6 class="comment-name ${post.owner eq child.author ? 'by-author' : 'duki'}"><a href="<c:url value="/profile/${child.author.id}"/>"><c:out value="${child.author.name} ${child.author.surname}" /></a></h6>
+                            <span><c:out value="${child.commentDate}"/></span>
                             
                             <!--
                             
@@ -240,7 +245,7 @@
               <div class="row uspaced5"></div>        
             </div>
           </div>
-         <!-- MALISIMO AMIGO <div class="col-lg-3"></div> !-->
+
         </div>
         <div class="row uspaced20"></div>
 

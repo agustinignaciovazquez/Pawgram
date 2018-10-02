@@ -27,7 +27,7 @@
 
     <div class="container-fluid profilebanner">
 			<a href="<c:url value="/customize/"/>">
-				<div class="row uspaced5">
+				<div class="row uspaced20">
 					<div class="avatarwrapper avatar">
 						<img class="avatar" alt="" src="<c:url value="/profile/images/${profileUser.profile_img_url}"/>">
 						<c:if test="${profileUser eq loggedUser}">
@@ -42,6 +42,12 @@
 			<div class="row">
 				<div class="text email"><c:out value="${profileUser.mail}"/></div>
 			</div>
+			<div class="row uspaced10 bspaced1">
+                <spring:message code="sendmsg" var="sendmsg"/>
+                <c:if test="${profileUser ne loggedUser}">
+                	<button type="button" class="btn btn-info post-comment-btn center" href="<c:url value="/messages/user/${profileUser.id}"/>">${sendmsg}</button>
+            	</c:if>
+            </div>
 
 		</div>
 
@@ -69,7 +75,7 @@
 					                     <spring:message code="filter.by.category"/>
 					                  </button>
 					                  <div class="dropdown-menu">
-					                  	<a class="dropdown-item" href="<c:url value="/profile/${profileUser.id}/"/>"><spring:message code="category.every"/></a>
+					                  	  <a class="dropdown-item" href="<c:url value="/profile/${profileUser.id}/"/>"><spring:message code="category.every"/></a>
 					                      <c:forEach items="${categories}" var="category">
 							           			<a class="dropdown-item" href="<c:url value="/profile/${profileUser.id}/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
 							              </c:forEach>
@@ -90,6 +96,7 @@
 					                     <spring:message code="filter.by.category"/>
 					                  </button>
 					                  <div class="dropdown-menu">
+					                  	  <a class="dropdown-item" href="<c:url value="/profile/${profileUser.id}/"/>"><spring:message code="category.every"/></a>
 					                      <c:forEach items="${categories}" var="category">
 							           			<a class="dropdown-item" href="<c:url value="/profile/${profileUser.id}/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
 							              </c:forEach>

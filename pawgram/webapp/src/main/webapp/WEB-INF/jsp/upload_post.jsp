@@ -141,8 +141,8 @@
 							<div class=" text subformtitle">
 				        		<spring:message code="post.date"/>
 				        	</div>
-							<div class="form-group">
-								<form:input path="event_date" type="date" class="form-control" id="date" name="date"  />
+							<div class="form-group datetimepicker">
+								<form:input path="event_date" type="date" class="form-control" id="date" name="date" max='2000-11-01'/>
 								<form:errors path="event_date" cssClass="form-error" element="p"/>
 							</div>
 							<div class=" text subformtitle">
@@ -220,6 +220,26 @@
         <div class="text footertext"><spring:message code="footer"/></div> 
     </div>
     <!--FOOTER-->
+
+    <script>
+    	$( document ).ready(function() {
+    	var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		 if(dd<10){
+		        dd='0'+dd
+		    } 
+		    if(mm<10){
+		        mm='0'+mm
+		    } 
+
+		today = yyyy+'-'+mm+'-'+dd;
+		document.getElementById("date").setAttribute("value", today);
+		document.getElementById("date").setAttribute("max", today);
+
+	}
+    </script>	
 
 
 
