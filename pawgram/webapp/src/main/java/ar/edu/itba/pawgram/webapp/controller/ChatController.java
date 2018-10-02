@@ -68,9 +68,10 @@ public class ChatController {
 
         mav.addObject("categories", Category.values());
         mav.addObject("messagedUsers", messageService.getMessageUsers(loggedUser));
-        mav.addObject("messages", messageService.getMessages(loggedUser,user));
+        mav.addObject("chat", messageService.getMessages(loggedUser,user));
         return mav;
     }
+
     @RequestMapping(value = "/user/{userId}/send", method = RequestMethod.POST)
     public ModelAndView postComment (@PathVariable final long userId,
                                      @ModelAttribute("loggedUser") final User loggedUser,
@@ -92,7 +93,7 @@ public class ChatController {
             throw new ForbiddenException();
         }
 
-        final ModelAndView mav = new ModelAndView("redirect:/chat/user/"+user.getId());
+        final ModelAndView mav = new ModelAndView("redirect:/messages/user/"+user.getId());
 
         if (errors.hasErrors()) {
             LOGGER.warn("User {} failed to send message to user with id {}: form has errors: {}",

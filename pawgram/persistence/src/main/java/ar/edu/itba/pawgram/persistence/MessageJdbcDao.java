@@ -40,7 +40,7 @@ public class MessageJdbcDao implements MessageDao {
     @Override
     public List<Message> getMessages(User origin, User destination) {
         final List<Message> messages = jdbcTemplate.query("SELECT * FROM messages" +
-                        " WHERE (origId = ? AND destId = ?) OR (destId = ? AND origId = ?) ORDER BY messageDate DESC",
+                        " WHERE (origId = ? AND destId = ?) OR (destId = ? AND origId = ?) ORDER BY messageDate ASC",
                 messageRowMapper, origin.getId(),destination.getId(),origin.getId(),destination.getId());
         return messages;
     }
@@ -62,7 +62,7 @@ public class MessageJdbcDao implements MessageDao {
     @Override
     public List<User> getMessageUsers(User origin) {
         final List<User> users = jdbcTemplate.query("SELECT DISTINCT users.* FROM users,messages " +
-                " WHERE (origId = ? OR destId = ?) ORDER BY messageDate DESC",
+                " WHERE (users.id = messages.origId OR users.id = messages.destId) AND (origId = ? OR destId = ?)",
                 userRowMapper,origin.getId(),origin.getId());
         return users;
     }
