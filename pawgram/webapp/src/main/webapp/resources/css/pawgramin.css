@@ -1173,3 +1173,11 @@ background-color: white;height:603px;}
 	width: 200px;
 	margin-left: 20px;
 }
+
+.form-error{
+	color:red;
+}
+
+.formError{
+	color:red;
+}

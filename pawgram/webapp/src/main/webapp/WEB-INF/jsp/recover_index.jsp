@@ -28,7 +28,7 @@
 	    <div class="col-md-4">
 	      <section class="login-form">
 	      	<c:url value="/login/forget/process" var="postPathName" />
-	      	<form:form modelAttribute="forgetForm" action="${postPathName}" method="post">
+	      	<form:form modelAttribute="forgetForm" action="${postPathName}" method="post" role="login">
 	          <img src="<c:url value="/resources/img/logo.png"/>" class="img-responsive" alt="" />
 	          
 			  <div>
@@ -38,7 +38,7 @@
 	          </div>
 
 	          <spring:message code="sendtoken" var="resetpw"/>
-	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="${resetpw}"></input> 
+	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="${resetpw}"></input>  
 	      </form:form>
 	      </section>  
 	    </div>

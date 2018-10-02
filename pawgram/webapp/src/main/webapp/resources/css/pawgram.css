@@ -74,3 +74,35 @@ form[role=login] {
 		color: #fff;
 	}
 
+.cont{
+	color: #5d5d5d;
+	background: #f2f2f2;
+	padding: 26px;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+
+}
+
+.cont > img {
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 35px;
+}
+
+.cont > input, button{
+	font-size: 18px;
+	margin: 16px 0;
+}
+
+.cont > div{
+	text-align: center;
+}
+
+.form-error{
+	color:red;
+}
+
+.formError{
+	color:red;
+}
