@@ -54,7 +54,7 @@ public class CommentJdbcDao implements CommentDao {
 
 		final Number commentId = jdbcInsert.executeAndReturnKey(args);
 
-		return new Comment(commentId.intValue(), parentId, userDao.findById(userId), content, date);
+		return new Comment(commentId.longValue(), parentId, userDao.findById(userId), content, date);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class CommentJdbcDao implements CommentDao {
 
 		final Number commentId = jdbcInsert.executeAndReturnKey(args);
 
-		return new Comment(commentId.intValue(), userDao.findById(userId), content, date);
+		return new Comment(commentId.longValue(), userDao.findById(userId), content, date);
 	}
 
 
