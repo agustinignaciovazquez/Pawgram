@@ -24,4 +24,12 @@ public interface MessageDao {
      * @return {@link Message} created
      */
     public Message sendMessage(final User origin, final User destination,final String content, final LocalDateTime date);
+
+    /**
+     * Lists {@link User} that {@link User} have chat with
+     * @param origin - origin user.
+     * @return {@link List} of {@link User}.
+     * 		   Could be empty if the origin user have not chat with anyone
+     */
+    public List<User> getMessageUsers(final User origin);
 }

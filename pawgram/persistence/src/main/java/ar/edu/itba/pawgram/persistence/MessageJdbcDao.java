@@ -6,6 +6,7 @@ import ar.edu.itba.pawgram.model.Comment;
 import ar.edu.itba.pawgram.model.Message;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.persistence.rowmapper.MessageRowMapper;
+import ar.edu.itba.pawgram.persistence.rowmapper.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -22,6 +23,8 @@ import java.util.Map;
 public class MessageJdbcDao implements MessageDao {
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
+    @Autowired
+    private UserRowMapper userRowMapper;
 
     @Autowired
     private MessageRowMapper messageRowMapper;
@@ -36,7 +39,7 @@ public class MessageJdbcDao implements MessageDao {
 
     @Override
     public List<Message> getMessages(User origin, User destination) {
-        final List<Message > messages = jdbcTemplate.query("SELECT * FROM messages" +
+        final List<Message> messages = jdbcTemplate.query("SELECT * FROM messages" +
                         " WHERE (origId = ? AND destId = ?) OR (destId = ? AND origId = ?) ORDER BY messageDate DESC",
                 messageRowMapper, origin.getId(),destination.getId(),origin.getId(),destination.getId());
         return messages;
@@ -54,5 +57,13 @@ public class MessageJdbcDao implements MessageDao {
         final Number messageId = jdbcInsert.executeAndReturnKey(args);
 
         return new Message(messageId.longValue(), destination.getId(), origin.getId(), content, date);
+    }
+
+    @Override
+    public List<User> getMessageUsers(User origin) {
+        final List<User> users = jdbcTemplate.query("SELECT DISTINCT users.* FROM users,messages " +
+                " WHERE (origId = ? OR destId = ?) ORDER BY messageDate DESC",
+                userRowMapper,origin.getId(),origin.getId());
+        return users;
     }
 }
