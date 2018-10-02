@@ -36,7 +36,7 @@
                       if($('.search-query').val().length > 3){
                         $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
                       }else{
-                         alert('<spring:message code="short"/>');  
+                         showAlert('.alert-danger:first','<spring:message code="short"/>');  
                       }
                     })
                 });

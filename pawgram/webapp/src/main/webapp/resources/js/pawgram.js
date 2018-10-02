@@ -79,5 +79,8 @@ $( document ).ready(function() {
         return !(window.event && window.event.keyCode == 13);
     }  
     
-   
+   function showAlert(classy,message) {
+      $(classy).find('.alertmsg').html(" "+message);
+      $(classy).removeClass('hide').addClass('show');
+    }
 

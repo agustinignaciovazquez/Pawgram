@@ -14,7 +14,24 @@ function hideButtonFixPeruano(){
   		$('.image-div:visible:last').find('.add-img').show();
   	}
 }
+
 $(document).ready(function(){
+    //set input in form is refreshed
+    if($(".pet-value").val().length){
+        $("#type-"+$(".pet-value").val()).addClass("selected");
+       
+    }
+    
+     if($(".sex-value").val().length){
+
+        if($(".sex-value").val() == "true"){
+            $("#sex-male").addClass("selected");
+        }else{
+            $("#sex-female").addClass("selected");    
+        }
+        
+    }
+    //plus and minus button functionality
 	hideImagesDiv();
 	$( ".add-img" ).click(function() {
 		if($('.image-div:hidden:last').length){
@@ -31,8 +48,9 @@ $(document).ready(function(){
 		}
 	});
 });
+
 var latitude = parseFloat(document.getElementById('lat').value);
-	var longitude = parseFloat(document.getElementById('lon').value);
+var longitude = parseFloat(document.getElementById('lon').value);
 function initMap() {
 	
 	if(isNaN(latitude) || isNaN(longitude)){
@@ -66,7 +84,7 @@ autocomplete.addListener('place_changed', function() {
     marker.setVisible(false);
     var place = autocomplete.getPlace();
     if (!place.geometry) {
-        window.alert("Autocomplete's returned place contains no geometry");
+        showAlert('.alert-danger:first','<spring:message code="nogeometry"/>');  
         return;
     }
 

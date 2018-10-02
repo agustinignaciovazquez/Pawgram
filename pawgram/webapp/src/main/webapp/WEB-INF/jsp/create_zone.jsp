@@ -43,6 +43,7 @@
         <div class="col-md-6">
             <input id="searchInput" onkeypress="return noenter()" class="controls" type="text" placeholder="Enter a location">
             <form:errors path="latitude" element="p" cssClass="form-error"/>
+            <form:errors path="longitude" cssClass="sr-only form-error" element="p"/>
             <div id="map"></div>
             <form:hidden path="latitude" class="form-control" id="lat" name="latitude"  />
             <form:hidden path="longitude" class="form-control" id="lon" name="longitude" />
@@ -114,7 +115,7 @@
         marker.setVisible(false);
         var place = autocomplete.getPlace();
         if (!place.geometry) {
-            window.alert("Autocomplete's returned place contains no geometry");
+            showAlert('.alert-danger:first','<spring:message code="nogeometry"/>'); 
             return;
         }
   

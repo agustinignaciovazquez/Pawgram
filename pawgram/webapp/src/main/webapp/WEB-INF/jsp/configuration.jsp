@@ -107,7 +107,7 @@
       </div>
       <hr class="divider">
       <div class="row uspaced20">
-        <img class="configimg" src="<c:url value="/profile/images/${profileUser.profile_img_url}"/>" />
+        <img class="configimg" src="<c:url value="/profile/images/${loggedUser.profile_img_url}"/>" />
       </div>
       <div class="row uspaced10">
         <div class="col-lg-12">

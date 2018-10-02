@@ -48,7 +48,7 @@
 						<div class="container optionblock2 radio-group ">
 								<form:errors path="pet" cssClass="form-error" element="p"/>
 								<c:forEach items="${pets}" var="pet">
-									<div class="container formoption uspaced50 bspaced50 radio" data-value="<c:out value="${pet}"/>">
+									<div id="<c:out value="type-${pet}"/>" class="container formoption uspaced50 bspaced50 radio" data-value="<c:out value="${pet}"/>">
 										<div class="row">
 											<div class="col-md-3">
 												<img src="<c:url value="/resources/img/${pet.lowerName}.jpg"/>" class="icon">
@@ -60,7 +60,7 @@
 									</div>
 								</c:forEach>
 								
-								<form:hidden path="pet" id="radio-value" name="radio-value" />
+								<form:hidden path="pet" id="radio-value" class="pet-value" name="radio-value" />
 						</div>
 					</div>
 				</div>
@@ -75,7 +75,7 @@
 						
 						<div class="container optionblock2 radio-group ">
 							<form:errors path="is_male" cssClass="form-error" element="p"/>
-								<div class="container formoption uspaced50 bspaced50 radio" data-value="true"> 
+								<div id="sex-male" class="container formoption uspaced50 bspaced50 radio" data-value="true"> 
 									<div class="row">
 										<div class="col-md-3">
 											<i class="fas fa-mars formicon formiconmale "></i>
@@ -85,7 +85,7 @@
 										</div>	
 									</div>	
 								</div>
-								<div class="container formoption  uspaced50 bspaced50 radio" data-value="false">
+								<div id="sex-female" class="container formoption  uspaced50 bspaced50 radio" data-value="false">
 									<div class="row">
 										<div class="col-md-3">
 											<i class="fas fa-venus formicon formiconfemale "></i>
@@ -95,7 +95,7 @@
 										</div>	
 									</div>	
 								</div>
-								<form:hidden path="is_male"  id="radio-value" name="radio-value" />
+								<form:hidden path="is_male"  id="radio-value" class="sex-value" name="radio-value" />
 						</div>
 					</div>
 				</div>
@@ -117,6 +117,7 @@
                     <li>Longitud: <span id="lon"></span></li>
                 </ul>-->
                 <form:errors path="latitude" cssClass="form-error" element="p"/>
+                <form:errors path="longitude" cssClass="sr-only form-error" element="p"/>
                 <form:hidden path="latitude" class="form-control" id="lat" name="latitude"  />
                 <form:hidden path="longitude" class="form-control" id="lon" name="longitude" />
             </div>
