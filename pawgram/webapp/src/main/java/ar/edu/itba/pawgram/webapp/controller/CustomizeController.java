@@ -3,6 +3,7 @@ package ar.edu.itba.pawgram.webapp.controller;
 import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
+import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.webapp.exception.UnauthorizedException;
 import ar.edu.itba.pawgram.webapp.form.ChangeInfoForm;
@@ -57,7 +58,9 @@ public class CustomizeController {
 
     @RequestMapping(value={"","/"})
     public ModelAndView index() {
-        return new ModelAndView("configuration");
+        ModelAndView mav = new ModelAndView("configuration");
+        mav.addObject("categories", Category.values());
+        return mav;
     }
 
     @RequestMapping(value = "/password", method = {RequestMethod.POST})

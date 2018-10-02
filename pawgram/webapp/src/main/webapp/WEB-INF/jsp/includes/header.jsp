@@ -33,6 +33,9 @@
                 <a class="nav-link text nav-sec" href="<c:url value="/profile/${loggedUser.id}"/>"><spring:message code="title.myprofile"/></a>
               </li>
               <li class="nav-item">
+                <a class="nav-link text nav-sec" href="<c:url value="/my_messages"/>"><spring:message code="title.myinbox"/></a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link text nav-sec" href="<c:url value="/my_zones"/>"><spring:message code="title.myzones"/></a>
               </li>
               <li class="nav-item">

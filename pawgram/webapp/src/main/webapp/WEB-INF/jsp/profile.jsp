@@ -69,7 +69,7 @@
 					                     <spring:message code="filter.by.category"/>
 					                  </button>
 					                  <div class="dropdown-menu">
-					                  	<a class="dropdown-item" href="<c:url value="/profile/${profileUser.id}/"/>">ALL SANTI</a>
+					                  	<a class="dropdown-item" href="<c:url value="/profile/${profileUser.id}/"/>"><spring:message code="category.every"/></a>
 					                      <c:forEach items="${categories}" var="category">
 							           			<a class="dropdown-item" href="<c:url value="/profile/${profileUser.id}/category/${category.lowerName}"/>"><spring:message code="category.${category.lowerName}"/></a>
 							              </c:forEach>

@@ -17,8 +17,6 @@
   <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
   <script src="<c:url value="/resources/js/pawgram.js"/>"></script>
 
-  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap" async defer></script>
-
 </head>
 
 

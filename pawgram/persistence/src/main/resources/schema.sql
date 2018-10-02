@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS messages (
     messageDate TIMESTAMP NOT NULL,
     origId INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
     destId INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-    UNIQUE(messageDate, userId, destId)
+    UNIQUE(messageDate, origId, destId)
 );
 
 CREATE TABLE IF NOT EXISTS fileDump(

@@ -28,7 +28,8 @@
 	    <div class="col-md-4">
 	      <section class="login-form">
 	      	<c:url value="/login/forget/recover/process" var="postPathName" />
-	      	<form:form modelAttribute="recoverForm" action="${postPathName}" method="post">
+	      	<form:form modelAttribute="recoverForm" action="${postPathName}" method="post" role="login" >
+	      	<div class="cont">
 	          <img src="<c:url value="/resources/img/logo.png"/>" class="img-responsive" alt="" />
 	          
 			  <div>
@@ -57,6 +58,7 @@
 	          
 	          <spring:message code="resetpw" var="resetpw"/>
 	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="${resetpw}"></input> 
+	        </div>  
 	      </form:form>
 	      </section>  
 	    </div>
