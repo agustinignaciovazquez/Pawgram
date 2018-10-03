@@ -48,11 +48,17 @@
           </div>
           <div class="inbox_chat">
             <c:forEach items="${messagedUsers}" var="userM">
-              <div class="chat_list active_chat">
+              <c:set value="duki" var="active_c" />
+              <c:if test="${not empty chat}">
+                <c:if test="${userM.id eq chat.other.id}">
+                  <c:set value="active_chat" var="active_c" />
+                </c:if>
+              </c:if>
+              <div class="chat_list ${active_c}">
                 <a href="<c:url value="/messages/user/${userM.id}/"/>" >
                   <div class="chat_people">
                     <div class="chat_img"> 
-                      <img class="chatimg" src="<c:url value="/profile/images/${userM.profile_img_url}" />" alt="sunil">
+                      <img class="chatimg" src="<c:url value="/profile/images/${userM.profile_img_url}" />" alt="">
                     </div>
                     <div class="chat_ib">
                       <h5><c:out value="${userM.name} ${userM.surname}"/> <span class="chat_date sr-only"></span></h5>
@@ -87,7 +93,7 @@
                  </c:when>
                  <c:otherwise>
                   <div class="incoming_msg">
-                    <div class="incoming_msg_img"> <img class="chatimg" src="<c:url value="/profile/images/${chat.other.profile_img_url}" />" alt="sunil"> </div>
+                    <div class="incoming_msg_img"> <img class="chatimg" src="<c:url value="/profile/images/${chat.other.profile_img_url}" />" alt=""> </div>
                     <div class="received_msg">
                       <div class="received_withd_msg">
                         <p><c:out value="${message.message}" /></p>
