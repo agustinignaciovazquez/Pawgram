@@ -6,7 +6,7 @@
 <head>
 
   <meta charset="UTF-8">
-  <title><spring:message code="pageName"/> - <spring:message code="title.configuration"/></title>
+  <title><spring:message code="pageName"/> - <spring:message code="title.chat"/></title>
 
   <link href="<c:url value="/resources/css/all.css"/>" rel="stylesheet" id="font-awesome">
   <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
@@ -70,6 +70,16 @@
            </c:forEach>
           </div>
         </div>
+        <div>
+          <c:if test="${not empty chat}">
+          <div class="headind_srch">
+              <div class="recent_heading">
+                <h4><c:out value="${chat.other.name} ${chat.other.surname}"/></h4>
+              </div>
+              <div class="srch_bar">
+              </div>
+         </div>
+        </c:if>
         <div class="mesgs">
           <div class="msg_history">
           <c:choose>
@@ -123,6 +133,7 @@
           </div>
         </c:if>
         </div>
+      </div>
       </div>
       
       
