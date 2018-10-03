@@ -42,6 +42,13 @@
 	          <div>
 				<label><input name="j_rememberme" type="checkbox"/> <spring:message code="remember_me"/></label>
 			</div>
+			<c:if test="${not empty param['error']}">
+                <div class="row rwo-centered title-align">
+                        <div class="login-error">
+                            <spring:message code="badCredentials" />
+                        </div>
+                    </div>
+            </c:if>
 	          <input type="submit" name="go" class="btn btn-lg btn-primary btn-block" value="<spring:message code="login"/>"></input>
 	          <div>
 	            <a href="${registerUrl}"><spring:message code="create.account"/></a> <spring:message code="or"/> <a href="${forgetUrl}"><spring:message code="resetpw"/></a>

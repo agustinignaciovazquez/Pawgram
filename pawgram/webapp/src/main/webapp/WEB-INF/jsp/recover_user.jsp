@@ -34,7 +34,8 @@
 	          
 			  <div>
 			  	<spring:message code="mail" var="mail"/>
-	          	<form:input path="mail" type="text" placeholder="${mail}" class="form-control input-lg" />
+			  	<c:set value="${not empty param['mail']? param['mail'] : ''}" var="my_mail" />
+	          	<form:input path="mail" type="text" placeholder="${mail}" class="form-control input-lg" value="${my_mail}" />
 	          	<form:errors path="mail" element="p" cssClass="form-error"/>
 	          </div>
 

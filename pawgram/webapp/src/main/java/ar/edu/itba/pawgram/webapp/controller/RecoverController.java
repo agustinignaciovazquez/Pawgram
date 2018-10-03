@@ -73,12 +73,12 @@ public class RecoverController {
 
         final User user = us.findByMail(forgetForm.getMail());
         if(user == null)
-            throw new UserNotFoundException(); // THIS SHOULD NEVER HAPPEN BECAUSE OF THE VALIDATOR IN LINE 65 JUST IN CASE WE LEAVE IT HERE
+            throw new UserNotFoundException(); // THIS SHOULD NEVER HAPPEN BECAUSE OF THE VALIDATOR
         ms.sendRecoverEmail(user);
 
         LOGGER.info("Successfully send reset token for user with id {}", user.getId());
 
-        return new ModelAndView("redirect:/login/forget/recover");
+        return new ModelAndView("redirect:/login/forget/recover/?mail="+forgetForm.getMail());
     }
 
     private void setErrorState(final ForgetForm forgetForm, final BindingResult errors,
@@ -110,7 +110,7 @@ public class RecoverController {
 
         final User user = us.findByMail(recoverForm.getMail());
         if(user == null)
-            throw new UserNotFoundException(); // THIS SHOULD NEVER HAPPEN BECAUSE OF THE VALIDATOR IN LINE 102 JUST IN CASE WE LEAVE IT HERE
+            throw new UserNotFoundException(); // THIS SHOULD NEVER HAPPEN BECAUSE OF THE VALIDATOR
         us.changePassword(user.getId(), recoverForm.getPasswordForm().getPassword());
 
         LOGGER.info("User with id {} successfully reset his password", user.getId());
