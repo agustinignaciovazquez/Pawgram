@@ -61,9 +61,10 @@ public class MessageJdbcDao implements MessageDao {
 
     @Override
     public List<User> getMessageUsers(User origin) {
-        final List<User> users = jdbcTemplate.query("SELECT users.* FROM users WHERE users.id IN " +
-                "((SELECT DISTINCT origId FROM messages WHERE destId = ? AND origId != ?)" +
-                " UNION (SELECT DISTINCT destId FROM messages WHERE origId = ? AND destId != ?))",
+        final List<User> users = jdbcTemplate.query("SELECT DISTINCT users.*,MAX(messageDate) FROM users INNER JOIN " +
+                "((SELECT DISTINCT origId AS msgId, MAX(messageDate) AS messageDate FROM messages WHERE destId = ? AND origId != ? GROUP BY origId)" +
+                " UNION (SELECT DISTINCT destId AS msgId, MAX(messageDate) AS messageDate FROM messages WHERE origId = ? AND destId != ? GROUP BY destId )) ss" +
+                        " ON users.id = ss.msgId GROUP BY users.id ORDER BY MAX(messageDate) DESC",
                 userRowMapper,origin.getId(),origin.getId(), origin.getId(),origin.getId());
         return users;
     }
