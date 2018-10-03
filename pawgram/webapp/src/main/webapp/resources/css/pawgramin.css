@@ -1167,7 +1167,7 @@ transition: .3s ease all;
 }
 .messaging { padding: 0 0 50px 0;}
 .msg_history {
-  height: 516px;
+  height: 477px;
   overflow-y: auto;
 }
 .chatcontainer{max-width:1170px; margin:auto;

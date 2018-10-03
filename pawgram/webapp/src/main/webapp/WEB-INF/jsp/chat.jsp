@@ -120,6 +120,7 @@
           
 
           </div>
+          </div>
           <c:if test="${not empty chat}">
           <div class="type_msg">
             <div class="input_msg_write">
@@ -132,7 +133,7 @@
             </div>
           </div>
         </c:if>
-        </div>
+        
       </div>
       </div>
       
