@@ -54,7 +54,7 @@
 		<div class="container">
 
             <div>
-                <div class="text zonetext ">
+                <div class="text cattext">
                 	<c:choose>
                      <c:when test="${profileUser eq loggedUser}">
 						<div class="row uspaced5">
@@ -158,9 +158,9 @@
 				                                
 				                            </div>      
 			                        </div>
-			                    </a>    
-			                </div>  
-			                          
+			                    </a>
+			                        
+			                </div> 		                          
 			                
 			              </c:forEach>
 			            </c:otherwise>

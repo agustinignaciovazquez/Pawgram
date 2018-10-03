@@ -194,13 +194,13 @@ body {
 }
 
 .text{
-	font-family: Fira-Sans;
+	font-family: Verdana, Geneva, sans-serif;
 }
 
 .titsec{
 	font-size: 40px;
 	padding-left: 20px;
-	font-style: italic;
+	font-style: ;
 	color:white;
 }
 
@@ -262,7 +262,11 @@ body {
 	font-weight: bold;
 }
 
-.zonetext,.cattext{
+.cattext{
+	font-weight: bold;
+	font-size: 24px;
+}
+.zonetext{
 	font-size: 24px;
 	font-style: italic;
 	font-weight: bold;

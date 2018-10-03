@@ -32,7 +32,7 @@
         <div class="inbox_people">
           <div class="headind_srch">
             <div class="recent_heading">
-              <h4>Recent</h4>
+              <h4><spring:message code="chats"/></h4>
             </div>
             <div class="srch_bar">
               <!-- SEARCH BY USER FILTER
@@ -49,14 +49,17 @@
           <div class="inbox_chat">
             <c:forEach items="${messagedUsers}" var="userM">
               <div class="chat_list active_chat">
-                <div class="chat_people">
-                
-                  <div href="<c:url value="/messages/user/${chat.other.id}/" />" class="chat_img"> <img class="chatimg" src="<c:url value="/profile/images/${userM.profile_img_url}" />" alt="sunil"> </div>
-                  <div class="chat_ib">
-                    <h5><c:out value="${userM.name} ${userM.surname}"/> <span class="chat_date sr-only"></span></h5>
-                    <p></p>
+                <a href="<c:url value="/messages/user/${userM.id}/"/>" >
+                  <div class="chat_people">
+                    <div class="chat_img"> 
+                      <img class="chatimg" src="<c:url value="/profile/images/${userM.profile_img_url}" />" alt="sunil">
+                    </div>
+                    <div class="chat_ib">
+                      <h5><c:out value="${userM.name} ${userM.surname}"/> <span class="chat_date sr-only"></span></h5>
+                      <p></p>
+                    </div>
                   </div>
-                </div>
+                </a>  
               </div>
            </c:forEach>
           </div>
@@ -65,12 +68,12 @@
           <div class="msg_history">
           <c:choose>
              <c:when test="${empty chat}">
-              PONER ACA QUE SELECIONE UN USUARIO A HABLAR
+              <spring:message code="select.chat"/>
            </c:when>
              <c:otherwise>
             <c:choose>
               <c:when test="${chat.messages.isEmpty()}">
-              PONER ACA QUE NO HAY MENSAJES
+                <spring:message code="sorry.no.messages"/>
               </c:when>
               <c:otherwise>
               <c:forEach items="${chat.messages}" var="message">
@@ -104,9 +107,10 @@
           <c:if test="${not empty chat}">
           <div class="type_msg">
             <div class="input_msg_write">
+              <spring:message code="type.message" var="type.message"/>
               <c:url value="/messages/user/${chat.other.id}/send" var="postPathName" />
               <form:form modelAttribute="messageForm" action="${postPathName}" method="post">
-                <form:input path="message" class="write_msg" placeholder="Type a message" />
+                <form:input path="message" class="write_msg" placeholder="${type.message}" />
                 <button type="submit" class="msg_send_btn" type="button"><i class="fas fa-paper-plane" aria-hidden="true"></i></butonn>
              </form:form>
             </div>
