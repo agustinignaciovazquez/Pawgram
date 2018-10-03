@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 @Service
 public class FileServiceImpl implements FileService {
 
-    private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static final String ALPHA_NUMERIC_STRING = "abcdefghijklmnopqrstuvwxyz0123456789";
     @Autowired
     private FileDao fileDao;
 

@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.webapp.config;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import ar.edu.itba.pawgram.webapp.auth.RefererLoginSuccessHandler;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import ar.edu.itba.pawgram.webapp.auth.PawgramUserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.util.ResourceUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -24,11 +26,11 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 @Autowired
 private PawgramUserDetailsService userDetailsService;
-@Value("classpath:remember_me_key.pem")
-private String remember_me_key;
+private String remember_me_key = "l6uhSy6zyoj9YCCDr1XSR3rtsEKEYCmc";
 
 @Override
 protected void configure(final HttpSecurity http) throws Exception {
+
 	http.userDetailsService(userDetailsService)
 		.sessionManagement()
 		.invalidSessionUrl("/login")
