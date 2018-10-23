@@ -112,6 +112,10 @@
       <artifactId>spring-context-support</artifactId>
       <version>4.2.5.RELEASE</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <finalName>webapp</finalName>

@@ -24,7 +24,9 @@
 	<commons-lang3.version>3.5</commons-lang3.version>
 	<commons-beanutils.version>1.9.3</commons-beanutils.version>
 	<maven-war-plugin.version>2.6</maven-war-plugin.version>
-        <org.springframework.boot.version>2.0.1.RELEASE</org.springframework.boot.version>
+    <org.springframework.boot.version>2.0.1.RELEASE</org.springframework.boot.version>
+    <org.hibernate.version>5.1.0.Final</org.hibernate.version>
+	<org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
 	</properties>
 	<build>
 		<plugins>
@@ -129,6 +131,12 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
 				<version>${org.hibernate.validator}</version>
+				<exclusions>
+					<exclusion>
+					<groupId>org.jboss.logging</groupId>
+					<artifactId>jboss-logging</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
@@ -209,12 +217,33 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${org.springframework.version}</version>
 		</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-mail</artifactId>
-				<version>{$org.springframework.boot.version}</version>
+		<!-- Mail -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<version>{$org.springframework.boot.version}</version>
+		</dependency>
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${org.springframework.version}</version>
 			</dependency>
-
+			<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${org.hibernate.version}</version>
+			</dependency>
+			<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${org.hibernate.version}</version>
+			</dependency>
+			<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>${org.hibernate.jpa.version}</version>
+		</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>
