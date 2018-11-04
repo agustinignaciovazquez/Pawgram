@@ -1,7 +1,6 @@
 package ar.edu.itba.pawgram.interfaces.persistence;
 
-import ar.edu.itba.pawgram.model.Location;
-import ar.edu.itba.pawgram.model.Post;
+import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.SearchZone;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;

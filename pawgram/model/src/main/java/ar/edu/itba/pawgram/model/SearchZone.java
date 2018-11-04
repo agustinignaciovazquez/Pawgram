@@ -2,6 +2,7 @@ package ar.edu.itba.pawgram.model;
 
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
+import ar.edu.itba.pawgram.model.structures.Location;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +34,7 @@ public class SearchZone implements PlainSearchZone {
         this.user = builder.user;
         this.max_page = builder.max_page;
     }
+
     @Override
     public long getId() {
         return id;

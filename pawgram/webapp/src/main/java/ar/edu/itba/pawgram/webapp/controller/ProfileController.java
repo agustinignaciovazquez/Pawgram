@@ -1,18 +1,15 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
 import ar.edu.itba.pawgram.interfaces.exception.FileException;
-import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
 import ar.edu.itba.pawgram.model.Category;
-import ar.edu.itba.pawgram.model.Location;
+import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.webapp.exception.ImageNotFoundException;
 import ar.edu.itba.pawgram.webapp.exception.ResourceNotFoundException;
 import ar.edu.itba.pawgram.webapp.exception.UserNotFoundException;
-import ar.edu.itba.pawgram.webapp.form.ChangeInfoForm;
-import ar.edu.itba.pawgram.webapp.form.ChangePasswordForm;
 import ar.edu.itba.pawgram.webapp.util.CaseInsensitiveConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,38 +1,67 @@
 package ar.edu.itba.pawgram.model;
 
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
+import ar.edu.itba.pawgram.model.structures.Location;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import static org.apache.commons.lang3.Validate.isTrue;
-import static org.apache.commons.lang3.Validate.notBlank;
+import static org.apache.commons.lang3.Validate.*;
 
+@Entity
+@Table(name = "posts")
 public class Post implements PlainPost {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "posts_postid_seq")
+	@SequenceGenerator(sequenceName = "posts_postid_seq", name = "posts_postid_seq", allocationSize = 1)
+	@Column(name = "postid")
 	private long id;
+	@Column(name = "title", length = 64, nullable = false)
 	private String title;
+	@Column(name = "description", length = 2048, nullable = false)
 	private String description;
+	@Column(name = "contact_phone", length = 32, nullable = false)
 	private String contact_phone;
+	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime event_date;
+	@Enumerated(EnumType.STRING)
 	private Category category;
+	@Enumerated(EnumType.STRING)
 	private Pet pet;
+	@Column(name = "is_male",nullable = false)
 	private boolean is_male;
+	@Embedded
 	private Location location;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "userid", nullable = false, updatable = false)
 	private User owner;
-	private int distance;
-	private List<CommentFamily> commentFamilies;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "postId", orphanRemoval = true)
+	@OrderBy("postImageId ASC")
 	private List<PostImage> postImages;
+	@Transient
+	private int distance;
+	@Transient
+	private List<CommentFamily> commentFamilies;
 	
 	public static PostBuilder getBuilder(long id, String title, List<PostImage> postImages) {
 		isTrue(id >= 0, "Post ID must be non negative: %d", id);
 		notBlank(title, "Post title must contain at least one non blank character");
-		notBlank(title, "Post img url must contain at least one non blank character");
-		
 		return new PostBuilder(id, title, postImages);
 	}
-	
+
+	public static PostBuilder getBuilderFromProduct(final Post post) {
+		notNull(post, "Post cannot be null in order to retrieve Builder");
+
+		return new PostBuilder(post);
+	}
+
+	// Hibernate
+	Post() {
+	}
+
 	private Post(PostBuilder builder) {
 		this.id = builder.id;
 		this.title = builder.title;
@@ -146,6 +175,21 @@ public class Post implements PlainPost {
 			if(postImages != null)
 				this.postImages = postImages;
 		}
+		private PostBuilder(Post post) {
+			this.id = post.id;
+			this.title = post.title;
+			this.description = post.description;
+			this.postImages = post.postImages;
+			this.contact_phone = post.contact_phone;
+			this.event_date = post.event_date;
+			this.category = post.category;
+			this.pet = post.pet;
+			this.is_male = post.is_male;
+			this.location = post.location;
+			this.owner = post.owner;
+			this.commentFamilies = post.commentFamilies;
+			this.distance = post.distance;
+		}
 
 		public long getId(){
 			return this.id;
@@ -206,13 +250,12 @@ public class Post implements PlainPost {
 			return this;
 		}
 		public PostBuilder commentFamilies(List<CommentFamily> commentFamilies) {
-			this.commentFamilies = commentFamilies;
+			this.commentFamilies = notNull(commentFamilies, "post comment families cannot be null");
 			return this;
 		}
 
 		public PostBuilder postImages(List<PostImage> postImages) {
-			if(postImages != null)
-				this.postImages = postImages;
+			this.postImages = notNull(postImages, "post images  cannot be null");
 			return this;
 		}
 

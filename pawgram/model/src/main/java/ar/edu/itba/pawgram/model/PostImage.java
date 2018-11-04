@@ -1,8 +1,14 @@
 package ar.edu.itba.pawgram.model;
 
-import static org.apache.commons.lang3.Validate.isTrue;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+import static org.apache.commons.lang3.Validate.isTrue;
+@Entity
+@Table(name = "postimages")
 public class PostImage extends Image {
+    @Id
     private long postId;
 
     public PostImage(long id, String url, long postId) {

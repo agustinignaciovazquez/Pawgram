@@ -1,13 +1,13 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
 import ar.edu.itba.pawgram.interfaces.exception.FileException;
-import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
 import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.interfaces.service.PostImageService;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
+import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.webapp.exception.*;
 import ar.edu.itba.pawgram.webapp.form.CommentForm;
 import ar.edu.itba.pawgram.webapp.form.CommentsForm;
@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.Optional;
 
 @RequestMapping("/post")

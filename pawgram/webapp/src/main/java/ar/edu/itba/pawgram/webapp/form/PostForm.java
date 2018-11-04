@@ -1,7 +1,6 @@
 package ar.edu.itba.pawgram.webapp.form;
 
-import ar.edu.itba.pawgram.model.Category;
-import ar.edu.itba.pawgram.model.Location;
+import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.Pet;
 import ar.edu.itba.pawgram.webapp.form.wrapper.MultipartFileImageWrapper;
 import org.hibernate.validator.constraints.NotBlank;

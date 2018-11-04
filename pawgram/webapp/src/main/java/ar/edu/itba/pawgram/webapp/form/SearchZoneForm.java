@@ -1,10 +1,9 @@
 package ar.edu.itba.pawgram.webapp.form;
 
-import ar.edu.itba.pawgram.model.Location;
+import ar.edu.itba.pawgram.model.structures.Location;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 public class SearchZoneForm {
     private static final int DEFAULT_RANGE_KM = 3;

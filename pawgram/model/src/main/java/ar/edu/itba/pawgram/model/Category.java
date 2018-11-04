@@ -10,4 +10,8 @@ public enum Category {
 	public String getLowerName() {
 		return name().toLowerCase();
 	}
+
+	public String getName() {
+		return this.name();
+	}
 }

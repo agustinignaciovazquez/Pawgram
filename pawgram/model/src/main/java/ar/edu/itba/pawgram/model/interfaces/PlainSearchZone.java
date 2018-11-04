@@ -1,7 +1,6 @@
 package ar.edu.itba.pawgram.model.interfaces;
 
-import ar.edu.itba.pawgram.model.Location;
-import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.model.structures.Location;
 
 public interface PlainSearchZone {
     public long getId();

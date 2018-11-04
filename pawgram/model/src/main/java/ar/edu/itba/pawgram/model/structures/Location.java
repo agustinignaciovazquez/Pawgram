@@ -1,5 +1,8 @@
-package ar.edu.itba.pawgram.model;
+package ar.edu.itba.pawgram.model.structures;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Location {
     private double longitude;
     private double latitude;

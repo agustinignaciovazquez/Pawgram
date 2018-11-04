@@ -3,8 +3,9 @@ package ar.edu.itba.pawgram.interfaces.persistence;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.interfaces.PlainPost;
+import ar.edu.itba.pawgram.model.structures.Location;
+import ar.edu.itba.pawgram.model.Pet;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
