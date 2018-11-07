@@ -4,7 +4,6 @@ import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.interfaces.persistence.SearchZoneDao;
 import ar.edu.itba.pawgram.interfaces.service.SearchZoneService;
 import ar.edu.itba.pawgram.model.*;
-import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 import ar.edu.itba.pawgram.model.structures.Location;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,7 @@ public class SearchZoneServiceImpl implements SearchZoneService {
         SearchZone.SearchZoneBuilder builder = searchZoneDao.getFullSearchZoneById(zoneId);
         if(builder == null)
             return null;
-        List<PlainPost> posts = postService.getPlainPostsPaged(builder.getLocation(),builder.getRange(),page,pageSize);
+        List<Post> posts = postService.getPlainPostsPaged(builder.getLocation(),builder.getRange(),page,pageSize);
         long max_page = postService.getMaxPage(pageSize,builder.getLocation(),builder.getRange());
         return builder.posts(posts).max_page(max_page).build();
     }
@@ -63,7 +62,7 @@ public class SearchZoneServiceImpl implements SearchZoneService {
         SearchZone.SearchZoneBuilder builder = searchZoneDao.getFullSearchZoneById(zoneId);
         if(builder == null)
             return null;
-        List<PlainPost> posts = postService.getPlainPostsByCategoryPaged(builder.getLocation(),builder.getRange(),
+        List<Post> posts = postService.getPlainPostsByCategoryPaged(builder.getLocation(),builder.getRange(),
                 category,page,pageSize);
         long max_page = postService.getMaxPageByCategory(pageSize,builder.getLocation(),builder.getRange(),category);
         return builder.posts(posts).max_page(max_page).build();

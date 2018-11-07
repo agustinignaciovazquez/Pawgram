@@ -6,7 +6,6 @@ import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.interfaces.service.PostImageService;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.*;
-import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.webapp.exception.*;
 import ar.edu.itba.pawgram.webapp.form.CommentForm;
@@ -50,7 +49,7 @@ public class PostController {
 
         LOGGER.debug("Accessed post with id {}", postId);
 
-        Post post;
+        ar.edu.itba.pawgram.model.Post post;
         if(longitude.isPresent() && latitude.isPresent()) {
              post = postService.getFullPostById(postId, new Location(longitude.get(), latitude.get()));
         }else{
@@ -75,7 +74,7 @@ public class PostController {
                                      @ModelAttribute("loggedUser") final User loggedUser) throws PostNotFoundException, ForbiddenException {
         LOGGER.debug("Accessed delete post with id {}",postId);
 
-        final Post post = postService.getFullPostById(postId);
+        final ar.edu.itba.pawgram.model.Post post = postService.getFullPostById(postId);
         if (post == null) {
             LOGGER.warn("Failed to delete post with id {}: post not found", postId);
             throw new PostNotFoundException();
@@ -101,7 +100,7 @@ public class PostController {
                                      final BindingResult errors,
                                      final RedirectAttributes attr) throws PostNotFoundException, InvalidQueryException {
 
-        final PlainPost post = postService.getPlainPostById(postId);
+        final Post post = postService.getPlainPostById(postId);
 
         if (post == null) {
             LOGGER.warn("Failed to comment post with id {}: post doesn´t exists", postId);

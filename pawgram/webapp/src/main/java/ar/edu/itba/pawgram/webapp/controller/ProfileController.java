@@ -6,7 +6,6 @@ import ar.edu.itba.pawgram.interfaces.service.UserService;
 import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.User;
-import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.webapp.exception.ImageNotFoundException;
 import ar.edu.itba.pawgram.webapp.exception.ResourceNotFoundException;
 import ar.edu.itba.pawgram.webapp.exception.UserNotFoundException;
@@ -66,7 +65,7 @@ public class ProfileController {
             throw new ResourceNotFoundException();
         }
 
-        final List<PlainPost> posts;
+        final List<Post> posts;
         if(longitude.isPresent() && latitude.isPresent()) {
             posts = postService.getPlainPostsByUserIdPaged(userId, new Location(longitude.get(),latitude.get()), page, PAGE_SIZE);
         }else{
@@ -109,7 +108,7 @@ public class ProfileController {
             throw new ResourceNotFoundException();
         }
 
-        final List<PlainPost> posts;
+        final List<Post> posts;
         if(longitude.isPresent() && latitude.isPresent()) {
             posts = postService.getPlainPostsByUserIdPaged(userId, new Location(longitude.get(),latitude.get()), category, page, PAGE_SIZE);
         }else{

@@ -7,7 +7,6 @@ import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
 import ar.edu.itba.pawgram.interfaces.service.PostImageService;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.*;
-import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -26,114 +28,128 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private PostImageService postImageService;
 
+    private final static int MIN_WORD_SIZE = 3;
+
     @Override
     @Transactional(rollbackFor = PostCreateException.class)
     public Post createPost(String title, String description, List<byte[]> raw_images, String contact_phone,
-                           LocalDateTime event_date, Category category, Pet pet,
-                           boolean is_male, Location location, User owner) throws PostCreateException {
-        Post.PostBuilder postBuilder = postDao.createPost(title,description,raw_images,contact_phone,event_date,category,pet,is_male,location,owner);
+                                                     LocalDateTime event_date, Category category, Pet pet,
+                                                     boolean is_male, Location location, User owner) throws PostCreateException {
+        Post post = postDao.createPost(title,description,raw_images,contact_phone,event_date,category,pet,is_male,location,owner);
         List<PostImage> postImages = null;
         if(raw_images != null) {
             try {
-                postImages = postImageService.createPostImage(postBuilder.getId(), raw_images);
+                postImages = postImageService.createPostImage(post.getId(), raw_images);
             } catch (FileUploadException e) {
                 //e.printStackTrace(); DEBUG ONLY
                 throw new PostCreateException();
             }
         }
-        return postBuilder.postImages(postImages).build();
+        return Post.getBuilderFromProduct(post).postImages(postImages).build();
     }
 
     @Override
-    public List<PlainPost> getPlainPostsPaged(long page, int pageSize) {
+    public List<Post> getPlainPostsPaged(int page, int pageSize) {
         return postDao.getPlainPostsRange(pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsPaged(Location location, long page, int pageSize) {
+    public List<Post> getPlainPostsPaged(Location location, int page, int pageSize) {
         return postDao.getPlainPostsRange(location,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByCategoryPaged(Category category, long page, int pageSize) {
+    public List<Post> getPlainPostsByCategoryPaged(Category category, int page, int pageSize) {
         return postDao.getPlainPostsByCategoryRange(category,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByCategoryPaged(Location location, Category category, long page, int pageSize) {
+    public List<Post> getPlainPostsByCategoryPaged(Location location, Category category, int page, int pageSize) {
         return postDao.getPlainPostsByCategoryRange(location,category,pageSize,(page - 1) * pageSize);
     }
 
     @Override
     @Transactional
     public Post getFullPostById(long postId) {
-        Post.PostBuilder pb = postDao.getFullPostById(postId);
-        if(pb == null)
+        final Post post = postDao.getFullPostById(postId);
+        if(post == null)
             return null;
-        return pb.commentFamilies(commentService.getCommentsByPostId(postId)).build();
+        return Post.getBuilderFromProduct(post).commentFamilies(commentService.getCommentsByPostId(postId)).build();
     }
 
     @Override
     @Transactional
     public Post getFullPostById(long postId, Location location) {
-        Post.PostBuilder pb = postDao.getFullPostById(postId, location);
-        if(pb == null)
+        final Post post = postDao.getFullPostById(postId, location);
+        if(post == null)
             return null;
-        return pb.commentFamilies(commentService.getCommentsByPostId(postId)).build();
+        return Post.getBuilderFromProduct(post).commentFamilies(commentService.getCommentsByPostId(postId)).build();
     }
 
     @Override
-    public PlainPost getPlainPostById(long postId) {
+    public Post getPlainPostById(long postId) {
         return postDao.getPlainPostById(postId);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsPaged(Location location, int range, long page, int pageSize) {
+    public List<Post> getPlainPostsPaged(Location location, int range, int page, int pageSize) {
         return postDao.getPlainPostsRange(location, range, pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByCategoryPaged(Location location, int range, Category category, long page, int pageSize) {
+    public List<Post> getPlainPostsByCategoryPaged(Location location, int range, Category category, int page, int pageSize) {
         return postDao.getPlainPostsByCategoryRange(location, range, category, pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, long page, int pageSize) {
-        return postDao.getPlainPostsByKeywordRange(keyword,pageSize,(page - 1) * pageSize);
+    public List<Post> getPlainPostsByKeywordPaged(String keyword, int page, int pageSize) {
+        Set<String> validKeywords = getValidKeywords(keyword);
+        if (validKeywords.isEmpty())
+            return Collections.emptyList();
+        return postDao.getPlainPostsByKeywordRange(validKeywords,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, long page, int pageSize) {
-        return postDao.getPlainPostsByKeywordRange(keyword, location, pageSize,(page - 1) * pageSize);
+    public List<Post> getPlainPostsByKeywordPaged(String keyword, Location location, int page, int pageSize) {
+        Set<String> validKeywords = getValidKeywords(keyword);
+        if (validKeywords.isEmpty())
+            return Collections.emptyList();
+        return postDao.getPlainPostsByKeywordRange(validKeywords, location, pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Category category, long page, int pageSize) {
-        return postDao.getPlainPostsByKeywordRange(keyword,category,pageSize,(page - 1) * pageSize);
+    public List<Post> getPlainPostsByKeywordPaged(String keyword, Category category, int page, int pageSize) {
+        Set<String> validKeywords = getValidKeywords(keyword);
+        if (validKeywords.isEmpty())
+            return Collections.emptyList();
+        return postDao.getPlainPostsByKeywordRange(validKeywords,category,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByKeywordPaged(String keyword, Location location, Category category, long page, int pageSize) {
-        return postDao.getPlainPostsByKeywordRange(keyword,location,category,pageSize,(page - 1) * pageSize);
+    public List<Post> getPlainPostsByKeywordPaged(String keyword, Location location, Category category, int page, int pageSize) {
+        Set<String> validKeywords = getValidKeywords(keyword);
+        if (validKeywords.isEmpty())
+            return Collections.emptyList();
+        return postDao.getPlainPostsByKeywordRange(validKeywords,location,category,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, long page, int pageSize) {
+    public List<Post> getPlainPostsByUserIdPaged(long userId, int page, int pageSize) {
         return postDao.getPlainPostsByUserIdRange(userId,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Location location, long page, int pageSize) {
+    public List<Post> getPlainPostsByUserIdPaged(long userId, Location location, int page, int pageSize) {
         return postDao.getPlainPostsByUserIdRange(userId, location, pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Category category, long page, int pageSize) {
+    public List<Post> getPlainPostsByUserIdPaged(long userId, Category category, int page, int pageSize) {
         return postDao.getPlainPostsByUserIdRange(userId,category,pageSize,(page - 1) * pageSize);
     }
 
     @Override
-    public List<PlainPost> getPlainPostsByUserIdPaged(long userId, Location location, Category category, long page, int pageSize) {
+    public List<Post> getPlainPostsByUserIdPaged(long userId, Location location, Category category, int page, int pageSize) {
         return postDao.getPlainPostsByUserIdRange(userId, location, category, pageSize,(page - 1) * pageSize);
     }
 
@@ -164,12 +180,18 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public long getTotalPostsByKeyword(String keyword) {
-        return postDao.getTotalPostsByKeyword(keyword);
+        Set<String> validKeywords = getValidKeywords(keyword);
+        if (validKeywords.isEmpty())
+            return 0;
+        return postDao.getTotalPostsByKeyword(validKeywords);
     }
 
     @Override
     public long getTotalPostsByKeyword(String keyword, Category category) {
-        return postDao.getTotalPostsByKeyword(keyword,category);
+        Set<String> validKeywords = getValidKeywords(keyword);
+        if (validKeywords.isEmpty())
+            return 0;
+        return postDao.getTotalPostsByKeyword(validKeywords,category);
     }
 
     @Override
@@ -228,5 +250,17 @@ public class PostServiceImpl implements PostService {
     public long getMaxPageByUserId(int pageSize, long userId, Category category) {
         long total = getTotalPostsByUserId(userId,category);
         return (long) Math.ceil((float) total / pageSize);
+    }
+
+    private Set<String> getValidKeywords(String keyword){
+        final String[] keywords = keyword.trim().split(" ");
+        final Set<String> validKeywords = new HashSet<>();
+
+        for (final String word : keywords) {
+            if (word.length() >= MIN_WORD_SIZE)
+                validKeywords.add(word);
+        }
+
+        return validKeywords;
     }
 }

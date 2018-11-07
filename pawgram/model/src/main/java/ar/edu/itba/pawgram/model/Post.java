@@ -1,6 +1,5 @@
 package ar.edu.itba.pawgram.model;
 
-import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.model.structures.Location;
 
 import javax.persistence.*;
@@ -12,8 +11,9 @@ import java.util.Locale;
 import static org.apache.commons.lang3.Validate.*;
 
 @Entity
+
 @Table(name = "posts")
-public class Post implements PlainPost {
+public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "posts_postid_seq")
 	@SequenceGenerator(sequenceName = "posts_postid_seq", name = "posts_postid_seq", allocationSize = 1)
@@ -46,10 +46,9 @@ public class Post implements PlainPost {
 	@Transient
 	private List<CommentFamily> commentFamilies;
 	
-	public static PostBuilder getBuilder(long id, String title, List<PostImage> postImages) {
-		isTrue(id >= 0, "Post ID must be non negative: %d", id);
+	public static PostBuilder getBuilder(String title, List<PostImage> postImages) {
 		notBlank(title, "Post title must contain at least one non blank character");
-		return new PostBuilder(id, title, postImages);
+		return new PostBuilder(title, postImages);
 	}
 
 	public static PostBuilder getBuilderFromProduct(final Post post) {
@@ -78,36 +77,36 @@ public class Post implements PlainPost {
 		this.distance = builder.distance;
 	}
 
-	@Override
+
 	public long getId() {
 		return id;
 	}
 
-	@Override
+
 	public String getTitle() {
 		return title;
 	}
 
-	@Override
+
 	public Category getCategory() {
 		return category;
 	}
 
-	@Override
+
 	public List<PostImage> getPostImages() {
 		return postImages;
 	}
 
-	@Override
+
 	public Pet getPet() {
 		return pet;
 	}
-	@Override
+
 	public boolean isIs_male() {
 		return is_male;
 	}
 
-	@Override
+
 	public int getDistance() {
 		//TO RETURN DISTANCE IN KM!
 		 return distance/1000;
@@ -169,8 +168,7 @@ public class Post implements PlainPost {
 		private List<CommentFamily> commentFamilies = Collections.emptyList();
 		private List<PostImage> postImages = Collections.emptyList();
 
-		private PostBuilder(long id, String title, List<PostImage> postImages) {
-			this.id = id;
+		private PostBuilder(String title, List<PostImage> postImages) {
 			this.title = title;
 			if(postImages != null)
 				this.postImages = postImages;
@@ -193,6 +191,12 @@ public class Post implements PlainPost {
 
 		public long getId(){
 			return this.id;
+		}
+
+		public PostBuilder id(long id) {
+			isTrue(id >= 0, "Post ID must be non negative: %d", id);
+			this.id = id;
+			return this;
 		}
 
 		public PostBuilder description(String description) {

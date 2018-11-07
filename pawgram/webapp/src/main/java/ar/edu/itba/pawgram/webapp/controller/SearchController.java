@@ -4,7 +4,6 @@ import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
 import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.structures.Location;
-import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.webapp.exception.InvalidQueryException;
 import ar.edu.itba.pawgram.webapp.exception.ResourceNotFoundException;
 import ar.edu.itba.pawgram.webapp.util.CaseInsensitiveConverter;
@@ -60,7 +59,7 @@ public class SearchController {
             throw new InvalidQueryException();
         }
 
-        final List<PlainPost> posts;
+        final List<Post> posts;
         final long max_page = postService.getMaxPageByKeyword(PAGE_SIZE,query);
         if (page < 1 || page > max_page && max_page > 0) {
             throw new ResourceNotFoundException();
@@ -98,7 +97,7 @@ public class SearchController {
             throw new InvalidQueryException();
         }
 
-        final List<PlainPost> posts;
+        final List<Post> posts;
         final long max_page = postService.getMaxPageByKeyword(PAGE_SIZE,query,category);
         if (page < 1 || page > max_page && max_page > 0) {
             LOGGER.warn("Search page out of bounds: {}", page);

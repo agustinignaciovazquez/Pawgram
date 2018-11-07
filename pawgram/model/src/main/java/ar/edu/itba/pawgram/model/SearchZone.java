@@ -1,6 +1,5 @@
 package ar.edu.itba.pawgram.model;
 
-import ar.edu.itba.pawgram.model.interfaces.PlainPost;
 import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 import ar.edu.itba.pawgram.model.structures.Location;
 
@@ -14,7 +13,7 @@ public class SearchZone implements PlainSearchZone {
     private long id;
     private Location location;
     private int range;
-    private List<PlainPost> posts;
+    private List<Post> posts;
     private long max_page;
     private User user;
 
@@ -48,7 +47,7 @@ public class SearchZone implements PlainSearchZone {
         return range;
     }
 
-    public List<PlainPost> getPosts() {
+    public List<Post> getPosts() {
         return posts;
     }
 
@@ -85,7 +84,7 @@ public class SearchZone implements PlainSearchZone {
         private Location location;
         private int range;
         private User user;
-        private List<PlainPost> posts = Collections.emptyList();
+        private List<Post> posts = Collections.emptyList();
         private long max_page;
 
         private SearchZoneBuilder(long id, Location location, int range) {
@@ -99,7 +98,7 @@ public class SearchZone implements PlainSearchZone {
             return this;
         }
 
-        public SearchZoneBuilder posts(List<PlainPost> posts) {
+        public SearchZoneBuilder posts(List<Post> posts) {
             this.posts = posts;
             return this;
         }
