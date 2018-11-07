@@ -20,8 +20,8 @@ public class SearchZoneServiceImpl implements SearchZoneService {
     private PostService postService;
 
     @Override
-    public SearchZone createSearchZone(Location location, int range, long userId) {
-        return searchZoneDao.createSearchZone(location, range, userId);
+    public SearchZone createSearchZone(Location location, int range, User user) {
+        return searchZoneDao.createSearchZone(location, range, user);
     }
 
     @Override
@@ -30,13 +30,13 @@ public class SearchZoneServiceImpl implements SearchZoneService {
     }
 
     @Override
-    public List<PlainSearchZone> getPlainSearchZonesByUser(User user) {
+    public List<SearchZone> getPlainSearchZonesByUser(User user) {
         return searchZoneDao.getPlainSearchZonesByUser(user.getId());
     }
 
     @Override
     public SearchZone getFullSearchZonesByIdWithoutPosts(long id) {
-        return searchZoneDao.getFullSearchZoneById(id).build();
+        return searchZoneDao.getFullSearchZoneById(id);
     }
 
     @Override
@@ -46,10 +46,13 @@ public class SearchZoneServiceImpl implements SearchZoneService {
 
     @Override
     @Transactional
-    public SearchZone getFullSearchZoneById(long zoneId, long page, int pageSize) {
-        SearchZone.SearchZoneBuilder builder = searchZoneDao.getFullSearchZoneById(zoneId);
-        if(builder == null)
+    public SearchZone getFullSearchZoneById(long zoneId, int page, int pageSize) {
+        SearchZone sz = getFullSearchZonesByIdWithoutPosts(zoneId);
+        if(sz == null)
             return null;
+
+        SearchZone.SearchZoneBuilder builder = SearchZone.getBuilderFromSearchZone(sz);
+
         List<Post> posts = postService.getPlainPostsPaged(builder.getLocation(),builder.getRange(),page,pageSize);
         long max_page = postService.getMaxPage(pageSize,builder.getLocation(),builder.getRange());
         return builder.posts(posts).max_page(max_page).build();
@@ -57,10 +60,13 @@ public class SearchZoneServiceImpl implements SearchZoneService {
 
     @Override
     @Transactional
-    public SearchZone getFullSearchZoneByIdAndCategory(long zoneId, Category category, long page, int pageSize) {
-        SearchZone.SearchZoneBuilder builder = searchZoneDao.getFullSearchZoneById(zoneId);
-        if(builder == null)
+    public SearchZone getFullSearchZoneByIdAndCategory(long zoneId, Category category, int page, int pageSize) {
+        SearchZone sz = getFullSearchZonesByIdWithoutPosts(zoneId);
+        if(sz == null)
             return null;
+
+        SearchZone.SearchZoneBuilder builder = SearchZone.getBuilderFromSearchZone(sz);
+
         List<Post> posts = postService.getPlainPostsByCategoryPaged(builder.getLocation(),builder.getRange(),
                 category,page,pageSize);
         long max_page = postService.getMaxPageByCategory(pageSize,builder.getLocation(),builder.getRange(),category);
@@ -69,10 +75,10 @@ public class SearchZoneServiceImpl implements SearchZoneService {
 
     @Override
     @Transactional
-    public List<SearchZone> getFullSearchZonesById(User user, long page, int pageSize) {
-        List<PlainSearchZone> searchZonesPlain = searchZoneDao.getPlainSearchZonesByUser(user.getId());
+    public List<SearchZone> getFullSearchZonesById(User user, int page, int pageSize) {
+        List<SearchZone> searchZonesPlain = searchZoneDao.getPlainSearchZonesByUser(user.getId());
         List<SearchZone> searchZones = new ArrayList<>();
-        for(PlainSearchZone searchZone: searchZonesPlain){
+        for(SearchZone searchZone: searchZonesPlain){
             searchZones.add(getFullSearchZoneById(searchZone.getId(),page,pageSize));
         }
         return searchZones;
@@ -80,10 +86,10 @@ public class SearchZoneServiceImpl implements SearchZoneService {
 
     @Override
     @Transactional
-    public List<SearchZone> getFullSearchZonesByIdAndCategory(User user, Category category, long page, int pageSize) {
-        List<PlainSearchZone> searchZonesPlain = searchZoneDao.getPlainSearchZonesByUser(user.getId());
+    public List<SearchZone> getFullSearchZonesByIdAndCategory(User user, Category category, int page, int pageSize) {
+        List<SearchZone> searchZonesPlain = searchZoneDao.getPlainSearchZonesByUser(user.getId());
         List<SearchZone> searchZones = new ArrayList<>();
-        for(PlainSearchZone searchZone: searchZonesPlain){
+        for(SearchZone searchZone: searchZonesPlain){
             searchZones.add(getFullSearchZoneByIdAndCategory(searchZone.getId(),category,page,pageSize));
         }
         return searchZones;

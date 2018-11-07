@@ -8,12 +8,12 @@ import java.util.List;
 public interface SearchZoneService {
     /**
      * Creates a {@link SearchZone} inserting it into the database.
-     * @param location - {@link Location}
-     * @param range -
-     * @param userId - ID of the {@link User} that registers to a zone
+     * @param location - {@link Location} latitude and longitude center of circle
+     * @param range - range circle
+     * @param user - {@link User} that registers to a zone
      * @return The created {@link SearchZone}
      */
-    public SearchZone createSearchZone(final Location location, final int range, final long userId);
+    public SearchZone createSearchZone(final Location location, final int range, final User user);
 
     /**
      * Deletes a {@link SearchZone} from the database.
@@ -27,7 +27,7 @@ public interface SearchZoneService {
      * @param user - the user searching in his zones.
      * @return {@link List} of searchZone associated with the {@link User}
      */
-    public List<PlainSearchZone> getPlainSearchZonesByUser(final User user);
+    public List<SearchZone> getPlainSearchZonesByUser(final User user);
 
     /**
      * Lists {@link SearchZone} with a specific id,
@@ -53,7 +53,7 @@ public interface SearchZoneService {
      * and  the list of {@link Post} paged with the params
      * or null if the zoneId is invalid
      */
-    public SearchZone getFullSearchZoneById(final long zoneId, final long page, final int pageSize);
+    public SearchZone getFullSearchZoneById(final long zoneId, final int page, final int pageSize);
 
     /**
      * Find a {@link SearchZone} by the id,
@@ -65,7 +65,7 @@ public interface SearchZoneService {
      * and  the list of {@link Post} paged with the params
      * or null if the zoneId is invalid
      */
-    public SearchZone getFullSearchZoneByIdAndCategory(final long zoneId, final Category category, final long page, final int pageSize);
+    public SearchZone getFullSearchZoneByIdAndCategory(final long zoneId, final Category category, final int page, final int pageSize);
 
     /**
      * Find all the {@link SearchZone} by the user,
@@ -76,7 +76,7 @@ public interface SearchZoneService {
      * and  the list of {@link Post} paged with the params
      * or null if the zoneId is invalid
      */
-    public List<SearchZone> getFullSearchZonesById(final User user, final long page, final int pageSize);
+    public List<SearchZone> getFullSearchZonesById(final User user, final int page, final int pageSize);
 
     /**
      * Find all the {@link SearchZone} by the user and category,
@@ -88,7 +88,7 @@ public interface SearchZoneService {
      * and  the list of {@link Post} paged with the params
      * or null if the zoneId is invalid
      */
-    public List<SearchZone> getFullSearchZonesByIdAndCategory(final User user, final Category category, final long page, final int pageSize);
+    public List<SearchZone> getFullSearchZonesByIdAndCategory(final User user, final Category category, final int page, final int pageSize);
 
 
 

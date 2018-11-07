@@ -11,7 +11,7 @@ import static org.apache.commons.lang3.Validate.notEmpty;
 public abstract class Image {
     @Id
     @GeneratedValue
-    private final long id;
+    protected final long id;
     @Column(length = 32, nullable = false)
     private final String url;
 

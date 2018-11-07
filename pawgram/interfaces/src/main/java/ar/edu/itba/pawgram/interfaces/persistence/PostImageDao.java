@@ -8,10 +8,10 @@ import java.util.List;
 public interface PostImageDao {
     /**
      * Creates an {@link PostImage} for a {@link Post} inserting it into the database.
-     * @param postId - ID of the post the image belongs to
+     * @param post - post the image belongs to
      * @return The created PostImage
      */
-    public PostImage createPostImage(final long postId, String url);
+    public PostImage createPostImage(final Post post, String url);
 
     /**
      * Lists {@link PostImage} ID of a {@link Post}.

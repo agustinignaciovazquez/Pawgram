@@ -1,24 +1,40 @@
 package ar.edu.itba.pawgram.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-import static org.apache.commons.lang3.Validate.isTrue;
+import static org.apache.commons.lang3.Validate.notNull;
+
 @Entity
 @Table(name = "postimages")
+@SequenceGenerator(name = "postsimages_postimageid_seq", sequenceName = "postsimages_postimageid_seq", allocationSize = 1)
+@AttributeOverride(name = "id", column = @Column(name = "postImageId"))
 public class PostImage extends Image {
-    @Id
-    private long postId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "postid", nullable = false, updatable = false)
+    private Post post;
 
-    public PostImage(long id, String url, long postId) {
+    // Hibernate
+    /*PostImage() {
+    }*/
+
+    public PostImage(long id, String url, Post post) {
         super(id, url);
-        isTrue(postId >= 0, "postId ID must be non negative: %d", postId);
-        this.postId = postId;
+        this.post = notNull(post,"postId ID must be non negative: %d");
     }
 
-    public long getPostId() {
-        return postId;
+    public PostImage(String url, Post post){
+        this(0,url,post);
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    @Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "postsimages_postimageid_seq")
+    public long getId(){
+        return this.id;
     }
 
     @Override
@@ -30,7 +46,7 @@ public class PostImage extends Image {
 
         PostImage other = (PostImage) obj;
 
-        return getId() == other.getId() && postId == other.getPostId();
+        return getId() == other.getId() && post.getId() == other.post.getId();
     }
 
     @Override
@@ -38,7 +54,7 @@ public class PostImage extends Image {
         final int prime = 31;
         int result = 17;
 
-        result = result * prime + (int)postId;
+        result = result * prime + (int)post.getId();
         result = result * prime + (int)getId();
 
         return result;
@@ -46,6 +62,6 @@ public class PostImage extends Image {
 
     @Override
     public String toString() {
-        return "Image " + getUrl() + " from post " + postId;
+        return "Image " + getUrl() + " from post " + post.getId();
     }
 }

@@ -39,7 +39,7 @@ public class PostServiceImpl implements PostService {
         List<PostImage> postImages = null;
         if(raw_images != null) {
             try {
-                postImages = postImageService.createPostImage(post.getId(), raw_images);
+                postImages = postImageService.createPostImage(post, raw_images);
             } catch (FileUploadException e) {
                 //e.printStackTrace(); DEBUG ONLY
                 throw new PostCreateException();

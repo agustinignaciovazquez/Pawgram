@@ -34,7 +34,7 @@ public class MessageHibernateDao implements MessageDao {
         em.persist(message);
         return message;
     }
-
+    //TODO this complicated query
     @Override
     public List<User> getMessageUsers(User origin) {
         return null;
