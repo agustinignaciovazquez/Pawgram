@@ -1,28 +1,47 @@
 package ar.edu.itba.pawgram.model;
 
-import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 import ar.edu.itba.pawgram.model.structures.Location;
 
+import javax.persistence.*;
 import java.util.Collections;
 import java.util.List;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
-
-public class SearchZone implements PlainSearchZone {
+@Entity
+@Table(name = "search_zones")
+public class SearchZone {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "search_zone_zoneid_seq")
+    @SequenceGenerator(sequenceName = "search_zone_zoneid_seq", name = "search_zone_zoneid_seq", allocationSize = 1)
+    @Column(name = "zoneid")
     private long id;
+    @Embedded
     private Location location;
+    @Column(name = "range", nullable = false)
     private int range;
-    private List<Post> posts;
-    private long max_page;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "userid", nullable = false, updatable = false)
     private User user;
+    @Transient
+    private List<Post> posts;
+    @Transient
+    private long max_page;
 
-    public static SearchZoneBuilder getBuilder(long id, Location location, int range) {
-        isTrue(id >= 0, "SearchZone ID must be non negative: %d", id);
-        isTrue(range >= 0, "SearchZone range must be non negative: %d", id);
+    public static SearchZoneBuilder getBuilder(Location location, int range) {
+        isTrue(range >= 0, "SearchZone range must be non negative: %d", range);
         notNull(location, "Location must not be null");
 
-        return new SearchZoneBuilder(id, location, range);
+        return new SearchZoneBuilder( location, range);
+    }
+
+    public static SearchZoneBuilder getBuilderFromSearchZone(final SearchZone sz) {
+        notNull(sz, "Sz cannot be null in order to retrieve Builder");
+
+        return new SearchZoneBuilder(sz);
+    }
+    //Hibernate
+    SearchZone(){
     }
 
     private SearchZone(SearchZoneBuilder builder) {
@@ -34,15 +53,15 @@ public class SearchZone implements PlainSearchZone {
         this.max_page = builder.max_page;
     }
 
-    @Override
+
     public long getId() {
         return id;
     }
-    @Override
+
     public Location getLocation() {
         return location;
     }
-    @Override
+
     public int getRange() {
         return range;
     }
@@ -87,10 +106,24 @@ public class SearchZone implements PlainSearchZone {
         private List<Post> posts = Collections.emptyList();
         private long max_page;
 
-        private SearchZoneBuilder(long id, Location location, int range) {
-            this.id = id;
+        private SearchZoneBuilder(Location location, int range) {
             this.location = location;
             this.range = range;
+        }
+
+        private SearchZoneBuilder(SearchZone sz){
+            this.id = sz.id;
+            this.location = sz.location;
+            this.range = sz.range;
+            this.user = sz.user;
+            this.posts = sz.posts;
+            this.max_page = sz.max_page;
+        }
+
+        public SearchZoneBuilder id(long id) {
+            isTrue(id >= 0, "SearchZone ID must be non negative: %d", id);
+            this.id = id;
+            return this;
         }
 
         public SearchZoneBuilder user(User user) {

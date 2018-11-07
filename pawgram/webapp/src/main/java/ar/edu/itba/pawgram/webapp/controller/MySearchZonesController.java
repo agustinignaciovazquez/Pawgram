@@ -4,7 +4,6 @@ import ar.edu.itba.pawgram.interfaces.service.SearchZoneService;
 import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.SearchZone;
 import ar.edu.itba.pawgram.model.User;
-import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 import ar.edu.itba.pawgram.webapp.exception.ForbiddenException;
 import ar.edu.itba.pawgram.webapp.exception.ZoneNotFoundException;
 import ar.edu.itba.pawgram.webapp.form.SearchZoneForm;

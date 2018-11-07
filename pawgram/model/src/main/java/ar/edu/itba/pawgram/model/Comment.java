@@ -1,83 +1,117 @@
 package ar.edu.itba.pawgram.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.NoSuchElementException;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
+
+@Entity
+@Table(name = "comments")
 public class Comment {
-	private static final int NO_PARENT_ID = -1;
-	
-	private final long id;
-	private final long parentId;
-	private final String content;
-	private final LocalDateTime commentDate;
-	private final User author;
-	
-	public Comment(long id, User author, String content, LocalDateTime date) {
-		this(id, NO_PARENT_ID, author, content, date, true);
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comments_commentid_seq")
+	@SequenceGenerator(sequenceName = "comments_commentid_seq", name = "comments_commentid_seq", allocationSize = 1)
+	@Column(name = "commentid")
+	private int id;
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = true)
+	private Comment parent;
+
+	@Column(length = 1024, nullable = true, name = "commentcontent")
+	private String content;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date commentDate;
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "userid")
+	private User author;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "postid")
+	private Post commentedPost;
+
+	// Hibernate
+	Comment() {
 	}
-	
-	public Comment(long id, long parentId, User author, String content, LocalDateTime date) {
-		this(id, parentId, author, content, date, false);
+
+	public Comment(final User author, final Post commentedPost, final String content, final Date date) {
+		this(null, author, commentedPost, content, date, true);
 	}
-	
-	private Comment(long id, long parentId, User author, String content, LocalDateTime date, boolean isParentId) {
-		isTrue(id >= 0, "Comment ID must be non negative: %d", id);
-		isTrue(parentId >= 0 || (parentId == NO_PARENT_ID && isParentId), "Parent comment ID must be non negative: %d", parentId);
-		
-		this.id = id;
-		this.parentId = parentId;
+
+	public Comment(final Comment parent, final User author, final Post commentedPost, final String content, final Date date) {
+		this(parent, author, commentedPost, content, date, false);
+	}
+
+	private Comment(final Comment parent, final User author, final Post commentedPost, final String content, final Date date, final boolean noParent) {
+		isTrue(noParent || parent != null, "Parent comment cannot be null");
+
+		this.parent = parent;
 		this.author = notNull(author, "Author of the comment cannot be null");
+		this.commentedPost = notNull(commentedPost, "Commented Product cannot be null");
 		this.content = notBlank(content, "Content must have at least one non blank character");
-		this.commentDate = notNull(date, "Comment date cannot be null");		
+		this.commentDate = notNull(date, "Comment date cannot be null");
 	}
-	
-	public long getId() {
+
+	public int getId() {
 		return id;
 	}
-	
-	public long getParentId() {
+
+	public Comment getParent() {
 		if (!hasParent())
 			throw new NoSuchElementException("Root comment has no parent");
-		return parentId;
+		return parent;
 	}
-	
+
 	public String getContent() {
 		return content;
 	}
-	
+
 	public User getAuthor() {
 		return author;
 	}
-	
-	public LocalDateTime getCommentDate() {
+
+	public Date getCommentDate() {
 		return commentDate;
 	}
-	
-	public boolean hasParent() {
-		return this.parentId != NO_PARENT_ID;
+
+	public Post getCommentedPost() {
+		return commentedPost;
 	}
-	
+
+	// For Testing
+	Comment setCommentId(int id) {
+		this.id = id;
+		return this;
+	}
+
+	public boolean hasParent() {
+		return this.parent != null;
+	}
+
 	@Override
 	public int hashCode() {
-		return (int)id;
+		return getId();
 	}
-	
+
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
 		if (!(obj instanceof Comment))
 			return false;
-		
-		Comment other = (Comment) obj;
+
+		final Comment other = (Comment) obj;
 		return getId() == other.getId();
 	}
 
 	@Override
 	public String toString() {
-		return content;
+		return getContent();
 	}
 }

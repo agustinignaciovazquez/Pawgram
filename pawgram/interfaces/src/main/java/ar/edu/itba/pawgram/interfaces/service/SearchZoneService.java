@@ -1,7 +1,6 @@
 package ar.edu.itba.pawgram.interfaces.service;
 
 import ar.edu.itba.pawgram.model.*;
-import ar.edu.itba.pawgram.model.interfaces.PlainSearchZone;
 import ar.edu.itba.pawgram.model.structures.Location;
 
 import java.util.List;

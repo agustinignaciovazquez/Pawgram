@@ -1,10 +1,13 @@
 package ar.edu.itba.pawgram.model.structures;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Location {
+    @Column(name = "longitude",nullable = false)
     private double longitude;
+    @Column(name = "latitude",nullable = false)
     private double latitude;
 
     public Location(double longitude, double latitude) {

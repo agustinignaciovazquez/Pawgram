@@ -11,7 +11,6 @@ import java.util.Locale;
 import static org.apache.commons.lang3.Validate.*;
 
 @Entity
-
 @Table(name = "posts")
 public class Post {
 	@Id
@@ -48,12 +47,12 @@ public class Post {
 	
 	public static PostBuilder getBuilder(String title, List<PostImage> postImages) {
 		notBlank(title, "Post title must contain at least one non blank character");
+		notNull(postImages, "post images cannot be null");
 		return new PostBuilder(title, postImages);
 	}
 
 	public static PostBuilder getBuilderFromProduct(final Post post) {
 		notNull(post, "Post cannot be null in order to retrieve Builder");
-
 		return new PostBuilder(post);
 	}
 
@@ -170,9 +169,9 @@ public class Post {
 
 		private PostBuilder(String title, List<PostImage> postImages) {
 			this.title = title;
-			if(postImages != null)
-				this.postImages = postImages;
+			this.postImages = postImages;
 		}
+
 		private PostBuilder(Post post) {
 			this.id = post.id;
 			this.title = post.title;

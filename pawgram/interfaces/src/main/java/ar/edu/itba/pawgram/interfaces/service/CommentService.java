@@ -17,7 +17,7 @@ public interface CommentService {
 	 * @param userId - ID of the {@link User} the posted this comment
 	 * @return The created {@link Comment}
 	 */
-	public Comment createParentComment(final String content,final long postId,final long userId);
+	public Comment createParentComment(final String content, final long postId, final long userId) throws InvalidCommentException;
 	
 	/**
 	 * Creates a {@link Comment} associated with a parent comment.
@@ -27,7 +27,7 @@ public interface CommentService {
 	 * @param userId - ID of the {@link User} the posted this comment
 	 * @return The created {@link Comment}
 	 */
-	public Comment createComment(final String content,final long parentId, final long postId, final long userId) throws InvalidCommentException;
+	public Comment createComment(final String content, final long parentId, final long postId, final long userId) throws InvalidCommentException;
 	
 	/**
 	 * Retrieves a {@link List} of parent comments sorted by post date and associated with it's corresponding child comments.

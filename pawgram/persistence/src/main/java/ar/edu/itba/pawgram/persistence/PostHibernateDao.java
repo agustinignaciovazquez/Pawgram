@@ -34,8 +34,8 @@ public class PostHibernateDao implements PostDao {
 
         final Post post = postBuilder.description(description).contact_phone(contact_phone).
                 event_date(event_date).category(category).pet(pet).is_male(is_male).location(location).user(owner).build();
-
         em.persist(post);
+
         return post;
     }
 
