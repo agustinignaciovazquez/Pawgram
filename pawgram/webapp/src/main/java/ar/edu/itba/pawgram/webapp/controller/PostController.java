@@ -129,22 +129,19 @@ public class PostController {
         }
 
         final Comment comment;
-        if (parentId.isPresent()) {
-
-            try {
-                comment = commentService.createComment(postedForm.getContent(), parentId.get(), postId, loggedUser.getId());
-                LOGGER.info("User with id {} posted comment with id {} in reply to comment with id {}", loggedUser.getId(), comment.getId(), parentId.get());
-            } catch (InvalidCommentException e) {
-                //e.printStackTrace();
-                LOGGER.info("User with id {} try to post invalid comment  in reply to comment with id {}", loggedUser.getId(), parentId.get());
-                throw new InvalidQueryException();
-            }
-
-        }
-        else {
-            comment = commentService.createParentComment(postedForm.getContent(), postId, loggedUser.getId());
-            LOGGER.info("User with id {} posted parent comment with id {}", loggedUser.getId(), comment.getId());
-        }
+       try {
+           if (parentId.isPresent()) {
+               comment = commentService.createComment(postedForm.getContent(), parentId.get(), postId, loggedUser.getId());
+               LOGGER.info("User with id {} posted comment with id {} in reply to comment with id {}", loggedUser.getId(), comment.getId(), parentId.get());
+           } else {
+               comment = commentService.createParentComment(postedForm.getContent(), postId, loggedUser.getId());
+               LOGGER.info("User with id {} posted parent comment with id {}", loggedUser.getId(), comment.getId());
+           }
+       }catch (InvalidCommentException e) {
+           //e.printStackTrace();
+           LOGGER.info("User with id {} try to post invalid comment  in reply to comment with id {}", loggedUser.getId(), parentId.get());
+           throw new InvalidQueryException();
+       }
 
         attr.addFlashAttribute("comment", comment.getId());
         return mav;

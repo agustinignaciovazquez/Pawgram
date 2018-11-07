@@ -4,6 +4,7 @@ import ar.edu.itba.pawgram.interfaces.exception.FileException;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
 import ar.edu.itba.pawgram.model.Category;
+import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.webapp.exception.ImageNotFoundException;

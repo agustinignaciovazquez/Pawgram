@@ -3,6 +3,7 @@ package ar.edu.itba.pawgram.webapp.controller;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.interfaces.service.SearchZoneService;
 import ar.edu.itba.pawgram.model.Category;
+import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.SearchZone;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.webapp.util.CaseInsensitiveConverter;

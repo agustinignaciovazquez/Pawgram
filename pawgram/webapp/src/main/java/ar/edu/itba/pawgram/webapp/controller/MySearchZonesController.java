@@ -40,7 +40,7 @@ public class MySearchZonesController {
     public ModelAndView showMyZones(@ModelAttribute("loggedUser") final User loggedUser)  {
         LOGGER.debug("Accessed my search zones");
 
-        final List<PlainSearchZone> searchZones = searchZoneService.getPlainSearchZonesByUser(loggedUser);
+        final List<SearchZone> searchZones = searchZoneService.getPlainSearchZonesByUser(loggedUser);
 
         ModelAndView mav = new ModelAndView("my_zones");
         mav.addObject("categories", Category.values());
@@ -66,7 +66,7 @@ public class MySearchZonesController {
         }
 
         if (searchZoneService.deleteZoneById(zoneId))
-            LOGGER.info("Zone with id {} deleted by user with id {}", zoneId, loggedUser.getId());
+            LOGGER.info("Zone with id {} deleted by user with id {}", zoneId, loggedUser);
 
         return new ModelAndView("redirect:/my_zones/");
     }
@@ -75,7 +75,7 @@ public class MySearchZonesController {
     public ModelAndView createMyZone(@ModelAttribute("loggedUser") final User loggedUser)  {
         LOGGER.debug("Accessed create search zones");
 
-        final List<PlainSearchZone> searchZones = searchZoneService.getPlainSearchZonesByUser(loggedUser);
+        final List<SearchZone> searchZones = searchZoneService.getPlainSearchZonesByUser(loggedUser);
         if(searchZones.size() >= MAX_SEARCH_ZONES){
             return new ModelAndView("redirect:/my_zones/");
         }
@@ -108,7 +108,7 @@ public class MySearchZonesController {
             return mav;
         }
 
-        searchZoneService.createSearchZone(form.getLocation(),form.getRangeInMeters(),loggedUser.getId());
+        searchZoneService.createSearchZone(form.getLocation(),form.getRangeInMeters(),loggedUser);
 
         return new ModelAndView("redirect:/my_zones/");
     }

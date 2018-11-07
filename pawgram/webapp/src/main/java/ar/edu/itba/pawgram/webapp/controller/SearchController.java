@@ -3,6 +3,7 @@ package ar.edu.itba.pawgram.webapp.controller;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
 import ar.edu.itba.pawgram.model.Category;
+import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.webapp.exception.InvalidQueryException;
 import ar.edu.itba.pawgram.webapp.exception.ResourceNotFoundException;
