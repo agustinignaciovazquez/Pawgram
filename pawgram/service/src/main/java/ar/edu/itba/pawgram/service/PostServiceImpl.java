@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -33,8 +30,8 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional(rollbackFor = PostCreateException.class)
     public Post createPost(String title, String description, List<byte[]> raw_images, String contact_phone,
-                                                     LocalDateTime event_date, Category category, Pet pet,
-                                                     boolean is_male, Location location, User owner) throws PostCreateException {
+                           Date event_date, Category category, Pet pet,
+                           boolean is_male, Location location, User owner) throws PostCreateException {
         Post post = postDao.createPost(title,description,raw_images,contact_phone,event_date,category,pet,is_male,location,owner);
         List<PostImage> postImages = null;
         if(raw_images != null) {

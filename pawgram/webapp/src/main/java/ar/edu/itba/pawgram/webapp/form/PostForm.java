@@ -6,12 +6,15 @@ import ar.edu.itba.pawgram.webapp.form.wrapper.MultipartFileImageWrapper;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PostForm {
@@ -32,9 +35,11 @@ public class PostForm {
     @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$")//regex phone number
     private String contact_phone;
 
-    @NotBlank
-    @DateTimeFormat(pattern="yyyy-MM-dd")//check this later
-    private String event_date;
+    @NotNull
+    //@PresentOrFuture TODO https://stackoverflow.com/questions/40482252/validation-of-a-date-with-hibernate
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date event_date;
 
     //private Category category = Category.LOST;
     @NotNull
@@ -85,11 +90,11 @@ public class PostForm {
         this.contact_phone = contact_phone;
     }
 
-    public String getEvent_date() {
+    public Date getEvent_date() {
         return event_date;
     }
 
-    public void setEvent_date(String event_date) {
+    public void setEvent_date(Date event_date) {
         this.event_date = event_date;
     }
 

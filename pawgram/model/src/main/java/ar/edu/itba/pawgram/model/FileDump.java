@@ -1,12 +1,13 @@
 package ar.edu.itba.pawgram.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "filedump")
 public class FileDump {
+    @Id
+    @GeneratedValue
+    private int id;
     @Column(name = "pathid", length = 64, nullable = false)
     private String pathId;
     @Column(name = "imageid", length = 32, nullable = false)

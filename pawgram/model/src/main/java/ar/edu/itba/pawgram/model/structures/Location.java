@@ -9,7 +9,10 @@ public class Location {
     private double longitude;
     @Column(name = "latitude",nullable = false)
     private double latitude;
+    //Hibernate
+    Location(){
 
+    }
     public Location(double longitude, double latitude) {
         this.longitude = longitude;
         this.latitude = latitude;

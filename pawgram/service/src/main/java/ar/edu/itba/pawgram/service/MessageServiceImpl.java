@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,7 +24,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message sendMessage(User origin, User destination, String content) {
-        return messageDao.sendMessage(origin,destination,content, LocalDateTime.now());
+        return messageDao.sendMessage(origin,destination,content, new Date());
     }
 
     @Override

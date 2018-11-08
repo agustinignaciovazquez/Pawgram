@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService{
 	private FileService fileService;
 
 	@Override
+	@Transactional // In order to fetch lazy attributes
 	public User findById(long id) {
 		return userDao.findById(id);
 	}
@@ -35,16 +36,19 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	@Transactional
 	public User changePassword(long id, String password) {
 		return  userDao.changePassword(id, password);
 	}
 
 	@Override
+	@Transactional
 	public User changeName(long id, String name, String surname) {
 		return userDao.changeName(id, name, surname);
 	}
 
 	@Override
+	@Transactional
 	public User changeProfile(long id, byte[] data) throws FileUploadException {
 		final String img_url = fileService.createFile(PROFILE_IMAGE_UPLOAD_FOLDER,data);
 		return userDao.changeProfile(id,img_url);

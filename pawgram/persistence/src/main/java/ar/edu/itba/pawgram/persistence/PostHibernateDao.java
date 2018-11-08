@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
@@ -28,7 +27,7 @@ public class PostHibernateDao implements PostDao {
 
     @Override
     public Post createPost(String title, String description,
-                           List<byte[]> raw_images, String contact_phone, LocalDateTime event_date,
+                           List<byte[]> raw_images, String contact_phone, Date event_date,
                            Category category, Pet pet, boolean is_male, Location location, User owner) throws PostCreateException {
         final Post.PostBuilder postBuilder = Post.getBuilder(title, Collections.emptyList());
 

@@ -3,8 +3,8 @@ package ar.edu.itba.pawgram.model;
 import ar.edu.itba.pawgram.model.structures.Location;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,7 +25,7 @@ public class Post {
 	@Column(name = "contact_phone", length = 32, nullable = false)
 	private String contact_phone;
 	@Temporal(TemporalType.TIMESTAMP)
-	private LocalDateTime event_date;
+	private Date event_date;
 	@Enumerated(EnumType.STRING)
 	private Category category;
 	@Enumerated(EnumType.STRING)
@@ -118,7 +118,7 @@ public class Post {
 	public String getContact_phone() {
 		return contact_phone;
 	}
-	public LocalDateTime getEvent_date() {
+	public Date getEvent_date() {
 		return event_date;
 	}
 
@@ -157,7 +157,7 @@ public class Post {
 		private String title;
 		private String description;
 		private String contact_phone;
-		private LocalDateTime event_date;
+		private Date event_date;
 		private Category category;
 		private Pet pet;
 		private boolean is_male;
@@ -208,7 +208,7 @@ public class Post {
 			return this;
 		}
 		
-		public PostBuilder event_date(LocalDateTime event_date) {
+		public PostBuilder event_date(Date event_date) {
 			this.event_date = event_date;
 			return this;
 		}

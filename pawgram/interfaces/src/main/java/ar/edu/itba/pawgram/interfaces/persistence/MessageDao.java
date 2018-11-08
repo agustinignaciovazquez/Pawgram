@@ -5,6 +5,7 @@ import ar.edu.itba.pawgram.model.Message;
 import ar.edu.itba.pawgram.model.User;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public interface MessageDao {
@@ -23,7 +24,7 @@ public interface MessageDao {
      * @param destination - destination user
      * @return {@link Message} created
      */
-    public Message sendMessage(final User origin, final User destination,final String content, final LocalDateTime date);
+    public Message sendMessage(final User origin, final User destination,final String content, final Date date);
 
     /**
      * Lists {@link User} that {@link User} have chat with

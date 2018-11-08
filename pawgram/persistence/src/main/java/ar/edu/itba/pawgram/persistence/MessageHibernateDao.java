@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -29,7 +30,7 @@ public class MessageHibernateDao implements MessageDao {
     }
 
     @Override
-    public Message sendMessage(User origin, User destination, String content, LocalDateTime date) {
+    public Message sendMessage(User origin, User destination, String content, Date date) {
         final Message message = new Message(destination,origin,content,date);
         em.persist(message);
         return message;

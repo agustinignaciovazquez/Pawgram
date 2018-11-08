@@ -20,6 +20,7 @@ public class SearchZoneServiceImpl implements SearchZoneService {
     private PostService postService;
 
     @Override
+    @Transactional
     public SearchZone createSearchZone(Location location, int range, User user) {
         return searchZoneDao.createSearchZone(location, range, user);
     }

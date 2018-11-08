@@ -2,6 +2,8 @@ package ar.edu.itba.pawgram.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
+
 @Entity
 @Table(name = "posts")
 public class Message {
@@ -19,9 +21,9 @@ public class Message {
     @Column(name = "message", length = 1024, nullable = false)
     private final String message;
     @Temporal(TemporalType.TIMESTAMP)
-    private final LocalDateTime messageDate;
+    private final Date messageDate;
 
-    public Message(long id, User dest_user, User orig_user, String message, LocalDateTime messageDate) {
+    public Message(long id, User dest_user, User orig_user, String message, Date messageDate) {
         this.id = id;
         this.dest_user = dest_user;
         this.orig_user = orig_user;
@@ -29,7 +31,7 @@ public class Message {
         this.messageDate = messageDate;
     }
 
-    public Message(User dest_user, User orig_user, String message, LocalDateTime messageDate){
+    public Message(User dest_user, User orig_user, String message, Date messageDate){
         this(0,dest_user,orig_user,message,messageDate);
     }
 
@@ -49,7 +51,7 @@ public class Message {
         return message;
     }
 
-    public LocalDateTime getMessageDate() {
+    public Date getMessageDate() {
         return messageDate;
     }
 }

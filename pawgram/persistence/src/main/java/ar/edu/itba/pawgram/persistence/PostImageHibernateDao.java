@@ -16,8 +16,8 @@ public class PostImageHibernateDao implements PostImageDao {
     private EntityManager em;
 
     @Override
-    public PostImage createPostImage(Post post, String url) {
-        final PostImage pi = new PostImage(url,post);
+    public PostImage createPostImage(long postId, String url) {
+        final PostImage pi = new PostImage(url,postId);
         em.persist(pi);
         return pi;
     }

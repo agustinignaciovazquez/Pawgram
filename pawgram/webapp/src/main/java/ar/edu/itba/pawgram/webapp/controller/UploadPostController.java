@@ -66,14 +66,14 @@ public class UploadPostController {
                                                 final RedirectAttributes attr) throws UnauthorizedException, PostCreateException, IOException {
 
         LOGGER.debug("User with id {} accessed upload POST", loggedUser.getId());
-        LocalDateTime dateTime;
+        /*LocalDateTime dateTime;
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             dateTime = LocalDate.parse(formPost.getEvent_date(), formatter).atStartOfDay();
         }catch(DateTimeParseException ex){
             LOGGER.warn("User with id {} failed to post post: form has errors: {}", loggedUser.getId(), errors.getAllErrors());
             return errorState(formPost,category, errors, attr);
-        }
+        }*/
 
         if (errors.hasErrors()) {
             LOGGER.warn("User with id {} failed to post post: form has errors: {}", loggedUser.getId(), errors.getAllErrors());
@@ -82,7 +82,7 @@ public class UploadPostController {
 
 
         final Post post =  postService.createPost(formPost.getTitle(),formPost.getDescription(),formPost.getAllRawImages(),
-                formPost.getContact_phone(),dateTime,
+                formPost.getContact_phone(),formPost.getEvent_date(),
                 category,formPost.getPet(),formPost.getIs_male(),
                 formPost.getLocation(),loggedUser);
 

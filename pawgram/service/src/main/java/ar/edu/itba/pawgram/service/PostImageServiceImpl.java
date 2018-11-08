@@ -38,7 +38,7 @@ public class PostImageServiceImpl implements PostImageService {
 
         //If we get here everything its ok so we start saving the names in the DB
         for(String uploadName: uploadNames){
-            l.add(postImageDao.createPostImage(post,uploadName));
+            l.add(postImageDao.createPostImage(post.getId(),uploadName));
         }
 
         return l;

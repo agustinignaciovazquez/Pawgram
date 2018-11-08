@@ -69,7 +69,7 @@ public class User {
 	}
 
 	public void setProfile_img_url(String profile_img_url) {
-		this.profile_img_url = notEmpty(profile_img_url,"User pícture url must have at least one character");
+		this.profile_img_url = profile_img_url;
 	}
 
 	public void setName(String name) {

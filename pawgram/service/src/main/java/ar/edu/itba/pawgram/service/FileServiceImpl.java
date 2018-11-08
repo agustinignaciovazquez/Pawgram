@@ -6,6 +6,7 @@ import ar.edu.itba.pawgram.interfaces.persistence.FileDao;
 import ar.edu.itba.pawgram.interfaces.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -20,6 +21,7 @@ public class FileServiceImpl implements FileService {
     private FileDao fileDao;
 
     @Override
+    @Transactional
     public String createFile(String path, byte[] raw_file) throws FileUploadException {
         return fileDao.createFile(path,randomAlphaNumeric(32),raw_file);
     }
