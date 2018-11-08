@@ -26,6 +26,7 @@ public class SearchZoneServiceImpl implements SearchZoneService {
     }
 
     @Override
+    @Transactional
     public boolean deleteZoneById(long zoneId) {
         return searchZoneDao.deleteZoneById(zoneId);
     }

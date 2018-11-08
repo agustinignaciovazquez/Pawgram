@@ -12,6 +12,16 @@ import static org.apache.commons.lang3.Validate.*;
 
 @Entity
 @Table(name = "posts")
+@NamedStoredProcedureQuery(
+		name="get_post_by_range",
+		procedureName="get_post_by_range",
+		resultClasses = { Post.class },
+		parameters={
+				@StoredProcedureParameter(name="lat1", type=Double.class, mode=ParameterMode.IN),
+				@StoredProcedureParameter(name="lon1", type=Double.class, mode=ParameterMode.IN),
+				@StoredProcedureParameter(name="range", type=Integer.class, mode=ParameterMode.IN)
+		}
+)
 public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "posts_postid_seq")
@@ -37,13 +47,13 @@ public class Post {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "userid", nullable = false, updatable = false)
 	private User owner;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "postId", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "postId", orphanRemoval = true)
 	@OrderBy("postImageId ASC")
 	private List<PostImage> postImages;
 	@Transient
 	private int distance;
 	@Transient
-	private List<CommentFamily> commentFamilies;
+	private List<CommentFamily> commentFamilies = Collections.emptyList();
 	
 	public static PostBuilder getBuilder(String title, List<PostImage> postImages) {
 		notBlank(title, "Post title must contain at least one non blank character");

@@ -151,6 +151,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public boolean deletePostById(long postId) {
         return postDao.deletePostById(postId);
     }

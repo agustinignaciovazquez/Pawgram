@@ -20,11 +20,11 @@ public class PostImage  {
     @Id
     private long postId;
     @Column(length = 32, nullable = false)
-    private final String url;
+    private String url;
 
     // Hibernate
-    /*PostImage() {
-    }*/
+    PostImage() {
+    }
 
     public PostImage(long id, String url, long postId) {
         isTrue(id >= 0, "Image ID must be non negative: %d", id);
@@ -81,8 +81,8 @@ public class PostImage  {
     // For Hibernate Composite keys
     @SuppressWarnings("serial")
     public static class PostImagePrimaryKeyIds implements Serializable {
-        private int postImageId;
-        private int postId;
+        private long postImageId;
+        private long postId;
 
         public PostImagePrimaryKeyIds(int postImageId, int postId) {
             this.postImageId = postImageId;
@@ -93,11 +93,11 @@ public class PostImage  {
         public PostImagePrimaryKeyIds() {
         }
 
-        public int getProductImageId() {
+        public long getPostImageId() {
             return postImageId;
         }
 
-        public int getProductId() {
+        public long getPostId() {
             return postId;
         }
 
@@ -118,8 +118,8 @@ public class PostImage  {
             final int prime = 31;
             int result = 17;
 
-            result = result * prime + getProductImageId();
-            result = result * prime + getProductId();
+            result = result * prime + (int)getPostImageId();
+            result = result * prime + (int)getPostId();
 
             return result;
         }

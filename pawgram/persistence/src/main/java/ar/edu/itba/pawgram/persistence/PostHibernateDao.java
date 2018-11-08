@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.*;
 
 @Repository
@@ -73,8 +71,8 @@ public class PostHibernateDao implements PostDao {
 
         final Post post = result.get(0);
 
-        // Hibernate lazy initialization
-        post.getPostImages().size();
+        // Hibernate lazy initialization (not necessary)
+        //post.getPostImages().size();
 
         return post;
     }
@@ -101,7 +99,18 @@ public class PostHibernateDao implements PostDao {
 
     @Override
     public List<Post> getPlainPostsRange(Location location, int range, int limit, int offset) {
-        return null;
+        StoredProcedureQuery spQuery = em.
+                createNamedStoredProcedureQuery("get_post_by_range")
+                .registerStoredProcedureParameter("lat1", Double.class, ParameterMode.IN)
+                .registerStoredProcedureParameter("lon1", Double.class, ParameterMode.IN)
+                .registerStoredProcedureParameter("range", Integer.class, ParameterMode.IN);
+        spQuery.setParameter("lat1", location.getLatitude());
+        spQuery.setParameter("lon1", location.getLongitude());
+        spQuery.setParameter("range",range);
+        spQuery.execute();
+
+        List<Post> posts = spQuery.getResultList();
+        return posts;
     }
 
     @Override
