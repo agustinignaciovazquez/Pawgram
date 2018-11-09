@@ -1,5 +1,7 @@
 package ar.edu.itba.pawgram.service;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidSearchZoneException;
+import ar.edu.itba.pawgram.interfaces.exception.MaxSearchZoneReachedException;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.interfaces.persistence.SearchZoneDao;
 import ar.edu.itba.pawgram.interfaces.service.SearchZoneService;
@@ -21,7 +23,14 @@ public class SearchZoneServiceImpl implements SearchZoneService {
 
     @Override
     @Transactional
-    public SearchZone createSearchZone(Location location, int range, User user) {
+    public SearchZone createSearchZone(Location location, int range, User user) throws MaxSearchZoneReachedException, InvalidSearchZoneException {
+        final long userTotalSearchZones = getTotalSearchZonesByUser(user);
+        if(userTotalSearchZones >= MAX_SEARCH_ZONES)
+            throw new MaxSearchZoneReachedException();
+
+        if(!(range <= MAX_RANGE_KM && range >= MIN_RANGE_KM))
+            throw new InvalidSearchZoneException();
+
         return searchZoneDao.createSearchZone(location, range, user);
     }
 

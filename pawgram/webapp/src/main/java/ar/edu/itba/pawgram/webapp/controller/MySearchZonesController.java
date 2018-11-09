@@ -1,5 +1,7 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidSearchZoneException;
+import ar.edu.itba.pawgram.interfaces.exception.MaxSearchZoneReachedException;
 import ar.edu.itba.pawgram.interfaces.service.SearchZoneService;
 import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.SearchZone;
@@ -25,8 +27,6 @@ import java.util.List;
 @RequestMapping("/my_zones")
 @Controller
 public class MySearchZonesController {
-    private static final int MAX_SEARCH_ZONES = 3;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(MySearchZonesController.class);
     @Autowired
     private SearchZoneService searchZoneService;
@@ -44,7 +44,7 @@ public class MySearchZonesController {
 
         ModelAndView mav = new ModelAndView("my_zones");
         mav.addObject("categories", Category.values());
-        mav.addObject("maxSearchZones", MAX_SEARCH_ZONES);
+        mav.addObject("maxSearchZones", searchZoneService.MAX_SEARCH_ZONES);
         mav.addObject("searchZones", searchZones);
         return mav;
     }
@@ -76,7 +76,7 @@ public class MySearchZonesController {
         LOGGER.debug("Accessed create search zones");
 
         final List<SearchZone> searchZones = searchZoneService.getPlainSearchZonesByUser(loggedUser);
-        if(searchZones.size() >= MAX_SEARCH_ZONES){
+        if(searchZones.size() >= searchZoneService.MAX_SEARCH_ZONES){
             return new ModelAndView("redirect:/my_zones/");
         }
 
@@ -95,20 +95,23 @@ public class MySearchZonesController {
 
         LOGGER.debug("User with id {} accessed create search zone POST", loggedUser.getId());
 
-        final long userTotalSearchZones = searchZoneService.getTotalSearchZonesByUser(loggedUser);
-
         final ModelAndView mav = new ModelAndView("redirect:/my_zones/create");
 
-        if (errors.hasErrors() || userTotalSearchZones >= MAX_SEARCH_ZONES) {
+        if (errors.hasErrors()) {
             LOGGER.warn("User {} failed to create new search zone: form has errors: {}", loggedUser.getId(), errors.getAllErrors());
-            if(userTotalSearchZones >= MAX_SEARCH_ZONES)
-                LOGGER.warn("User {} failed to create new search zone: user has achieve maximum number of search zones (current) {} (max) {} ",
-                        loggedUser.getId(), userTotalSearchZones, MAX_SEARCH_ZONES);
             setErrorState(form, errors, attr);
             return mav;
         }
 
-        searchZoneService.createSearchZone(form.getLocation(),form.getRangeInMeters(),loggedUser);
+        try {
+            searchZoneService.createSearchZone(form.getLocation(),form.getRange(),loggedUser);
+        } catch (MaxSearchZoneReachedException e) {
+            LOGGER.warn("User {} failed to create new search zone: user has achieve maximum number of search zones (current) {} (max) {} ",
+                    loggedUser.getId(), searchZoneService.getTotalSearchZonesByUser(loggedUser), searchZoneService.MAX_SEARCH_ZONES);
+        } catch (InvalidSearchZoneException e) {
+            LOGGER.error("User {} failed to create new search zone: invalid search zone \n stack trace {}",
+                    loggedUser.getId(), e.getMessage());
+        }
 
         return new ModelAndView("redirect:/my_zones/");
     }

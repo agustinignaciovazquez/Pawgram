@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.webapp.form;
 
+import ar.edu.itba.pawgram.interfaces.service.SearchZoneService;
 import ar.edu.itba.pawgram.model.structures.Location;
 import org.hibernate.validator.constraints.Range;
 
@@ -7,25 +8,25 @@ import javax.validation.constraints.NotNull;
 
 public class SearchZoneForm {
     private static final int DEFAULT_RANGE_KM = 3;
+    private static final int MAX_RANGE_KM = SearchZoneService.MAX_RANGE_KM;
+    private static final int MIN_RANGE_KM = SearchZoneService.MIN_RANGE_KM;
     @NotNull
     private Double latitude;
     @NotNull
     private Double longitude;
 
     @NotNull
-    @Range(min = 1, max = 20)
+    @Range(min = MIN_RANGE_KM, max = MAX_RANGE_KM)
     private Integer range = DEFAULT_RANGE_KM;
 
-    @NotNull
     public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(@NotNull Double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    @NotNull
     public Double getLongitude() {
         return longitude;
     }
@@ -34,16 +35,14 @@ public class SearchZoneForm {
         return new Location(longitude,latitude);
     }
 
-    public void setLongitude(@NotNull Double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
     public Integer getRange() {
         return range;
     }
-    public Integer getRangeInMeters(){
-        return range*1000;
-    }
+
     public void setRange(Integer range) {
         this.range = range;
     }

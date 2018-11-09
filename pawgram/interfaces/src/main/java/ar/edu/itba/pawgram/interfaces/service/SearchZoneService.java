@@ -1,11 +1,16 @@
 package ar.edu.itba.pawgram.interfaces.service;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidSearchZoneException;
+import ar.edu.itba.pawgram.interfaces.exception.MaxSearchZoneReachedException;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.structures.Location;
 
 import java.util.List;
 
 public interface SearchZoneService {
+    public static final int MAX_SEARCH_ZONES = 3;
+    public static final int MAX_RANGE_KM = 15;
+    public static final int MIN_RANGE_KM = 1;
     /**
      * Creates a {@link SearchZone} inserting it into the database.
      * @param location - {@link Location} latitude and longitude center of circle
@@ -13,7 +18,7 @@ public interface SearchZoneService {
      * @param user - {@link User} that registers to a zone
      * @return The created {@link SearchZone}
      */
-    public SearchZone createSearchZone(final Location location, final int range, final User user);
+    public SearchZone createSearchZone(final Location location, final int range, final User user) throws MaxSearchZoneReachedException, InvalidSearchZoneException;
 
     /**
      * Deletes a {@link SearchZone} from the database.
