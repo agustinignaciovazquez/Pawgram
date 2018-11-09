@@ -2,6 +2,7 @@ package ar.edu.itba.pawgram.webapp.form;
 
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.Pet;
+import ar.edu.itba.pawgram.webapp.form.constraints.DateRule;
 import ar.edu.itba.pawgram.webapp.form.wrapper.MultipartFileImageWrapper;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -36,19 +37,20 @@ public class PostForm {
     private String contact_phone;
 
     @NotNull
-    //@PresentOrFuture TODO https://stackoverflow.com/questions/40482252/validation-of-a-date-with-hibernate
+    @DateRule
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
     private Date event_date;
 
-    //private Category category = Category.LOST;
     @NotNull
     private Pet pet;
 
     @NotNull
     private Boolean is_male;
+
     @NotNull
     private Double latitude;
+
     @NotNull
     private Double longitude;
 
@@ -97,14 +99,6 @@ public class PostForm {
     public void setEvent_date(Date event_date) {
         this.event_date = event_date;
     }
-
-    /*public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }*/
 
     public Pet getPet() {
         return pet;

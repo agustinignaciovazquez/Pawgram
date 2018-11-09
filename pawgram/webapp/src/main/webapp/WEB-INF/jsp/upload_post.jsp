@@ -13,9 +13,11 @@
 		<link href="<c:url value="/resources/css/all.css"/>" rel="stylesheet" id="font-awesome">
   <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" id="bootstrap-css">
   <link rel="stylesheet" href="<c:url value="/resources/css/pawgramin.css"/>">
+  <link rel="stylesheet" href="<c:url value="/resources/css/jquery-ui.css"/>">
 
   
   <script src="<c:url value="/resources/js/jquery-3.3.1.min.js"/>"></script>
+  <script src="<c:url value="/resources/js/jquery-ui.js"/>"></script>
   <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
   <script src="<c:url value="/resources/js/pawgram.js"/>"></script>
 
@@ -137,13 +139,16 @@
 								<form:input path="title" type="text" class="form-control" id="name" name="name" placeholder="${writetitle}"  />
 								<form:errors path="title" cssClass="form-error" element="p"/>
 							</div>
-							<div class=" text subformtitle">
+							
+							
+							<div class=" text subformtitle ${currentCategory eq Category.ADOPT? 'hidden' : ''}">
 				        		<spring:message code="post.date"/>
 				        	</div>
-							<div class="form-group datetimepicker">
-								<form:input path="event_date" type="date" class="form-control" id="datona" name="date" />
+							<div class="form-group datetimepicker ${currentCategory eq Category.ADOPT? 'hidden' : ''}">
+								<form:input path="event_date" type="text" class="form-control" id="datona" name="date" />
 								<form:errors path="event_date" cssClass="form-error" element="p"/>
 							</div>
+							
 							<div class=" text subformtitle">
 				        		<spring:message code="post.phone"/>
 				        	</div>
@@ -221,22 +226,13 @@
     <!--FOOTER-->
 
 	<script>
-		document.onload= function(){
-			var today = new Date();
-		    var dd = today.getDate();
-		    var mm = today.getMonth()+1; //January is 0!
-		    var yyyy = today.getFullYear();
-		    if(dd<10){
-		        dd='0'+dd
-		    } 
-		    if(mm<10){
-		        mm='0'+mm
-		    } 
-
-		    today = yyyy+'-'+mm+'-'+dd;
-		    document.getElementById('datona').setAttribute("max", today);
-		}
-
+		$( document ).ready(function() {
+   			 $('#datona').datepicker({
+			  dateFormat: "yy-mm-dd",
+			  maxDate: "today"
+			 }).datepicker("setDate", new Date());
+		});
+		
 	</script>
 
 

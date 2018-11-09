@@ -34,7 +34,12 @@ public class PostServiceImpl implements PostService {
     public Post createPost(String title, String description, List<byte[]> raw_images, String contact_phone,
                            Date event_date, Category category, Pet pet,
                            boolean is_male, Location location, User owner) throws PostCreateException {
-        Post post = postDao.createPost(title,description,raw_images,contact_phone,event_date,category,pet,is_male,location,owner);
+        Date post_date = event_date;
+        if(category == Category.ADOPT){
+            post_date = new Date();
+        }
+        Post post = postDao.createPost(title,description,raw_images,contact_phone,post_date,category,pet,is_male,location,owner);
+
         List<PostImage> postImages = null;
         if(raw_images != null) {
             try {
@@ -44,6 +49,7 @@ public class PostServiceImpl implements PostService {
                 throw new PostCreateException();
             }
         }
+
         return setPostDistance(Post.getBuilderFromProduct(post).postImages(postImages).build(),location);
     }
 

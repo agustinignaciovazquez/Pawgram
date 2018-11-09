@@ -7,9 +7,9 @@
 
 	<meta charset="UTF-8">
   <c:choose>
-         <c:when test="${empty currentCategory}"><title><spring:message code="pageName"/>  - ZONE </title></c:when>
+         <c:when test="${empty currentCategory}"><title><spring:message code="pageName"/>  - <spring:message code="search"/> </title></c:when>
          <c:otherwise>
-          <title><spring:message code="pageName"/> - ZONE - <spring:message code="category.${currentCategory.lowerName}"/></title>
+          <title><spring:message code="pageName"/> - <spring:message code="search"/> - <spring:message code="category.${currentCategory.lowerName}"/></title>
          </c:otherwise>
   </c:choose>  
 	
@@ -105,7 +105,7 @@
         <div class="col-lg-2">
           <div class="container">
             <div class="text-xs-center">
-              <%@include file="includes/pagination.jsp"%>
+              <%@include file="includes/search_pagination.jsp"%>
             </div>   
           </div>
         </div>

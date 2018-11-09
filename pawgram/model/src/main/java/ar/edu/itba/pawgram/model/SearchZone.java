@@ -36,7 +36,7 @@ public class SearchZone {
     }
 
     public static SearchZoneBuilder getBuilderFromSearchZone(final SearchZone sz) {
-        notNull(sz, "Sz cannot be null in order to retrieve Builder");
+        notNull(sz, "Search zone cannot be null in order to retrieve Builder");
 
         return new SearchZoneBuilder(sz);
     }

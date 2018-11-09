@@ -186,7 +186,7 @@ public class Post {
 
 		private PostBuilder(String title, List<PostImage> postImages) {
 			this.title = title;
-			this.postImages = postImages;
+			this.postImages = notNull(postImages, "post images  cannot be null");
 		}
 
 		private PostBuilder(Post post) {
