@@ -46,12 +46,14 @@
               
             <div class="form-group"> 
               <spring:message code="newname" var="newname"/>
-              <form:input path="name" type="text" class="form-control" placeholder="${newname}" /> 
+              <c:set value="${loggedUser.name}" var="currname" />
+              <form:input path="name" type="text" class="form-control" placeholder="${newname}" value="${currname}" /> 
               <form:errors path="name" element="p" cssClass="form-error"/>
             </div> 
             <div class="form-group"> 
               <spring:message code="newsurname" var="newsurname"/>
-              <form:input path="surname" type="text" class="form-control" placeholder="${newsurname}" /> 
+              <c:set value="${loggedUser.surname}" var="currsurname"/>
+              <form:input path="surname" type="text" class="form-control" placeholder="${newsurname}" value="${currsurname}" /> 
               <form:errors path="surname" element="p" cssClass="form-error"/>
             </div>
              <spring:message code="configuration.change.info" var="changename"/> 

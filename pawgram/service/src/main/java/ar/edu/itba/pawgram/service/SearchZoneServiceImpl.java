@@ -31,7 +31,7 @@ public class SearchZoneServiceImpl implements SearchZoneService {
         if(!(range <= MAX_RANGE_KM && range >= MIN_RANGE_KM))
             throw new InvalidSearchZoneException();
 
-        return searchZoneDao.createSearchZone(location, range, user);
+        return searchZoneDao.createSearchZone(location, range*1000, user);
     }
 
     @Override

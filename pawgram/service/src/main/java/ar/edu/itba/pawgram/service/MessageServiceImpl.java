@@ -7,6 +7,7 @@ import ar.edu.itba.pawgram.model.Message;
 import ar.edu.itba.pawgram.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -23,6 +24,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    @Transactional
     public Message sendMessage(User origin, User destination, String content) {
         return messageDao.sendMessage(origin,destination,content, new Date());
     }

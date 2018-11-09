@@ -9,10 +9,10 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class UserForm {
 	@Size(min = 3, max = 50)
-	@Pattern(regexp = "[a-zA-Z]+")
+	@Pattern(regexp = "[a-z,A-Z,á,é,í,ó,ú,â,ê,ô,ã,õ,ç,Á,É,Í,Ó,Ú,Â,Ê,Ô,Ã,Õ,Ç,ü,ñ,Ü,Ñ,' ']+")
 	private String name;
 	@Size(min = 3, max = 50)
-	@Pattern(regexp = "[a-zA-Z]+")
+	@Pattern(regexp = "[a-z,A-Z,á,é,í,ó,ú,â,ê,ô,ã,õ,ç,Á,É,Í,Ó,Ú,Â,Ê,Ô,Ã,Õ,Ç,ü,ñ,Ü,Ñ,' ']+")
 	private String surname;
 	@NotBlank
     @Email
