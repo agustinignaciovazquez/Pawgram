@@ -18,8 +18,9 @@ public class PostImage  {
     @Column(name = "postimageid")
     private long postImageId;
     @Id
+    @Column(name = "postid")
     private long postId;
-    @Column(length = 32, nullable = false)
+    @Column(name = "url",length = 32, nullable = false)
     private String url;
 
     // Hibernate

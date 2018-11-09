@@ -2,12 +2,10 @@ package ar.edu.itba.pawgram.persistence;
 
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
-import ar.edu.itba.pawgram.model.Category;
-import ar.edu.itba.pawgram.model.Pet;
-import ar.edu.itba.pawgram.model.Post;
-import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.persistence.querybuilder.PostKeywordQueryBuilder;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -44,7 +42,12 @@ public class PostHibernateDao implements PostDao {
 
     @Override
     public List<Post> getPlainPostsRange(Location location, int limit, int offset) {
-        return null;
+        final TypedQuery<Post> query = em.createQuery("select p from Post as p " +
+                " ORDER BY haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) DESC", Post.class);
+        query.setParameter("lat1",location.getLatitude());
+        query.setParameter("lon1",location.getLongitude());
+
+        return pagedResult(query, offset, limit);
     }
 
     @Override
@@ -56,7 +59,13 @@ public class PostHibernateDao implements PostDao {
 
     @Override
     public List<Post> getPlainPostsByCategoryRange(Location location, Category category, int limit, int offset) {
-        return null;
+        final TypedQuery<Post> query = em.createQuery("select p from Post as p WHERE p.category = :category " +
+                " ORDER BY haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) DESC", Post.class);
+        query.setParameter("category", category);
+        query.setParameter("lat1",location.getLatitude());
+        query.setParameter("lon1",location.getLongitude());
+
+        return pagedResult(query, offset, limit);
     }
 
     @Override
@@ -71,15 +80,10 @@ public class PostHibernateDao implements PostDao {
 
         final Post post = result.get(0);
 
-        // Hibernate lazy initialization (not necessary)
+        // Hibernate lazy initialization (not necessary due to recent changes)
         //post.getPostImages().size();
 
         return post;
-    }
-
-    @Override
-    public Post getFullPostById(long postId, Location location) {
-        return null;
     }
 
     @Override
@@ -99,23 +103,26 @@ public class PostHibernateDao implements PostDao {
 
     @Override
     public List<Post> getPlainPostsRange(Location location, int range, int limit, int offset) {
-        StoredProcedureQuery spQuery = em.
-                createNamedStoredProcedureQuery("get_post_by_range")
-                .registerStoredProcedureParameter("lat1", Double.class, ParameterMode.IN)
-                .registerStoredProcedureParameter("lon1", Double.class, ParameterMode.IN)
-                .registerStoredProcedureParameter("range", Integer.class, ParameterMode.IN);
-        spQuery.setParameter("lat1", location.getLatitude());
-        spQuery.setParameter("lon1", location.getLongitude());
-        spQuery.setParameter("range",range);
-        spQuery.execute();
+        final TypedQuery<Post> query = em.createQuery("select p from Post as p WHERE haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) < :range" +
+                        " ORDER BY haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) DESC", Post.class);
+        query.setParameter("lat1",location.getLatitude());
+        query.setParameter("lon1",location.getLongitude());
+        query.setParameter("range",range);
 
-        List<Post> posts = spQuery.getResultList();
-        return posts;
+        return pagedResult(query, offset, limit);
     }
 
     @Override
     public List<Post> getPlainPostsByCategoryRange(Location location, int range, Category category, int limit, int offset) {
-        return null;
+        final TypedQuery<Post> query = em.createQuery("select p from Post as p WHERE p.category = :category AND " +
+                        " haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) < :range " +
+                        " ORDER BY haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) DESC", Post.class);
+        query.setParameter("category",category);
+        query.setParameter("lat1",location.getLatitude());
+        query.setParameter("lon1",location.getLongitude());
+        query.setParameter("range",range);
+
+        return pagedResult(query, offset, limit);
     }
 
     @Override
@@ -123,7 +130,7 @@ public class PostHibernateDao implements PostDao {
         final Map<String, String> keyWordsRegExp = new HashMap<>();
         final String whereQuery = postKeywordQueryBuilder.buildQuery(keywords, keyWordsRegExp);
 
-        final TypedQuery<Post> query = em.createQuery("from Post as p where " + whereQuery + " ORDER BY p.id ASC", Post.class);
+        final TypedQuery<Post> query = em.createQuery("from Post as p where (" + whereQuery + ") ORDER BY p.id ASC", Post.class);
 
         for (final Map.Entry<String, String> e : keyWordsRegExp.entrySet())
             query.setParameter(e.getKey(), e.getValue());
@@ -133,7 +140,18 @@ public class PostHibernateDao implements PostDao {
 
     @Override
     public List<Post> getPlainPostsByKeywordRange(Set<String> keywords, Location location, int limit, int offset) {
-        return null;
+        final Map<String, String> keyWordsRegExp = new HashMap<>();
+        final String whereQuery = postKeywordQueryBuilder.buildQuery(keywords, keyWordsRegExp);
+
+        final TypedQuery<Post> query = em.createQuery("from Post as p where (" + whereQuery +
+                ") ORDER BY haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) DESC", Post.class);
+        query.setParameter("lat1",location.getLatitude());
+        query.setParameter("lon1",location.getLongitude());
+
+        for (final Map.Entry<String, String> e : keyWordsRegExp.entrySet())
+            query.setParameter(e.getKey(), e.getValue());
+
+        return pagedResult(query, offset, limit);
     }
 
     @Override
@@ -151,7 +169,17 @@ public class PostHibernateDao implements PostDao {
 
     @Override
     public List<Post> getPlainPostsByKeywordRange(Set<String> keywords, Location location, Category category, int limit, int offset) {
-        return null;
+        final Map<String, String> keyWordsRegExp = new HashMap<>();
+        final String whereQuery = postKeywordQueryBuilder.buildQuery(keywords, keyWordsRegExp);
+
+        final TypedQuery<Post> query = em.createQuery("from Post as p where p.category = :category AND (" + whereQuery +
+                ") ORDER BY haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) DESC", Post.class);
+        query.setParameter("lat1",location.getLatitude());
+        query.setParameter("lon1",location.getLongitude());
+
+        for (final Map.Entry<String, String> e : keyWordsRegExp.entrySet())
+            query.setParameter(e.getKey(), e.getValue());
+        return pagedResult(query, offset, limit);
     }
 
     @Override
@@ -164,7 +192,13 @@ public class PostHibernateDao implements PostDao {
 
     @Override
     public List<Post> getPlainPostsByUserIdRange(long userId, Location location, int limit, int offset) {
-        return null;
+        final TypedQuery<Post> query = em.createQuery("from Post as p where p.owner.id = :userId" +
+                " ORDER BY haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) DESC", Post.class);
+        query.setParameter("userId", userId);
+        query.setParameter("lat1",location.getLatitude());
+        query.setParameter("lon1",location.getLongitude());
+
+        return pagedResult(query, offset, limit);
     }
 
     @Override
@@ -178,34 +212,56 @@ public class PostHibernateDao implements PostDao {
 
     @Override
     public List<Post> getPlainPostsByUserIdRange(long userId, Location location, Category category, int limit, int offset) {
-        return null;
+        final TypedQuery<Post> query = em.createQuery("from Post as p where p.category = :category AND p.owner.id = :userId " +
+                " ORDER BY haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) DESC", Post.class);
+        query.setParameter("category", category);
+        query.setParameter("userId", userId);
+        query.setParameter("lat1",location.getLatitude());
+        query.setParameter("lon1",location.getLongitude());
+
+        return pagedResult(query, offset, limit);
     }
 
     @Override
     public long getTotalPosts() {
         final TypedQuery<Long> query = em.createQuery("select count(*) from Post as p", Long.class);
-        final Long total = query.getSingleResult();
 
+        final Long total = query.getSingleResult();
         return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPosts(Location location, int range) {
-        return 0;
+        final TypedQuery<Long> query = em.createQuery("select count(*) from Post as p WHERE " +
+                " haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) < :range", Long.class);
+        query.setParameter("lat1",location.getLatitude());
+        query.setParameter("lon1",location.getLongitude());
+        query.setParameter("range",range);
+
+        final Long total = query.getSingleResult();
+        return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPostsByCategory(Category category) {
         final TypedQuery<Long> query = em.createQuery("select count(*) from Post as p where p.category = :category", Long.class);
         query.setParameter("category", category);
-        final Long total = query.getSingleResult();
 
+        final Long total = query.getSingleResult();
         return total != null ? total : 0;
     }
 
     @Override
     public long getTotalPostsByCategory(Location location, int range, Category category) {
-        return 0;
+        final TypedQuery<Long> query = em.createQuery("select count(*) from Post as p WHERE p.category = :category AND " +
+                " haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) < :range", Long.class);
+        query.setParameter("category", category);
+        query.setParameter("lat1",location.getLatitude());
+        query.setParameter("lon1",location.getLongitude());
+        query.setParameter("range",range);
+
+        final Long total = query.getSingleResult();
+        return total != null ? total : 0;
     }
 
     @Override
@@ -219,7 +275,6 @@ public class PostHibernateDao implements PostDao {
             query.setParameter(e.getKey(), e.getValue());
 
         final Long total = query.getSingleResult();
-
         return total != null ? total : 0;
     }
 
@@ -235,7 +290,6 @@ public class PostHibernateDao implements PostDao {
             query.setParameter(e.getKey(), e.getValue());
 
         final Long total = query.getSingleResult();
-
         return total != null ? total : 0;
     }
 
@@ -244,7 +298,6 @@ public class PostHibernateDao implements PostDao {
         final TypedQuery<Long> query = em.createQuery("select count(*) from Post as p where p.owner.id = :userId", Long.class);
         query.setParameter("userId",userId);
         final Long total = query.getSingleResult();
-
         return total != null ? total : 0;
     }
 
@@ -253,8 +306,8 @@ public class PostHibernateDao implements PostDao {
         final TypedQuery<Long> query = em.createQuery("select count(*) from Post as p where p.category = :category AND p.owner.id = :userId", Long.class);
         query.setParameter("category", category);
         query.setParameter("userId",userId);
-        final Long total = query.getSingleResult();
 
+        final Long total = query.getSingleResult();
         return total != null ? total : 0;
     }
 

@@ -13,15 +13,19 @@ import static org.apache.commons.lang3.Validate.*;
 @Entity
 @Table(name = "posts")
 @NamedStoredProcedureQuery(
-		name="get_post_by_range",
-		procedureName="get_post_by_range",
-		resultClasses = { Post.class },
+		name="haversine_distance",
+		procedureName="haversine_distance",
+		resultClasses = {
+				Double.class
+		},
 		parameters={
 				@StoredProcedureParameter(name="lat1", type=Double.class, mode=ParameterMode.IN),
 				@StoredProcedureParameter(name="lon1", type=Double.class, mode=ParameterMode.IN),
-				@StoredProcedureParameter(name="range", type=Integer.class, mode=ParameterMode.IN)
+				@StoredProcedureParameter(name="lat2", type=Double.class, mode=ParameterMode.IN),
+				@StoredProcedureParameter(name="lon2", type=Double.class, mode=ParameterMode.IN)
 		}
 )
+
 public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "posts_postid_seq")
@@ -137,8 +141,11 @@ public class Post {
 
 	public User getOwner() { return owner; }
 
-
 	public List<CommentFamily> getCommentFamilies() { return commentFamilies; }
+
+	public void setDistance(int distance) {
+		this.distance = distance;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

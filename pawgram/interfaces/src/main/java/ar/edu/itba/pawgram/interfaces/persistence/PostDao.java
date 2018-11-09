@@ -71,14 +71,14 @@ public interface PostDao {
      */
     public Post getFullPostById(final long postId);
 
-    /**
+    /** DEPRECATED
      * Retrieves a {@link Post.PostBuilder} with every attribute set except for
      * the familyComments.
      * @param postId - ID of the post
      * @param location - current location of the user
      * @return Post with the associated ID of null if it doesn't exist
-     */
-    public Post getFullPostById(final long postId, final Location location);
+
+    public Post getFullPostById(final long postId, final Location location);*/
 
     /**
      * Retrieves a {@link Post} as a {@link Post}.
@@ -237,14 +237,14 @@ public interface PostDao {
 
     /**
      * Retrieves the total amount of post registered for a given keyword
-     * @param keyword - keyword search
+     * @param keywords - keyword search
      * @return The number of posts.
      */
     public long getTotalPostsByKeyword(final Set<String> keywords);
 
     /**
      * Retrieves the total amount of post registered for a given {@link Category} and keyword
-     * @param keyword - keyword search
+     * @param keywords - keyword search
      * @param category - the category we are searching
      * @return The number of posts.
      */

@@ -9,11 +9,11 @@ import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.Pet;
+import ar.edu.itba.pawgram.service.utils.HaversineDistance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -24,6 +24,8 @@ public class PostServiceImpl implements PostService {
     private CommentService commentService;
     @Autowired
     private PostImageService postImageService;
+    @Autowired
+    private HaversineDistance haversineDistance;
 
     private final static int MIN_WORD_SIZE = 3;
 
@@ -42,7 +44,7 @@ public class PostServiceImpl implements PostService {
                 throw new PostCreateException();
             }
         }
-        return Post.getBuilderFromProduct(post).postImages(postImages).build();
+        return setPostDistance(Post.getBuilderFromProduct(post).postImages(postImages).build(),location);
     }
 
     @Override
@@ -52,7 +54,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPlainPostsPaged(Location location, int page, int pageSize) {
-        return postDao.getPlainPostsRange(location,pageSize,(page - 1) * pageSize);
+        return setPostsDistance(postDao.getPlainPostsRange(location,pageSize,(page - 1) * pageSize),location);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPlainPostsByCategoryPaged(Location location, Category category, int page, int pageSize) {
-        return postDao.getPlainPostsByCategoryRange(location,category,pageSize,(page - 1) * pageSize);
+        return setPostsDistance(postDao.getPlainPostsByCategoryRange(location,category,pageSize,(page - 1) * pageSize),location);
     }
 
     @Override
@@ -77,10 +79,10 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Post getFullPostById(long postId, Location location) {
-        final Post post = postDao.getFullPostById(postId, location);
+        final Post post = postDao.getFullPostById(postId);
         if(post == null)
             return null;
-        return Post.getBuilderFromProduct(post).commentFamilies(commentService.getCommentsByPostId(postId)).build();
+        return setPostDistance(Post.getBuilderFromProduct(post).commentFamilies(commentService.getCommentsByPostId(postId)).build(),location);
     }
 
     @Override
@@ -89,13 +91,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public List<Post> getPlainPostsPaged(Location location, int range, int page, int pageSize) {
-        return postDao.getPlainPostsRange(location, range, pageSize,(page - 1) * pageSize);
+        return setPostsDistance(postDao.getPlainPostsRange(location, range, pageSize,(page - 1) * pageSize),location);
     }
 
     @Override
     public List<Post> getPlainPostsByCategoryPaged(Location location, int range, Category category, int page, int pageSize) {
-        return postDao.getPlainPostsByCategoryRange(location, range, category, pageSize,(page - 1) * pageSize);
+        return setPostsDistance(postDao.getPlainPostsByCategoryRange(location, range, category, pageSize,(page - 1) * pageSize),location);
     }
 
     @Override
@@ -111,7 +114,7 @@ public class PostServiceImpl implements PostService {
         Set<String> validKeywords = getValidKeywords(keyword);
         if (validKeywords.isEmpty())
             return Collections.emptyList();
-        return postDao.getPlainPostsByKeywordRange(validKeywords, location, pageSize,(page - 1) * pageSize);
+        return setPostsDistance(postDao.getPlainPostsByKeywordRange(validKeywords, location, pageSize,(page - 1) * pageSize),location);
     }
 
     @Override
@@ -127,7 +130,7 @@ public class PostServiceImpl implements PostService {
         Set<String> validKeywords = getValidKeywords(keyword);
         if (validKeywords.isEmpty())
             return Collections.emptyList();
-        return postDao.getPlainPostsByKeywordRange(validKeywords,location,category,pageSize,(page - 1) * pageSize);
+        return setPostsDistance(postDao.getPlainPostsByKeywordRange(validKeywords,location,category,pageSize,(page - 1) * pageSize),location);
     }
 
     @Override
@@ -137,7 +140,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPlainPostsByUserIdPaged(long userId, Location location, int page, int pageSize) {
-        return postDao.getPlainPostsByUserIdRange(userId, location, pageSize,(page - 1) * pageSize);
+        return setPostsDistance(postDao.getPlainPostsByUserIdRange(userId, location, pageSize,(page - 1) * pageSize),location);
     }
 
     @Override
@@ -147,7 +150,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPlainPostsByUserIdPaged(long userId, Location location, Category category, int page, int pageSize) {
-        return postDao.getPlainPostsByUserIdRange(userId, location, category, pageSize,(page - 1) * pageSize);
+        return setPostsDistance(postDao.getPlainPostsByUserIdRange(userId, location, category, pageSize,(page - 1) * pageSize),location);
     }
 
     @Override
@@ -248,6 +251,20 @@ public class PostServiceImpl implements PostService {
     public long getMaxPageByUserId(int pageSize, long userId, Category category) {
         long total = getTotalPostsByUserId(userId,category);
         return (long) Math.ceil((float) total / pageSize);
+    }
+
+    private Post setPostDistance(Post p, Location currentLocation){
+        Double distance = haversineDistance.distance(currentLocation.getLatitude(),currentLocation.getLongitude(),
+                p.getLocation().getLatitude(),p.getLocation().getLongitude());
+        p.setDistance(distance.intValue());
+        return p;
+    }
+
+    private List<Post> setPostsDistance(List<Post> posts, Location currentLocation){
+        for(Post p: posts){
+            setPostDistance(p,currentLocation);
+        }
+        return posts;
     }
 
     private Set<String> getValidKeywords(String keyword){

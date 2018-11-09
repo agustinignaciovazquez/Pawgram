@@ -17,7 +17,7 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comments_commentid_seq")
 	@SequenceGenerator(sequenceName = "comments_commentid_seq", name = "comments_commentid_seq", allocationSize = 1)
 	@Column(name = "commentid")
-	private int id;
+	private long id;
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = true)
 	private Comment parent;
@@ -58,7 +58,7 @@ public class Comment {
 		this.commentDate = notNull(date, "Comment date cannot be null");
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -85,7 +85,7 @@ public class Comment {
 	}
 
 	// For Testing
-	Comment setCommentId(int id) {
+	Comment setCommentId(long id) {
 		this.id = id;
 		return this;
 	}
@@ -96,7 +96,7 @@ public class Comment {
 
 	@Override
 	public int hashCode() {
-		return getId();
+		return (int)getId();
 	}
 
 	@Override
