@@ -88,8 +88,18 @@
             </div>
             <div class="col-lg-5">
               <div class="container postcontent">
-                
-                <div class="text posttitle"><c:out value="${post.title}"/></div>
+                <div class="row">
+                  <div class="col-lg-9"> 
+                   <div class="text posttitle"><c:out value="${post.title}"/></div>
+                   </div>
+                   <!--ACA VA ESTO SI SOS DUEÑO DEL POST!-->
+                    <spring:message code="edit.post" var="editpost"/>
+                    <div class="col-lg-3"><button type="button" class="btn btn-info center uspaced10" onclick="location.href=''">${editpost} <i class="fas fa-edit editicon"></i></button> </div>
+                    <!--O ESTO SI NO SOS EL DUEÑo!-->
+                    <spring:message code="suscribe.to.post" var="suscribepost"/>
+                    <div class="col-lg-3"><button type="button" class="btn btn-info center uspaced10" onclick="location.href=''">${suscribepost} </button> </div>
+                </div>
+               
                 
                 <div class="text postdate uspaced10"> <spring:message code="post.ocurred"/> <c:out value="${post.event_date}"/></div>
                 <spring:message code="gender.male" var="male_gender"/>

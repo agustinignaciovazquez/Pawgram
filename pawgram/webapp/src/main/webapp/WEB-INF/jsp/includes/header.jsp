@@ -3,6 +3,57 @@
 
          <nav class="navbar header-top fixed-top navbar-expand-lg navbar-light pawnav">
           <span class="navbar-toggler-icon leftmenutrigger"></span>
+
+            <!-- ICON -->
+            <div class="dropdown nav-button  notifications-button hidden-sm-down notification-spacing">
+
+              <a class="btn btn-secondary dropdown-toggle" href="#" id="notifications-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i id="notificationsIcon" class="fa fa-bell-o" aria-hidden="true"></i>
+                <span id="notificationsBadge" class="badge badge-danger"><i class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i></span>
+              </a>
+
+              <!-- NOTIFICATIONS -->
+              <div class="dropdown-menu notification-dropdown-menu" aria-labelledby="notifications-dropdown">
+                <h6 class="dropdown-header"><spring:message code="notifications"/></h6>
+
+                <!-- CHARGEMENT -->
+                <a id="notificationsLoader" class="dropdown-item dropdown-notification" href="#">
+                  <p class="notification-solo text-center"><i id="notificationsIcon" class="fa fa-spinner fa-pulse fa-fw" aria-hidden="true"></i> <spring:message code="charging.notifications"/></p>
+                </a>
+
+                <div id="notificationsContainer" class="notifications-container"></div>
+
+                <!-- AUCUNE NOTIFICATION -->
+                <a id="notificationAucune" class="dropdown-item dropdown-notification" href="#">
+                  <p class="notification-solo text-center"><spring:message code="no.new.notifications"/></p>
+                </a>
+
+                <!-- TOUTES -->
+                <a class="dropdown-item dropdown-notification-all" href="#">
+                  <spring:message code="see.all.notifications"/>
+                </a>
+
+              </div>
+
+            </div>
+
+          <!-- TEMPLATE NOTIFICATION -->
+          <script id="notificationTemplate" type="text/html">
+            <!-- NOTIFICATION -->
+            <a class="dropdown-item dropdown-notification" href="{{href}}">
+              <div class="notification-read">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </div>
+              <img class="notification-img" src="https://placehold.it/48x48" alt="Icone Notification" />
+              <div class="notifications-body">
+                <p class="notification-texte">{{texte}}</p>
+                <p class="notification-date text-muted">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i> {{date}}
+                </p>
+              </div>
+            </a>
+          </script>
+
           <a href="<c:url value="/"/>""><img src="<c:url value="/resources/img/logo.png"/>" class="logo-navbar"/></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +91,9 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link text nav-sec" href="<c:url value="/customize"/>"><spring:message code="title.configuration"/></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text nav-sec" href="<c:url value="/my_suscriptions"/>"><spring:message code="title.suscriptions"/></a>
               </li>             
               <hr></hr>
               <li class="nav-item">
