@@ -22,9 +22,8 @@ public class PostHibernateDao implements PostDao {
     private PostKeywordQueryBuilder postKeywordQueryBuilder;
 
     @Override
-    public Post createPost(String title, String description,
-                           List<byte[]> raw_images, String contact_phone, Date event_date,
-                           Category category, Pet pet, boolean is_male, Location location, User owner) throws PostCreateException {
+    public Post createPost(String title, String description, String contact_phone, Date event_date,
+                           Category category, Pet pet, boolean is_male, Location location, User owner){
         final Post.PostBuilder postBuilder = Post.getBuilder(title, Collections.emptyList());
 
         final Post post = postBuilder.description(description).contact_phone(contact_phone).

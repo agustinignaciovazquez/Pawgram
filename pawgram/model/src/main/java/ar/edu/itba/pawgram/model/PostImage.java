@@ -17,9 +17,11 @@ public class PostImage  {
     @SequenceGenerator(name = "postsimages_postimageid_seq", sequenceName = "postsimages_postimageid_seq", allocationSize = 1)
     @Column(name = "postimageid")
     private long postImageId;
+
     @Id
     @Column(name = "postid")
     private long postId;
+
     @Column(name = "url",length = 32, nullable = false)
     private String url;
 

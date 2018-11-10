@@ -1,7 +1,6 @@
 package ar.edu.itba.pawgram.model;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -12,19 +11,18 @@ public class Message {
     @SequenceGenerator(sequenceName = "messages_messageid_seq", name = "messages_messageid_seq", allocationSize = 1)
     @Column(name = "messageid")
     private long id;
-    /* inefficient
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "destId", nullable = false, updatable = false)
     private User dest_user;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "origId", nullable = false, updatable = false)
-    private User orig_user;*/
-    @Column(name = "origId")
-    private long orig_user_id;
-    @Column(name = "destId")
-    private long dest_user_id;
+    private User orig_user;
+
     @Column(name = "message", length = 1024, nullable = false)
     private String message;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date messageDate;
 
@@ -33,16 +31,13 @@ public class Message {
 
     }
 
-    public Message(long id, long dest_user, long orig_user, String message, Date messageDate) {
+    public Message(long id, User dest_user, User orig_user, String message, Date messageDate) {
+        //this(id,dest_user.getId(),orig_user.getId(),message,messageDate);
         this.id = id;
-        this.dest_user_id = dest_user;
-        this.orig_user_id = orig_user;
+        this.dest_user = dest_user;
+        this.orig_user = orig_user;
         this.message = message;
         this.messageDate = messageDate;
-    }
-
-    public Message(long id, User dest_user, User orig_user, String message, Date messageDate) {
-        this(id,dest_user.getId(),orig_user.getId(),message,messageDate);
     }
 
     public Message(User dest_user, User orig_user, String message, Date messageDate){
@@ -53,12 +48,12 @@ public class Message {
         return id;
     }
 
-    public long getOrig_user_id() {
-        return orig_user_id;
+    public User getDest_user() {
+        return dest_user;
     }
 
-    public long getDest_user_id() {
-        return dest_user_id;
+    public User getOrig_user() {
+        return orig_user;
     }
 
     public String getMessage() {

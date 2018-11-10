@@ -19,8 +19,8 @@ public class MessageHibernateDao implements MessageDao {
 
     @Override
     public List<Message> getMessages(User origin, User destination) {
-        final TypedQuery<Message> query = em.createQuery("select m from Message as m WHERE (m.orig_user_id = :origId AND m.dest_user_id = :destId) " +
-                "OR (m.orig_user_id = :destId AND m.dest_user_id = :origId) " +
+        final TypedQuery<Message> query = em.createQuery("select m from Message as m WHERE (m.orig_user.id = :origId AND m.dest_user.id = :destId) " +
+                "OR (m.orig_user.id = :destId AND m.dest_user.id = :origId) " +
                 " ORDER BY m.messageDate ASC", Message.class);
         query.setParameter("origId",origin.getId());
         query.setParameter("destId",destination.getId());

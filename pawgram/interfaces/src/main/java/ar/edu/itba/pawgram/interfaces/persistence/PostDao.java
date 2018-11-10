@@ -14,7 +14,6 @@ public interface PostDao {
      * Creates a {@link Post.PostBuilder} inserting the {@link Post} data into the database.
      * @param title - Title of the post
      * @param description - Description of the post
-     * @param raw_images - raw img's
      * @param contact_phone - contact phone of the owner
      * @param category - Category the post belongs to
      * @param event_date - Date of the event
@@ -24,8 +23,8 @@ public interface PostDao {
      * @param owner - owner id of the post
      * @return Post - The newly created post
      */
-    public Post createPost(String title, String description, List<byte[]> raw_images, String contact_phone, Date event_date,
-                           Category category, Pet pet, boolean is_male, Location location, User owner) throws PostCreateException;
+    public Post createPost(String title, String description,  String contact_phone, Date event_date,
+                           Category category, Pet pet, boolean is_male, Location location, User owner);
 
     /**
      * Lists every post {@link Post}

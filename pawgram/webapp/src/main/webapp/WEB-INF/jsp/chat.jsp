@@ -94,7 +94,7 @@
               <c:otherwise>
               <c:forEach items="${chat.messages}" var="message">
                 <c:choose>
-                  <c:when test="${message.orig_user_id eq loggedUser.id}">
+                  <c:when test="${message.orig_user.id eq loggedUser.id}">
                   <div class="outgoing_msg">
                     <div class="sent_msg">
                       <p><c:out value="${message.message}" /></p>

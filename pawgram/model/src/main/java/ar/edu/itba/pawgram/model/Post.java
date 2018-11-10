@@ -32,30 +32,42 @@ public class Post {
 	@SequenceGenerator(sequenceName = "posts_postid_seq", name = "posts_postid_seq", allocationSize = 1)
 	@Column(name = "postid")
 	private long id;
+
 	@Column(name = "title", length = 64, nullable = false)
 	private String title;
+
 	@Column(name = "description", length = 2048, nullable = false)
 	private String description;
+
 	@Column(name = "contact_phone", length = 32, nullable = false)
 	private String contact_phone;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date event_date;
+
 	@Enumerated(EnumType.STRING)
 	private Category category;
+
 	@Enumerated(EnumType.STRING)
 	private Pet pet;
+
 	@Column(name = "is_male",nullable = false)
 	private boolean is_male;
+
 	@Embedded
 	private Location location;
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "userid", nullable = false, updatable = false)
 	private User owner;
+
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "postId", orphanRemoval = true)
 	@OrderBy("postImageId ASC")
 	private List<PostImage> postImages;
+
 	@Transient
 	private int distance;
+
 	@Transient
 	private List<CommentFamily> commentFamilies = Collections.emptyList();
 	

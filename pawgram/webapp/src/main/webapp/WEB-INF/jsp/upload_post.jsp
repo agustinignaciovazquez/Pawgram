@@ -141,10 +141,10 @@
 							</div>
 							
 							
-							<div class=" text subformtitle ${currentCategory eq Category.ADOPT? 'hidden' : ''}">
+							<div class=" text subformtitle ${currentCategory == 'ADOPT' ? 'sr-only' : ''}">
 				        		<spring:message code="post.date"/>
 				        	</div>
-							<div class="form-group datetimepicker ${currentCategory eq Category.ADOPT? 'hidden' : ''}">
+							<div class="form-group datetimepicker ${currentCategory == 'ADOPT'? 'sr-only' : ''}">
 								<form:input path="event_date" type="text" class="form-control" id="datona" name="date" />
 								<form:errors path="event_date" cssClass="form-error" element="p"/>
 							</div>

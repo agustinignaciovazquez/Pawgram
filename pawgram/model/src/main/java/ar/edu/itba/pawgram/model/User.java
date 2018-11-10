@@ -13,15 +13,21 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
 	@SequenceGenerator(sequenceName = "users_id_seq", name = "users_id_seq", allocationSize = 1)
 	@Column(name = "id")
+	@Access(AccessType.PROPERTY)
 	private long id;
+
 	@Column(name = "name", length = 64, nullable = false)
 	private String name;
+
 	@Column(name = "surname", length = 64, nullable = false)
 	private String surname;
+
 	@Column(name = "mail", length = 256, nullable = false, unique = true)
 	private String mail;
+
 	@Column(name = "password", length = 60, nullable = false)
 	private String password;
+
 	@Column(name = "profile_img_url", length = 32, nullable = true)
 	private String profile_img_url;
 
@@ -63,6 +69,10 @@ public class User {
 		return password;
 	}
 	public String getProfile_img_url(){ return profile_img_url;}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public void setPassword(String password) {
 		this.password = notEmpty(password,"User password must have at least one character");

@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.webapp.form;
 
+import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.Pet;
 import ar.edu.itba.pawgram.webapp.form.constraints.DateRule;
@@ -19,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 public class PostForm {
-    private static final int MAX_IMAGES = 4;
+
 
     @NotBlank
     @Size(max = 64)
@@ -55,7 +56,7 @@ public class PostForm {
     private Double longitude;
 
     public PostForm() {
-        images = new MultipartFileImageWrapper[MAX_IMAGES];
+        images = new MultipartFileImageWrapper[PostService.MAX_IMAGES];
     }
     public List<byte[]> getAllRawImages() throws IOException {
         List<byte[]> l = new ArrayList<>();

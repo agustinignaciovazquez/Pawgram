@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidPostException;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.Category;
@@ -81,10 +82,17 @@ public class UploadPostController {
         }
 
 
-        final Post post =  postService.createPost(formPost.getTitle(),formPost.getDescription(),formPost.getAllRawImages(),
-                formPost.getContact_phone(),formPost.getEvent_date(),
-                category,formPost.getPet(),formPost.getIs_male(),
-                formPost.getLocation(),loggedUser);
+        final Post post;
+        try {
+            post = postService.createPost(formPost.getTitle(),formPost.getDescription(),formPost.getAllRawImages(),
+                    formPost.getContact_phone(),formPost.getEvent_date(),
+                    category,formPost.getPet(),formPost.getIs_male(),
+                    formPost.getLocation(),loggedUser);
+        } catch (InvalidPostException e) {
+            //e.printStackTrace();
+            LOGGER.warn("User with id {} failed to post post: possible upload hack attempt: {}", loggedUser.getId(), e.getMessage());
+            return errorState(formPost,category, errors, attr);
+        }
 
         LOGGER.info("User with id {} posted post with id {}", loggedUser.getId(), post.getId());
 

@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.interfaces.service;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidPostException;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.structures.Location;
@@ -10,6 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface PostService {
+    public final static int MIN_WORD_SIZE = 3;
+    public final static  int MAX_IMAGES = 4;
+
     /**
      * Creates a {@link ar.edu.itba.pawgram.model.Post.PostBuilder} inserting the {@link ar.edu.itba.pawgram.model.Post} data into the database.
      * @param title - Title of the post
@@ -25,7 +29,7 @@ public interface PostService {
      * @return Post - The newly created post
      */
     public Post createPost(String title, String description, List<byte[]> raw_images, String contact_phone, Date event_date,
-                                                     Category category, Pet pet, boolean is_male, Location location, User owner) throws PostCreateException;
+                                                     Category category, Pet pet, boolean is_male, Location location, User owner) throws PostCreateException, InvalidPostException;
 
     /**
      * Lists every post {@link Post}

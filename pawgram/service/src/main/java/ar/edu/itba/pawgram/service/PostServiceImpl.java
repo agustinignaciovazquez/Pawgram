@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.service;
 
 import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidPostException;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
@@ -27,18 +28,21 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private HaversineDistance haversineDistance;
 
-    private final static int MIN_WORD_SIZE = 3;
-
     @Override
     @Transactional(rollbackFor = PostCreateException.class)
     public Post createPost(String title, String description, List<byte[]> raw_images, String contact_phone,
                            Date event_date, Category category, Pet pet,
-                           boolean is_male, Location location, User owner) throws PostCreateException {
+                           boolean is_male, Location location, User owner) throws PostCreateException, InvalidPostException {
         Date post_date = event_date;
         if(category == Category.ADOPT){
             post_date = new Date();
         }
-        Post post = postDao.createPost(title,description,raw_images,contact_phone,post_date,category,pet,is_male,location,owner);
+
+        if(raw_images != null && raw_images.size() > MAX_IMAGES){
+            throw new InvalidPostException();
+        }
+
+        Post post = postDao.createPost(title,description,contact_phone,post_date,category,pet,is_male,location,owner);
 
         List<PostImage> postImages = null;
         if(raw_images != null) {

@@ -16,15 +16,20 @@ public class SearchZone {
     @SequenceGenerator(sequenceName = "search_zone_zoneid_seq", name = "search_zone_zoneid_seq", allocationSize = 1)
     @Column(name = "zoneid")
     private long id;
+
     @Embedded
     private Location location;
+
     @Column(name = "range", nullable = false)
     private int range;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "userid", nullable = false, updatable = false)
     private User user;
+
     @Transient
     private List<Post> posts;
+
     @Transient
     private long max_page;
 
