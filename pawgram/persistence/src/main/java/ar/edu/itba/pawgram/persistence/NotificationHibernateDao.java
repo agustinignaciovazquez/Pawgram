@@ -19,9 +19,9 @@ public class NotificationHibernateDao implements NotificationDao {
 
     @Override
     public List<Notification> getNotifications(User user, boolean include_seen_notifications) {
-        String queryStr = "select n from Notification as n WHERE n.user.id = :userId ORDER BY p.id DESC";
+        String queryStr = "select n from Notification as n WHERE n.user.id = :userId ORDER BY n.id DESC";
         if(include_seen_notifications == false)
-            queryStr = "select n from Notification as n WHERE n.user.id = :userId AND n.is_seen = FALSE ORDER BY p.id DESC";
+            queryStr = "select n from Notification as n WHERE n.user.id = :userId AND n.is_seen = FALSE ORDER BY n.id DESC";
 
         final TypedQuery<Notification> query = em.createQuery(queryStr, Notification.class);
         return query.getResultList();
