@@ -127,7 +127,7 @@
               <c:url value="/messages/user/${chat.other.id}/send" var="postPathName" />
               <form:form modelAttribute="messageForm" action="${postPathName}" method="post">
                 <form:input path="message" class="write_msg" placeholder="${type.message}" />
-                <button type="submit" class="msg_send_btn" type="button"><i class="fas fa-paper-plane" aria-hidden="true"></i></butonn>
+                <button type="submit" maxlength="1024" class="msg_send_btn" type="button"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
              </form:form>
             </div>
           </div>

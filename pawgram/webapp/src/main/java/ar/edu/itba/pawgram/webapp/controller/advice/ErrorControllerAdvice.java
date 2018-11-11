@@ -1,6 +1,6 @@
 package ar.edu.itba.pawgram.webapp.controller.advice;
 
-import ar.edu.itba.pawgram.interfaces.exception.SendMailException;
+import ar.edu.itba.pawgram.interfaces.exception.*;
 import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
 import ar.edu.itba.pawgram.webapp.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +55,30 @@ public class ErrorControllerAdvice {
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(value=HttpStatus.UNAUTHORIZED)
     public ModelAndView unauthorized() {
+        return buildModelAndView("error/401");
+    }
+
+    @ExceptionHandler(InvalidUserException.class)
+    @ResponseStatus(value=HttpStatus.UNAUTHORIZED)
+    public ModelAndView invalidUser() {
+        return buildModelAndView("error/401");
+    }
+
+    @ExceptionHandler(InvalidPostException.class)
+    @ResponseStatus(value=HttpStatus.UNAUTHORIZED)
+    public ModelAndView invalidPost() {
+        return buildModelAndView("error/401");
+    }
+
+    @ExceptionHandler(InvalidSearchZoneException.class)
+    @ResponseStatus(value=HttpStatus.UNAUTHORIZED)
+    public ModelAndView invalidSZ() {
+        return buildModelAndView("error/401");
+    }
+
+    @ExceptionHandler(InvalidCommentException.class)
+    @ResponseStatus(value=HttpStatus.UNAUTHORIZED)
+    public ModelAndView invalidComment() {
         return buildModelAndView("error/401");
     }
 

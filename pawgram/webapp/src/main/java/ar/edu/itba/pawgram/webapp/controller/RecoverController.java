@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.interfaces.exception.SendMailException;
 import ar.edu.itba.pawgram.interfaces.service.EmailService;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
@@ -94,7 +95,7 @@ public class RecoverController {
 
     @RequestMapping(value = "/recover/process", method = {RequestMethod.POST})
     public ModelAndView recoverPassword(@Valid @ModelAttribute("recoverForm") final RecoverForm recoverForm,
-                                       final BindingResult errors, RedirectAttributes attr) throws UserNotFoundException {
+                                       final BindingResult errors, RedirectAttributes attr) throws UserNotFoundException, InvalidUserException {
 
         LOGGER.debug("Accessed reset password POST w/ email", recoverForm.getMail());
 

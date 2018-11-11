@@ -28,11 +28,9 @@ public class Message {
 
     //Hibernate
     Message(){
-
     }
 
     public Message(long id, User dest_user, User orig_user, String message, Date messageDate) {
-        //this(id,dest_user.getId(),orig_user.getId(),message,messageDate);
         this.id = id;
         this.dest_user = dest_user;
         this.orig_user = orig_user;

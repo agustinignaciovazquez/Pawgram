@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.webapp.controller;
 
 import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
 import ar.edu.itba.pawgram.model.Category;
@@ -66,7 +67,7 @@ public class CustomizeController {
     @RequestMapping(value = "/password", method = {RequestMethod.POST})
     public ModelAndView changePassword(@Valid @ModelAttribute("changePasswordForm") final ChangePasswordForm changePasswordForm,
                                        final BindingResult errors, @ModelAttribute("loggedUser") final User loggedUser,
-                                       RedirectAttributes attr) throws UnauthorizedException {
+                                       RedirectAttributes attr) throws UnauthorizedException, InvalidUserException {
 
         LOGGER.debug("User with id {} accessed change password POST", loggedUser.getId());
 
@@ -101,7 +102,7 @@ public class CustomizeController {
     @RequestMapping(value="/profilePicture", method = {RequestMethod.POST})
     public ModelAndView changeProfilePicture(@Valid @ModelAttribute("changeProfilePictureForm") final ChangeProfileImageForm changeProfilePictureForm ,
                                              final BindingResult errors, @ModelAttribute("loggedUser") final User loggedUser,
-                                             final RedirectAttributes attr) throws UnauthorizedException {
+                                             final RedirectAttributes attr) throws UnauthorizedException, InvalidUserException {
 
         LOGGER.debug("User with id {} accessed change profile picture POST", loggedUser.getId());
 
@@ -137,7 +138,7 @@ public class CustomizeController {
     @RequestMapping(value="/info", method = {RequestMethod.POST})
     public ModelAndView changeNameAndSurname(@Valid @ModelAttribute("changeInfoForm") final ChangeInfoForm changeInfoForm ,
                                              final BindingResult errors, @ModelAttribute("loggedUser") final User loggedUser,
-                                             final RedirectAttributes attr) {
+                                             final RedirectAttributes attr) throws InvalidUserException {
 
         LOGGER.debug("User with id {} accessed change info POST", loggedUser.getId());
 

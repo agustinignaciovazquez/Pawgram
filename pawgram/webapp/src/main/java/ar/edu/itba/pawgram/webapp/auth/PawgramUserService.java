@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.webapp.auth;
 
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
 import ar.edu.itba.pawgram.model.User;
@@ -32,7 +33,7 @@ public class PawgramUserService implements SecurityUserService {
     }
 
     @Override
-    public User changePassword(long userId, String password) {
+    public User changePassword(long userId, String password) throws InvalidUserException {
         return userService.changePassword(userId,password);
     }
 }
