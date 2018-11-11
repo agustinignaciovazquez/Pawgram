@@ -12,7 +12,7 @@ public final class UserTestUtils {
 
     public static User dummyUser(int id) {
         String email = "agvazquez" + id + "@itba.edu.ar";
-        return new User(id, "Agustin","Vazquez", email, "barbacoa", new String(email));
+        return new User( "Agustin","Vazquez", email, "barbacoa", new String(email));
     }
 
     public static List<User> dummyUserList(int size, int initialId) {

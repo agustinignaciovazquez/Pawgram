@@ -46,7 +46,7 @@ public class User {
 	}
 
 	// Dummy user constructor for testing
-	public User(long id, String name, String surname, String mail, String password, String profile_img_url) {
+	private User(long id, String name, String surname, String mail, String password, String profile_img_url) {
 		super();
 		isTrue(id >= 0, "User ID must be non negative: %d", id);
 

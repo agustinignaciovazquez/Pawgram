@@ -54,7 +54,7 @@ public class PostHibernateDaoTest {
         dummyUserList = UserTestUtils.dummyUserList(LIST_SIZE, 1);
         insertDummyUsers(dummyUserList);
     }
-    
+
     private void assertEqualsList(List<Post> expected, List<Post> actual) {
         assertEquals(expected.size(), actual.size());
 
@@ -68,9 +68,6 @@ public class PostHibernateDaoTest {
         expected = insertPost(expected);
 
         Post actual = postDao.getFullPostById(1);
-
-        System.out.println("size: "+  expected.getPostImages().size());
-        System.out.println("size: "+ actual.getPostImages().size());
 
         PostTestUtils.assertEqualsFullPosts(expected, actual);
         assertNull(postDao.getFullPostById(2));

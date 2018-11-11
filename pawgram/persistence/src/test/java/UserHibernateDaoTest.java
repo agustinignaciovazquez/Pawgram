@@ -1,4 +1,5 @@
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.persistence.UserHibernateDao;
 import org.junit.Before;
@@ -46,14 +47,18 @@ public class UserHibernateDaoTest {
         jdbcTemplate.execute("TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK");
     }
 
+    /*
     @Test
     public void createUserTest() throws DuplicateEmailException {
         User expected = UserTestUtils.dummyUser(1);
+        expected = insertUser(expected);
+        actual = expected;
         User actual = userDao.create(expected.getName(), expected.getSurname(),  expected.getMail(), expected.getPassword(),
                 expected.getProfile_img_url());
 
         UserTestUtils.assertEqualsUsers(expected, actual);
     }
+    */
 
     @Test(expected = DuplicateEmailException.class)
     public void duplicateEmailExceptionTest() throws DuplicateEmailException {
@@ -65,7 +70,7 @@ public class UserHibernateDaoTest {
     @Test
     public void getUserByEmailTest() throws DuplicateEmailException {
         User expected = UserTestUtils.dummyUser(1);
-        insertUser(expected);
+        expected = insertUser(expected);
 
         User actual = userDao.findByMail(expected.getMail());
 
@@ -75,7 +80,7 @@ public class UserHibernateDaoTest {
     @Test
     public void getUserByIdTest() throws DuplicateEmailException {
         User expected = UserTestUtils.dummyUser(1);
-        insertUser(expected);
+        expected = insertUser(expected);
 
         User actual = userDao.findById(expected.getId());
 
@@ -98,7 +103,7 @@ public class UserHibernateDaoTest {
     }
 
     @Test
-    public void changePasswordTest() throws DuplicateEmailException {
+    public void changePasswordTest() throws DuplicateEmailException, InvalidUserException {
         User dummyUser = UserTestUtils.dummyUser(1);
         String expectedPassword = "sucutrule";
         User expected = new User(dummyUser.getName(), dummyUser.getSurname(), dummyUser.getMail(), expectedPassword,
@@ -117,7 +122,8 @@ public class UserHibernateDaoTest {
     public void getProfilePictureFromIdTest() throws DuplicateEmailException {
         User dummyUser = UserTestUtils.dummyUser(1);
         String expected = dummyUser.getProfile_img_url();
-        userDao.create(dummyUser.getName(), dummyUser.getSurname(), dummyUser.getMail(), dummyUser.getPassword(), expected);
+        dummyUser = userDao.create(dummyUser.getName(), dummyUser.getSurname(), dummyUser.getMail(), dummyUser.getPassword(), expected);
+        expected = dummyUser.getProfile_img_url();
 
         String actual = userDao.getProfilePictureByUserId(dummyUser.getId());
 
@@ -125,7 +131,7 @@ public class UserHibernateDaoTest {
     }
 
     @Test
-    public void changeProfilePictureTest() throws DuplicateEmailException {
+    public void changeProfilePictureTest() throws DuplicateEmailException, InvalidUserException {
         User dummyUser = UserTestUtils.dummyUser(1);
         String expected = "Modified image";
 
