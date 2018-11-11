@@ -24,6 +24,8 @@ public class NotificationHibernateDao implements NotificationDao {
             queryStr = "select n from Notification as n WHERE n.user.id = :userId AND n.is_seen = FALSE ORDER BY n.id DESC";
 
         final TypedQuery<Notification> query = em.createQuery(queryStr, Notification.class);
+        query.setParameter("userId", user.getId());
+
         return query.getResultList();
     }
 
