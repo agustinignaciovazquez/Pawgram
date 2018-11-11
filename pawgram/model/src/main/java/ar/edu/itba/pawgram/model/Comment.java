@@ -85,7 +85,7 @@ public class Comment {
 	}
 
 	// For Testing
-	Comment setCommentId(long id) {
+	public Comment setCommentId(long id) {
 		this.id = id;
 		return this;
 	}

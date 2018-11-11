@@ -5,6 +5,7 @@ import ar.edu.itba.pawgram.interfaces.exception.FileException;
 import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import ar.edu.itba.pawgram.interfaces.persistence.UserDao;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Service
+
 public class UserServiceImpl implements UserService{
 	@Autowired
 	private UserDao userDao;

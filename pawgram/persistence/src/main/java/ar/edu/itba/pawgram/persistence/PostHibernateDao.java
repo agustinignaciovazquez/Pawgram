@@ -28,6 +28,21 @@ public class PostHibernateDao implements PostDao {
 
         final Post post = postBuilder.description(description).contact_phone(contact_phone).
                 event_date(event_date).category(category).pet(pet).is_male(is_male).location(location).user(owner).build();
+        em.persist(owner);
+        em.persist(post);
+
+        return post;
+    }
+
+    public Post createPost(String title, String description, String contact_phone, Date event_date,
+                           Category category, Pet pet, boolean is_male, Location location, User owner,
+                           List<PostImage> postImages){
+        final Post.PostBuilder postBuilder = Post.getBuilder(title, Collections.emptyList());
+
+        final Post post = postBuilder.description(description).contact_phone(contact_phone).
+                event_date(event_date).category(category).pet(pet).is_male(is_male).location(location).user(owner).
+                postImages(postImages).build();
+        em.persist(owner);
         em.persist(post);
 
         return post;

@@ -22,6 +22,7 @@ public class PostImageHibernateDao implements PostImageDao {
         return pi;
     }
 
+
     @Override
     public List<PostImage> getImagesIdByPostId(long postId) {
         final TypedQuery<PostImage> query = em.createQuery("from PostImage as pi where pi.post.id = :postId", PostImage.class);

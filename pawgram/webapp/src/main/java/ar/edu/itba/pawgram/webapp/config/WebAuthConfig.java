@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -18,11 +19,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import ar.edu.itba.pawgram.webapp.auth.PawgramUserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("ar.edu.itba.pawgram.webapp.auth")
+@ComponentScan({"ar.edu.itba.pawgram.webapp.auth"})
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 @Autowired
 private PawgramUserDetailsService userDetailsService;

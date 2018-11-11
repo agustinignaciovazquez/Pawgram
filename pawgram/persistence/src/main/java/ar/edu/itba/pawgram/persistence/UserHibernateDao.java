@@ -4,6 +4,7 @@ import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.persistence.UserDao;
 import ar.edu.itba.pawgram.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +15,9 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
+@ComponentScan("ar.edu.itba.pawgram.webapp.config")
 public class UserHibernateDao implements UserDao {
+
     @PersistenceContext
     private EntityManager em;
 
@@ -88,5 +91,15 @@ public class UserHibernateDao implements UserDao {
             user.setProfile_img_url(img_url);
 
         return user;
+    }
+
+    public String getProfilePictureByUserId(long id) {
+        String url = null;
+        final User user = getPlainUserById(id);
+
+        if (user != null)
+            url = user.getProfile_img_url();
+
+        return url;
     }
 }
