@@ -3,6 +3,9 @@ package ar.edu.itba.pawgram.model;
 import javax.persistence.*;
 import java.util.Date;
 
+import static org.apache.commons.lang3.Validate.notBlank;
+import static org.apache.commons.lang3.Validate.notNull;
+
 @Entity
 @Table(name = "messages")
 public class Message {
@@ -32,10 +35,10 @@ public class Message {
 
     public Message(long id, User dest_user, User orig_user, String message, Date messageDate) {
         this.id = id;
-        this.dest_user = dest_user;
-        this.orig_user = orig_user;
-        this.message = message;
-        this.messageDate = messageDate;
+        this.dest_user = notNull(dest_user, "Destination user can not be null");
+        this.orig_user = notNull(orig_user, "Origin user can not be null");
+        this.message = notBlank(message," Message should have at least one char");
+        this.messageDate = notNull(messageDate, "Date can not be null");
     }
 
     public Message(User dest_user, User orig_user, String message, Date messageDate){

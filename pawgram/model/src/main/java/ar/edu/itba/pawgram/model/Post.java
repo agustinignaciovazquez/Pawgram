@@ -65,7 +65,7 @@ public class Post {
 	@OrderBy("postImageId ASC")
 	private List<PostImage> postImages;
 
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "postSubscriptions")
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "postSubscriptions")
 	@SortComparator(UserAlphaComparator.class)
 	private SortedSet<User> userSubscriptions;
 

@@ -23,7 +23,7 @@ public interface PostImageDao {
     /**
      * Counts total of {@link PostImage} of a {@link Post}.
      * @param postId - ID of the post
-     * @return {@link List} with the post images ID. 0 if the post possesses no images
+     * @return {@link long} with the total post images. 0 if the post possesses no images
      */
     public long getTotalImagesByPostId(final long postId);
 

@@ -5,6 +5,7 @@ import ar.edu.itba.pawgram.interfaces.exception.InvalidPostException;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
+import ar.edu.itba.pawgram.interfaces.service.NotificationService;
 import ar.edu.itba.pawgram.interfaces.service.PostImageService;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.*;
@@ -25,6 +26,8 @@ public class PostServiceImpl implements PostService {
     private CommentService commentService;
     @Autowired
     private PostImageService postImageService;
+    @Autowired
+    private NotificationService notificationService;
     @Autowired
     private HaversineDistance haversineDistance;
 
@@ -76,7 +79,7 @@ public class PostServiceImpl implements PostService {
                 throw new PostCreateException();
             }
         }
-
+        notificationService.createNotificationsForPost(post,null);
         return Post.getBuilderFromPost(post).postImages(postImages).build();
     }
 

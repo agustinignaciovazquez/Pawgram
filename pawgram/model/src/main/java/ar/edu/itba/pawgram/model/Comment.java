@@ -22,18 +22,18 @@ public class Comment {
 	@ManyToOne(fetch = FetchType.EAGER, optional = true)
 	private Comment parent;
 
-	@Column(length = 1024, nullable = true, name = "commentcontent")
+	@Column(length = 1024, nullable = false, name = "commentcontent")
 	private String content;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date commentDate;
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "userid")
+	@JoinColumn(name = "userid", nullable = false)
 	private User author;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "postid")
+	@JoinColumn(name = "postid", nullable = false)
 	private Post commentedPost;
 
 	// Hibernate
