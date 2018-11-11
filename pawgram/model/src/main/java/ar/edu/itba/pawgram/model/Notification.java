@@ -2,6 +2,8 @@ package ar.edu.itba.pawgram.model;
 
 import javax.persistence.*;
 
+import java.util.Date;
+
 import static org.apache.commons.lang3.Validate.notNull;
 
 @Entity
@@ -23,16 +25,20 @@ public class Notification {
     private Comment comment;
     @Column(nullable = false)
     private boolean is_seen;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date date;
 
     // Hibernate
     Notification() {
     }
 
-    public Notification(User user, Post post, Comment comment) {
+    public Notification(final User user,final Post post,final Comment comment,final Date date) {
         this.user = notNull(user, "User can not be null");
         this.post = notNull(post, "Post can not be null");
         this.comment = comment;
         this.is_seen = false;
+        this.date = date;
     }
 
     public long getId() {
@@ -49,5 +55,17 @@ public class Notification {
 
     public Comment getComment() {
         return comment;
+    }
+
+    public boolean isIs_seen() {
+        return is_seen;
+    }
+
+    public void setIs_seen(boolean is_seen) {
+        this.is_seen = is_seen;
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

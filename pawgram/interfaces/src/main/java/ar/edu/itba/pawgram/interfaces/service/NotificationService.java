@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.interfaces.service;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidNotificationException;
 import ar.edu.itba.pawgram.model.Comment;
 import ar.edu.itba.pawgram.model.Notification;
 import ar.edu.itba.pawgram.model.Post;
@@ -37,10 +38,23 @@ public interface NotificationService {
 
     /**
      * Creates a new {@link Notification} for a set of {@link User}
-     * @param users - users to create notification for.
      * @param post - post associated with notification
      * @param comment - comment associated with notification (could be null)
      * @return {@link List} of {@link Notification} created
      */
     public Set<Notification> createNotificationsForPost(Post post, Comment comment);
+
+    /**
+     * Lists every post {@link Post}
+     * @param notificationId - notificationId
+     * @return {@link List} of the existing posts (distance as 0)
+     */
+    public Notification getPlainNotificationById(final long notificationId);
+
+    /**
+     * Marks {@link Notification} as seen
+     * @param notificationId - notificationId
+     * @return {@link boolean}
+     */
+    public boolean markNotificationAsSeen(final long notificationId) throws InvalidNotificationException;
 }

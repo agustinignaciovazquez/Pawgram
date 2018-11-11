@@ -108,4 +108,5 @@
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <strong><spring:message code="error"/></strong><div class="alertmsg"></div> 
 </div>
+<%@include file="notifications_base.jsp"%>
 	<!--HEADER-->  

@@ -17,6 +17,7 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comments_commentid_seq")
 	@SequenceGenerator(sequenceName = "comments_commentid_seq", name = "comments_commentid_seq", allocationSize = 1)
 	@Column(name = "commentid")
+	@Access(AccessType.PROPERTY)
 	private long id;
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = true)
@@ -60,6 +61,10 @@ public class Comment {
 
 	public long getId() {
 		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public Comment getParent() {
