@@ -92,15 +92,29 @@
                   <div class="col-lg-9"> 
                    <div class="text posttitle"><c:out value="${post.title}"/></div>
                    </div>
-                   <!--ACA VA ESTO SI SOS DUEÑO DEL POST!-->
-                    <spring:message code="edit.post" var="editpost"/>
-                    <div class="col-lg-3"><button type="button" class="btn btn-info center uspaced10" onclick="location.href=''">${editpost} <i class="fas fa-edit editicon"></i></button> </div>
-                    <!--O ESTO SI NO SOS EL DUEÑo!-->
-                    <spring:message code="suscribe.to.post" var="suscribepost"/>
-                    <div class="col-lg-3"><button type="button" class="btn btn-info center uspaced10" onclick="location.href=''">${suscribepost} </button> </div>
-                </div>
+                   <c:choose>
+                     <c:when test="${post.owner eq loggedUser}">
+                       <!--ACA VA ESTO SI SOS DUEÑO DEL POST!-->
+                            <spring:message code="edit.post" var="editpost"/>
+                            <div class="col-lg-3"><input type="submit" class="btn btn-info center uspaced10" onclick="location.href=''">${editpost} <i class="fas fa-edit editicon"></i></button> </div>
+                      </c:when>
+                     <c:otherwise>
+                             <c:choose>
+                             <c:when test="${is_subscribed eq false}">
+                             <form action="<c:url value="/subscribe/post/${post.id}/" />" method="post">
+                             <spring:message code="suscribe.to.post" var="suscribepost"/>
+                              </c:when>
+                             <c:otherwise>
+                             <form action="<c:url value="/unsubscribe/post/${post.id}/" />" method="post">
+                             <spring:message code="unsuscribe.to.post" var="suscribepost"/>
+                           </c:otherwise>
+                          </c:choose>
+                     <!--O ESTO SI NO SOS EL DUEÑo!-->
+                            <div class="col-lg-3"><input type="submit" class="btn btn-info center uspaced10" onclick="location.href=''" value="${suscribepost}"/>  </div></form>
+                   </c:otherwise>
+                  </c:choose>
+                    </div>
                
-                
                 <div class="text postdate uspaced10"> <spring:message code="post.ocurred"/> <c:out value="${post.event_date}"/></div>
                 <spring:message code="gender.male" var="male_gender"/>
                 <spring:message code="gender.female" var="female_gender"/>

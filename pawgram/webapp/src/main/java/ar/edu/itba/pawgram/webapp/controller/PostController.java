@@ -5,6 +5,7 @@ import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
 import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.interfaces.service.PostImageService;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
+import ar.edu.itba.pawgram.interfaces.service.SubscribeService;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.webapp.exception.*;
@@ -37,13 +38,16 @@ public class PostController {
     @Autowired
     private PostImageService postImageService;
 
+    @Autowired
+    private SubscribeService subscribeService;
+
     @ModelAttribute("commentsForm")
     public CommentsForm formComments() {
         return new CommentsForm();
     }
 
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
-    public ModelAndView getPost(@PathVariable final long postId,
+    public ModelAndView getPost(@PathVariable final long postId, @ModelAttribute("loggedUser") final User loggedUser,
                                 @RequestParam(value = "latitude", required = false) final Optional<Double> latitude,
                                 @RequestParam(value = "longitude", required = false) final Optional<Double> longitude) throws PostNotFoundException {
 
@@ -65,7 +69,7 @@ public class PostController {
         mav.addObject("post", post);
         mav.addObject("categories", Category.values());
         mav.addObject("parentComments", post.getCommentFamilies());
-
+        mav.addObject("is_subscribed",subscribeService.isSubscribedToPost(postId,loggedUser.getId()));
         return mav;
     }
 
