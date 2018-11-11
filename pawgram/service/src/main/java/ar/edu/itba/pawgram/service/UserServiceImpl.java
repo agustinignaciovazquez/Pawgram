@@ -3,6 +3,7 @@ package ar.edu.itba.pawgram.service;
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.exception.FileException;
 import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.interfaces.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,19 +38,19 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	@Transactional
-	public User changePassword(long id, String password) {
+	public User changePassword(long id, String password) throws InvalidUserException {
 		return  userDao.changePassword(id, password);
 	}
 
 	@Override
 	@Transactional
-	public User changeName(long id, String name, String surname) {
+	public User changeName(long id, String name, String surname) throws InvalidUserException {
 		return userDao.changeName(id, name, surname);
 	}
 
 	@Override
 	@Transactional
-	public User changeProfile(long id, byte[] data) throws FileUploadException {
+	public User changeProfile(long id, byte[] data) throws FileUploadException, InvalidUserException {
 		final String img_url = fileService.createFile(PROFILE_IMAGE_UPLOAD_FOLDER,data);
 		return userDao.changeProfile(id,img_url);
 	}

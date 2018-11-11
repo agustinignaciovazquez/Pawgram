@@ -29,7 +29,7 @@ public class PostServiceImpl implements PostService {
     private HaversineDistance haversineDistance;
 
     @Override
-    @Transactional(rollbackFor = PostCreateException.class)
+    @Transactional(rollbackFor = {PostCreateException.class,InvalidPostException.class})
     public Post createPost(String title, String description, List<byte[]> raw_images, String contact_phone,
                            Date event_date, Category category, Pet pet,
                            boolean is_male, Location location, User owner) throws PostCreateException, InvalidPostException {
@@ -49,12 +49,35 @@ public class PostServiceImpl implements PostService {
             try {
                 postImages = postImageService.createPostImage(post, raw_images);
             } catch (FileUploadException e) {
-                //e.printStackTrace(); DEBUG ONLY
                 throw new PostCreateException();
             }
         }
 
-        return setPostDistance(Post.getBuilderFromProduct(post).postImages(postImages).build(),location);
+        return Post.getBuilderFromPost(post).postImages(postImages).build();
+    }
+
+    @Override
+    @Transactional(rollbackFor = {PostCreateException.class,InvalidPostException.class})
+    public Post modifyPost(long postId, List<byte[]> raw_images, String title, String description, String contact_phone,
+                           Date event_date, Category category, Pet pet, Boolean is_male, Location location) throws InvalidPostException, PostCreateException {
+        final long totalPostImages = postImageService.getTotalImagesByPostId(postId);
+
+        if(raw_images != null && raw_images.size() > (MAX_IMAGES - totalPostImages)){
+            throw new InvalidPostException();
+        }
+
+        Post post = postDao.modifyPost(postId,title,description,contact_phone,event_date,category,pet,is_male,location);
+
+        List<PostImage> postImages = null;
+        if(raw_images != null) {
+            try {
+                postImages = postImageService.createPostImage(post, raw_images);
+            } catch (FileUploadException e) {
+                throw new PostCreateException();
+            }
+        }
+
+        return Post.getBuilderFromPost(post).postImages(postImages).build();
     }
 
     @Override
@@ -83,7 +106,7 @@ public class PostServiceImpl implements PostService {
         final Post post = postDao.getFullPostById(postId);
         if(post == null)
             return null;
-        return Post.getBuilderFromProduct(post).commentFamilies(commentService.getCommentsByPostId(postId)).build();
+        return Post.getBuilderFromPost(post).commentFamilies(commentService.getCommentsByPostId(postId)).build();
     }
 
     @Override
@@ -92,7 +115,7 @@ public class PostServiceImpl implements PostService {
         final Post post = postDao.getFullPostById(postId);
         if(post == null)
             return null;
-        return setPostDistance(Post.getBuilderFromProduct(post).commentFamilies(commentService.getCommentsByPostId(postId)).build(),location);
+        return setPostDistance(Post.getBuilderFromPost(post).commentFamilies(commentService.getCommentsByPostId(postId)).build(),location);
     }
 
     @Override
