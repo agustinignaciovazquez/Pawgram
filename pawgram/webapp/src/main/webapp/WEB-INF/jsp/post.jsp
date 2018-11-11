@@ -114,11 +114,17 @@
                    </c:otherwise>
                   </c:choose>
                     </div>
-               
+
                 <div class="text postdate uspaced10"> <spring:message code="post.ocurred"/> <c:out value="${post.event_date}"/></div>
                 <spring:message code="gender.male" var="male_gender"/>
                 <spring:message code="gender.female" var="female_gender"/>
-                <div class="text postmaininfo uspaced10"><span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text postmaininfo"><spring:message code="pill.${post.category.lowerName}"/></span><em class="lspaced10">A <c:out value="${post.distance}"/> kms</em> <em> / </em> <em>Especie</em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em>Sexo</em><em>:</em> <em>${post.is_male ? male_gender : female_gender }</em>
+                <div class="text postmaininfo uspaced10"><span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text postmaininfo"><spring:message code="pill.${post.category.lowerName}"/></span><em class="lspaced10"><spring:message code="post.at"/><c:out value="${post.distance}"/><spring:message code="post.kms"/></em> <em> / </em> <em><spring:message code="post.species"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="post.sex"/></em><em>:</em> <em>
+                <c:if test="${post.is_male}">
+                  <spring:message code="gender.male"/>
+                </c:if>
+                <c:if test="${post.is_male == false}">
+                  <spring:message code="gender.female"/>
+                </c:if> </em>
                 </div>
 
                 <div class="text postdescription uspaced20"> <c:out value="${post.description}"/></div>
