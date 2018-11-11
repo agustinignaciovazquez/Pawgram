@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
+import ar.edu.itba.pawgram.interfaces.service.NotificationService;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
 import ar.edu.itba.pawgram.model.Post;
@@ -30,6 +31,9 @@ public class CommentServiceImpl implements CommentService {
 
 	@Autowired
 	private PostService postService;
+
+	@Autowired
+	private NotificationService notificationService;
 
 	@Override
 	public List<CommentFamily> getCommentsByPostId(final long id) {
@@ -63,7 +67,11 @@ public class CommentServiceImpl implements CommentService {
 		final Post post = postService.getPlainPostById(postId);
 		if(post == null || author == null || parent == null)
 			throw new InvalidCommentException();
-		return commentDao.createComment(content, new Date(), parent,post,author);
+
+		final Comment comment = commentDao.createComment(content, new Date(), parent,post,author);
+		notificationService.createNotificationsForPost(post, comment);
+
+		return comment;
 	}
 
 	@Transactional
@@ -73,7 +81,10 @@ public class CommentServiceImpl implements CommentService {
 		final Post post = postService.getPlainPostById(postId);
 		if(post == null || author == null)
 			throw new InvalidCommentException();
-		return commentDao.createParentComment(content, new Date(), post, author);
+
+		final Comment comment = commentDao.createParentComment(content, new Date(), post, author);
+		notificationService.createNotificationsForPost(post, comment);
+		return comment;
 	}
 
 }

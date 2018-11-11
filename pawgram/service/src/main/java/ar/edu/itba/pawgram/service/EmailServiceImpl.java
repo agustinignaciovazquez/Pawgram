@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Component
 public class EmailServiceImpl implements EmailService {
@@ -32,13 +36,42 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendWelcomeEmail(User user) throws SendMailException{
-        sendSimpleMessage(user.getMail(), "Bienvenido a Pawgram", "Te damos la bienvenida a Pawgram "+user.getName()+" "+user.getSurname());
+    public void sendHtmlMessage(String to, String subject, String text) throws SendMailException {
+        MimeMessage message = emailSender.createMimeMessage();
+
+        boolean multipart = true;
+
+        MimeMessageHelper helper = null;
+        try {
+            helper = new MimeMessageHelper(message, multipart, "utf-8");
+            message.setContent(text, "text/html");
+            helper.setTo(to);
+            helper.setSubject(subject);
+            emailSender.send(message);
+        } catch (MessagingException e) {
+            throw new SendMailException(e.getMessage());
+        }
     }
 
     @Override
-    public void sendRecoverEmail(User user) throws SendMailException{
-        sendSimpleMessage(user.getMail(), "Token de recuperacion", "Usa el siguiente token para restablecer"
-                + " tu contrasena "+userService.getResetToken(user));
+    public void sendWelcomeEmail(User user, String message, String subject) throws SendMailException {
+        StringBuilder content = new StringBuilder("<h3>");
+        content.append(message);
+        content.append("</h3>");
+        content.append("<img src='https://i.imgur.com/URtGAj1.png'>");
+        sendHtmlMessage(user.getMail(),subject,content.toString());
     }
+
+    @Override
+    public void sendRecoverEmail(User user, String message, String subject) throws SendMailException {
+        StringBuilder content = new StringBuilder("<h3>");
+        content.append(message);
+        content.append("</h3>");
+        content.append("<h1>");
+        content.append(userService.getResetToken(user));
+        content.append("</h1>");
+        content.append("<img src='https://i.imgur.com/URtGAj1.png'>");
+        sendHtmlMessage(user.getMail(),subject,content.toString());
+    }
+
 }

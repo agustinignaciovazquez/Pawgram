@@ -15,7 +15,7 @@ public interface PostService {
     public final static  int MAX_IMAGES = 4;
 
     /**
-     * Creates a {@link ar.edu.itba.pawgram.model.Post.PostBuilder} inserting the {@link ar.edu.itba.pawgram.model.Post} data into the database.
+     * Creates a {@link Post} inserting the {@link Post} data into the database.
      * @param title - Title of the post
      * @param description - Description of the post
      * @param raw_images - raw img's
@@ -28,9 +28,25 @@ public interface PostService {
      * @param owner - owner id of the post
      * @return Post - The newly created post
      */
-    public Post createPost(String title, String description, List<byte[]> raw_images, String contact_phone, Date event_date,
+    public Post createPost(final String title, final String description, final List<byte[]> raw_images, String contact_phone, Date event_date,
                                                      Category category, Pet pet, boolean is_male, Location location, User owner) throws PostCreateException, InvalidPostException;
-
+    /**
+     * Modifies a {@link Post} updateing the {@link Post} data into the database.
+     * @param postId - Post id to modify
+     * @param title - New title of the post
+     * @param raw_images - New raw img's
+     * @param description - New description of the post
+     * @param contact_phone - New contact phone of the owner
+     * @param category - New Category the post belongs to
+     * @param event_date - New Date of the event
+     * @param pet - New type of pet the post is for
+     * @param is_male - New true if the pet is male, false otherwise
+     * @param location - New location of the event
+     * @return Post - The modified post
+     * (note that if any parameter is null, no change would take effect in such field due to builder implementation)
+     */
+    public Post modifyPost(final long postId, final List<byte[]> raw_images, final String title, final String description, final String contact_phone, final Date event_date,
+                           final Category category, final Pet pet, final Boolean is_male, final Location location) throws InvalidPostException, PostCreateException;
     /**
      * Lists every post {@link Post}
      * @param page - number of page

@@ -1,11 +1,10 @@
 package ar.edu.itba.pawgram.persistence;
 
-import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidPostException;
 import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.persistence.querybuilder.PostKeywordQueryBuilder;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -46,6 +45,19 @@ public class PostHibernateDao implements PostDao {
         em.persist(post);
 
         return post;
+    }
+
+    @Override
+    public Post modifyPost(long postId, String title, String description, String contact_phone, Date event_date, Category category, Pet pet,
+                           Boolean is_male, Location location) throws InvalidPostException {
+        final Post p = getPlainPostById(postId);
+        if(p == null)
+            throw new InvalidPostException();
+
+        final Post.PostBuilder postBuilder = Post.getBuilderFromPost(p);
+        postBuilder.title(title).description(description).contact_phone(contact_phone).event_date(event_date).category(category).pet(pet).is_male(is_male).location(location);
+
+        return postBuilder.build();
     }
 
     @Override

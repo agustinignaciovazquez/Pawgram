@@ -25,10 +25,35 @@ public class PostImageHibernateDao implements PostImageDao {
 
     @Override
     public List<PostImage> getImagesIdByPostId(long postId) {
-        final TypedQuery<PostImage> query = em.createQuery("from PostImage as pi where pi.post.id = :postId", PostImage.class);
+        final TypedQuery<PostImage> query = em.createQuery("from PostImage as pi where pi.postId = :postId", PostImage.class);
         query.setParameter("postId", postId);
 
         final List<PostImage> list = query.getResultList();
         return list;
+    }
+
+    @Override
+    public long getTotalImagesByPostId(long postId) {
+        final TypedQuery<Long> query = em.createQuery("select count(*) from PostImage as pi WHERE pi.postId = :postId", Long.class);
+        query.setParameter("postId", postId);
+
+        final Long total = query.getSingleResult();
+        return total != null ? total : 0;
+    }
+
+    @Override
+    public PostImage getPostImageById(long postId, long postImageId) {
+        PostImage.PostImagePrimaryKeyIds key = new PostImage.PostImagePrimaryKeyIds( postImageId,  postId);
+        return em.find(PostImage.class, key);
+    }
+
+    @Override
+    public boolean deletePostImage(long postId, long postImageId) {
+        final PostImage pi = getPostImageById(postId,postImageId);
+
+        if (pi != null)
+            em.remove(pi);
+
+        return (pi != null);
     }
 }

@@ -16,16 +16,25 @@ public interface EmailService {
     public void sendSimpleMessage(String to, String subject, String text) throws SendMailException;
 
     /**
+     * Creates and sends a html message.
+     * @param to - Message receiver
+     * @param subject - Subject of the e-mail
+     * @param text - Content of the e-mail
+     * @return void
+     */
+    public void sendHtmlMessage(String to, String subject, String text) throws SendMailException;
+
+    /**
      * Sends a welcome mail to the newly user
      * @param user - Message receiver
      * @return void
      */
-    public void sendWelcomeEmail(User user) throws SendMailException;
+    public void sendWelcomeEmail(User user, String message, String subject) throws SendMailException;
 
     /**
      * Sends reset token to the user
      * @param user - Message receiver
      * @return void
      */
-    public void sendRecoverEmail(User user) throws SendMailException;
+    public void sendRecoverEmail(User user, String message, String subject) throws SendMailException;
 }

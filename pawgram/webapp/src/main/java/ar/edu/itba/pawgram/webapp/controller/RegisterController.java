@@ -9,6 +9,7 @@ import ar.edu.itba.pawgram.webapp.form.UserForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Locale;
+
 @RequestMapping("/register")
 @Controller
 public class RegisterController {
@@ -30,6 +33,8 @@ public class RegisterController {
     private SecurityUserService securityUserService;
     @Autowired
     private EmailService ms;
+    @Autowired
+    private MessageSource messageSource;
 
     @ModelAttribute("registerForm")
     public UserForm registerForm() {
@@ -44,7 +49,7 @@ public class RegisterController {
 
     @RequestMapping(value = "/process", method = { RequestMethod.POST })
     public ModelAndView create(@ModelAttribute("registerForm") @Valid final UserForm registerUserForm,
-                               final BindingResult errors, final RedirectAttributes attr) {
+                               final BindingResult errors, final RedirectAttributes attr, final Locale locale) {
         LOGGER.debug("Accessed register POST");
         if (errors.hasErrors()) {
             LOGGER.warn("Failed to register user: form has error: {}", errors.getAllErrors());
@@ -53,7 +58,8 @@ public class RegisterController {
 
         final User user;
         try {
-            user = securityUserService.registerUser(registerUserForm.getName(),registerUserForm.getSurname(),registerUserForm.getMail(),registerUserForm.getPasswordForm().getPassword(),null);
+            user = securityUserService.registerUser(registerUserForm.getName(),registerUserForm.getSurname(),
+                    registerUserForm.getMail(),registerUserForm.getPasswordForm().getPassword(),null);
         } catch (DuplicateEmailException e) {
             LOGGER.warn("Failed to register user: duplicate email {}", e.getMessage());
             errors.rejectValue("mail", "DuplicateEmail");
@@ -62,7 +68,9 @@ public class RegisterController {
 
         LOGGER.info("New user with id {} registered", user.getId());
         try {
-            ms.sendWelcomeEmail(user);
+            String [] args = {user.getName() + " " +user.getSurname()};
+            ms.sendWelcomeEmail(user,messageSource.getMessage("welcomeMailMessage",args,locale),
+                    messageSource.getMessage("welcomeMailSubject",null,locale));
         } catch (SendMailException e) {
             LOGGER.warn("Could not send welcome email registered \n Stacktrace {}", e.getMessage());
         }

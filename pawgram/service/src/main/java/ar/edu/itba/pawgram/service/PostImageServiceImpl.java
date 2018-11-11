@@ -53,4 +53,19 @@ public class PostImageServiceImpl implements PostImageService {
     public byte[] getImage(String filename) throws FileException {
         return fileService.getFile(UPLOAD_FOLDER,filename);
     }
+
+    @Override
+    public long getTotalImagesByPostId(long postId) {
+        return postImageDao.getTotalImagesByPostId(postId);
+    }
+
+    @Override
+    public PostImage getPostImageById(long postId, long postImageId) {
+        return postImageDao.getPostImageById(postId,postImageId);
+    }
+
+    @Override
+    public boolean deletePostImage(long postId, long postImageId) {
+        return postImageDao.deletePostImage(postId,postImageId);
+    }
 }

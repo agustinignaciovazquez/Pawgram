@@ -1,5 +1,6 @@
 package ar.edu.itba.pawgram.interfaces.persistence;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidPostException;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.structures.Location;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 public interface PostDao {
     /**
-     * Creates a {@link Post.PostBuilder} inserting the {@link Post} data into the database.
+     * Creates a {@link Post} inserting the {@link Post} data into the database.
      * @param title - Title of the post
      * @param description - Description of the post
      * @param contact_phone - contact phone of the owner
@@ -25,6 +26,23 @@ public interface PostDao {
      */
     public Post createPost(String title, String description,  String contact_phone, Date event_date,
                            Category category, Pet pet, boolean is_male, Location location, User owner);
+
+    /**
+     * Modifies a {@link Post} updateing the {@link Post} data into the database.
+     * @param postId - Post id to modify
+     * @param title - New title of the post
+     * @param description - New description of the post
+     * @param contact_phone - New contact phone of the owner
+     * @param category - New Category the post belongs to
+     * @param event_date - New Date of the event
+     * @param pet - New type of pet the post is for
+     * @param is_male - New true if the pet is male, false otherwise
+     * @param location - New location of the event
+     * @return Post - The modified post
+     * (note that if any parameter is null, no change would take effect in such field due to builder implementation)
+     */
+    public Post modifyPost(final long postId, final String title, final String description,  final String contact_phone, final Date event_date,
+                           final Category category, final Pet pet, final Boolean is_male, final Location location) throws InvalidPostException;
 
     /**
      * Lists every post {@link Post}

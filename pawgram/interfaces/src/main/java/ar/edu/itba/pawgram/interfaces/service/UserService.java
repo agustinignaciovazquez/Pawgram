@@ -3,6 +3,7 @@ package ar.edu.itba.pawgram.interfaces.service;
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.exception.FileException;
 import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.model.User;
 
 import java.io.IOException;
@@ -45,7 +46,7 @@ public interface UserService {
 	 * @param password - New user's password
 	 * @return The user with the modified password or null if user doesn't exist
 	 */
-	public User changePassword(final long id,final String password);
+	public User changePassword(final long id,final String password) throws InvalidUserException;
 
 	/**
 	 * Changes an [@link User] password
@@ -54,7 +55,7 @@ public interface UserService {
 	 * @param surname - New user's surname
 	 * @return The user with the modified name or null if user doesn't exist
 	 */
-	public User changeName(final long id,final String name, final String surname);
+	public User changeName(final long id,final String name, final String surname) throws InvalidUserException;
 
 	/**
 	 * Changes an [@link User] profile picture url
@@ -62,7 +63,7 @@ public interface UserService {
 	 * @param data - profile image raw data
 	 * @return The user with the modified profile url or null if user doesn't exist
 	 */
-	public User changeProfile(long id, byte[] data) throws FileUploadException;
+	public User changeProfile(long id, byte[] data) throws FileUploadException, InvalidUserException;
 
 	/**
 	 * Get raw bytes of a profile image

@@ -1,10 +1,14 @@
 package ar.edu.itba.pawgram.model;
 
+import ar.edu.itba.pawgram.model.comparator.PostDateComparator;
+import org.hibernate.annotations.SortComparator;
+
 import javax.persistence.*;
 
-import static org.apache.commons.lang3.Validate.isTrue;
-import static org.apache.commons.lang3.Validate.notBlank;
-import static org.apache.commons.lang3.Validate.notEmpty;
+import java.util.Collections;
+import java.util.SortedSet;
+
+import static org.apache.commons.lang3.Validate.*;
 
 @Entity
 @Table(name = "users")
@@ -30,6 +34,12 @@ public class User {
 
 	@Column(name = "profile_img_url", length = 32, nullable = true)
 	private String profile_img_url;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(	name = "subscriptions", joinColumns = @JoinColumn(name = "userId", nullable = false, foreignKey = @ForeignKey(name = "user_id_constraint")),
+			inverseJoinColumns = @JoinColumn(name = "postId", nullable = false, foreignKey = @ForeignKey(name = "post_id_constraint")))
+	@SortComparator(PostDateComparator.class)
+	private SortedSet<Post> postSubscriptions;
 
 	// Hibernate
 	User() {
@@ -88,6 +98,20 @@ public class User {
 
 	public void setSurname(String surname) {
 		this.surname = notBlank(surname,"User surname must have at least one non empty character");
+	}
+
+	public SortedSet<Post> getPostSubscriptions() {
+		return Collections.unmodifiableSortedSet(postSubscriptions);
+	}
+
+	public boolean subscribePost(final Post post) {
+		return postSubscriptions.add(notNull(post, "Post to suscribe by user " + this + "cannot be null"))
+				&& post.addSubscription(this);
+	}
+
+	public boolean unSubscribePost(final Post post) {
+		return postSubscriptions.remove(notNull(post, "Post to unsuscribe by user " + this + " cannot be null"))
+				&& post.removeSubscription(this);
 	}
 
 	@Override

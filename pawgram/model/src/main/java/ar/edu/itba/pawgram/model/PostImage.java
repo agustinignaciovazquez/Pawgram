@@ -87,7 +87,7 @@ public class PostImage  {
         private long postImageId;
         private long postId;
 
-        public PostImagePrimaryKeyIds(int postImageId, int postId) {
+        public PostImagePrimaryKeyIds(long postImageId, long postId) {
             this.postImageId = postImageId;
             this.postId = postId;
         }

@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.persistence;
 
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.interfaces.persistence.UserDao;
 import ar.edu.itba.pawgram.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,36 +61,36 @@ public class UserHibernateDao implements UserDao {
     }
 
     @Override
-    public User changePassword(long id, String password) {
+    public User changePassword(long id, String password) throws InvalidUserException {
         final User user = getPlainUserById(id);
 
-        if (user != null) {
-            String enc_password = bCryptPasswordEncoder.encode(password);
-            user.setPassword(enc_password);
-        }
+        if (user == null)
+            throw new InvalidUserException();
 
+        String enc_password = bCryptPasswordEncoder.encode(password);
+        user.setPassword(enc_password);
         return user;
     }
 
     @Override
-    public User changeName(long id, String name, String surname) {
+    public User changeName(long id, String name, String surname) throws InvalidUserException {
         final User user = getPlainUserById(id);
+        if(user == null)
+            throw new InvalidUserException();
 
-        if (user != null) {
-            user.setName(name);
-            user.setSurname(surname);
-        }
-
+        user.setName(name);
+        user.setSurname(surname);
         return user;
     }
 
     @Override
-    public User changeProfile(long id, String img_url) {
+    public User changeProfile(long id, String img_url) throws InvalidUserException {
         final User user = getPlainUserById(id);
 
-        if (user != null)
-            user.setProfile_img_url(img_url);
+        if (user == null)
+            throw new InvalidUserException();
 
+        user.setProfile_img_url(img_url);
         return user;
     }
 

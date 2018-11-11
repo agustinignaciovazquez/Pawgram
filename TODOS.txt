@@ -1,0 +1,4 @@
+Tests
+Format ISO en las fechas JSP
+Ver textos sin internacionalizar en JSP
+Botones que parecen deshabilitados para publicar un animal perdido / encontrado
