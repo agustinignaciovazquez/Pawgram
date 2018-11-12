@@ -1,10 +1,12 @@
 package ar.edu.itba.pawgram.interfaces.persistence;
 
+import ar.edu.itba.pawgram.interfaces.exception.InvalidNotificationException;
 import ar.edu.itba.pawgram.model.Comment;
 import ar.edu.itba.pawgram.model.Notification;
 import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.User;
 
+import java.util.Date;
 import java.util.List;
 
 public interface NotificationDao {
@@ -22,9 +24,10 @@ public interface NotificationDao {
      * @param user - user to create notification for.
      * @param post - post associated with notification
      * @param comment - comment associated with notification (could be null)
+     * @param date - date of the notification
      * @return {@link Notification} created
      */
-    public Notification createNotification(final User user, final Post post, final Comment comment);
+    public Notification createNotification(final User user, final Post post, final Comment comment, final Date date);
 
     /**
      * Counts total of {@link Notification} of a specific {@link User}.
@@ -33,4 +36,18 @@ public interface NotificationDao {
      * @return {@link long} with the total of notifications
      */
     public long getTotalNotificationByUser(final User user, final boolean include_seen_notifications);
+
+    /**
+     * Lists every post {@link Post}
+     * @param notificationId - notificationId
+     * @return {@link List} of the existing posts (distance as 0)
+     */
+    public Notification getPlainNotificationById(final long notificationId);
+
+    /**
+     * Marks {@link Notification} as seen
+     * @param notificationId - notificationId
+     * @return {@link boolean}
+     */
+    public boolean markNotificationAsSeen(final long notificationId) throws InvalidNotificationException;
 }
