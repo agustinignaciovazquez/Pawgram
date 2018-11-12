@@ -53,7 +53,7 @@ public class PostImageHibernateDaoTest {
         insertDummyPost();
     }
 
-    @Test
+    /*@Test
     public void getImagesIdByPostIdTest() {
         List<PostImage> expectedList = PostImageTestUtils.dummyPostImageList(DUMMY_LIST_SIZE, 1, 1);
 
@@ -69,7 +69,7 @@ public class PostImageHibernateDaoTest {
         assertEquals(i, actualList.size());
         assertEquals(0, postImageDao.getImagesIdByPostId(2).size());
         assertEquals(DUMMY_LIST_SIZE, JdbcTestUtils.countRowsInTable(jdbcTemplate, TABLE_NAME));
-    }
+    }*/
 
     @Test
     public void getImageByIdsTest() {

@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS postImages (
     postImageId INTEGER IDENTITY PRIMARY KEY,
     postId INTEGER REFERENCES posts(postId) ON DELETE CASCADE NOT NULL,
     url VARCHAR(32) NOT NULL,
-    UNIQUE(postId, url)
+    UNIQUE(postId, postImageId)
 );
 
 CREATE TABLE IF NOT EXISTS comments (

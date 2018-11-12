@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -36,7 +37,8 @@ public class UserHibernateDaoTest {
 
     @Autowired
     private UserHibernateDao userDao;
-
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
@@ -47,18 +49,23 @@ public class UserHibernateDaoTest {
         jdbcTemplate.execute("TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK");
     }
 
-    /*
     @Test
     public void createUserTest() throws DuplicateEmailException {
-        User expected = UserTestUtils.dummyUser(1);
-        expected = insertUser(expected);
-        actual = expected;
-        User actual = userDao.create(expected.getName(), expected.getSurname(),  expected.getMail(), expected.getPassword(),
-                expected.getProfile_img_url());
+        User actual = UserTestUtils.dummyUser(1);
+        User expected = insertUser(actual);
 
         UserTestUtils.assertEqualsUsers(expected, actual);
+        bCryptPasswordEncoder.matches(actual.getPassword(),expected.getPassword());
     }
-    */
+
+    @Test(expected = DuplicateEmailException.class)
+    public void createDuplicatedUserTest() throws DuplicateEmailException {
+        User expected = UserTestUtils.dummyUser(1);
+        expected = insertUser(expected);
+        User actual = userDao.create(expected.getName(), expected.getSurname(),  expected.getMail(), expected.getPassword(),
+                expected.getProfile_img_url());
+    }
+
 
     @Test(expected = DuplicateEmailException.class)
     public void duplicateEmailExceptionTest() throws DuplicateEmailException {
@@ -75,6 +82,7 @@ public class UserHibernateDaoTest {
         User actual = userDao.findByMail(expected.getMail());
 
         UserTestUtils.assertEqualsUsers(expected, actual);
+        bCryptPasswordEncoder.matches(actual.getPassword(),expected.getPassword());
     }
 
     @Test

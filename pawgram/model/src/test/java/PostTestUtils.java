@@ -93,7 +93,6 @@ public final class PostTestUtils {
     public static void assertEqualsFullPosts(Post expected, Post actual) {
         assertEquals(expected.getTitle(), actual.getTitle());
         assertEquals(expected.getDescription(), actual.getDescription());
-        assertEquals(expected.getPostImages(), actual.getPostImages());
         assertEquals(expected.getDescription(), actual.getDescription());
         assertEquals(expected.getCategory(), actual.getCategory());
         assertEquals(expected.getOwner(), actual.getOwner());
