@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class SubscribeServiceImpl implements SubscribeService {
@@ -55,5 +57,12 @@ public class SubscribeServiceImpl implements SubscribeService {
             return false;
 
         return (post.getUserSubscriptions().contains(user));
+    }
+
+    @Override
+    @Transactional
+    public Set<Post> getUserSubscribedPosts(long userId) {
+        final User user = userService.findById(userId);
+        return user.getPostSubscriptions();
     }
 }

@@ -65,6 +65,7 @@ public class PostImageServiceImpl implements PostImageService {
     }
 
     @Override
+    @Transactional
     public boolean deletePostImage(long postId, long postImageId) {
         return postImageDao.deletePostImage(postId,postImageId);
     }

@@ -75,6 +75,11 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    public Notification getFullNotificationById(long notificationId) {
+        return notificationDao.getFullNotificationById(notificationId);
+    }
+
+    @Override
     @Transactional
     public boolean markNotificationAsSeen(long notificationId) throws InvalidNotificationException {
         return notificationDao.markNotificationAsSeen(notificationId);

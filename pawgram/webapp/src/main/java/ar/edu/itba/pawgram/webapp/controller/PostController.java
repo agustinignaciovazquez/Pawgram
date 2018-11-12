@@ -53,7 +53,7 @@ public class PostController {
 
         LOGGER.debug("Accessed post with id {}", postId);
 
-        ar.edu.itba.pawgram.model.Post post;
+        Post post;
         if(longitude.isPresent() && latitude.isPresent()) {
              post = postService.getFullPostById(postId, new Location(longitude.get(), latitude.get()));
         }else{
@@ -78,7 +78,7 @@ public class PostController {
                                      @ModelAttribute("loggedUser") final User loggedUser) throws PostNotFoundException, ForbiddenException {
         LOGGER.debug("Accessed delete post with id {}",postId);
 
-        final ar.edu.itba.pawgram.model.Post post = postService.getFullPostById(postId);
+        final Post post = postService.getFullPostById(postId);
         if (post == null) {
             LOGGER.warn("Failed to delete post with id {}: post not found", postId);
             throw new PostNotFoundException();
@@ -94,6 +94,34 @@ public class PostController {
 
         return new ModelAndView("redirect:/profile/" + loggedUser.getId());
     }
+
+    @RequestMapping("/delete/{postId}/image/{postImageId}")
+    public ModelAndView deleteMyPost(@PathVariable final long postId, @PathVariable final long postImageId,
+                                     @ModelAttribute("loggedUser") final User loggedUser) throws PostNotFoundException, ForbiddenException {
+        LOGGER.debug("Accessed delete post with id {}",postId);
+
+        final Post post = postService.getFullPostById(postId);
+        if (post == null) {
+            LOGGER.warn("Failed to delete post image with post id {} and image id {}: post not found", postId,postImageId);
+            throw new PostNotFoundException();
+        }
+        if(!loggedUser.equals(post.getOwner())){
+            LOGGER.warn("Failed to delete post image with post id {}: logged user with id {} is not post creator with id {}",
+                    postId, loggedUser.getId(), post.getOwner().getId());
+            throw new ForbiddenException();
+        }
+        final PostImage postImage = postImageService.getPostImageById(postId,postImageId);
+        if(postImage == null){
+            LOGGER.warn("Failed to delete post image with post id {} and image id {}: post image not found", postId,postImageId);
+            throw new PostNotFoundException();
+        }
+
+        if (postImageService.deletePostImage(postId,postImageId))
+            LOGGER.info("Post image with id {} from post with id {} deleted by user with id {}", postImageId,postId, loggedUser.getId());
+
+        return new ModelAndView("redirect:/post/" + post.getId());
+    }
+
 
     @RequestMapping(value = "/{postId}/comment", method = RequestMethod.POST)
     public ModelAndView postComment (@PathVariable final long postId,

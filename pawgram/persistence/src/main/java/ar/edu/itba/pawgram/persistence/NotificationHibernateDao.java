@@ -57,6 +57,20 @@ public class NotificationHibernateDao implements NotificationDao {
     }
 
     @Override
+    public Notification getFullNotificationById(long notificationId) {
+        final TypedQuery<Notification> query = em.createQuery("from Notification as n join fetch n.user as nu where n.id = :notificationId", Notification.class);
+        query.setParameter("notificationId", notificationId);
+
+        final List<Notification> result = query.getResultList();
+
+        if (result.isEmpty())
+            return null;
+
+        final Notification notification = result.get(0);
+        return notification;
+    }
+
+    @Override
     public boolean markNotificationAsSeen(long notificationId) throws InvalidNotificationException {
         final Notification notification = getPlainNotificationById(notificationId);
         if(notification == null)

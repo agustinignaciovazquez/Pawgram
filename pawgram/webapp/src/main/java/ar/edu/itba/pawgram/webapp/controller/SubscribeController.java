@@ -2,6 +2,9 @@ package ar.edu.itba.pawgram.webapp.controller;
 
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.interfaces.service.SubscribeService;
+import ar.edu.itba.pawgram.interfaces.service.UserService;
+import ar.edu.itba.pawgram.model.Category;
+import ar.edu.itba.pawgram.model.Notification;
 import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.webapp.exception.PostNotFoundException;
@@ -12,6 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 @Controller
 public class SubscribeController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SubscribeController.class);
@@ -21,6 +28,20 @@ public class SubscribeController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping(value = {"/subscriptions"})
+    public ModelAndView showSubscriptions( @ModelAttribute("loggedUser") final User loggedUser){
+        LOGGER.debug("Accessed subscriptions");
+        final Set<Post> postsSubscribed = subscribeService.getUserSubscribedPosts(loggedUser.getId());
+
+        ModelAndView mav = new ModelAndView("subscriptions");
+        mav.addObject("categories", Category.values());
+        mav.addObject("subscriptions", postsSubscribed);
+        return mav;
+    }
 
     @RequestMapping(value = "/subscribe/post/{postId}", method = RequestMethod.POST)
     public ModelAndView subscribePost(@PathVariable final long postId,

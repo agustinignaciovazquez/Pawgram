@@ -38,9 +38,11 @@
        </c:choose>
           
       </c:if>
+    <c:url value="/notifications/mark/seen/${notification.id}" var="deleteurlnoti"/>
     <c:set value="${notification.date}" var="datenoti" />
     notifications.push({
     href: "${urlnoti}",
+    deletehref: "${deleteurlnoti}",
     image: "${imgurlnoti}",
     texte: "${notitext}",
     date: "${datenoti}"
@@ -179,7 +181,8 @@
 
           var template = $('#notificationTemplate').html();
           template = template.replace("{{href}}", notifications[i].href);
-          template = template.replace("{{image}}", notifications[i].image);
+          template = template.replace("{{deletehref}}", notifications[i].deletehref);
+          template = template.replace("{{imagexe}}", notifications[i].image);
           template = template.replace("{{texte}}", notifications[i].texte);
           template = template.replace("{{date}}", notifications[i].date);
 
@@ -204,7 +207,19 @@
       // Permet de garde la liste ouverte
       event.preventDefault();
       event.stopPropagation();
+    $.ajax({
 
+      url : $(elem).find('.myremovebutton').attr('href'),
+      type : 'GET',
+      dataType:'json',
+      success : function(data) {              
+          
+      },
+      error : function(request,error)
+      {
+          
+      }
+    });
       // Suppression de la notification
       elem.parent('.dropdown-notification').remove();
 

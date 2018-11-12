@@ -45,11 +45,18 @@ public interface NotificationService {
     public Set<Notification> createNotificationsForPost(Post post, Comment comment);
 
     /**
-     * Lists every post {@link Post}
+     * Gets plain {@link Notification} by id
      * @param notificationId - notificationId
-     * @return {@link List} of the existing posts (distance as 0)
+     * @return {@link Notification}
      */
     public Notification getPlainNotificationById(final long notificationId);
+
+    /**
+     * Gets full {@link Notification} by id
+     * @param notificationId - notificationId
+     * @return {@link Notification}
+     */
+    public Notification getFullNotificationById(final long notificationId);
 
     /**
      * Marks {@link Notification} as seen

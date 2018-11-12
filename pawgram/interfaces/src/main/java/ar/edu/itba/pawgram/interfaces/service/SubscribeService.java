@@ -3,6 +3,9 @@ package ar.edu.itba.pawgram.interfaces.service;
 import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.User;
 
+import java.util.List;
+import java.util.Set;
+
 public interface SubscribeService {
     /**
      * Votes a {@link Post} given it's ID and the subscriber {@link User} ID.
@@ -30,4 +33,13 @@ public interface SubscribeService {
      * @return boolean corresponding. Also if any of ids is invalid returns false
      */
     public boolean isSubscribedToPost(final long postId, final long userId);
+
+    /**
+     * Lists every post the user is subscribed to {@link Post}
+     * @param userId - user id
+     * @return {@link List} of the existing subscribed posts (distance as 0)
+     */
+    public Set<Post> getUserSubscribedPosts(final long userId);
+
+
 }

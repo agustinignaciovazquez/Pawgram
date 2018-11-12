@@ -29,7 +29,7 @@
                 </a>
 
                 <!-- TOUTES -->
-                <a class="dropdown-item dropdown-notification-all" href="#">
+                <a class="dropdown-item dropdown-notification-all" href="<c:url value="/notifications"/>">
                   <spring:message code="see.all.notifications"/>
                 </a>
 
@@ -42,9 +42,9 @@
             <!-- NOTIFICATION -->
             <a class="dropdown-item dropdown-notification" href="{{href}}">
               <div class="notification-read">
-                <i class="fa fa-times" aria-hidden="true"></i>
+                <i href="{{deletehref}}" class="fa fa-times myremovebutton" aria-hidden="true"></i>
               </div>
-              <img class="notification-img" src="https://placehold.it/48x48" alt="Icone Notification" />
+              <img class="notification-img" src="{{imagexe}}" alt="icon" />
               <div class="notifications-body">
                 <p class="notification-texte">{{texte}}</p>
                 <p class="notification-date text-muted">
@@ -89,12 +89,12 @@
               <li class="nav-item">
                 <a class="nav-link text nav-sec" href="<c:url value="/my_zones"/>"><spring:message code="title.myzones"/></a>
               </li>
+               <li class="nav-item">
+                <a class="nav-link text nav-sec" href="<c:url value="/suscriptions"/>"><spring:message code="title.suscriptions"/></a>
+              </li> 
               <li class="nav-item">
                 <a class="nav-link text nav-sec" href="<c:url value="/customize"/>"><spring:message code="title.configuration"/></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text nav-sec" href="<c:url value="/my_suscriptions"/>"><spring:message code="title.suscriptions"/></a>
-              </li>             
+              </li>      
               <hr></hr>
               <li class="nav-item">
                 <a class="nav-link text nav-sec" href="<c:url value="/logout"/>"><spring:message code="title.logout"/></a>
