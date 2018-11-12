@@ -1,8 +1,8 @@
 package ar.edu.itba.pawgram.persistence;
+
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.persistence.UserDao;
 import ar.edu.itba.pawgram.model.*;
-import ar.edu.itba.pawgram.persistence.PostHibernateDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
