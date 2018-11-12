@@ -1,7 +1,4 @@
-import ar.edu.itba.pawgram.model.Category;
-import ar.edu.itba.pawgram.model.Pet;
-import ar.edu.itba.pawgram.model.Post;
-import ar.edu.itba.pawgram.model.PostImage;
+package ar.edu.itba.pawgram.model;
 import ar.edu.itba.pawgram.model.structures.Location;
 
 import java.util.ArrayList;

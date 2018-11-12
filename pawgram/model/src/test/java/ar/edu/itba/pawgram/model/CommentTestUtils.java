@@ -1,4 +1,4 @@
-import ar.edu.itba.pawgram.model.Comment;
+package ar.edu.itba.pawgram.model;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

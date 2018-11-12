@@ -1,4 +1,4 @@
-import ar.edu.itba.pawgram.model.PostImage;
+package ar.edu.itba.pawgram.model;
 
 import java.util.ArrayList;
 import java.util.List;

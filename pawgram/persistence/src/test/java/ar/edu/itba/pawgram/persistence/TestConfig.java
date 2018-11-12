@@ -1,3 +1,5 @@
+package ar.edu.itba.pawgram.persistence;
+
 import org.hsqldb.jdbc.JDBCDriver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,7 +17,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan({"ar.edu.itba.pawgram.persistence", "ar.edu.itba.pawgram.model"})
+@ComponentScan({"ar.edu.itba.pawgram.persistence"})
 public class TestConfig {
 
     @Bean
@@ -52,7 +54,6 @@ public class TestConfig {
     public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
-
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){

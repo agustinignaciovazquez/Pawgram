@@ -1,6 +1,8 @@
+package ar.edu.itba.pawgram.persistence;
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.model.UserTestUtils;
 import ar.edu.itba.pawgram.persistence.UserHibernateDao;
 import org.junit.Before;
 import org.junit.Test;
