@@ -95,8 +95,10 @@
                    <c:choose>
                      <c:when test="${post.owner eq loggedUser}">
                        <!--ACA VA ESTO SI SOS DUEÑO DEL POST!-->
+                       <form action="<c:url value="/post/edit/${post.id}/" />" method="post">
                             <spring:message code="edit.post" var="editpost"/>
-                            <div class="col-lg-3"><input type="submit" class="btn btn-info center uspaced10" onclick="location.href=''">${editpost} <i class="fas fa-edit editicon"></i></button> </div>
+                            <div class="col-lg-3"><input type="submit" class="btn btn-info center uspaced10" onclick="location.href=''" value="${editpost}"> <i class="fas fa-edit editicon"></i></input> </div>
+                          </form>
                       </c:when>
                      <c:otherwise>
                              <c:choose>

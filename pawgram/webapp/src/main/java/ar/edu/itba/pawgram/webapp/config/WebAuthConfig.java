@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,12 +25,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 @Configuration
+@PropertySource(value="classpath:config.properties")
 @EnableWebSecurity
 @ComponentScan({"ar.edu.itba.pawgram.webapp.auth"})
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 @Autowired
 private PawgramUserDetailsService userDetailsService;
-private String remember_me_key = "l6uhSy6zyoj9YCCDr1XSR3rtsEKEYCmc";
+@Value(value = "${server.remember_me.key}")
+private String remember_me_key;
 
 @Override
 protected void configure(final HttpSecurity http) throws Exception {
@@ -71,6 +75,12 @@ public BCryptPasswordEncoder bCryptPasswordEncoder(){
 @Bean
 public AuthenticationSuccessHandler successHandler() {
 	return new RefererLoginSuccessHandler("/");
+}
+
+//To resolve ${} in @Value
+@Bean
+public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
+	return new PropertySourcesPlaceholderConfigurer();
 }
 
 @Autowired
