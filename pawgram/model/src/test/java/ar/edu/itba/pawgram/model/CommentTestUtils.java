@@ -48,8 +48,6 @@ public final class CommentTestUtils {
         assertEquals(expected.hasParent(), actual.hasParent());
         if (expected.hasParent())
             assertEquals(expected.getParent(), actual.getParent());
-        assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getContent(), actual.getContent());
-        assertEquals(expected, actual);
     }
 }

@@ -50,7 +50,7 @@ public class CommentHibernateDaoTest {
         insertDummyPost();
     }
 
-    /*
+
     @Test
     public void createParentCommentTest() {
         Comment expected = CommentTestUtils.dummyParentComment(1, 1, 1);
@@ -61,9 +61,9 @@ public class CommentHibernateDaoTest {
         assertFalse(actual.hasParent());
         CommentTestUtils.assertEqualsComments(actual, commentDao.getCommentById(actual.getId()));
     }
-    */
 
-    /*
+
+
     @Test
     public void createChildCommentTest() {
         Comment dummyParent = CommentTestUtils.dummyParentComment(1, 1, 1);
@@ -77,7 +77,7 @@ public class CommentHibernateDaoTest {
         CommentTestUtils.assertEqualsComments(dummyParent, actual.getParent());
         CommentTestUtils.assertEqualsComments(actual, commentDao.getCommentById(actual.getId()));
     }
-    */
+
 
     @Test
     public void getCommentsByPostIdTest() {
