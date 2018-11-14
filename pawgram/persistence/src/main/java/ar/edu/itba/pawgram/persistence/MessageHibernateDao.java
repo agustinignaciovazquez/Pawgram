@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,9 +39,13 @@ public class MessageHibernateDao implements MessageDao {
 
         return message;
     }
-    //TODO this complicated query
+
     @Override
     public List<User> getMessageUsers(User origin) {
-        return null;
+        final TypedQuery<User> query = em.createQuery("select distinct u from User as u, Message as m WHERE ((m.orig_user.id = u.id AND m.dest_user.id = :origId)" +
+                "OR ( m.dest_user.id = u.id  AND m.orig_user.id = :origId)) AND u.id != :origId ORDER by u.name ASC",User.class);
+        query.setParameter("origId",origin.getId());
+
+        return query.getResultList();
     }
 }
