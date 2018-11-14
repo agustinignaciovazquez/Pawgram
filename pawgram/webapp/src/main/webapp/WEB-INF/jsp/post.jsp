@@ -2,7 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 <head>
 
 	<meta charset="UTF-8">
@@ -117,7 +117,7 @@
                   </c:choose>
                     </div>
 
-                <div class="text postdate uspaced10"> <spring:message code="post.ocurred"/> <c:out value="${post.event_date}"/></div>
+                <div class="text postdate uspaced10"> <spring:message code="post.ocurred"/><fmt:formatDate type="date" value="${post.event_date}" /> </div>
                 <spring:message code="gender.male" var="male_gender"/>
                 <spring:message code="gender.female" var="female_gender"/>
                 <div class="text postmaininfo uspaced10"><span class="badge badge-pill <spring:message code="category.color.${post.category.lowerName}"/> text postmaininfo"><spring:message code="pill.${post.category.lowerName}"/></span><em class="lspaced10"><spring:message code="post.at"/><c:out value="${post.distance}"/><spring:message code="post.kms"/></em> <em> / </em> <em><spring:message code="post.species"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="post.sex"/></em><em>:</em> <em>
@@ -194,7 +194,7 @@
                       <div class="comment-box">
                         <div class="comment-head">
                           <h6 class="comment-name ${post.owner eq commentFamily.parentComment.author ? 'by-author' : 'duki'}"><a href="<c:url value="/profile/${commentFamily.parentComment.author.id}"/>"> <c:out value="${commentFamily.parentComment.author.name} ${commentFamily.parentComment.author.surname}" /></a></h6>
-                          <span><c:out value="${commentFamily.parentComment.commentDate}"/></span>
+                          <span><fmt:formatDate type="both" value="${commentFamily.parentComment.commentDate}" /></span>
                           
                           <!--
 
@@ -220,7 +220,7 @@
                         <div class="comment-box">
                           <div class="comment-head">
                             <h6 class="comment-name ${post.owner eq child.author ? 'by-author' : 'duki'}"><a href="<c:url value="/profile/${child.author.id}"/>"><c:out value="${child.author.name} ${child.author.surname}" /></a></h6>
-                            <span><c:out value="${child.commentDate}"/></span>
+                            <span> <fmt:formatDate type="both"  value="${child.commentDate}" /></span>
                             
                             <!--
                             

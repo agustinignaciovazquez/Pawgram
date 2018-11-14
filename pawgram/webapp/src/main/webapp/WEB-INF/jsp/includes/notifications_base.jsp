@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 
  <script>
      $( document ).ready(function () {
@@ -39,7 +40,7 @@
           
       </c:if>
     <c:url value="/notifications/mark/seen/${notification.id}" var="deleteurlnoti"/>
-    <c:set value="${notification.date}" var="datenoti" />
+    <fmt:formatDate type="both" value="${notification.date}" var="datenoti"/>
     notifications.push({
     href: "${urlnoti}",
     deletehref: "${deleteurlnoti}",

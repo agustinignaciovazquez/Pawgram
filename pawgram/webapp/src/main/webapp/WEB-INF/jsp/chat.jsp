@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 
 <head>
 
@@ -98,7 +99,7 @@
                   <div class="outgoing_msg">
                     <div class="sent_msg">
                       <p><c:out value="${message.message}" /></p>
-                      <span class="time_date"><c:out value="${message.messageDate}" /></span> </div>
+                      <span class="time_date"><fmt:formatDate type="both" value="${message.messageDate}" /></span> </div>
                   </div>
                  </c:when>
                  <c:otherwise>
