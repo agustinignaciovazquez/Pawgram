@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.webapp.form;
 
 import ar.edu.itba.pawgram.interfaces.service.PostService;
+import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.Pet;
 import ar.edu.itba.pawgram.webapp.form.constraints.DateRule;
@@ -65,6 +66,17 @@ public class PostForm {
                 l.add(image.getFile().getBytes());
         }
         return l;
+    }
+
+    public void setPost(Post post){
+        title = post.getTitle();
+        description = post.getDescription();
+        contact_phone = post.getContact_phone();
+        event_date = post.getEvent_date();
+        pet = post.getPet();
+        is_male = post.isIs_male();
+        latitude = post.getLocation().getLatitude();
+        longitude = post.getLocation().getLongitude();
     }
 
     public String getTitle() {

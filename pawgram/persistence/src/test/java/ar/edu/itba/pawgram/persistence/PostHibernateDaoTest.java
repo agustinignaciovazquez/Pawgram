@@ -199,7 +199,7 @@ public class PostHibernateDaoTest {
         User u = dummyUserList.get(0);
         return postDao.createPost(post.getTitle(), post.getDescription(), post.getContact_phone(),
                 post.getEvent_date(), post.getCategory(), post.getPet(), post.isIs_male(), post.getLocation(),
-                u, post.getPostImages());
+                u);
 
     }
 

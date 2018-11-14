@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -100,7 +101,9 @@ public class UploadPostController {
     }
 
     @RequestMapping(value = "/edit/{postId}")
-    public ModelAndView formCompletion(@ModelAttribute("loggedUser") final User loggedUser, @PathVariable(value = "postId") long postId) throws PostNotFoundException, ForbiddenException {
+    public ModelAndView formCompletion(Model model, @ModelAttribute("loggedUser") final User loggedUser,@ModelAttribute("uploadForm") final PostForm uploadForm,
+                                       @PathVariable(value = "postId") long postId)
+            throws PostNotFoundException, ForbiddenException {
         LOGGER.debug("User with id {} accessed modify post with id {}", loggedUser.getId(),postId);
         final Post post = postService.getFullPostById(postId);
         if (post == null) {
@@ -111,6 +114,11 @@ public class UploadPostController {
             LOGGER.warn("Failed to modify post with id {}: logged user with id {} is not post creator with id {}",
                     postId, loggedUser.getId(), post.getOwner().getId());
             throw new ForbiddenException();
+        }
+
+        Boolean error = (Boolean) model.asMap().get("error");
+        if(error == null){
+            uploadForm.setPost(post);
         }
 
         final ModelAndView mav = new ModelAndView("edit_post");
@@ -167,6 +175,7 @@ public class UploadPostController {
     private ModelAndView errorState(PostForm form,final long postId, final BindingResult errors, RedirectAttributes attr) {
         attr.addFlashAttribute("org.springframework.validation.BindingResult.uploadForm", errors);
         attr.addFlashAttribute("uploadForm", form);
+        attr.addFlashAttribute("error", true);
         return new ModelAndView("redirect:/post/edit/"+postId);
     }
 
