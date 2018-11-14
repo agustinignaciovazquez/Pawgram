@@ -45,24 +45,13 @@
 
                   <div class="row uspaced20">
                   <c:choose>
-                  <c:when test="${userPosts.isEmpty()}">
-                      <c:choose>
-                           <c:when test="${profileUser eq loggedUser}">
-                   <div class="text center noposttext"><spring:message code="my.empty.post"/></div>
-                         </c:when>
-                           <c:otherwise>
-                              <div class="text center noposttext"><spring:message code="empty.post"/></div>
-                           </c:otherwise>
-                        </c:choose> 
+                  <c:when test="${subscriptions.isEmpty()}">
+                        <div class="text center noposttext"><spring:message code="empty.subscriptions"/></div>
                   </c:when>
                   <c:otherwise>              
-                    <c:forEach items="${userPosts}" var="post">
+                    <c:forEach items="${subscriptions}" var="post">
                     <div class="col-md-4">
-                        <c:if test="${profileUser eq loggedUser}">
-                          <div class="uspaced10">
-                          <button type="button" class="btn btn-danger fright " onclick="location.href='<c:url value="/post/delete/${post.id}"/>'"><i class="fas fa-trash-alt"></i></button>
-                          </div>    
-                        </c:if>              
+                         
                           <a href="<c:url value="/post/${post.id}"/>">
                               <div class="card">
                                 <c:choose>
@@ -107,7 +96,7 @@
               <div class="col-lg-2">
                 <div class="container">
                   <div class="text-xs-center">
-                    <%@include file="includes/pagination.jsp"%>
+                
                   </div>   
                 </div>
               </div>

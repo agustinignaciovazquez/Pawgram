@@ -59,6 +59,7 @@ public class PostForm {
     public PostForm() {
         images = new MultipartFileImageWrapper[PostService.MAX_IMAGES];
     }
+
     public List<byte[]> getAllRawImages() throws IOException {
         List<byte[]> l = new ArrayList<>();
         for(MultipartFileImageWrapper image: images){

@@ -183,14 +183,17 @@
 				            	</div>
 				            	 <button  type="button"><i class="fa fa-minus"></i></button>
 				            </div>!-->
-				            <div class="row uspaced10 bspaced1">
+				            <c:forEach items="${post.postImages}" var="postImage">
+				            <div class="row uspaced10 bspaced1 myimgpo">
 				            	<div class="col-lg-3"></div>
 				            	<div class="col-lg-4">
-				            		<img class="edit-post-image" src="<c:url value="/resources/img/cat.jpg"/>" />
+				            		<img class="edit-post-image" src="<c:url value="/post/images/${postImage.url}"/>" />
 				            	</div>
-				            	<div class="col-lg-2"><button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button></div>
+				            	
+				            	<div class="col-lg-2"><button class="mydelbutton" type="button" class="btn btn-danger" href="<c:url value="/post/delete/${postImage.postId}/image/${postImage.postImageId}"/>"><i class="fas fa-trash-alt"></i></button></div>
 				            	<div class="col-lg-3"></div>
 				            </div>
+				       		</c:forEach>
 				            <c:forEach items="${uploadForm.images}" varStatus="status">
 										<div class="col-md-3 image-div"> 
 											<form:input class="image-input" type="file" path="images[${status.index}].file" accept="image/*"/>
@@ -234,11 +237,27 @@
     <!--FOOTER-->
 
 	<script>
+		total_img = <c:out value="${totalPostImages} - ${currentPostImages}" />;
+		var real_total = <c:out value="${totalPostImages}" />;
 		$( document ).ready(function() {
    			 $('#datona').datepicker({
 			  dateFormat: "yy-mm-dd",
 			  maxDate: "today"
 			 }).datepicker("setDate", new Date());
+			 hideImagesDiv();
+   			 hideButtonFixPeruano();
+   			 $('.mydelbutton').on('click',function(){
+
+   			 	$(this).parents(".myimgpo").hide();
+   			 	var url = $(this).attr('href');
+   			 	$.get( url, function( data ) {
+				  if(total_img <= real_total){
+					  total_img++;
+					  hideImagesDiv();
+					  hideButtonFixPeruano();
+					}
+				});
+   			 });
 		});
 		
 	</script>

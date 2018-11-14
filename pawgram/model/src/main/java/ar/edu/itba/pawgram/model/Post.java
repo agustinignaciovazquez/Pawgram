@@ -326,7 +326,7 @@ public class Post {
 		}
 
 		public PostBuilder postImages(List<PostImage> postImages) {
-			this.postImages = notNull(postImages, "post images  cannot be null");
+			this.postImages = notNull(postImages, "post images cannot be null");
 			return this;
 		}
 

@@ -3,7 +3,9 @@ function hideImagesDiv(){
 	$('.image-div').each(function(index){
 		if(index >= total_img){
 			$( this ).hide();
-		}
+		}else{
+            $( this ).show();
+        }
 	});
 }
 function hideButtonFixPeruano(){
@@ -33,6 +35,7 @@ $(document).ready(function(){
     }
     //plus and minus button functionality
 	hideImagesDiv();
+    hideButtonFixPeruano();
 	$( ".add-img" ).click(function() {
 		if($('.image-div:hidden:last').length){
 			  $('.image-div:hidden:last').show();

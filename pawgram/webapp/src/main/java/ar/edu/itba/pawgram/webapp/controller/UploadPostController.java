@@ -123,7 +123,8 @@ public class UploadPostController {
 
         final ModelAndView mav = new ModelAndView("edit_post");
         mav.addObject("post", post);
-        mav.addObject("totalPostImages", post.getPostImages().size());
+        mav.addObject("currentPostImages", post.getPostImages().size());
+        mav.addObject("totalPostImages", String.valueOf(PostService.MAX_IMAGES));
         mav.addObject("currentCategory", post.getCategory());
         mav.addObject("categories", Category.values());
         mav.addObject("pets", Pet.values());

@@ -39,8 +39,11 @@ public class PostHibernateDao implements PostDao {
         if(p == null)
             throw new InvalidPostException();
 
-        final Post.PostBuilder postBuilder = Post.getBuilderFromPost(p);
-        postBuilder.title(title).description(description).contact_phone(contact_phone).event_date(event_date).category(category).pet(pet).is_male(is_male).location(location);
+        Post.PostBuilder postBuilder = Post.getBuilderFromPost(p);
+        postBuilder = postBuilder.title(title).description(description).contact_phone(contact_phone).category(category).pet(pet).is_male(is_male).location(location);
+        if(category != Category.ADOPT){
+           postBuilder = postBuilder.event_date(event_date);
+        }
 
         Post modifiedPost = postBuilder.build();
         em.merge(modifiedPost);

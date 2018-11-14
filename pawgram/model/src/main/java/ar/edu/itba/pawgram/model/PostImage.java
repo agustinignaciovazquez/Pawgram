@@ -41,6 +41,10 @@ public class PostImage  {
         this(0,url,postId);
     }
 
+    public long getPostImageId() {
+        return postImageId;
+    }
+
     public long getPostId() {
         return postId;
     }

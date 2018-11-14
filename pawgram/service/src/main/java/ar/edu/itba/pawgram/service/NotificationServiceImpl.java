@@ -51,8 +51,11 @@ public class NotificationServiceImpl implements NotificationService {
 
         //Create notification to the owner (since it is not possible to subscribe to our own posts)
         if(!usersNotified.contains(post.getOwner()) && comment != null) {
-            notifications.add(createNotification(post.getOwner(), post, comment));
-            usersNotified.add(post.getOwner());
+            //Do not allow self notifications
+            if(!post.getOwner().equals(comment.getAuthor())) {
+                notifications.add(createNotification(post.getOwner(), post, comment));
+                usersNotified.add(post.getOwner());
+            }
         }
 
         //Create notification if there is a comment and its a parent
