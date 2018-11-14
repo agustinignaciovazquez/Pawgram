@@ -42,7 +42,9 @@ public class PostHibernateDao implements PostDao {
         final Post.PostBuilder postBuilder = Post.getBuilderFromPost(p);
         postBuilder.title(title).description(description).contact_phone(contact_phone).event_date(event_date).category(category).pet(pet).is_male(is_male).location(location);
 
-        return postBuilder.build();
+        Post modifiedPost = postBuilder.build();
+        em.merge(modifiedPost);
+        return modifiedPost;
     }
 
     @Override

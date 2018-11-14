@@ -104,6 +104,7 @@ public class Post {
 		this.owner = builder.owner;
 		this.commentFamilies = builder.commentFamilies;
 		this.distance = builder.distance;
+		this.userSubscriptions = builder.userSubscriptions;
 	}
 
 

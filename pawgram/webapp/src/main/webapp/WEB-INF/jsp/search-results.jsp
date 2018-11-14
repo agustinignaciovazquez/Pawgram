@@ -109,7 +109,7 @@
             </div>   
           </div>
         </div>
-        <div class="col-lg-5"></div>
+       
       </div>
 
 

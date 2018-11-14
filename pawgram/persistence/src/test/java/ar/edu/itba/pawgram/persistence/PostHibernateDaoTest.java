@@ -203,7 +203,6 @@ public class PostHibernateDaoTest {
 
     }
 
-
     private List<Post> insertPosts(List<Post> posts) throws DuplicateEmailException {
         List<Post> inserts = new ArrayList<>();
         for (int i = 0; i < posts.size(); i++) {

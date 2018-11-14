@@ -28,7 +28,7 @@
 <body>
 	
 	<%@include file="includes/header.jsp"%>   
-	<c:url value="/post/create/category/${currentCategory}/process" var="postPath"/>
+	<c:url value="/post/edit/${post.id}/process" var="postPath"/>
 	
 		<div class="container-fluid titzon">
 			<div class="row">
@@ -214,9 +214,9 @@
 
 
         <div class="row">
-        	 <spring:message code="createpost" var="createpost"/>
+        	 <spring:message code="edit.post.input" var="editpost"/>
         	<div class="center">
-        		<input id="submit" type="submit" name="submit" class="btn btn-lg btn-success pull-right" value="${createpost}"></input>
+        		<input id="submit" type="submit" name="submit" class="btn btn-lg btn-success pull-right" value="${editpost}"></input>
         	</div>
         	
         </div>

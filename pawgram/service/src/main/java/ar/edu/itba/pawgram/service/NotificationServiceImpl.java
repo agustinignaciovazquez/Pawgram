@@ -44,7 +44,7 @@ public class NotificationServiceImpl implements NotificationService {
         Set<User> usersNotified = new HashSet<>();
         for(User u: post.getUserSubscriptions()){
             //Do not allow self notifications
-            if(!comment.getAuthor().equals(u))
+            if(!(comment != null && comment.getAuthor().equals(u)))
                 notifications.add(createNotification(u,post,comment));
                 usersNotified.add(u);
         }
@@ -59,7 +59,7 @@ public class NotificationServiceImpl implements NotificationService {
         if(comment != null && comment.hasParent()){
             User parentAuthor = comment.getParent().getAuthor();
             //Do not allow self notifications
-            if(!(comment.getAuthor().equals(parentAuthor))){
+            if(!(comment != null && comment.getAuthor().equals(parentAuthor))){
                 if(!usersNotified.contains(parentAuthor)) {
                     notifications.add(createNotification(parentAuthor, post, comment));
                     usersNotified.add(parentAuthor);
