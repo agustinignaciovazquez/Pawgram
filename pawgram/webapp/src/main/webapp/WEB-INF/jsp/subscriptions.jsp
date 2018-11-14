@@ -71,7 +71,7 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <p class="card-text"><small class="text  text-time"><em><spring:message code="distance"/></em><em>:</em> <em> <c:out value="${post.distance}"/> <spring:message code="kms"/></em> <em> / </em> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em>${post.is_male ? male_gender : female_gender }</em> </small></p>
+                                        <p class="card-text"><small class="text  text-time"> <em><spring:message code="specie"/></em><em>:</em> <em><spring:message code="specie.${post.pet.lowerName}"/></em> <em> / </em> <em><spring:message code="gender"/></em><em>:</em> <em>${post.is_male ? male_gender : female_gender }</em> </small></p>
                                         <div class="news-title">
                                             <h2 class="text title-small"><c:out value="${post.title}"/></h2>
                                         </div>
@@ -103,13 +103,7 @@
               
             </div>
     
-    
-
-  <script>
-    $( document ).ready(function() {
-          showZoneNames('<spring:message code="zone.near"/>');
-    });
-  </script>
+  
   <!--FOOTER-->
     <div class="row uspaced60"></div>
     <div class="container-fluid footer">

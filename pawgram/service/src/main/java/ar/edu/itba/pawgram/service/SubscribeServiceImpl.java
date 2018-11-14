@@ -63,6 +63,8 @@ public class SubscribeServiceImpl implements SubscribeService {
     @Transactional
     public Set<Post> getUserSubscribedPosts(long userId) {
         final User user = userService.findById(userId);
+        //Lazy initialization
+        user.getPostSubscriptions().size();
         return user.getPostSubscriptions();
     }
 }

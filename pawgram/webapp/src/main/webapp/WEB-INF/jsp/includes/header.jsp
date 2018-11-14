@@ -23,15 +23,15 @@
 
                 <div id="notificationsContainer" class="notifications-container"></div>
 
-                <!-- AUCUNE NOTIFICATION -->
+                <!--  NOTIFICATION -->
                 <a id="notificationAucune" class="dropdown-item dropdown-notification" href="#">
                   <p class="notification-solo text-center"><spring:message code="no.new.notifications"/></p>
                 </a>
 
-                <!-- TOUTES -->
+                <!-- IMPLEMENT LATER 
                 <a class="dropdown-item dropdown-notification-all" href="<c:url value="/notifications"/>">
                   <spring:message code="see.all.notifications"/>
-                </a>
+                </a>-->
 
               </div>
 
@@ -90,7 +90,7 @@
                 <a class="nav-link text nav-sec" href="<c:url value="/my_zones"/>"><spring:message code="title.myzones"/></a>
               </li>
                <li class="nav-item">
-                <a class="nav-link text nav-sec" href="<c:url value="/suscriptions"/>"><spring:message code="title.suscriptions"/></a>
+                <a class="nav-link text nav-sec" href="<c:url value="/subscriptions"/>"><spring:message code="title.suscriptions"/></a>
               </li> 
               <li class="nav-item">
                 <a class="nav-link text nav-sec" href="<c:url value="/customize"/>"><spring:message code="title.configuration"/></a>
