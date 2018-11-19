@@ -12,6 +12,7 @@ import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.Pet;
 import ar.edu.itba.pawgram.service.utils.HaversineDistance;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -308,7 +309,7 @@ public class PostServiceImpl implements PostService {
         final Set<String> validKeywords = new HashSet<>();
 
         for (final String word : keywords) {
-            if (word.length() >= MIN_WORD_SIZE)
+            if (word.length() >= MIN_WORD_SIZE && StringUtils.isAlphanumeric(word))
                 validKeywords.add(word);
         }
 

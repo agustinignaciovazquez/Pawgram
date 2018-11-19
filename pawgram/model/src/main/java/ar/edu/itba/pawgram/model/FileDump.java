@@ -2,6 +2,7 @@ package ar.edu.itba.pawgram.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @IdClass(FileDump.FileDumpPrimaryKeys.class)
@@ -52,13 +53,7 @@ public class FileDump {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 17;
-
-        result = result * prime + Integer.valueOf(getPathId());
-        result = result * prime + Integer.valueOf(getImageId());;
-
-        return result;
+        return Objects.hash(pathId,imageId);
     }
 
     @Override
@@ -103,13 +98,7 @@ public class FileDump {
 
         @Override
         public int hashCode() {
-            final int prime = 31;
-            int result = 17;
-
-            result = result * prime + Integer.valueOf(pathId);
-            result = result * prime + Integer.valueOf(imageId);
-
-            return result;
+            return Objects.hash(pathId,imageId);
         }
     }
 }

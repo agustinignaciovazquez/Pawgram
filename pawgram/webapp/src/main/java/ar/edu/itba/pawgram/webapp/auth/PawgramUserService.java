@@ -2,7 +2,7 @@ package ar.edu.itba.pawgram.webapp.auth;
 
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
-import ar.edu.itba.pawgram.interfaces.service.SecurityUserService;
+import ar.edu.itba.pawgram.interfaces.auth.SecurityUserService;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
 import ar.edu.itba.pawgram.model.User;
 import org.springframework.beans.factory.annotation.Autowired;

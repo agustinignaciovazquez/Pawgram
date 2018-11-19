@@ -1,18 +1,23 @@
 package ar.edu.itba.pawgram.webapp.config;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
@@ -26,47 +31,52 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
+
 
 @EnableWebMvc
 @EnableTransactionManagement
-@ComponentScan({ "ar.edu.itba.pawgram.webapp.controller","ar.edu.itba.pawgram.webapp.validator", "ar.edu.itba.pawgram.service" ,"ar.edu.itba.pawgram.persistence"})
+@ComponentScan({ "ar.edu.itba.pawgram.webapp.validators", "ar.edu.itba.pawgram.webapp.rest", "ar.edu.itba.pawgram.webapp.utils",
+		"ar.edu.itba.pawgram.persistence", "ar.edu.itba.pawgram.service" })
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 	@Value("classpath:schema.sql")
 	private Resource schemaSql;
+
 	@Value("classpath:haversine.sql")
 	private Resource haversineSql;
 
+	@Autowired
+	private Environment env;
+
 	private int maxUploadSizeInMb = 5 * 1024 * 1024; // 5 MB
-	@Bean
+
+	/*@Bean
 	public ViewResolver viewResolver() {
 		final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setViewClass(JstlView.class);
 		viewResolver.setPrefix("/WEB-INF/jsp/");
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
-	}
+	}*/
+
 	@Bean
 	public DataSource dataSource() {
 		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
 		ds.setDriverClass(org.postgresql.Driver.class);
 
 
-		//PRODUCCION
+		/*//PRODUCCION
 		ds.setUrl("jdbc:postgresql://10.16.1.110/paw-2018b-11");
 		ds.setUsername("paw-2018b-11");
-		ds.setPassword("29bvHDhpm");
+		ds.setPassword("29bvHDhpm");*/
 
-		/*//LOCAL
+		//LOCAL
 		ds.setUrl("jdbc:postgresql://localhost/pawgram");
 		ds.setUsername("pawgram");
-		ds.setPassword("123456aa");*/
+		ds.setPassword("123456aa");
 
 		return ds;
 	}
@@ -99,6 +109,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
+	public Validator validator() {
+		return Validation.buildDefaultValidatorFactory().getValidator();
+	}
+
+	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
 		factoryBean.setPackagesToScan("ar.edu.itba.pawgram.model");
@@ -120,11 +135,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public CommonsMultipartResolver multipartResolver() {
 
-		CommonsMultipartResolver cmr = new CommonsMultipartResolver();
+		/*CommonsMultipartResolver cmr = new CommonsMultipartResolver();
 		cmr.setMaxUploadSize(maxUploadSizeInMb * 2);
 		cmr.setMaxUploadSizePerFile(maxUploadSizeInMb); //bytes
-		return cmr;
-
+		return cmr;*/
+		return new CommonsMultipartResolver();
 	}
 
 	@Bean

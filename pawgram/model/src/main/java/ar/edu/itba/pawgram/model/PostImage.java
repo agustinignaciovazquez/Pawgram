@@ -3,6 +3,7 @@ package ar.edu.itba.pawgram.model;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notEmpty;
@@ -71,13 +72,7 @@ public class PostImage  {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 17;
-
-        result = result * prime + (int)postId;
-        result = result * prime + (int)postImageId;
-
-        return result;
+        return Objects.hash(postImageId,postId);
     }
 
     @Override
@@ -122,13 +117,7 @@ public class PostImage  {
 
         @Override
         public int hashCode() {
-            final int prime = 31;
-            int result = 17;
-
-            result = result * prime + (int)getPostImageId();
-            result = result * prime + (int)getPostId();
-
-            return result;
+            return Objects.hash(postImageId,postId);
         }
     }
 }
