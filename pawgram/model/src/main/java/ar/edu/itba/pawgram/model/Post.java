@@ -175,7 +175,9 @@ public class Post {
 	public boolean removeSubscription(final User user) {
 		return userSubscriptions.remove(notNull(user, "Subscription to remove from post " + this + " cannot be null"));
 	}
-
+	public boolean isUserSubscribed(final User user) {
+		return userSubscriptions.contains(user);
+	}
 	public void setDistance(int distance) {
 		this.distance = distance;
 	}

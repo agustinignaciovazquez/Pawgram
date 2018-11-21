@@ -3,6 +3,7 @@ package ar.edu.itba.pawgram.persistence;
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.interfaces.persistence.UserDao;
+import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -92,6 +93,31 @@ public class UserHibernateDao implements UserDao {
 
         user.setProfile_img_url(img_url);
         return user;
+    }
+
+    @Override
+    public List<Post> getSubscribedPostsRange(long userId, int offset, int length) {
+        final TypedQuery<Post> query = em.createQuery("select p from User as u join u.postSubscriptions as p where u.id = :userId "
+                + "order by lower(p.name)", Post.class);
+        query.setParameter("userId", userId);
+
+        return pagedResult(query, offset, length);
+    }
+
+    @Override
+    public long getTotalSubscriptionsByUserId(long userId) {
+        final TypedQuery<Long> query = em.createQuery("select count(p) from User as u join u.postSubscriptions as p where u.id = :userId", Long.class);
+        query.setParameter("userId", userId);
+
+        final Long total = query.getSingleResult();
+
+        return total != null ? total : 0;
+    }
+
+    private <T> List<T> pagedResult(final TypedQuery<T> query, final int offset, final int length) {
+        query.setFirstResult(offset);
+        query.setMaxResults(length);
+        return query.getResultList();
     }
 
     public String getProfilePictureByUserId(long id) {

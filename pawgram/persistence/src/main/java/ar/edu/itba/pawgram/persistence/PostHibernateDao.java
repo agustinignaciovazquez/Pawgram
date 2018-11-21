@@ -96,8 +96,8 @@ public class PostHibernateDao implements PostDao {
 
         final Post post = result.get(0);
 
-        // Hibernate lazy initialization (not necessary due to recent changes)
-        //post.getPostImages().size();
+        // Hibernate lazy initialization
+        post.getUserSubscriptions().size();//check if this works
 
         return post;
     }

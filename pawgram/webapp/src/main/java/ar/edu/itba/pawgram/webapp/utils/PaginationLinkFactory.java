@@ -18,7 +18,7 @@ public class PaginationLinkFactory {
 	public static final String PREV = "prev";
 	public static final String LAST = "last";
 	
-	public Map<String, Link> createLinks(final UriInfo uriRequestInfo, final int requestPage, final int maxPage) {
+	public Map<String, Link> createLinks(final UriInfo uriRequestInfo, final int requestPage, final long maxPage) {
 		final Map<String, Link> map = new HashMap<>();
 		final UriBuilder requestBuilder = uriRequestInfo.getRequestUriBuilder();
 
@@ -38,7 +38,7 @@ public class PaginationLinkFactory {
 		return Link.fromUriBuilder(requestBuilder).rel(rel).build();
 	}
 	
-	private UriBuilder setPageParam(final UriBuilder requestBuilder, final int page) {
+	private UriBuilder setPageParam(final UriBuilder requestBuilder, final long page) {
 		return requestBuilder.replaceQueryParam(PAGE, page);
 	}
 }

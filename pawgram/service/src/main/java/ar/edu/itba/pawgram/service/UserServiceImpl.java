@@ -5,6 +5,7 @@ import ar.edu.itba.pawgram.interfaces.exception.FileException;
 import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.interfaces.service.FileService;
+import ar.edu.itba.pawgram.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.util.DigestUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 
@@ -74,5 +76,22 @@ public class UserServiceImpl implements UserService{
 	public User findByMail(String mail) {
 		return userDao.findByMail(mail);
 	}
+
+	@Override
+	public List<Post> getSubscribedPostsPaged(long userId, int page, int pageSize){
+		return userDao.getSubscribedPostsRange(userId,pageSize,(page - 1) * pageSize);
+	}
+
+	@Override
+	public long getTotalSubscriptionsByUserId(long userId){
+		return userDao.getTotalSubscriptionsByUserId(userId);
+	}
+
+	@Override
+	public long getMaxSubscribedPageWithSize(long userId, int pageSize) {
+		long total = getTotalSubscriptionsByUserId(userId);
+		return (long) Math.ceil((float) total / pageSize);
+	}
+
 
 }

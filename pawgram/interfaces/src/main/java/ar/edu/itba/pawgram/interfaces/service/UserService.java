@@ -4,9 +4,11 @@ import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.exception.FileException;
 import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
+import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.User;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface UserService {
 	public static String PROFILE_IMAGE_UPLOAD_FOLDER = "D://temp//";
@@ -78,5 +80,11 @@ public interface UserService {
 	 * @return token
 	 */
 	public String getResetToken(final User user);
+
+	public List<Post> getSubscribedPostsPaged(long userId, int page, int pageSize);
+
+	public long getTotalSubscriptionsByUserId(long userId);
+
+	public long getMaxSubscribedPageWithSize(final long userId, final int pageSize);
 
 }

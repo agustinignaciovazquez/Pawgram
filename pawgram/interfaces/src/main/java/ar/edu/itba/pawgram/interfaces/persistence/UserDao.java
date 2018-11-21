@@ -2,7 +2,10 @@ package ar.edu.itba.pawgram.interfaces.persistence;
 
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
+import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.User;
+
+import java.util.List;
 
 public interface UserDao {
 	
@@ -60,4 +63,9 @@ public interface UserDao {
 	 * @return The user with the modified profile url or null if user doesn't exist
 	 */
 	public User changeProfile(final long id,final String img_url) throws InvalidUserException;
+
+	public List<Post> getSubscribedPostsRange(final long userId, final int offset, final int length);
+
+	public long getTotalSubscriptionsByUserId(final long userId);
+
 }
