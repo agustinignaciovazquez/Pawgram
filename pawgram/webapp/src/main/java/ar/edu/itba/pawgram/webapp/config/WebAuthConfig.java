@@ -56,6 +56,7 @@ protected void configure(final HttpSecurity http) throws Exception {
 			.csrf().disable().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
 			.and().authorizeRequests()
 			.antMatchers(HttpMethod.POST, "/api/login").anonymous()
+			.antMatchers(HttpMethod.POST, "/api/users/").anonymous()
 			.antMatchers(HttpMethod.POST).authenticated()
 			.antMatchers(HttpMethod.DELETE).authenticated()
 			.antMatchers(HttpMethod.PUT).authenticated()

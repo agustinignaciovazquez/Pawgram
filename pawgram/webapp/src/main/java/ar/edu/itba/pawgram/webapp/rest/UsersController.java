@@ -3,34 +3,32 @@ package ar.edu.itba.pawgram.webapp.rest;
 import ar.edu.itba.pawgram.interfaces.auth.SecurityUserService;
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.exception.FileException;
+import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
 import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.webapp.dto.ExceptionDTO;
 import ar.edu.itba.pawgram.webapp.dto.PostListDTO;
 import ar.edu.itba.pawgram.webapp.dto.UserDTO;
+import ar.edu.itba.pawgram.webapp.dto.form.FormChangePassword;
 import ar.edu.itba.pawgram.webapp.dto.form.FormPicture;
 import ar.edu.itba.pawgram.webapp.dto.form.FormUser;
 import ar.edu.itba.pawgram.webapp.exception.DTOValidationException;
+import ar.edu.itba.pawgram.webapp.exceptionmapper.ValidationMapper;
 import ar.edu.itba.pawgram.webapp.utils.PaginationLinkFactory;
 import ar.edu.itba.pawgram.webapp.validators.DTOConstraintValidator;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 
+import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.BeanParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
@@ -65,8 +63,21 @@ public class UsersController {
     @Autowired
     private DTOConstraintValidator DTOValidator;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Context
     private UriInfo uriContext;
+
+    @GET
+    @Path("/")
+    public Response getAuthenticatedUser() {
+        LOGGER.debug("Accessed getAuthenticatedUser");
+
+        final User authenticatedUser = securityUserService.getLoggedInUser();
+
+        return Response.ok(new UserDTO(authenticatedUser, uriContext.getBaseUri())).build();
+    }
 
     @GET
     @Path("/{id}")
@@ -163,6 +174,39 @@ public class UsersController {
         final URI location = uriContext.getAbsolutePathBuilder().path(String.valueOf(user.getId())).build();
 
         return Response.created(location).entity(new UserDTO(user, uriContext.getBaseUri())).build();
+    }
+
+    @PUT
+    @Path("/password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response changePassword(final FormChangePassword changePasswordForm) throws DTOValidationException, InvalidUserException {
+        LOGGER.debug("Accessed change password");
+
+        DTOValidator.validate(changePasswordForm, "Failed to validate change password form");
+
+        final User authenticatedUser = securityUserService.getLoggedInUser();
+
+        if (!passwordEncoder.matches(changePasswordForm.getCurrentPassword(), authenticatedUser.getPassword()))
+            return Response.status(ValidationMapper.UNPROCESSABLE_ENTITY).entity(new ExceptionDTO("Incorrect password")).build();
+
+        securityUserService.changePassword(authenticatedUser.getId(), changePasswordForm.getNewPassword());
+
+        return Response.noContent().build();
+    }
+
+    @PUT
+    @Path("/picture")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response changePicture(@BeanParam final FormPicture picture) throws DTOValidationException, FileUploadException, InvalidUserException {
+        LOGGER.debug("Accessed change picture");
+
+        DTOValidator.validate(picture, "Failed to validate picture");
+
+        final User authenticatedUser = securityUserService.getLoggedInUser();
+
+        userService.changeProfile(authenticatedUser.getId(), picture.getPictureBytes());
+
+        return Response.noContent().build();
     }
 
     private int nonNegativePage(int page) {
