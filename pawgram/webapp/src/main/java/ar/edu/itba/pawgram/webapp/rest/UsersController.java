@@ -36,7 +36,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -125,12 +124,13 @@ public class UsersController {
     @GET
     @Path("images/{id}")
     @Produces(value = {"image/png", "image/jpeg"})
-    public Response getUserProfilePicture(@PathParam("id") final String id) throws FileException {
+    public Response getUserProfilePicture(@PathParam("id") final String id) {
         LOGGER.debug("Accessed getUserProfilePicture with id {}", id);
 
-        final byte[] picture = userService.getProfileImage(id);
-
-        if (picture == null || picture.length == 0) {
+        final byte[] picture;
+        try {
+            picture = userService.getProfileImage(id);
+        } catch (FileException e) {
             LOGGER.warn("Cannot render user profile picture, user with id {} not found", id);
             return Response.status(Status.NOT_FOUND).build();
         }

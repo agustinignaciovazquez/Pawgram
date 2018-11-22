@@ -12,7 +12,7 @@ import javax.ws.rs.ext.Provider;
 
 @Provider
 public class FileUploadExceptionMapper implements ExceptionMapper<FileUploadException> {
-    private static Logger LOGGER = LoggerFactory.getLogger(FileUploadException.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(FileUploadExceptionMapper.class);
 
     @Override
     public Response toResponse(final FileUploadException exception) {

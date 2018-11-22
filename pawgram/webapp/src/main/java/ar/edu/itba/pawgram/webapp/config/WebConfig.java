@@ -8,15 +8,12 @@ import javax.sql.DataSource;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
@@ -36,6 +33,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 
+
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan({ "ar.edu.itba.pawgram.webapp.validators", "ar.edu.itba.pawgram.webapp.rest", "ar.edu.itba.pawgram.webapp.utils",
@@ -48,19 +46,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Value("classpath:haversine.sql")
 	private Resource haversineSql;
 
-	@Autowired
-	private Environment env;
-
 	private int maxUploadSizeInMb = 5 * 1024 * 1024; // 5 MB
-
-	/*@Bean
-	public ViewResolver viewResolver() {
-		final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/jsp/");
-		viewResolver.setSuffix(".jsp");
-		return viewResolver;
-	}*/
 
 	@Bean
 	public DataSource dataSource() {
@@ -118,8 +104,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
 		factoryBean.setPackagesToScan("ar.edu.itba.pawgram.model");
 		factoryBean.setDataSource(dataSource());
+
 		final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		factoryBean.setJpaVendorAdapter(vendorAdapter);
+
 		final Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "update");
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");

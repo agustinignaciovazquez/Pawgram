@@ -273,11 +273,17 @@
 			<artifactId>jersey-spring4</artifactId>
 			<version>${jersey.version}</version>
 			<exclusions>
-			<exclusion>
-			<!-- La versión incluida requiere Java 9+ -->
-			<groupId>org.glassfish.hk2</groupId>
-			<artifactId>hk2</artifactId>
-			</exclusion>
+				<exclusion>
+				<!-- La versión incluida requiere Java 9+ -->
+				<groupId>org.glassfish.hk2</groupId>
+				<artifactId>hk2</artifactId>
+				</exclusion>
+				<!--Need because of the error Error “java.lang.NoSuchMethodError: org.jboss.logging.Logger.getMessageLogger”
+            This dependency is using old version of jboss.logging
+		        <exclusion>
+		            <groupId>org.glassfish.hk2.external</groupId>
+		            <artifactId>bean-validator</artifactId>
+		        </exclusion>-->
 			</exclusions>
 			</dependency>
 			<dependency>

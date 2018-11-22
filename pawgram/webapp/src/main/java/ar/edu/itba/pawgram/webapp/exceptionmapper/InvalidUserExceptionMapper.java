@@ -13,7 +13,7 @@ import javax.ws.rs.ext.Provider;
 
 @Provider
 public class InvalidUserExceptionMapper implements ExceptionMapper<InvalidUserException> {
-    private static Logger LOGGER = LoggerFactory.getLogger(InvalidUserException.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(InvalidUserExceptionMapper.class);
 
     @Override
     public Response toResponse(final InvalidUserException exception) {
