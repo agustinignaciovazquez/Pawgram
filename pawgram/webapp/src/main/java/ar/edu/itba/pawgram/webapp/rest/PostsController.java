@@ -48,6 +48,9 @@ public class PostsController {
     private PostService postService;
 
     @Autowired
+    private SearchZoneService searchZoneService;
+
+    @Autowired
     private PostImageService postImageService;
 
     @Autowired
@@ -82,10 +85,32 @@ public class PostsController {
             LOGGER.warn("Post with ID: {} not found", id);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+        return Response.ok(new PostDTO(post, uriContext.getBaseUri(), Optional.ofNullable(securityUserService.getLoggedInUser()))).build();
+    }
 
-        else {
-            return Response.ok(new PostDTO(post, uriContext.getBaseUri(), Optional.ofNullable(securityUserService.getLoggedInUser()))).build();
+    @GET
+    @Path("/zone/{id}")
+    public Response getPostsByZoneId(@PathParam("id") final long id, @QueryParam("category") final Category category,@DefaultValue("1") @QueryParam("page") int page,
+                                     @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize) {
+        LOGGER.debug("Accesed getPostById with ID: {}", id);
+
+        final SearchZone sz = searchZoneService.getFullSearchZoneById(id);
+        final User user = securityUserService.getLoggedInUser();
+
+        // Ignoring invalid values, default stays
+        page = (page < 1) ? 1 : page;
+        pageSize = (pageSize < 1 || pageSize > MAX_PAGE_SIZE) ? DEFAULT_PAGE_SIZE : pageSize;
+
+        if (sz == null) {
+            LOGGER.warn("Searcho zone with ID: {} not found", id);
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
+        if (!user.equals(sz.getUser())) {
+            LOGGER.warn("Forbidden user {} trying to access search zone with id {} he/she is not owner of", user.getId(), id);
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+        return getPosts(category,sz.getLocation().getLatitude(),sz.getLocation().getLongitude(),sz.getRange(), page, pageSize);
     }
 
     @GET

@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PostListDTO {
     private List<PlainPostDTO> posts;
     private long totalCount;
-    private int count;
+    private long count;
 
     public PostListDTO() {
     }
@@ -39,11 +39,11 @@ public class PostListDTO {
         this.posts = posts;
     }
 
-    public int getCount() {
+    public long getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(long count) {
         this.count = count;
     }
 

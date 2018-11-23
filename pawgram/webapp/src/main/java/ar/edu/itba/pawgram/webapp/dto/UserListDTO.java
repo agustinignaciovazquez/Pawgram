@@ -8,12 +8,12 @@ import java.util.List;
 
 public class UserListDTO {
     private List<UserDTO> users;
-    private int totalCount;
-    private int count;
+    private long totalCount;
+    private long count;
 
     public UserListDTO() {}
 
-    public UserListDTO(final List<User> users, int totalCount, final URI baseUri) {
+    public UserListDTO(final List<User> users, long totalCount, final URI baseUri) {
         this.setTotalCount(totalCount);
         this.users = new LinkedList<>();
         this.setCount(users.size());
@@ -30,19 +30,19 @@ public class UserListDTO {
         this.users = users;
     }
 
-    public int getCount() {
+    public long getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(long count) {
         this.count = count;
     }
 
-    public int getTotalCount() {
+    public long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(int totalCount) {
+    public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
     }
 

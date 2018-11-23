@@ -113,10 +113,15 @@ public class UsersController {
         pageSize = validPageSizeRange(pageSize);
 
         final User user = userService.findById(id);
-
+        final User loggedUser = securityUserService.getLoggedInUser();
         if (user == null) {
             LOGGER.debug("Failed to get user with ID: {} created subscriptions, user not found");
             return Response.status(Status.NOT_FOUND).build();
+        }
+        //For the moment we don't allow other users to see subscriptions we leave code like this in case we want to change it in the future
+        if (!user.equals(loggedUser)) {
+            LOGGER.warn("Forbidden user {} trying to access subscriptionswith id {} he/she is not owner of", user.getId(), id);
+            return Response.status(Response.Status.FORBIDDEN).build();
         }
 
         final long totalSubscriptions = userService.getTotalSubscriptionsByUserId(id);
