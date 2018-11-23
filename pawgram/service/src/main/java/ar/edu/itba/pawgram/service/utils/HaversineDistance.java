@@ -1,6 +1,10 @@
 package ar.edu.itba.pawgram.service.utils;
 
+import ar.edu.itba.pawgram.model.Post;
+import ar.edu.itba.pawgram.model.structures.Location;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class HaversineDistance {
@@ -23,5 +27,19 @@ public class HaversineDistance {
 
     public double haversin(double val) {
         return Math.pow(Math.sin(val / 2), 2);
+    }
+
+    public Post setPostDistance(Post p, Location currentLocation){
+        Double distance = distance(currentLocation.getLatitude(),currentLocation.getLongitude(),
+                p.getLocation().getLatitude(),p.getLocation().getLongitude());
+        p.setDistance(distance.intValue());
+        return p;
+    }
+
+    public List<Post> setPostsDistance(List<Post> posts, Location currentLocation){
+        for(Post p: posts){
+            setPostDistance(p,currentLocation);
+        }
+        return posts;
     }
 }

@@ -1,19 +1,17 @@
 package ar.edu.itba.pawgram.webapp.rest;
 
 import ar.edu.itba.pawgram.interfaces.auth.SecurityUserService;
-import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
-import ar.edu.itba.pawgram.interfaces.exception.FileException;
-import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
-import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
+import ar.edu.itba.pawgram.interfaces.exception.*;
+import ar.edu.itba.pawgram.interfaces.service.EmailService;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
+import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.webapp.dto.ExceptionDTO;
 import ar.edu.itba.pawgram.webapp.dto.PostListDTO;
 import ar.edu.itba.pawgram.webapp.dto.UserDTO;
-import ar.edu.itba.pawgram.webapp.dto.form.FormChangePassword;
-import ar.edu.itba.pawgram.webapp.dto.form.FormPicture;
-import ar.edu.itba.pawgram.webapp.dto.form.FormUser;
+import ar.edu.itba.pawgram.webapp.dto.form.*;
 import ar.edu.itba.pawgram.webapp.exception.DTOValidationException;
 import ar.edu.itba.pawgram.webapp.exceptionmapper.ValidationMapper;
 import ar.edu.itba.pawgram.webapp.utils.PaginationLinkFactory;
@@ -22,10 +20,12 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Path("users")
@@ -64,6 +65,12 @@ public class UsersController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MessageSource messageSource;
+
+    @Autowired
+    private EmailService ms;
 
     @Context
     private UriInfo uriContext;
@@ -122,6 +129,38 @@ public class UsersController {
     }
 
     @GET
+    @Path("/{id}/user_posts")
+    public Response getUserPosts(
+            @PathParam("id") final long id,@QueryParam("category") final Category category,@QueryParam("latitude") Double latitude,
+            @QueryParam("longitude") Double longitude, @DefaultValue("1") @QueryParam("page") int page,
+            @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize) {
+
+        LOGGER.debug("Accessed getUserPosts with id {}", id);
+        final Optional<Category> categoryOpt = Optional.ofNullable(category);
+        final Location location = (latitude != null && longitude != null)? new Location(longitude,latitude):null;
+        final Optional<Location> locationOpt = Optional.ofNullable(location);
+
+        page = nonNegativePage(page);
+        pageSize = validPageSizeRange(pageSize);
+
+        final User user = userService.findById(id);
+
+        if (user == null) {
+            LOGGER.debug("Failed to get user with ID: {} created posts, user not found");
+            return Response.status(Status.NOT_FOUND).build();
+        }
+
+        final long totalSubscriptions = userService.getTotalPostsByUserId(user.getId(),categoryOpt);
+        final long maxPage = userService.getMaxPageByUserId(pageSize,user.getId(),categoryOpt);
+        final List<Post> createdPosts = userService.getPlainPostsByUserIdPaged(user.getId(),locationOpt,categoryOpt,page,pageSize);
+
+        final Link[] linkArray = linkFactory.createLinks(uriContext, page, maxPage).values().toArray(new Link[0]);
+
+        return Response.ok(new PostListDTO(createdPosts, totalSubscriptions, uriContext.getBaseUri(),
+                Optional.ofNullable(securityUserService.getLoggedInUser()))).links(linkArray).build();
+    }
+
+    @GET
     @Path("images/{id}")
     @Produces(value = {"image/png", "image/jpeg"})
     public Response getUserProfilePicture(@PathParam("id") final String id) {
@@ -159,20 +198,31 @@ public class UsersController {
     @POST
     @Path("/")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response createUser(@FormDataParam("user") final FormUser formUser)
+    public Response createUser(@FormDataParam("user") final FormUser formUser, @BeanParam final FormPicture formPicture, @Context HttpServletRequest request)
             throws DuplicateEmailException, DTOValidationException {
 
         LOGGER.debug("Accessed createUser");
+        Locale locale = request.getLocale();
 
         // @FormDataParam parameter is optional --> it may be null
         if (formUser == null)
             return Response.status(Status.BAD_REQUEST).build();
 
         DTOValidator.validate(formUser, "Failed to validate user");
+        //DTOValidator.validate(formPicture, "Failed to validate picture"); TODO CHANGE SERVICE
 
         final User user = securityUserService.registerUser(formUser.getName(),formUser.getSurname(),formUser.getMail(),formUser.getPassword(),null);
         final URI location = uriContext.getAbsolutePathBuilder().path(String.valueOf(user.getId())).build();
 
+        try {
+            String [] args = {user.getName() + " " +user.getSurname()};
+            ms.sendWelcomeEmail(user,messageSource.getMessage("welcomeMailMessage",args,locale),
+                    messageSource.getMessage("welcomeMailSubject",null,locale));
+        } catch (SendMailException e) {
+            LOGGER.warn("Could not send welcome email registered \n Stacktrace {}", e.getMessage());
+        }
+
+        LOGGER.info("New user created with id {}", user.getId());
         return Response.created(location).entity(new UserDTO(user, uriContext.getBaseUri())).build();
     }
 
@@ -190,7 +240,49 @@ public class UsersController {
             return Response.status(ValidationMapper.UNPROCESSABLE_ENTITY).entity(new ExceptionDTO("Incorrect password")).build();
 
         securityUserService.changePassword(authenticatedUser.getId(), changePasswordForm.getNewPassword());
+        LOGGER.info("User with id {} changed password",authenticatedUser.getId());
+        return Response.noContent().build();
+    }
 
+    @PUT
+    @Path("/get_recover_token")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getTokenForRecovery(final FormMail recoverPasswordForm, @Context HttpServletRequest request) throws DTOValidationException,
+            InvalidUserException, SendMailException {
+        LOGGER.debug("Accessed recover password");
+        Locale locale = request.getLocale();
+
+        DTOValidator.validate(recoverPasswordForm, "Failed to validate recover password form");
+
+        final User user = userService.findByMail(recoverPasswordForm.getMail());
+        if(user == null)
+            throw new InvalidUserException();
+
+        ms.sendRecoverEmail(user,messageSource.getMessage("recoverMailMessage",null,locale),
+                messageSource.getMessage("recoverMailSubject",null,locale));
+
+        LOGGER.info("User with id {} send token to reset password", user.getId());
+        return Response.noContent().build();
+    }
+
+    @PUT
+    @Path("/recover_password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response recoverPassword(final FormRecoverPassword recoverPasswordForm) throws DTOValidationException, InvalidUserException {
+        LOGGER.debug("Accessed recover password");
+
+        DTOValidator.validate(recoverPasswordForm, "Failed to validate recover password form");
+
+        final User user = userService.findByMail(recoverPasswordForm.getMail());
+        if(user == null)
+           throw new InvalidUserException();
+
+        final String token = userService.getResetToken(user);
+        if (!recoverPasswordForm.getToken().equals(token))
+            return Response.status(ValidationMapper.UNPROCESSABLE_ENTITY).entity(new ExceptionDTO("Incorrect token")).build();
+
+        securityUserService.changePassword(user.getId(), recoverPasswordForm.getNewPassword());
+        LOGGER.info("User with id {} reseted his password", user.getId());
         return Response.noContent().build();
     }
 

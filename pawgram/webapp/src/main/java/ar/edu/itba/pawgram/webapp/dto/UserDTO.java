@@ -18,8 +18,8 @@ public class UserDTO {
     @XmlElement(name = "profile_picture")
     private URI pictureURL;
 
-    @XmlElement(name = "subscriptions")
-    private URI subscriptionsURL;
+    @XmlElement(name = "user_posts")
+    private URI userPostsURL;
     
 
     public UserDTO(){
@@ -31,7 +31,7 @@ public class UserDTO {
         email = user.getMail();
         url = baseUri.resolve("users/" + id);
         pictureURL = baseUri.resolve("users/images/" + user.getProfile_img_url());
-        subscriptionsURL = baseUri.resolve("users/" + id + "/subscriptions");
+        userPostsURL = baseUri.resolve("users/" + id + "/posts");
     }
 
     public long getId() {
@@ -74,11 +74,11 @@ public class UserDTO {
         this.pictureURL = pictureURL;
     }
 
-    public URI getSubscriptionsURL() {
-        return subscriptionsURL;
+    public URI getUserPostsURL() {
+        return userPostsURL;
     }
 
-    public void setSubscriptionsURL(URI subscriptionsURL) {
-        this.subscriptionsURL = subscriptionsURL;
+    public void setUserPostsURL(URI userPostsURL) {
+        this.userPostsURL = userPostsURL;
     }
 }

@@ -2,8 +2,10 @@ package ar.edu.itba.pawgram.interfaces.persistence;
 
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
+import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.model.structures.Location;
 
 import java.util.List;
 
@@ -67,5 +69,63 @@ public interface UserDao {
 	public List<Post> getSubscribedPostsRange(final long userId, final int offset, final int length);
 
 	public long getTotalSubscriptionsByUserId(final long userId);
+
+	/**
+	 * Lists post created by {@link User} as a {@link Post} with the given userId.
+	 * @param userId - ID of the creator
+	 * @param limit - max number of results
+	 * @param offset - post offset
+	 * @return List of post. Empty in case the user did not create any post (distance is set to 0)
+	 */
+	public List<Post> getPlainPostsByUserIdRange(final long userId, final int limit, final int offset);
+
+	/**
+	 * Lists post created by {@link User} as a {@link Post} with the given userId.
+	 * @param userId - ID of the creator
+	 * @param location - current location of the user
+	 * @param limit - max number of results
+	 * @param offset - post offset
+	 * @return List of post. Empty in case the user did not create any post
+	 */
+	public List<Post> getPlainPostsByUserIdRange(final long userId, final Location location,
+												 final int limit, final int offset);
+
+	/**
+	 * Lists post created by {@link User} as a {@link Post} with the given userId.
+	 * @param userId - ID of the creator
+	 * @param category - category we are searching
+	 * @param limit - max number of results
+	 * @param offset - post offset
+	 * @return List of post. Empty in case the user did not create any post (distance is set to 0)
+	 */
+	public List<Post> getPlainPostsByUserIdRange(final long userId,final Category category,
+												 final int limit, final int offset);
+
+	/**
+	 * Lists post created by {@link User} as a {@link Post} with the given userId.
+	 * @param userId - ID of the creator
+	 * @param location - current location of the user
+	 * @param category - category we are searching
+	 * @param limit - max number of results
+	 * @param offset - post offset
+	 * @return List of post. Empty in case the user did not create any post
+	 */
+	public List<Post> getPlainPostsByUserIdRange(final long userId, final Location location,final Category category,
+												 final int limit, final int offset);
+
+	/**
+	 * Retrieves the total amount of post registered for a given {@link User}
+	 * @param userId - the user id
+	 * @return The number of posts.
+	 */
+	public long getTotalPostsByUserId(final long userId);
+
+	/**
+	 * Retrieves the total amount of post registered for a given {@link User}
+	 * @param userId - the user id
+	 * @param category - the category we are searching
+	 * @return The number of posts.
+	 */
+	public long getTotalPostsByUserId(final long userId,final Category category);
 
 }

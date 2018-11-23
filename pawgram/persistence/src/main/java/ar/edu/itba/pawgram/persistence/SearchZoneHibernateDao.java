@@ -62,9 +62,9 @@ public class SearchZoneHibernateDao implements SearchZoneDao {
     }
 
     @Override
-    public long getTotalSearchZonesByUser(User user) {
+    public long getTotalSearchZonesByUser(long userId) {
         final TypedQuery<Long> query = em.createQuery("select count(*) from SearchZone as s where s.user.id= :userId", Long.class);
-        query.setParameter("userId",user.getId());
+        query.setParameter("userId",userId);
         final Long total = query.getSingleResult();
 
         return total != null ? total : 0;

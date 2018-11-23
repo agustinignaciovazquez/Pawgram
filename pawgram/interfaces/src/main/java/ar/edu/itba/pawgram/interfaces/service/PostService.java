@@ -9,6 +9,7 @@ import ar.edu.itba.pawgram.model.Pet;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface PostService {
     public final static int MIN_WORD_SIZE = 3;
@@ -48,32 +49,6 @@ public interface PostService {
     public Post modifyPost(final long postId, final List<byte[]> raw_images, final String title, final String description, final String contact_phone, final Date event_date,
                            final Category category, final Pet pet, final Boolean is_male, final Location location) throws InvalidPostException, PostCreateException;
     /**
-     * Lists every post {@link Post}
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @return {@link List} of the existing posts (distance as 0)
-     */
-    public List<Post> getPlainPostsPaged(final int page, final int pageSize);
-
-    /**
-     * Lists every post {@link Post}
-     * @param location - current location of the user
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @return {@link List} of the existing posts
-     */
-    public List<Post> getPlainPostsPaged(final Location location, final int page, final int pageSize);
-
-    /**
-     * Lists every existing {@link Post} for a given {@link Category}
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @param category - Category the posts belongs to
-     * @return {@link List} of the existing posts
-     */
-    public List<Post> getPlainPostsByCategoryPaged(final Category category, final int page, final int pageSize);
-
-    /**
      * Lists every existing {@link Post} for a given {@link Category}
      * @param page - number of page
      * @param pageSize - max number of results per page
@@ -81,7 +56,7 @@ public interface PostService {
      * @param category - Category the posts belongs to
      * @return {@link List} of the existing posts
      */
-    public List<Post> getPlainPostsByCategoryPaged(final Location location, final Category category, final int page, final int pageSize);
+    public List<Post> getPlainPostsPaged(final Optional<Location> location, final Optional<Category> category, final int page, final int pageSize);
 
     /**
      * Retrieves a {@link ar.edu.itba.pawgram.model.Post.PostBuilder} with every attribute set
@@ -106,17 +81,6 @@ public interface PostService {
     public Post getPlainPostById(final long postId);
 
     /**
-     * Lists every nearby in range KM existing {@link ar.edu.itba.pawgram.model.Post} as a {@link Post} .
-     * @param location - current location of the user
-     * @param range - max range of search in meters
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @return {@link List} of the existing posts
-     */
-    public List<Post> getPlainPostsPaged(final Location location, final int range,
-                                         final int page, final int pageSize);
-
-    /**
      * Lists every nearby in range (Meters) existing {@link ar.edu.itba.pawgram.model.Post} as a {@link Post} for a given {@link Category}
      * @param location - current location of the user
      * @param range - max range of search in meters
@@ -125,43 +89,10 @@ public interface PostService {
      * @param pageSize - max number of results per page
      * @return {@link List} of the existing posts
      */
-    public List<Post> getPlainPostsByCategoryPaged(final Location location, final int range, final Category category,
+    public List<Post> getPlainPostsPaged(final Location location, final int range, final Optional<Category> category,
                                                    final int page, final int pageSize);
 
     /**
-     * Retrieves a {@link List} of {@link Post} given a keyword ordered by the id asc
-     * The keyword should match the post title or description
-     * @param keyword - The keyword which should be matched
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @return The list of plain post that match with the keyword.
-     */
-    public List<Post> getPlainPostsByKeywordPaged(final String keyword, final int page, final int pageSize);
-
-    /**
-     * Retrieves a {@link List} of {@link Post} given a keyword ordered by the distance descendent
-     * The keyword should match the post title or description
-     * @param keyword - The keyword which should be matched
-     * @param location - Current user location
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @return The list of plain post that match with the keyword.
-     */
-    public List<Post> getPlainPostsByKeywordPaged(final String keyword, final Location location,
-                                                  final int page, final int pageSize);
-
-    /**
-     * Retrieves a {@link List} of {@link Post} given a keyword ordered by the id asc
-     * The keyword should match the post title or description
-     * @param keyword - The keyword which should be matched
-     * @param category - The category we are searching in
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @return The list of plain post that match with the keyword.
-     */
-    public List<Post> getPlainPostsByKeywordPaged(final String keyword, final Category category, final int page, final int pageSize);
-
-    /**
      * Retrieves a {@link List} of {@link Post} given a keyword ordered by the distance descendent
      * The keyword should match the post title or description
      * @param keyword - The keyword which should be matched
@@ -171,50 +102,7 @@ public interface PostService {
      * @param pageSize - max number of results per page
      * @return The list of plain post that match with the keyword.
      */
-    public List<Post> getPlainPostsByKeywordPaged(final String keyword, final Location location, final Category category, final int page, final int pageSize);
-
-    /**
-     * Lists post created by {@link User} as a {@link Post} with the given userId.
-     * @param userId - ID of the creator
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @return List of post. Empty in case the user did not create any post
-     */
-    public List<Post> getPlainPostsByUserIdPaged(final long userId, final int page, final int pageSize);
-
-    /**
-     * Lists post created by {@link User} as a {@link Post} with the given userId.
-     * @param userId - ID of the creator
-     * @param location - current location of the user
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @return List of post. Empty in case the user did not create any post
-     */
-    public List<Post> getPlainPostsByUserIdPaged(final long userId, final Location location,
-                                                 final int page, final int pageSize);
-
-    /**
-     * Lists post created by {@link User} as a {@link Post} with the given userId.
-     * @param userId - ID of the creator
-     * @param category - category we are searching
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @return List of post. Empty in case the user did not create any post
-     */
-    public List<Post> getPlainPostsByUserIdPaged(final long userId, final Category category,
-                                                 final int page, final int pageSize);
-
-    /**
-     * Lists post created by {@link User} as a {@link Post} with the given userId.
-     * @param userId - ID of the creator
-     * @param location - current location of the user
-     * @param category - category we are searching
-     * @param page - number of page
-     * @param pageSize - max number of results per page
-     * @return List of post. Empty in case the user did not create any post
-     */
-    public List<Post> getPlainPostsByUserIdPaged(final long userId, final Location location, final Category category,
-                                                 final int page, final int pageSize);
+    public List<Post> getPlainPostsByKeywordPaged(final String keyword, final Optional<Location> location, final Optional<Category> category, final int page, final int pageSize);
 
     /**
      * Deletes a {@link ar.edu.itba.pawgram.model.Post} from the database.
@@ -224,25 +112,11 @@ public interface PostService {
     public boolean deletePostById(final long postId);
 
     /**
-     * Retrieves the total amount of post registered.
-     * @return The number of posts.
-     */
-    public long getTotalPosts();
-
-    /**
-     * Retrieves the total amount of post nearby.
-     * @param location - current location of the user
-     * @param range - max range of search
-     * @return The number of posts.
-     */
-    public long getTotalPosts(final Location location,final int range);
-
-    /**
      * Retrieves the total amount of post registered for a given {@link Category}
      * @param category - Category the posts belongs to
      * @return The number of posts.
      */
-    public long getTotalPostsByCategory(final Category category);
+    public long getTotalPosts(final Optional<Category> category);
 
     /**
      * Retrieves the total amount of post nearby for a given {@link Category}
@@ -251,14 +125,7 @@ public interface PostService {
      * @param category - Category the posts belongs to
      * @return The number of posts.
      */
-    public long getTotalPostsByCategory(final Location location,final int range,final Category category);
-
-    /**
-     * Retrieves the total amount of post registered for a given keyword
-     * @param keyword - keyword search
-     * @return The number of posts.
-     */
-    public long getTotalPostsByKeyword(final String keyword);
+    public long getTotalPosts(final Location location,final int range,final Optional<Category> category);
 
     /**
      * Retrieves the total amount of post registered for a given {@link Category} and keyword
@@ -266,38 +133,7 @@ public interface PostService {
      * @param category - the category we are searching
      * @return The number of posts.
      */
-    public long getTotalPostsByKeyword(final String keyword,final Category category);
-
-    /**
-     * Retrieves the total amount of post registered for a given {@link User}
-     * @param userId - the user id
-     * @return The number of posts.
-     */
-    public long getTotalPostsByUserId(final long userId);
-
-    /**
-     * Retrieves the total amount of post registered for a given {@link User}
-     * @param userId - the user id
-     * @param category - the category we are searching
-     * @return The number of posts.
-     */
-    public long getTotalPostsByUserId(final long userId,final Category category);
-
-    /**
-     * Retrieves the max page of post nearby.
-     * @param pageSize - the quantity of post per page
-     * @return The number of posts.
-     */
-    public long getMaxPage(final int pageSize);
-
-    /**
-     * Retrieves the max page of post nearby.
-     * @param location - current location of the user
-     * @param pageSize - the quantity of post per page
-     * @param range - max range of search
-     * @return The number of posts.
-     */
-    public long getMaxPage(final int pageSize, final Location location,final int range);
+    public long getTotalPostsByKeyword(final String keyword,final Optional<Category> category);
 
     /**
      * Retrieves the max page of post registered for a given {@link Category}
@@ -305,7 +141,7 @@ public interface PostService {
      * @param pageSize - the quantity of post per page
      * @return The number of posts.
      */
-    public long getMaxPageByCategory(final int pageSize, final Category category);
+    public long getMaxPage(final int pageSize, final Optional<Category> category);
 
     /**
      * Retrieves the max page of post nearby for a given {@link Category}
@@ -315,15 +151,7 @@ public interface PostService {
      * @param category - Category the posts belongs to
      * @return The number of posts.
      */
-    public long getMaxPageByCategory(final int pageSize, final Location location,final int range,final Category category);
-
-    /**
-     * Retrieves the max page of post registered for a given keyword
-     * @param keyword - keyword search
-     * @param pageSize - the quantity of post per page
-     * @return The number of posts.
-     */
-    public long getMaxPageByKeyword(final int pageSize, final String keyword);
+    public long getMaxPage(final int pageSize, final Location location,final int range,final Optional<Category> category);
 
     /**
      * Retrieves the max page of post registered for a given {@link Category} and keyword
@@ -332,22 +160,7 @@ public interface PostService {
      * @param pageSize - the quantity of post per page
      * @return The number of posts.
      */
-    public long getMaxPageByKeyword(final int pageSize, final String keyword,final Category category);
+    public long getMaxPageByKeyword(final int pageSize, final String keyword,final Optional<Category> category);
 
-    /**
-     * Retrieves the max page of post registered for a given {@link User}
-     * @param userId - the user id
-     * @param pageSize - the quantity of post per page
-     * @return The number of posts.
-     */
-    public long getMaxPageByUserId(final int pageSize, final long userId);
 
-    /**
-     * Retrieves the max page of post registered for a given {@link User}
-     * @param userId - the user id
-     * @param pageSize - the quantity of post per page
-     * @param category - the category we are searching
-     * @return The number of posts.
-     */
-    public long getMaxPageByUserId(final int pageSize, final long userId,final Category category);
 }

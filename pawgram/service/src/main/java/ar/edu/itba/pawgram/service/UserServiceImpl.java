@@ -5,7 +5,10 @@ import ar.edu.itba.pawgram.interfaces.exception.FileException;
 import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.interfaces.service.FileService;
+import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.Post;
+import ar.edu.itba.pawgram.model.structures.Location;
+import ar.edu.itba.pawgram.service.utils.HaversineDistance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import org.springframework.util.DigestUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -27,6 +31,8 @@ public class UserServiceImpl implements UserService{
 	private UserDao userDao;
 	@Autowired
 	private FileService fileService;
+	@Autowired
+	private HaversineDistance haversineDistance;
 
 	@Override
 	@Transactional // In order to fetch lazy attributes
@@ -93,5 +99,32 @@ public class UserServiceImpl implements UserService{
 		return (long) Math.ceil((float) total / pageSize);
 	}
 
+	@Override
+	public List<Post> getPlainPostsByUserIdPaged(long userId, Optional<Location> location, Optional<Category> category, int page, int pageSize) {
+		if(category.isPresent()) {
+			if (location.isPresent()) {
+				return haversineDistance.setPostsDistance(userDao.getPlainPostsByUserIdRange(userId, location.get(), category.get(), pageSize, (page - 1) * pageSize), location.get());
+			}
+			return userDao.getPlainPostsByUserIdRange(userId, category.get(), pageSize, (page - 1) * pageSize);
+		}
+		if(location.isPresent()) {
+			return haversineDistance.setPostsDistance(userDao.getPlainPostsByUserIdRange(userId, location.get(), pageSize, (page - 1) * pageSize), location.get());
+		}
+		return userDao.getPlainPostsByUserIdRange(userId,pageSize,(page - 1) * pageSize);
+	}
+
+	@Override
+	public long getTotalPostsByUserId(long userId, Optional<Category> category) {
+		if(category.isPresent()) {
+			return userDao.getTotalPostsByUserId(userId, category.get());
+		}
+		return userDao.getTotalPostsByUserId(userId);
+	}
+
+	@Override
+	public long getMaxPageByUserId(int pageSize, long userId, Optional<Category> category) {
+		final long total = getTotalPostsByUserId(userId, category);
+		return (long) Math.ceil((float) total / pageSize);
+	}
 
 }

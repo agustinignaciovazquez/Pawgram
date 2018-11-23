@@ -47,8 +47,8 @@ public interface SearchZoneDao {
 
     /**
      * Retrieves the quantity of {@link SearchZone} registered for a given {@link User}
-     * @param user - the user searching in his zones.
+     * @param userId - the user searching in his zones.
      * @return The number of {@link SearchZone}.
      */
-    public long getTotalSearchZonesByUser(final User user);
+    public long getTotalSearchZonesByUser(final long userId);
 }

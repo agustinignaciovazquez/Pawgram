@@ -17,7 +17,7 @@ public class FileUploadExceptionMapper implements ExceptionMapper<FileUploadExce
     @Override
     public Response toResponse(final FileUploadException exception) {
         LOGGER.debug("File upload exception \n Stack trace {}",exception.getMessage());
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ExceptionDTO("File upload error")).type(MediaType.APPLICATION_JSON).build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(new ExceptionDTO("File upload error")).type(MediaType.APPLICATION_JSON).build();
     }
 
 }

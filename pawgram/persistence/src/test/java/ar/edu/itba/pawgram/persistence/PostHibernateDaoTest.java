@@ -79,7 +79,7 @@ public class PostHibernateDaoTest {
         List<Post> expected = PostTestUtils.dummyPostListWithUserId(LIST_SIZE, 1, 1);
         expected = insertPosts(expected);
 
-        List<Post> actual = postDao.getPlainPostsByUserIdRange(1, LIST_SIZE ,0);
+        List<Post> actual = userDao.getPlainPostsByUserIdRange(1, LIST_SIZE ,0);
 
         assertEqualsReversedSortedList(expected, actual);
     }

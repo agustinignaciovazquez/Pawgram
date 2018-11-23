@@ -32,8 +32,8 @@ public class PostDTO {
     @XmlElement(name = "image_urls")
     private List<URI> imageURLs;
 
-    @XmlElement(name = "subscribers_url")
-    private URI subscribersURL;
+    /*@XmlElement(name = "subscribers_url")
+    private URI subscribersURL;*/
 
     public PostDTO() {
     }
@@ -54,7 +54,7 @@ public class PostDTO {
         setSubscribed(loggedUser.filter(post::isUserSubscribed).isPresent());
 
         url = baseUri.resolve("posts/"+id);
-        subscribersURL = baseUri.resolve("posts/"+id+"/subscriptions");
+       // subscribersURL = baseUri.resolve("posts/"+id+"/subscriptions");
 
         imageURLs = new ArrayList<>();
         for (final PostImage pi : post.getPostImages())
@@ -181,11 +181,11 @@ public class PostDTO {
         this.imageURLs = imageURLs;
     }
 
-    public URI getSubscribersURL() {
+   /* public URI getSubscribersURL() {
         return subscribersURL;
     }
 
     public void setSubscribersURL(URI subscribersURL) {
         this.subscribersURL = subscribersURL;
-    }
+    }*/
 }

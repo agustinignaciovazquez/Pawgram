@@ -6,13 +6,11 @@ import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidPostException;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.service.*;
-import ar.edu.itba.pawgram.model.Comment;
-import ar.edu.itba.pawgram.model.Post;
-import ar.edu.itba.pawgram.model.PostImage;
-import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.webapp.dto.CommentDTO;
 import ar.edu.itba.pawgram.webapp.dto.PostDTO;
+import ar.edu.itba.pawgram.webapp.dto.PostListDTO;
 import ar.edu.itba.pawgram.webapp.dto.form.FormComment;
 import ar.edu.itba.pawgram.webapp.dto.form.FormPicture;
 import ar.edu.itba.pawgram.webapp.dto.form.FormPost;
@@ -29,11 +27,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Path("posts")
@@ -72,7 +69,7 @@ public class PostsController {
     @Path("/{id}")
     public Response getPostById(@PathParam("id") final long id, @QueryParam("latitude") Double latitude,
                                 @QueryParam("longitude") Double longitude) {
-        LOGGER.debug("Accesed getProductById with ID: {}", id);
+        LOGGER.debug("Accesed getPostById with ID: {}", id);
 
         final Post post;
         if(longitude != null && latitude != null){
@@ -89,6 +86,36 @@ public class PostsController {
         else {
             return Response.ok(new PostDTO(post, uriContext.getBaseUri(), Optional.ofNullable(securityUserService.getLoggedInUser()))).build();
         }
+    }
+
+    @GET
+    @Path("/")
+    public Response getPosts(@QueryParam("category") final Category category,@QueryParam("latitude") Double latitude,
+                             @QueryParam("longitude") Double longitude,@QueryParam("range") Integer range, @DefaultValue("1") @QueryParam("page") int page,
+                                @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize) {
+        if(!(longitude != null && latitude != null && range != null)){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        final Optional<Category> categoryOpt = Optional.ofNullable(category);
+        final Location location = new Location(longitude,latitude);
+
+        // Ignoring invalid values, default stays
+        page = (page < 1) ? 1 : page;
+        pageSize = (pageSize < 1 || pageSize > MAX_PAGE_SIZE) ? DEFAULT_PAGE_SIZE : pageSize;
+
+        LOGGER.debug("Accessing post list. Category: {}, page: {}, per_page: {}", categoryOpt, page, pageSize);
+
+        final long totalPosts = postService.getTotalPosts(location,range,categoryOpt);
+        final long maxPage = postService.getMaxPage(pageSize,location,range,categoryOpt);
+        final List<Post> posts = postService.getPlainPostsPaged(location,range,categoryOpt,page,pageSize);
+
+        final Map<String, Link> links = linkFactory.createLinks(uriContext, page, maxPage);
+        final Link[] linkArray = links.values().toArray(new Link[0]);
+
+        LOGGER.debug("Links: {}", links);
+        return Response.ok(new PostListDTO(posts, totalPosts, uriContext.getBaseUri(),
+                Optional.ofNullable(securityUserService.getLoggedInUser()))).links(linkArray).build();
     }
 
     @DELETE
@@ -232,10 +259,10 @@ public class PostsController {
 
         performFormValidations(formPost, formPictures);
 
-        LOGGER.debug("User with id {} accessed modify post with id {}", loggedUser.getId(),postId);
-        final User creator = securityUserService.getLoggedInUser();
-        Post post = postService.getFullPostById(postId);
 
+        final User creator = securityUserService.getLoggedInUser();
+        final Post post = postService.getFullPostById(postId);
+        LOGGER.debug("User with id {} accessed modify post with id {}", creator.getId(),postId);
         if (post == null) {
             LOGGER.warn("Failed to modify post with id {}: post not found", postId);
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -245,12 +272,12 @@ public class PostsController {
                     postId, creator.getId(), post.getOwner().getId());
             return Response.status(Response.Status.FORBIDDEN).build();
         }
-        
+        final Post modifiedPost;
         try {
-            post = postService.createPost(formPost.getTitle(),formPost.getDescription(),formPictures.getPicturesBytes(),
+            modifiedPost = postService.modifyPost(postId,formPictures.getPicturesBytes(), formPost.getTitle(),formPost.getDescription(),
                     formPost.getContact_phone(),formPost.getEvent_date(),
-                    formPost.getAsCategory(),formPost.getAsPet(),formPost.getIs_male(),
-                    formPost.getLocation(),creator);
+                    post.getCategory(),formPost.getAsPet(),formPost.getIs_male(),
+                    formPost.getLocation());
         }  catch (InvalidPostException e) {
             LOGGER.warn("User with id {} failed to post post: possible upload hack attempt: {}", creator.getId(), e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -258,7 +285,7 @@ public class PostsController {
 
         final URI location = uriContext.getAbsolutePathBuilder().path(String.valueOf(post.getId())).build();
         LOGGER.info("User with id {} modified post with id {}", creator.getId(), post.getId());
-        return Response.created(location).entity(new PostDTO(post, uriContext.getBaseUri(),
+        return Response.created(location).entity(new PostDTO(modifiedPost, uriContext.getBaseUri(),
                 Optional.ofNullable(securityUserService.getLoggedInUser()))).build();
     }
 

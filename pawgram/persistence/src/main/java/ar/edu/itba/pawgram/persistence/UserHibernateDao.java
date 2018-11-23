@@ -3,8 +3,10 @@ package ar.edu.itba.pawgram.persistence;
 import ar.edu.itba.pawgram.interfaces.exception.DuplicateEmailException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidUserException;
 import ar.edu.itba.pawgram.interfaces.persistence.UserDao;
+import ar.edu.itba.pawgram.model.Category;
 import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.model.structures.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -111,6 +113,62 @@ public class UserHibernateDao implements UserDao {
 
         final Long total = query.getSingleResult();
 
+        return total != null ? total : 0;
+    }
+    @Override
+    public List<Post> getPlainPostsByUserIdRange(long userId, int limit, int offset) {
+        final TypedQuery<Post> query = em.createQuery("from Post as p where p.owner.id = :userId ORDER BY p.id ASC", Post.class);
+        query.setParameter("userId", userId);
+
+        return pagedResult(query, offset, limit);
+    }
+
+    @Override
+    public List<Post> getPlainPostsByUserIdRange(long userId, Location location, int limit, int offset) {
+        final TypedQuery<Post> query = em.createQuery("from Post as p where p.owner.id = :userId" +
+                " ORDER BY haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) ASC", Post.class);
+        query.setParameter("userId", userId);
+        query.setParameter("lat1",location.getLatitude());
+        query.setParameter("lon1",location.getLongitude());
+
+        return pagedResult(query, offset, limit);
+    }
+
+    @Override
+    public List<Post> getPlainPostsByUserIdRange(long userId, Category category, int limit, int offset) {
+        final TypedQuery<Post> query = em.createQuery("from Post as p where p.category = :category AND p.owner.id = :userId ORDER BY p.id ASC", Post.class);
+        query.setParameter("category", category);
+        query.setParameter("userId", userId);
+
+        return pagedResult(query, offset, limit);
+    }
+
+    @Override
+    public List<Post> getPlainPostsByUserIdRange(long userId, Location location, Category category, int limit, int offset) {
+        final TypedQuery<Post> query = em.createQuery("from Post as p where p.category = :category AND p.owner.id = :userId " +
+                " ORDER BY haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) ASC", Post.class);
+        query.setParameter("category", category);
+        query.setParameter("userId", userId);
+        query.setParameter("lat1",location.getLatitude());
+        query.setParameter("lon1",location.getLongitude());
+
+        return pagedResult(query, offset, limit);
+    }
+    @Override
+    public long getTotalPostsByUserId(long userId) {
+        final TypedQuery<Long> query = em.createQuery("select count(*) from Post as p where p.owner.id = :userId", Long.class);
+        query.setParameter("userId",userId);
+        final Long total = query.getSingleResult();
+        return total != null ? total : 0;
+    }
+
+    @Override
+    public long getTotalPostsByUserId(long userId, Category category) {
+        final TypedQuery<Long> query = em.createQuery("select count(*) from Post as p where p.category = :category AND p.owner.id = :userId", Long.class);
+        query.setParameter("category", category);
+        query.setParameter("userId",userId);
+
+        final Long total = query.getSingleResult();
         return total != null ? total : 0;
     }
 

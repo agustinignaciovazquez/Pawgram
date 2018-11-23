@@ -27,12 +27,6 @@ public class SearchZone {
     @JoinColumn(name = "userid", nullable = false, updatable = false)
     private User user;
 
-    @Transient
-    private List<Post> posts;
-
-    @Transient
-    private long max_page;
-
     public static SearchZoneBuilder getBuilder(Location location, int range) {
         isTrue(range >= 0, "SearchZone range must be non negative: %d", range);
         notNull(location, "Location must not be null");
@@ -53,9 +47,7 @@ public class SearchZone {
         this.id = builder.id;
         this.location = builder.location;
         this.range = builder.range;
-        this.posts = builder.posts;
         this.user = builder.user;
-        this.max_page = builder.max_page;
     }
 
 
@@ -70,12 +62,6 @@ public class SearchZone {
     public int getRange() {
         return range;
     }
-
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public long getMax_page() { return max_page; }
 
     public User getUser() {
         return user;
@@ -121,8 +107,6 @@ public class SearchZone {
             this.location = sz.location;
             this.range = sz.range;
             this.user = sz.user;
-            this.posts = sz.posts;
-            this.max_page = sz.max_page;
         }
 
         public SearchZoneBuilder id(long id) {
@@ -133,16 +117,6 @@ public class SearchZone {
 
         public SearchZoneBuilder user(User user) {
             this.user = user;
-            return this;
-        }
-
-        public SearchZoneBuilder posts(List<Post> posts) {
-            this.posts = posts;
-            return this;
-        }
-
-        public SearchZoneBuilder max_page(long max_page) {
-            this.max_page = max_page;
             return this;
         }
 

@@ -18,7 +18,7 @@ public class InvalidCommentExceptionMapper implements ExceptionMapper<InvalidCom
     @Override
     public Response toResponse(final InvalidCommentException exception) {
         LOGGER.debug("Comment exception \n Stack trace {}",exception.getMessage());
-        return Response.status(Response.Status.FORBIDDEN).entity(new ExceptionDTO("Invalid comment")).type(MediaType.APPLICATION_JSON).build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(new ExceptionDTO("Invalid comment")).type(MediaType.APPLICATION_JSON).build();
     }
 
 }

@@ -29,10 +29,10 @@ public interface SearchZoneService {
 
     /**
      * Lists searchZones of a specific {@link User} sorted by minor distance first,
-     * @param user - the user searching in his zones.
+     * @param userId - the user searching in his zones.
      * @return {@link List} of searchZone associated with the {@link User}
      */
-    public List<SearchZone> getPlainSearchZonesByUser(final User user);
+    public List<SearchZone> getPlainSearchZonesByUser(final long userId);
 
     /**
      * Lists {@link SearchZone} with a specific id,
@@ -40,60 +40,15 @@ public interface SearchZoneService {
      * @param id - the search zone id.
      * @return searchZone associated with the id
      */
-    public SearchZone getFullSearchZonesByIdWithoutPosts(final long id);
+    public SearchZone getFullSearchZoneById(final long id);
 
     /**
      * Retrieves the quantity of {@link SearchZone} registered for a given {@link User}
-     * @param user - the user searching in his zones.
+     * @param userId - the user searching in his zones.
      * @return The number of {@link SearchZone}.
      */
-    public long getTotalSearchZonesByUser(final User user);
+    public long getTotalSearchZonesByUser(final long userId);
 
-    /**
-     * Find a {@link SearchZone} by the id,
-     * @param zoneId - ID of the zone
-     * @param page - current page for {@link List} of {@link Post}
-     * @param page - max size of page for {@link List} of {@link Post}
-     * @return searchZone associated with the {@link User}(owner)
-     * and  the list of {@link Post} paged with the params
-     * or null if the zoneId is invalid
-     */
-    public SearchZone getFullSearchZoneById(final long zoneId, final int page, final int pageSize);
-
-    /**
-     * Find a {@link SearchZone} by the id,
-     * @param zoneId - ID of the zone
-     * @param page - current page for {@link List} of {@link Post}
-     * @param category - filter the {@link List} of {@link Post} by this
-     * @param page - max size of page for {@link List} of {@link Post}
-     * @return searchZone associated with the {@link User}(owner)
-     * and  the list of {@link Post} paged with the params
-     * or null if the zoneId is invalid
-     */
-    public SearchZone getFullSearchZoneByIdAndCategory(final long zoneId, final Category category, final int page, final int pageSize);
-
-    /**
-     * Find all the {@link SearchZone} by the user,
-     * @param user - the user in question
-     * @param page - current page for {@link List} of {@link Post}
-     * @param page - max size of page for {@link List} of {@link Post}
-     * @return searchZone associated with the {@link User}(owner)
-     * and  the list of {@link Post} paged with the params
-     * or null if the zoneId is invalid
-     */
-    public List<SearchZone> getFullSearchZonesById(final User user, final int page, final int pageSize);
-
-    /**
-     * Find all the {@link SearchZone} by the user and category,
-     * @param user - the user in question
-     * @param page - current page for {@link List} of {@link Post}
-     * @param category - filter the {@link List} of {@link Post} by this
-     * @param page - max size of page for {@link List} of {@link Post}
-     * @return searchZone associated with the {@link User}(owner)
-     * and  the list of {@link Post} paged with the params
-     * or null if the zoneId is invalid
-     */
-    public List<SearchZone> getFullSearchZonesByIdAndCategory(final User user, final Category category, final int page, final int pageSize);
 
 
 

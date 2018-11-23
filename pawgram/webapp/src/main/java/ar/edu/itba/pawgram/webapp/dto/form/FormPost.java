@@ -134,7 +134,8 @@ public class FormPost {
     public void setPet(String pet) {
         this.pet = pet;
     }
+
     public Location getLocation(){
-        new Location(longitude,latitude);
+        return new Location(longitude,latitude);
     }
 }

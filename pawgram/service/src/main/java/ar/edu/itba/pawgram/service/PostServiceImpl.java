@@ -85,23 +85,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPlainPostsPaged(int page, int pageSize) {
+    public List<Post> getPlainPostsPaged(Optional<Location> location, Optional<Category> category, int page, int pageSize) {
+        if(category.isPresent()){
+            if(location.isPresent()){
+                return haversineDistance.setPostsDistance(postDao.getPlainPostsByCategoryRange(location.get(),category.get(),pageSize,(page - 1) * pageSize),location.get());
+            }
+            return postDao.getPlainPostsByCategoryRange(category.get(),pageSize,(page - 1) * pageSize);
+        }
+        if(location.isPresent())
+            return haversineDistance.setPostsDistance(postDao.getPlainPostsRange(location.get(),pageSize,(page - 1) * pageSize),location.get());
         return postDao.getPlainPostsRange(pageSize,(page - 1) * pageSize);
-    }
-
-    @Override
-    public List<Post> getPlainPostsPaged(Location location, int page, int pageSize) {
-        return setPostsDistance(postDao.getPlainPostsRange(location,pageSize,(page - 1) * pageSize),location);
-    }
-
-    @Override
-    public List<Post> getPlainPostsByCategoryPaged(Category category, int page, int pageSize) {
-        return postDao.getPlainPostsByCategoryRange(category,pageSize,(page - 1) * pageSize);
-    }
-
-    @Override
-    public List<Post> getPlainPostsByCategoryPaged(Location location, Category category, int page, int pageSize) {
-        return setPostsDistance(postDao.getPlainPostsByCategoryRange(location,category,pageSize,(page - 1) * pageSize),location);
     }
 
     @Override
@@ -119,7 +112,7 @@ public class PostServiceImpl implements PostService {
         final Post post = postDao.getFullPostById(postId);
         if(post == null)
             return null;
-        return setPostDistance(Post.getBuilderFromPost(post).commentFamilies(commentService.getCommentsByPostId(postId)).build(),location);
+        return haversineDistance.setPostDistance(Post.getBuilderFromPost(post).commentFamilies(commentService.getCommentsByPostId(postId)).build(),location);
     }
 
     @Override
@@ -129,65 +122,27 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public List<Post> getPlainPostsPaged(Location location, int range, int page, int pageSize) {
-        return setPostsDistance(postDao.getPlainPostsRange(location, range, pageSize,(page - 1) * pageSize),location);
+    public List<Post> getPlainPostsPaged(Location location, int range, Optional<Category> category, int page, int pageSize) {
+        if(category.isPresent())
+            return haversineDistance.setPostsDistance(postDao.getPlainPostsByCategoryRange(location, range, category.get(), pageSize,(page - 1) * pageSize),location);
+        return haversineDistance.setPostsDistance(postDao.getPlainPostsRange(location, range, pageSize,(page - 1) * pageSize),location);
     }
 
     @Override
-    public List<Post> getPlainPostsByCategoryPaged(Location location, int range, Category category, int page, int pageSize) {
-        return setPostsDistance(postDao.getPlainPostsByCategoryRange(location, range, category, pageSize,(page - 1) * pageSize),location);
-    }
-
-    @Override
-    public List<Post> getPlainPostsByKeywordPaged(String keyword, int page, int pageSize) {
+    public List<Post> getPlainPostsByKeywordPaged(String keyword, Optional<Location> location, Optional<Category> category, int page, int pageSize) {
         Set<String> validKeywords = getValidKeywords(keyword);
         if (validKeywords.isEmpty())
             return Collections.emptyList();
+        if(category.isPresent()){
+            if(location.isPresent()){
+                return haversineDistance.setPostsDistance(postDao.getPlainPostsByKeywordRange(validKeywords,location.get(),category.get(),pageSize,(page - 1) * pageSize),location.get());
+            }
+            return postDao.getPlainPostsByKeywordRange(validKeywords,category.get(),pageSize,(page - 1) * pageSize);
+        }
+        if(location.isPresent()){
+            return haversineDistance.setPostsDistance(postDao.getPlainPostsByKeywordRange(validKeywords, location.get(), pageSize,(page - 1) * pageSize),location.get());
+        }
         return postDao.getPlainPostsByKeywordRange(validKeywords,pageSize,(page - 1) * pageSize);
-    }
-
-    @Override
-    public List<Post> getPlainPostsByKeywordPaged(String keyword, Location location, int page, int pageSize) {
-        Set<String> validKeywords = getValidKeywords(keyword);
-        if (validKeywords.isEmpty())
-            return Collections.emptyList();
-        return setPostsDistance(postDao.getPlainPostsByKeywordRange(validKeywords, location, pageSize,(page - 1) * pageSize),location);
-    }
-
-    @Override
-    public List<Post> getPlainPostsByKeywordPaged(String keyword, Category category, int page, int pageSize) {
-        Set<String> validKeywords = getValidKeywords(keyword);
-        if (validKeywords.isEmpty())
-            return Collections.emptyList();
-        return postDao.getPlainPostsByKeywordRange(validKeywords,category,pageSize,(page - 1) * pageSize);
-    }
-
-    @Override
-    public List<Post> getPlainPostsByKeywordPaged(String keyword, Location location, Category category, int page, int pageSize) {
-        Set<String> validKeywords = getValidKeywords(keyword);
-        if (validKeywords.isEmpty())
-            return Collections.emptyList();
-        return setPostsDistance(postDao.getPlainPostsByKeywordRange(validKeywords,location,category,pageSize,(page - 1) * pageSize),location);
-    }
-
-    @Override
-    public List<Post> getPlainPostsByUserIdPaged(long userId, int page, int pageSize) {
-        return postDao.getPlainPostsByUserIdRange(userId,pageSize,(page - 1) * pageSize);
-    }
-
-    @Override
-    public List<Post> getPlainPostsByUserIdPaged(long userId, Location location, int page, int pageSize) {
-        return setPostsDistance(postDao.getPlainPostsByUserIdRange(userId, location, pageSize,(page - 1) * pageSize),location);
-    }
-
-    @Override
-    public List<Post> getPlainPostsByUserIdPaged(long userId, Category category, int page, int pageSize) {
-        return postDao.getPlainPostsByUserIdRange(userId,category,pageSize,(page - 1) * pageSize);
-    }
-
-    @Override
-    public List<Post> getPlainPostsByUserIdPaged(long userId, Location location, Category category, int page, int pageSize) {
-        return setPostsDistance(postDao.getPlainPostsByUserIdRange(userId, location, category, pageSize,(page - 1) * pageSize),location);
     }
 
     @Override
@@ -197,111 +152,45 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public long getTotalPosts() {
+    public long getTotalPosts(Optional<Category> category) {
+        if(category.isPresent())
+            return postDao.getTotalPostsByCategory(category.get());
         return postDao.getTotalPosts();
     }
 
     @Override
-    public long getTotalPostsByCategory(Category category) {
-        return postDao.getTotalPostsByCategory(category);
-    }
-
-    @Override
-    public long getTotalPosts(Location location, int range) {
+    public long getTotalPosts(Location location, int range, Optional<Category> category) {
+        if(category.isPresent())
+            return postDao.getTotalPostsByCategory(location,range, category.get());
         return postDao.getTotalPosts(location,range);
     }
 
     @Override
-    public long getTotalPostsByCategory(Location location, int range, Category category) {
-        return postDao.getTotalPostsByCategory(location,range,category);
-    }
-
-    @Override
-    public long getTotalPostsByKeyword(String keyword) {
+    public long getTotalPostsByKeyword(String keyword, Optional<Category> category) {
         Set<String> validKeywords = getValidKeywords(keyword);
         if (validKeywords.isEmpty())
             return 0;
+        if(category.isPresent())
+            return postDao.getTotalPostsByKeyword(validKeywords, category.get());
         return postDao.getTotalPostsByKeyword(validKeywords);
     }
 
     @Override
-    public long getTotalPostsByKeyword(String keyword, Category category) {
-        Set<String> validKeywords = getValidKeywords(keyword);
-        if (validKeywords.isEmpty())
-            return 0;
-        return postDao.getTotalPostsByKeyword(validKeywords,category);
-    }
-
-    @Override
-    public long getTotalPostsByUserId(long userId) {
-        return postDao.getTotalPostsByUserId(userId);
-    }
-
-    @Override
-    public long getTotalPostsByUserId(long userId, Category category) {
-        return postDao.getTotalPostsByUserId(userId, category);
-    }
-
-    @Override
-    public long getMaxPage(int pageSize) {
-        long total = getTotalPosts();
+    public long getMaxPage(int pageSize, Optional<Category> category) {
+        long total = getTotalPosts(category);
         return (long) Math.ceil((float) total / pageSize);
     }
 
     @Override
-    public long getMaxPage(int pageSize, Location location, int range) {
-        long total = getTotalPosts(location, range);
+    public long getMaxPage(int pageSize, Location location, int range, Optional<Category> category) {
+        long total = getTotalPosts(location, range, category);
         return (long) Math.ceil((float) total / pageSize);
     }
 
     @Override
-    public long getMaxPageByCategory(int pageSize, Category category) {
-        long total = getTotalPostsByCategory(category);
-        return (long) Math.ceil((float) total / pageSize);
-    }
-
-    @Override
-    public long getMaxPageByCategory(int pageSize, Location location, int range, Category category) {
-        long total = getTotalPostsByCategory(location, range, category);
-        return (long) Math.ceil((float) total / pageSize);
-    }
-
-    @Override
-    public long getMaxPageByKeyword(int pageSize, String keyword) {
-        long total = getTotalPostsByKeyword(keyword);
-        return (long) Math.ceil((float) total / pageSize);
-    }
-
-    @Override
-    public long getMaxPageByKeyword(int pageSize, String keyword, Category category) {
+    public long getMaxPageByKeyword(int pageSize, String keyword, Optional<Category> category) {
         long total = getTotalPostsByKeyword(keyword,category);
         return (long) Math.ceil((float) total / pageSize);
-    }
-
-    @Override
-    public long getMaxPageByUserId(int pageSize, long userId) {
-        long total = getTotalPostsByUserId(userId);
-        return (long) Math.ceil((float) total / pageSize);
-    }
-
-    @Override
-    public long getMaxPageByUserId(int pageSize, long userId, Category category) {
-        long total = getTotalPostsByUserId(userId,category);
-        return (long) Math.ceil((float) total / pageSize);
-    }
-
-    private Post setPostDistance(Post p, Location currentLocation){
-        Double distance = haversineDistance.distance(currentLocation.getLatitude(),currentLocation.getLongitude(),
-                p.getLocation().getLatitude(),p.getLocation().getLongitude());
-        p.setDistance(distance.intValue());
-        return p;
-    }
-
-    private List<Post> setPostsDistance(List<Post> posts, Location currentLocation){
-        for(Post p: posts){
-            setPostDistance(p,currentLocation);
-        }
-        return posts;
     }
 
     private Set<String> getValidKeywords(String keyword){
