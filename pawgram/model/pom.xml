@@ -1,8 +1,20 @@
-<?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-    <build>
+  <parent>
+    <artifactId>pawgram</artifactId>
+    <groupId>ar.edu.itba.pawgram</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>ar.edu.itba.pawgram</groupId>
+  <artifactId>model</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>model</name>
+  <url>http://maven.apache.org</url>
+  
+  <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -18,36 +30,31 @@
       </plugin>
     </plugins>
   </build>
-    <parent>
-    <groupId>ar.edu.itba.pawgram</groupId>
-    <artifactId>pawgram</artifactId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
-  <groupId>ar.edu.itba.pawgram</groupId>
-  <artifactId>model</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>model</name>
-  <url>http://maven.apache.org</url>
-   <properties>
+  
+  <properties>
     <org.apache.maven.plugins.version>3.0.2</org.apache.maven.plugins.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
     <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
-      <dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
         <groupId>org.hibernate.javax.persistence</groupId>
         <artifactId>hibernate-jpa-2.1-api</artifactId>
-      </dependency>
-        <dependency>
-         <groupId>org.hibernate</groupId>
-         <artifactId>hibernate-search-orm</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-      </dependency>
+    </dependency>
+    <dependency> <!-- for hibernate annotations -->
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+    </dependency>
+     <dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-spatial</artifactId>
+    </dependency>
   </dependencies>
 </project>
