@@ -21,7 +21,7 @@ import javax.ws.rs.core.*;
 import java.util.List;
 import java.util.Map;
 
-@Path("posts")
+@Path("messages")
 @Controller
 @Produces(value = {MediaType.APPLICATION_JSON})
 public class MessagesController {
