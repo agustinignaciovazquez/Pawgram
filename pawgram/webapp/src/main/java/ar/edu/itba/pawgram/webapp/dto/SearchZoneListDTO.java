@@ -22,6 +22,14 @@ public class SearchZoneListDTO {
             this.searchzones.add(new PlainSearchZoneDTO(sz, baseUri));
     }
 
+    public List<PlainSearchZoneDTO> getSearchzones() {
+        return searchzones;
+    }
+
+    public void setSearchzones(List<PlainSearchZoneDTO> searchzones) {
+        this.searchzones = searchzones;
+    }
+
     public long getCount() {
         return count;
     }
