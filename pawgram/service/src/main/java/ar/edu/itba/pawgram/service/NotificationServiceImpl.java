@@ -22,8 +22,8 @@ public class NotificationServiceImpl implements NotificationService {
     NotificationDao notificationDao;
 
     @Override
-    public List<Notification> getNotifications(User user, boolean include_seen_notifications) {
-        return notificationDao.getNotifications(user,include_seen_notifications);
+    public List<Notification> getNotifications(User user, boolean include_seen_notifications, int page, int pageSize) {
+        return notificationDao.getNotifications(user,include_seen_notifications,pageSize,(page - 1) * pageSize);
     }
 
     @Override
@@ -35,6 +35,12 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public long getTotalNotificationByUser(User user, boolean include_seen_notifications) {
         return notificationDao.getTotalNotificationByUser(user,include_seen_notifications);
+    }
+
+    @Override
+    public long getMaxPageNotificationByUser(User user, boolean include_seen_notifications, int pageSize) {
+        long total = getTotalNotificationByUser(user,include_seen_notifications);
+        return (long) Math.ceil((float) total / pageSize);
     }
 
     @Override

@@ -17,7 +17,7 @@ public interface NotificationDao {
      * @return {@link List} of messages associated with the two {@link User}.
      * 		   Could be empty if there are no messages between two users
      */
-    public List<Notification> getNotifications(final User user, final boolean include_seen_notifications);
+    public List<Notification> getNotifications(final User user, final boolean include_seen_notifications, final int limit, final int offset);
 
     /**
      * Creates a new {@link Notification} for a specific {@link User}

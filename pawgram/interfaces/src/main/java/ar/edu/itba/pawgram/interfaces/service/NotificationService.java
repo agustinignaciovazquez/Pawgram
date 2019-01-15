@@ -17,7 +17,7 @@ public interface NotificationService {
      * @return {@link List} of messages associated with the two {@link User}.
      * 		   Could be empty if there are no messages between two users
      */
-    public List<Notification> getNotifications(final User user, final boolean include_seen_notifications);
+    public List<Notification> getNotifications(final User user, final boolean include_seen_notifications, final int page, final int pageSize);
 
     /**
      * Creates a new {@link Notification} for a specific {@link User}
@@ -35,6 +35,14 @@ public interface NotificationService {
      * @return {@link long} with the total of notifications
      */
     public long getTotalNotificationByUser(final User user, final boolean include_seen_notifications);
+
+    /**
+     * Retrieves the max page of {@link Notification} from a @link User}.
+     * @param user - user which notifications total retrieve.
+     * @param include_seen_notifications - if true all notifications will be retrieved
+     * @return The max page for messages.
+     */
+    public long getMaxPageNotificationByUser(final User user, final boolean include_seen_notifications, final int pageSize);
 
     /**
      * Creates a new {@link Notification} for a set of {@link User}

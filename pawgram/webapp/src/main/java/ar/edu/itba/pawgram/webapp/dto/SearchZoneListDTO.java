@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.webapp.dto;
 
 import ar.edu.itba.pawgram.model.SearchZone;
+import ar.edu.itba.pawgram.model.User;
 
 import java.net.URI;
 import java.util.LinkedList;
@@ -13,7 +14,7 @@ public class SearchZoneListDTO {
 
     public SearchZoneListDTO() {}
 
-    public SearchZoneListDTO(final List<SearchZone> searchzones, long totalCount, final URI baseUri) {
+    public SearchZoneListDTO(final List<SearchZone> searchzones, long totalCount, final URI baseUri, final User loggedUser) {
         this.setTotalCount(totalCount);
         this.searchzones = new LinkedList<>();
         this.setCount(searchzones.size());

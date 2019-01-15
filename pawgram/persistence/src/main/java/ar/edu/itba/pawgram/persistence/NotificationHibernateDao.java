@@ -20,7 +20,7 @@ public class NotificationHibernateDao implements NotificationDao {
     private EntityManager em;
 
     @Override
-    public List<Notification> getNotifications(User user, boolean include_seen_notifications) {
+    public List<Notification> getNotifications(User user, boolean include_seen_notifications, int limit, int offset) {
         String queryStr = "select n from Notification as n WHERE n.user.id = :userId ORDER BY n.id DESC";
         if(include_seen_notifications == false)
             queryStr = "select n from Notification as n WHERE n.user.id = :userId AND n.is_seen = FALSE ORDER BY n.id DESC";
@@ -28,7 +28,7 @@ public class NotificationHibernateDao implements NotificationDao {
         final TypedQuery<Notification> query = em.createQuery(queryStr, Notification.class);
         query.setParameter("userId", user.getId());
 
-        return query.getResultList();
+        return pagedResult(query,offset,limit);
     }
 
     @Override
@@ -78,5 +78,12 @@ public class NotificationHibernateDao implements NotificationDao {
 
         notification.setIs_seen(true);
         return (notification.isIs_seen() == true);
+    }
+
+
+    private List<Notification> pagedResult(final TypedQuery<Notification> query, final int offset, final int length) {
+        query.setFirstResult(offset);
+        query.setMaxResults(length);
+        return query.getResultList();
     }
 }

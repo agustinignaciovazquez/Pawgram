@@ -119,6 +119,10 @@ public class UsersController {
             return Response.status(Status.NOT_FOUND).build();
         }
         //For the moment we don't allow other users to see subscriptions we leave code like this in case we want to change it in the future
+        if(loggedUser == null){
+            LOGGER.debug("Forbidden anonymous user trying to access subscriptions with id {} he/she is not owner of", id);
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
         if (!user.equals(loggedUser)) {
             LOGGER.warn("Forbidden user {} trying to access subscriptionswith id {} he/she is not owner of", user.getId(), id);
             return Response.status(Response.Status.FORBIDDEN).build();
@@ -240,6 +244,10 @@ public class UsersController {
         DTOValidator.validate(changePasswordForm, "Failed to validate change password form");
 
         final User authenticatedUser = securityUserService.getLoggedInUser();
+        if(authenticatedUser == null){
+            LOGGER.debug("Failed to modify password, user not found");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
 
         if (!passwordEncoder.matches(changePasswordForm.getCurrentPassword(), authenticatedUser.getPassword()))
             return Response.status(ValidationMapper.UNPROCESSABLE_ENTITY).entity(new ExceptionDTO("Incorrect password")).build();
@@ -300,6 +308,11 @@ public class UsersController {
         DTOValidator.validate(picture, "Failed to validate picture");
 
         final User authenticatedUser = securityUserService.getLoggedInUser();
+
+        if(authenticatedUser == null){
+            LOGGER.debug("Failed to change profile picture, user not found");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
 
         userService.changeProfile(authenticatedUser.getId(), picture.getPictureBytes());
 

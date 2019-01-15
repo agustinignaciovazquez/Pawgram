@@ -18,7 +18,7 @@ public class SearchZoneDTO {
 
     }
 
-    public SearchZoneDTO(final SearchZone sz, final URI baseUri, final Optional<User> loggedUser) {
+    public SearchZoneDTO(final SearchZone sz, final URI baseUri, final User loggedUser) {
         this.id = sz.getId();
         this.locationDTO = new LocationDTO(sz.getLocation(),baseUri);
         this.user = new UserDTO(sz.getUser(),baseUri);

@@ -23,7 +23,6 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.*;
@@ -105,6 +104,10 @@ public class PostsController {
             LOGGER.warn("Searcho zone with ID: {} not found", id);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+        if(user == null){
+            LOGGER.debug("Failed to fetch sz {}, user not found", id);
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
         if (!user.equals(sz.getUser())) {
             LOGGER.warn("Forbidden user {} trying to access search zone with id {} he/she is not owner of", user.getId(), id);
             return Response.status(Response.Status.FORBIDDEN).build();
@@ -156,6 +159,11 @@ public class PostsController {
             return Response.noContent().build();
         }
 
+        if(user == null){
+            LOGGER.debug("Failed to delete post {}, user not found", id);
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         if (!user.equals(post.getOwner())) {
             LOGGER.warn("Forbidden user {} trying to delete post {} he/she is not owner of", user.getId(), id);
             return Response.status(Response.Status.FORBIDDEN).build();
@@ -177,6 +185,11 @@ public class PostsController {
         if (post == null) {
             LOGGER.debug("Post to delete not found");
             return Response.noContent().build();
+        }
+
+        if(user == null){
+            LOGGER.debug("Failed to delete image {} from post {}, user not found",postImageId, postId);
+            return Response.status(Response.Status.FORBIDDEN).build();
         }
 
         if (!user.equals(post.getOwner())) {
@@ -224,6 +237,10 @@ public class PostsController {
         }
 
         final User user = securityUserService.getLoggedInUser();
+        if(user == null){
+            LOGGER.debug("Failed to commment post {}, user not found", postId);
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
 
         validator.validate(formComment, "Failed to validate comment");
 
@@ -250,6 +267,11 @@ public class PostsController {
         performFormValidations(formPost, formPictures);
 
         final User creator = securityUserService.getLoggedInUser();
+        if(creator == null){
+            LOGGER.debug("Failed to create post {}, user not found");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         final Post post;
         try {
             post = postService.createPost(formPost.getTitle(),formPost.getDescription(),formPictures.getPicturesBytes(),
@@ -292,6 +314,12 @@ public class PostsController {
             LOGGER.warn("Failed to modify post with id {}: post not found", postId);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+
+        if(creator == null){
+            LOGGER.debug("Failed to modify post {}, user not found", postId);
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         if(!creator.equals(post.getOwner())){
             LOGGER.warn("Failed to modify post with id {}: logged user with id {} is not post creator with id {}",
                     postId, creator.getId(), post.getOwner().getId());
@@ -327,6 +355,11 @@ public class PostsController {
     @Path("/{id}/subscriptions")
     public Response subscribePost(@PathParam("id") long postId) {
         final User user = securityUserService.getLoggedInUser();
+        if(user == null){
+            LOGGER.debug("Failed to subscribe to post {}, anonymous user", postId);
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         subscribeService.subscribePost(postId,user.getId());
         return Response.noContent().build();
     }
@@ -335,6 +368,11 @@ public class PostsController {
     @Path("/{id}/subscriptions")
     public Response unsubscribePost(@PathParam("id") long postId) {
         final User user = securityUserService.getLoggedInUser();
+        if(user == null){
+            LOGGER.debug("Failed to delete subscription from post {}, anonymous user", postId);
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         subscribeService.unsubscribePost(postId,user.getId());
         return Response.noContent().build();
     }
