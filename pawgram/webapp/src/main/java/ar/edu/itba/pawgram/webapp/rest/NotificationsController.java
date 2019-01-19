@@ -46,7 +46,7 @@ public class NotificationsController {
     @GET
     @Path("/{id}")
     public Response getNotificationById(@PathParam("id") final long id) throws InvalidNotificationException {
-        LOGGER.debug("Accesed getPostById with ID: {}", id);
+        LOGGER.debug("Accesed getNotificationById with ID: {}", id);
         final User loggedUser = securityUserService.getLoggedInUser();
         if(loggedUser == null){
             LOGGER.debug("Failed to fetch notifications from anonymous user ");
@@ -63,8 +63,32 @@ public class NotificationsController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
         //mark notification as seen
-        notificationService.markNotificationAsSeen(id);
+        //notificationService.markNotificationAsSeen(id); // IS THIS REST?
         return Response.ok(new NotificationDTO(notification, uriContext.getBaseUri(), Optional.ofNullable(loggedUser))).build();
+    }
+
+    @PUT
+    @Path("/{id}/seen")
+    public Response markAsSeenNotification(@PathParam("id") long id) throws InvalidNotificationException {
+        LOGGER.debug("Accesed markAsSeenNotification with ID: {}", id);
+        final User loggedUser = securityUserService.getLoggedInUser();
+        if(loggedUser == null){
+            LOGGER.debug("Failed to modify notification from anonymous user ");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+        final Notification notification = notificationService.getFullNotificationById(id);
+        if (notification == null) {
+            LOGGER.warn("Failed to modify notification with ID: {} not found", id);
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        if(!notification.getUser().equals(loggedUser)){
+            LOGGER.warn("Forbidden user {} trying to modify notification with id {} he/she is not owner of", loggedUser.getId(), id);
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        //mark notification as seen
+        notificationService.markNotificationAsSeen(id);
+        return Response.noContent().build();
     }
 
     @GET
