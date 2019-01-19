@@ -1,6 +1,7 @@
 package ar.edu.itba.pawgram.interfaces.service;
 
 import ar.edu.itba.pawgram.interfaces.exception.InvalidPostException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidQueryException;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.structures.Location;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 public interface PostService {
     public final static int MIN_WORD_SIZE = 3;
+    public final static int MAX_WORD_SIZE = 64;
     public final static  int MAX_IMAGES = 4;
 
     /**
@@ -102,7 +104,7 @@ public interface PostService {
      * @param pageSize - max number of results per page
      * @return The list of plain post that match with the keyword.
      */
-    public List<Post> getPlainPostsByKeywordPaged(final String keyword, final Optional<Location> location, final Optional<Category> category, final int page, final int pageSize);
+    public List<Post> getPlainPostsByKeywordPaged(final String keyword, final Optional<Location> location, final Optional<Category> category, final int page, final int pageSize) throws InvalidQueryException;
 
     /**
      * Deletes a {@link ar.edu.itba.pawgram.model.Post} from the database.
@@ -133,7 +135,7 @@ public interface PostService {
      * @param category - the category we are searching
      * @return The number of posts.
      */
-    public long getTotalPostsByKeyword(final String keyword,final Optional<Category> category);
+    public long getTotalPostsByKeyword(final String keyword,final Optional<Category> category) throws InvalidQueryException;
 
     /**
      * Retrieves the max page of post registered for a given {@link Category}
@@ -160,7 +162,7 @@ public interface PostService {
      * @param pageSize - the quantity of post per page
      * @return The number of posts.
      */
-    public long getMaxPageByKeyword(final int pageSize, final String keyword,final Optional<Category> category);
+    public long getMaxPageByKeyword(final int pageSize, final String keyword,final Optional<Category> category) throws InvalidQueryException;
 
 
 }

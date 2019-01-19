@@ -1,10 +1,7 @@
 package ar.edu.itba.pawgram.webapp.rest;
 
 import ar.edu.itba.pawgram.interfaces.auth.SecurityUserService;
-import ar.edu.itba.pawgram.interfaces.exception.FileException;
-import ar.edu.itba.pawgram.interfaces.exception.InvalidCommentException;
-import ar.edu.itba.pawgram.interfaces.exception.InvalidPostException;
-import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
+import ar.edu.itba.pawgram.interfaces.exception.*;
 import ar.edu.itba.pawgram.interfaces.service.*;
 import ar.edu.itba.pawgram.model.*;
 import ar.edu.itba.pawgram.model.structures.Location;
@@ -137,6 +134,34 @@ public class PostsController {
         final long totalPosts = postService.getTotalPosts(location,range,categoryOpt);
         final long maxPage = postService.getMaxPage(pageSize,location,range,categoryOpt);
         final List<Post> posts = postService.getPlainPostsPaged(location,range,categoryOpt,page,pageSize);
+
+        final Map<String, Link> links = linkFactory.createLinks(uriContext, page, maxPage);
+        final Link[] linkArray = links.values().toArray(new Link[0]);
+
+        LOGGER.debug("Links: {}", links);
+        return Response.ok(new PostListDTO(posts, totalPosts, uriContext.getBaseUri(),
+                Optional.ofNullable(securityUserService.getLoggedInUser()))).links(linkArray).build();
+    }
+
+    @GET
+    @Path("/search/")
+    public Response searchPost(@QueryParam("keyword") String query, @QueryParam("category") final Category category,@QueryParam("latitude") Double latitude,
+                             @QueryParam("longitude") Double longitude,@QueryParam("range") Integer range, @DefaultValue("1") @QueryParam("page") int page,
+                             @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize) throws InvalidQueryException {
+
+        final Location location = (!(longitude != null && latitude != null && range != null)) ? new Location(longitude,latitude) : null;
+        final Optional<Category> categoryOpt = Optional.ofNullable(category);
+        final Optional<Location> locationOpt = Optional.ofNullable(location);
+
+        // Ignoring invalid values, default stays
+        page = (page < 1) ? 1 : page;
+        pageSize = (pageSize < 1 || pageSize > MAX_PAGE_SIZE) ? DEFAULT_PAGE_SIZE : pageSize;
+
+        LOGGER.debug("Accessing search post list. Query {} Category: {}, page: {}, per_page: {}",query, categoryOpt, page, pageSize);
+
+        final long totalPosts = postService.getTotalPostsByKeyword(query,categoryOpt);
+        final long maxPage = postService.getMaxPageByKeyword(pageSize,query,categoryOpt);
+        final List<Post> posts = postService.getPlainPostsByKeywordPaged(query,locationOpt,categoryOpt,page,pageSize);
 
         final Map<String, Link> links = linkFactory.createLinks(uriContext, page, maxPage);
         final Link[] linkArray = links.values().toArray(new Link[0]);

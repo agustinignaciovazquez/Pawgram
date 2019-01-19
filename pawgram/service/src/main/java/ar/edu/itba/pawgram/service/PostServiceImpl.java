@@ -2,6 +2,7 @@ package ar.edu.itba.pawgram.service;
 
 import ar.edu.itba.pawgram.interfaces.exception.FileUploadException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidPostException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidQueryException;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.interfaces.service.CommentService;
 import ar.edu.itba.pawgram.interfaces.persistence.PostDao;
@@ -129,7 +130,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPlainPostsByKeywordPaged(String keyword, Optional<Location> location, Optional<Category> category, int page, int pageSize) {
+    public List<Post> getPlainPostsByKeywordPaged(String keyword, Optional<Location> location, Optional<Category> category, int page, int pageSize) throws InvalidQueryException {
         Set<String> validKeywords = getValidKeywords(keyword);
         if (validKeywords.isEmpty())
             return Collections.emptyList();
@@ -166,7 +167,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public long getTotalPostsByKeyword(String keyword, Optional<Category> category) {
+    public long getTotalPostsByKeyword(String keyword, Optional<Category> category) throws InvalidQueryException {
         Set<String> validKeywords = getValidKeywords(keyword);
         if (validKeywords.isEmpty())
             return 0;
@@ -188,12 +189,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public long getMaxPageByKeyword(int pageSize, String keyword, Optional<Category> category) {
+    public long getMaxPageByKeyword(int pageSize, String keyword, Optional<Category> category) throws InvalidQueryException {
         long total = getTotalPostsByKeyword(keyword,category);
         return (long) Math.ceil((float) total / pageSize);
     }
 
-    private Set<String> getValidKeywords(String keyword){
+    private Set<String> getValidKeywords(String keyword) throws InvalidQueryException {
+        if(keyword.length() > MAX_WORD_SIZE)
+            throw new InvalidQueryException();
+        if(keyword.length() < MIN_WORD_SIZE)
+            throw new InvalidQueryException();
+
         final String[] keywords = keyword.trim().split(" ");
         final Set<String> validKeywords = new HashSet<>();
 
