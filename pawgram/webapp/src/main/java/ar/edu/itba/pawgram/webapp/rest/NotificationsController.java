@@ -109,7 +109,7 @@ public class NotificationsController {
                                      @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize) {
         final User loggedUser = securityUserService.getLoggedInUser();
         if(loggedUser == null){
-            LOGGER.debug("Failed to fetch notifications from anonymous user ");
+            LOGGER.debug("Failed to fetch all notifications from anonymous user ");
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
