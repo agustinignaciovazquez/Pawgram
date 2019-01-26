@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name pawgramAppApp
+ * @name pawgramApp
  * @description
- * # pawgramAppApp
+ * # pawgramApp
  *
  * Main module of the application.
  */
 angular
-  .module('pawgramAppApp', [
+  .module('pawgramApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -28,11 +28,6 @@ angular
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl',
         controllerAs: 'about'
-      })
-      .when('/post', {
-        templateUrl: 'views/post.html',
-        controller: 'PostCtrl',
-        controllerAs: 'post'
       })
       .otherwise({
         redirectTo: '/'

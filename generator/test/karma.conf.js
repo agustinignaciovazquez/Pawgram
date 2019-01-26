@@ -1,5 +1,5 @@
 // Karma configuration
-// Generated on 2019-01-21
+// Generated on 2019-01-25
 
 module.exports = function(config) {
   'use strict';
