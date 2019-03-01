@@ -13,6 +13,7 @@ import ar.edu.itba.pawgram.webapp.dto.SearchZoneListDTO;
 import ar.edu.itba.pawgram.webapp.dto.form.FormSearchZone;
 import ar.edu.itba.pawgram.webapp.exception.DTOValidationException;
 import ar.edu.itba.pawgram.webapp.validators.DTOConstraintValidator;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,8 +70,13 @@ public class SearchZoneController {
     @POST
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createSZ(final FormSearchZone formSearchZone) throws DTOValidationException, MaxSearchZoneReachedException, InvalidSearchZoneException {
+    public Response createSZ(@FormDataParam("sz") final FormSearchZone formSearchZone) throws DTOValidationException, MaxSearchZoneReachedException, InvalidSearchZoneException {
         final User user = securityUserService.getLoggedInUser();
+
+        // @FormDataParam parameter is optional --> it may be null
+        if (formSearchZone == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
         if(user == null){
             LOGGER.debug("Failed to create sz, anonymous user");
             return Response.status(Response.Status.FORBIDDEN).build();

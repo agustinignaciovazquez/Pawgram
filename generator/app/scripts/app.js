@@ -32,4 +32,5 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-  });
+  })
+  .value('url', 'http://pawserver.it.itba.edu.ar/paw-2018b-11/api');

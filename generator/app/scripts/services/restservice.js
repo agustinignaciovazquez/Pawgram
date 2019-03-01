@@ -136,48 +136,109 @@ angular.module('pawgramApp')
 						});
 			}            
 			return {
-				//TODO COMPLETE THIS WITH ALL API RESTFUL PATHS
 				getPosts: function(params) {
-					return doGet(url + '/post', params);
+					return doGet(url + '/posts/', params);
 				},
 				
 				getPost: function(id) {
-					return doGet(url + '/post/' + id);
+					return doGet(url + '/posts/' + id);
 				},
-				
+
+				getPostByZoneId: function(id, params) {
+					return doGet(url + '/posts/zone/' + id, params);
+				},
+
+				searchPost: function(query, page, pageSize) {
+					return doGet(url + '/posts/search/', {query: query, page: page, pageSize: pageSize});
+				},
+
+				deletePost: function(id) {
+					return doDelete(url + '/posts/' + id);
+				},
+
+				deletePostImage: function(postId,postImageId) {
+					return doDelete(url + '/posts/' + postId + '/image/'+ postImageId);
+				},
+
 				getComments: function(id, params) {
 					return doGet(url + '/post/' + id + '/comments', params);
 				},
-								
-				getUser: function(id) {
-					return doGet(url + '/users/' + id);
-				},
-								
-				deletePost: function(id) {
-					return doDelete(url + '/post/' + id);
-				},
-				
-				changePassword: function(currentPass, newPass) {
-					return doPut(url + '/user/password', 
-							{'current_password': currentPass, 'new_password': newPass});
-				},
-				
-				changeProfilePicture: function(data) {
-					var picture = data.picture;
-					var formData = new FormData();
 
-					formData.append('picture', dataURItoBlob(picture));
-					return $http.put(url + '/user/picture', formData, multipartMetadata())
-					.then(function(response){
+				commentPost: function(id, comment) {
+					return doPost(url + '/posts/' + id + '/comments', {content: comment}, null, true)
+				},
+				  
+				commentParentPost: function(id, comment, parentCommentId) {
+					return doPost(url + '/posts/' + id + '/comments', {content: comment, parent_id: parentCommentId}, null, true)
+				},
+
+				createPost: function(data) {
+					var postData = {title: data.title, description: data.description, contact_phone: data.contact_phone, event_date: data.event_date, category: data.category,
+						pet: data.pet, is_male: data.is_male, latitude: data.latitude, longitude: data.longitude};
+					var images = data.images;
+					var formData = new FormData();
+					
+					angular.forEach(images, function(img) {
+						if (img)
+							formData.append('picture', dataURItoBlob(img));
+					});
+										
+					
+					formData.append('post', new Blob([JSON.stringify(productData)], {type: "application/json"}));
+					
+					return $http.post(url + '/posts/', formData, multipartMetadata())
+					.then(function(response) {
 						return response.data;
 					})
-					.catch(function(response){
-						return $q.reject(response.data);
+					.catch(function(response) {
+						return $q.reject(response);
 					});
 				},
 
+				modifyPost: function(id,data) {
+					var postData = {title: data.title, description: data.description, contact_phone: data.contact_phone, event_date: data.event_date, 
+						category: data.category, pet: data.pet, is_male: data.is_male, latitude: data.latitude, longitude: data.longitude};
+					var images = data.images;
+					var formData = new FormData();
+					
+					angular.forEach(images, function(img) {
+						if (img)
+							formData.append('picture', dataURItoBlob(img));
+					});
+										
+					formData.append('post', new Blob([JSON.stringify(productData)], {type: "application/json"}));
+					
+					return $http.put(url + '/posts/' + id, formData, multipartMetadata())
+					.then(function(response) {
+						return response.data;
+					})
+					.catch(function(response) {
+						return $q.reject(response);
+					});
+				},
+
+				subscribePost: function(id) {
+					return doPut(url + '/posts/' + id + '/subscriptions', null, null, true);
+				},
+				
+				unsubscribePost: function(id) {
+					return doDelete(url + '/posts/' + id + '/subscriptions', null, true);
+				},
+
+				getUser: function(id) {
+					return doGet(url + '/users/' + id);
+				},
+
+				getUserSubscriptions: function(id, params) {
+					return doGet(url + '/users/' + id + '/subscriptions', params);
+				},	
+
+				getPostedByUser: function(id, params) {
+					return doGet(url + '/users/' + id + '/user_posts', params);
+				},
+
 				createUser: function(data) {
-					var userData = {name: data.name, password: data.password, email: data.email};
+					var userData = {name: data.name, surname: data.surname, password: data.password, mail: data.mail};
 					var picture = data.picture;
 					var formData = new FormData();
 					
@@ -192,14 +253,92 @@ angular.module('pawgramApp')
 						return $q.reject(response);
 					});
 				},
-				
-			
-				commentPost: function(id, comment) {
-					return doPost(url + '/post/' + id + '/comments', {content: comment}, null, true)
+
+				changePassword: function(currentPass, newPass) {
+					return doPut(url + '/users/password', 
+							{'current_password': currentPass, 'new_password': newPass});
 				},
-				  
-				commentParentPost: function(id, comment, parentCommentId) {
-					return doPost(url + '/post/' + id + '/comments', {content: comment, parent_id: parentCommentId}, null, true)
+
+				getRecoverToken: function(mail) {
+					return doPut(url + '/users/get_recover_token', 
+							{'mail': mail});
+				},
+
+				recoverPassword: function(mail, token, newPass) {
+					return doPut(url + '/users/recover_password', 
+							{'mail': mail,'token': token, 'newPassword': newPass});
+				},
+				
+				changeProfilePicture: function(data) {
+					var picture = data.picture;
+					var formData = new FormData();
+
+					formData.append('picture', dataURItoBlob(picture));
+					return $http.put(url + '/users/picture', formData, multipartMetadata())
+					.then(function(response){
+						return response.data;
+					})
+					.catch(function(response){
+						return $q.reject(response.data);
+					});
+				},
+
+				getSearchZones: function() {
+					return doGet(url + '/sz/');
+				},
+
+				createSearchZone: function(data) {
+					var szData = {latitude: data.latitude, longitude: data.longitude, range: data.range};
+				
+					formData.append('sz', new Blob([JSON.stringify(szData)], {type: "application/json"}));
+					
+					return $http.post(url + '/sz/create', formData, multipartMetadata())
+					.then(function(response) {
+						return response.data;
+					})
+					.catch(function(response) {
+						return $q.reject(response);
+					});
+				},
+
+				deleteSearchZone: function(id) {
+					return doDelete(url + '/sz/' + id);
+				},	
+
+				getMessages: function(id,params) {
+					return doGet(url + '/messages/'+id, params);
+				},	
+
+				sendMessage: function(id,data) {
+					var messageData = {message: data.message};
+				
+					formData.append('message', new Blob([JSON.stringify(messageData)], {type: "application/json"}));
+					
+					return $http.post(url + '/messages/'+ id + '/send', formData, multipartMetadata())
+					.then(function(response) {
+						return response.data;
+					})
+					.catch(function(response) {
+						return $q.reject(response);
+					});
+				},
+
+				getNotification: function(id) {
+					return doGet(url + '/notifications/'+ id);
+				},
+
+				markNotificationAsSeen: function(id) {
+					return doPut(url + '/notifications/' + id, 
+							{});
+				},
+
+				getNotifications: function(params) {
+					return doGet(url + '/notifications/', params);
+				},
+
+				getAllNotifications: function(params) {
+					return doGet(url + '/notifications/all', params);
 				}
+				
 			}
 		}]);

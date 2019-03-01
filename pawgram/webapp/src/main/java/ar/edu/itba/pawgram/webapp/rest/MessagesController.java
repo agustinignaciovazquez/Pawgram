@@ -11,6 +11,7 @@ import ar.edu.itba.pawgram.webapp.dto.form.FormMessage;
 import ar.edu.itba.pawgram.webapp.exception.DTOValidationException;
 import ar.edu.itba.pawgram.webapp.utils.PaginationLinkFactory;
 import ar.edu.itba.pawgram.webapp.validators.DTOConstraintValidator;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,8 +84,12 @@ public class MessagesController {
     @POST
     @Path("{otherId}/send")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response commentPost(@PathParam("otherId") final long otherId, final FormMessage formMessage) throws DTOValidationException {
+    public Response sendMessage(@PathParam("otherId") final long otherId, @FormDataParam("message") final FormMessage formMessage) throws DTOValidationException {
         final User otherUser = userService.findById(otherId);
+
+        // @FormDataParam parameter is optional --> it may be null
+        if (formMessage == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
 
         if (otherUser == null) {
             LOGGER.debug("Failed to send message to user {}, not found", otherId);

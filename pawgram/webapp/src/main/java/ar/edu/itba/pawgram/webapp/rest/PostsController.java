@@ -144,7 +144,7 @@ public class PostsController {
     }
 
     @GET
-    @Path("/search/")
+    @Path("/search")
     public Response searchPost(@QueryParam("keyword") String query, @QueryParam("category") final Category category,@QueryParam("latitude") Double latitude,
                              @QueryParam("longitude") Double longitude,@QueryParam("range") Integer range, @DefaultValue("1") @QueryParam("page") int page,
                              @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize) throws InvalidQueryException {
@@ -256,6 +256,10 @@ public class PostsController {
     public Response commentPost(@PathParam("postId") final long postId, final FormComment formComment) throws DTOValidationException, InvalidCommentException {
         final Post post = postService.getPlainPostById(postId);
 
+        // @FormDataParam parameter is optional --> it may be null
+        if (formComment == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
         if (post == null) {
             LOGGER.debug("Failed to commment post {}, not found", postId);
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -325,7 +329,7 @@ public class PostsController {
 
         // @FormDataParam parameter is optional --> it may be null
         if (formPost == null) {
-            LOGGER.warn("FormDataParam null in createPost");
+            LOGGER.warn("FormDataParam null in modifyPost");
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
@@ -370,10 +374,12 @@ public class PostsController {
     private void performFormValidations(final FormPost formPost, final FormPostPictures formPictures) throws DTOValidationException {
         validator.validate(formPost, "Failed to validate post");
 
-        validator.validate(formPictures, "Failed to validate post pictures");
+        if(formPictures != null) {
+            validator.validate(formPictures, "Failed to validate post pictures");
 
-        for (FormDataBodyPart bodyPart : formPictures.getPictures())
-            validator.validate(new FormPicture(bodyPart), "Failed to validate post pictures");
+            for (FormDataBodyPart bodyPart : formPictures.getPictures())
+                validator.validate(new FormPicture(bodyPart), "Failed to validate post pictures");
+        }
     }
 
     @PUT

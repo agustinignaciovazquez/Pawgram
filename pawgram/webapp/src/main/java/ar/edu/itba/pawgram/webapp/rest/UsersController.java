@@ -208,7 +208,7 @@ public class UsersController {
     @Path("/")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response createUser(@FormDataParam("user") final FormUser formUser, @BeanParam final FormPicture formPicture, @Context HttpServletRequest request)
-            throws DuplicateEmailException, DTOValidationException {
+            throws DuplicateEmailException, DTOValidationException, FileUploadException, InvalidUserException {
 
         LOGGER.debug("Accessed createUser");
         Locale locale = request.getLocale();
@@ -218,9 +218,13 @@ public class UsersController {
             return Response.status(Status.BAD_REQUEST).build();
 
         DTOValidator.validate(formUser, "Failed to validate user");
-        //DTOValidator.validate(formPicture, "Failed to validate picture"); TODO CHANGE SERVICE
+        if(formPicture != null)
+            DTOValidator.validate(formPicture, "Failed to validate picture");
 
         final User user = securityUserService.registerUser(formUser.getName(),formUser.getSurname(),formUser.getMail(),formUser.getPassword(),null);
+        if(formPicture != null && user != null)
+            userService.changeProfile(user.getId(),formPicture.getPictureBytes());
+
         final URI location = uriContext.getAbsolutePathBuilder().path(String.valueOf(user.getId())).build();
 
         try {
@@ -240,6 +244,10 @@ public class UsersController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response changePassword(final FormChangePassword changePasswordForm) throws DTOValidationException, InvalidUserException {
         LOGGER.debug("Accessed change password");
+
+        // @FormDataParam parameter is optional --> it may be null
+        if (changePasswordForm == null)
+            return Response.status(Status.BAD_REQUEST).build();
 
         DTOValidator.validate(changePasswordForm, "Failed to validate change password form");
 
@@ -265,6 +273,10 @@ public class UsersController {
         LOGGER.debug("Accessed recover password");
         Locale locale = request.getLocale();
 
+        // @FormDataParam parameter is optional --> it may be null
+        if (recoverPasswordForm == null)
+            return Response.status(Status.BAD_REQUEST).build();
+
         DTOValidator.validate(recoverPasswordForm, "Failed to validate recover password form");
 
         final User user = userService.findByMail(recoverPasswordForm.getMail());
@@ -283,6 +295,10 @@ public class UsersController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response recoverPassword(final FormRecoverPassword recoverPasswordForm) throws DTOValidationException, InvalidUserException {
         LOGGER.debug("Accessed recover password");
+
+        // @FormDataParam parameter is optional --> it may be null
+        if (recoverPasswordForm == null)
+            return Response.status(Status.BAD_REQUEST).build();
 
         DTOValidator.validate(recoverPasswordForm, "Failed to validate recover password form");
 
@@ -304,6 +320,10 @@ public class UsersController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response changePicture(@BeanParam final FormPicture picture) throws DTOValidationException, FileUploadException, InvalidUserException {
         LOGGER.debug("Accessed change picture");
+
+        // @FormDataParam parameter is optional --> it may be null
+        if (picture == null)
+            return Response.status(Status.BAD_REQUEST).build();
 
         DTOValidator.validate(picture, "Failed to validate picture");
 
