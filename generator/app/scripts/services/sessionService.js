@@ -7,8 +7,8 @@
  * # sessionService
  * SessionService of the pawgramApp
  */
-angular.module('pawgramApp')
-.factory('sessionService', function($window) {
+var app=angular.module("pawgramApp",[]);
+app.factory('sessionService', function($window) {
 		var Session = {};
 
 		Session._user = JSON.parse($window.localStorage.getItem('session.user')) || JSON.parse($window.sessionStorage.getItem('session.user'));
@@ -22,10 +22,11 @@ angular.module('pawgramApp')
 		Session.setUser = function(user, isLocalStorage){
 			this._user = user;
 			
-			if (isLocalStorage)
+			if (isLocalStorage){
 				$window.localStorage.setItem('session.user', JSON.stringify(user));
-			else
+			}else{
 				$window.sessionStorage.setItem('session.user', JSON.stringify(user));
+			}
 			return this;
 		};
 
@@ -35,10 +36,11 @@ angular.module('pawgramApp')
 
 		Session.setAccessToken = function(token, isLocalStorage){
 			this._accessToken = token;
-			if (isLocalStorage)
+			if (isLocalStorage){
 				$window.localStorage.setItem('session.accessToken', JSON.stringify(token));
-			else
+			}else{
 				$window.sessionStorage.setItem('session.accessToken', JSON.stringify(token));
+			}
 			return this;
 		};
 

@@ -8,7 +8,7 @@
  * RestService of the pawgramApp
  */
 angular.module('pawgramApp')
-.factory('restService', ['$http', '$q', 'url', 'sessionService', function($http, $q, url, session) {
+.factory('restService', ['$http', '$q', 'url', 'sessionService','jQuery', function($http, $q, url, session,jQuery) {
 			
 			var translateTable = {
 					category: 'category',
@@ -24,7 +24,7 @@ angular.module('pawgramApp')
 			  var byteString = atob(dataURI.split(',')[1]);
 
 			  // separate out the mime component
-			  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+			  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
 			  // write the bytes of the string to an ArrayBuffer
 			  var ab = new ArrayBuffer(byteString.length);
@@ -48,8 +48,9 @@ angular.module('pawgramApp')
 				
 				if (params) {
 					jQuery.each(params, function(key, value) {
-						if (value)
+						if (value){
 							translated[translateTable[key]] = value;
+						}
 					});
 				}
 				
@@ -70,19 +71,20 @@ angular.module('pawgramApp')
 					}
 				};
 				
-				if (accessToken)
+				if (accessToken){
 					metadata.headers['X-AUTH-TOKEN'] = session.getAccessToken();
+				}
 				
 				return metadata;
 			}
 			
 			function doPost(baseUrl, data, params, ignoreLoadingBar) {
-				var params = translate(params);
-				params = Object.keys(params).length ? '?' + jQuery.param(params) : '';
+				var paramsPost = translate(params);
+				paramsPost = Object.keys(paramsPost).length ? '?' + jQuery.param(paramsPost) : '';
 				var config = authHeaders();
 				config['ignoreLoadingBar'] = !!ignoreLoadingBar;
 
-				return $http.post(baseUrl + params, JSON.stringify(data), config)
+				return $http.post(baseUrl + paramsPost, JSON.stringify(data), config)
 						.then(function(response) {
 							return response.data;
 						})
@@ -92,12 +94,12 @@ angular.module('pawgramApp')
 			}
 			
 			function doGet(baseUrl, params, ignoreLoadingBar) {
-				var params = translate(params);
-				params = Object.keys(params).length ? '?' + jQuery.param(params) : '';
+				var paramsGet = translate(params);
+				paramsGet = Object.keys(paramsGet).length ? '?' + jQuery.param(paramsGet) : '';
 				var config = authHeaders();
 				config['ignoreLoadingBar'] = !!ignoreLoadingBar;
 
-				return  $http.get(baseUrl + params, config)
+				return  $http.get(baseUrl + paramsGet, config)
 						.then(function(response) {
 							return response.data;
 						})
@@ -107,12 +109,12 @@ angular.module('pawgramApp')
 			}
 			
 			function doPut(baseUrl, data, params, ignoreLoadingBar) {
-				var params = translate(params);
-				params = Object.keys(params).length ? '?' + jQuery.param(params) : '';
+				var paramsPut = translate(params);
+				paramsPut = Object.keys(paramsPut).length ? '?' + jQuery.param(paramsPut) : '';
 				var config = authHeaders();
 				config['ignoreLoadingBar'] = !!ignoreLoadingBar;
 
-				return $http.put(baseUrl + params, JSON.stringify(data), config)
+				return $http.put(baseUrl + paramsPut, JSON.stringify(data), config)
 						.then(function(response) {
 							return response.data;
 						})
@@ -122,12 +124,12 @@ angular.module('pawgramApp')
 			}
 
 			function doDelete(baseUrl, params, ignoreLoadingBar) {
-				var params = translate(params);
-				params = Object.keys(params).length ? '?' + jQuery.param(params) : '';
+				var paramsDelete = translate(params);
+				paramsDelete = Object.keys(paramsDelete).length ? '?' + jQuery.param(paramsDelete) : '';
 				var config = authHeaders();
 				config['ignoreLoadingBar'] = !!ignoreLoadingBar;
 
-				return $http.delete(baseUrl + params, config)
+				return $http.delete(baseUrl + paramsDelete, config)
 						.then(function(response) {
 							return response.data;
 						})
@@ -165,11 +167,11 @@ angular.module('pawgramApp')
 				},
 
 				commentPost: function(id, comment) {
-					return doPost(url + '/posts/' + id + '/comments', {content: comment}, null, true)
+					return doPost(url + '/posts/' + id + '/comments', {content: comment}, null, true);
 				},
 				  
 				commentParentPost: function(id, comment, parentCommentId) {
-					return doPost(url + '/posts/' + id + '/comments', {content: comment, parent_id: parentCommentId}, null, true)
+					return doPost(url + '/posts/' + id + '/comments', {content: comment, parent_id: parentCommentId}, null, true);
 				},
 
 				createPost: function(data) {
@@ -179,12 +181,13 @@ angular.module('pawgramApp')
 					var formData = new FormData();
 					
 					angular.forEach(images, function(img) {
-						if (img)
+						if (img){
 							formData.append('picture', dataURItoBlob(img));
+						}
 					});
 										
 					
-					formData.append('post', new Blob([JSON.stringify(productData)], {type: "application/json"}));
+					formData.append('post', new Blob([JSON.stringify(postData)], {type: "application/json"}));
 					
 					return $http.post(url + '/posts/', formData, multipartMetadata())
 					.then(function(response) {
@@ -202,11 +205,12 @@ angular.module('pawgramApp')
 					var formData = new FormData();
 					
 					angular.forEach(images, function(img) {
-						if (img)
+						if (img){
 							formData.append('picture', dataURItoBlob(img));
+						}
 					});
 										
-					formData.append('post', new Blob([JSON.stringify(productData)], {type: "application/json"}));
+					formData.append('post', new Blob([JSON.stringify(postData)], {type: "application/json"}));
 					
 					return $http.put(url + '/posts/' + id, formData, multipartMetadata())
 					.then(function(response) {
@@ -268,7 +272,7 @@ angular.module('pawgramApp')
 					return doPut(url + '/users/recover_password', 
 							{'mail': mail,'token': token, 'newPassword': newPass});
 				},
-				
+
 				changeProfilePicture: function(data) {
 					var picture = data.picture;
 					var formData = new FormData();
@@ -289,7 +293,7 @@ angular.module('pawgramApp')
 
 				createSearchZone: function(data) {
 					var szData = {latitude: data.latitude, longitude: data.longitude, range: data.range};
-				
+					var formData = new FormData();
 					formData.append('sz', new Blob([JSON.stringify(szData)], {type: "application/json"}));
 					
 					return $http.post(url + '/sz/create', formData, multipartMetadata())
@@ -311,7 +315,7 @@ angular.module('pawgramApp')
 
 				sendMessage: function(id,data) {
 					var messageData = {message: data.message};
-				
+					var formData = new FormData();
 					formData.append('message', new Blob([JSON.stringify(messageData)], {type: "application/json"}));
 					
 					return $http.post(url + '/messages/'+ id + '/send', formData, multipartMetadata())
@@ -322,6 +326,10 @@ angular.module('pawgramApp')
 						return $q.reject(response);
 					});
 				},
+
+				getConversations: function() {
+					return doGet(url + '/messages/conversations/');
+				},	
 
 				getNotification: function(id) {
 					return doGet(url + '/notifications/'+ id);
@@ -340,5 +348,5 @@ angular.module('pawgramApp')
 					return doGet(url + '/notifications/all', params);
 				}
 				
-			}
+			};
 		}]);

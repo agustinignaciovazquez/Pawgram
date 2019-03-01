@@ -8,12 +8,12 @@
  * AuthService of the pawgramApp
  */
 angular.module('pawgramApp')
-.factory('authService', ['$http', 'url', 'sessionService', '$q', '$rootScope', 'restService', function($http, url, session, $q, $rootScope, restService) {
+.factory('authService', ['$http', 'url', 'sessionService', '$q', '$rootScope', function($http, url, session, $q, $rootScope) {
 		var AuthService = {};
 		AuthService.loggedUser = session.getUser();
 
 		AuthService.logIn = function(username, password, saveToSession) {
-			var credentials = { j_username: username, j_password: password };
+			//var credentials = { j_username: username, j_password: password };
 			var self = this;
 			return $http({
 					method: 'POST',
@@ -21,8 +21,9 @@ angular.module('pawgramApp')
 					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 					transformRequest: function(obj) {
 						var str = [];
-						for (var p in obj)
+						for (var p in obj){
 							str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+						}
 						return str.join("&");
 					},
 					data: {j_username: username, j_password: password}
@@ -58,7 +59,7 @@ angular.module('pawgramApp')
 
 		AuthService.getLoggedUser = function() {
 			return this.loggedUser;
-		}
+		};
 
 		return AuthService;
 	}]);
