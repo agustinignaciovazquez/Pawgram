@@ -63,7 +63,7 @@ public class NotificationsController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
         //mark notification as seen
-        notificationService.markNotificationAsSeen(id); 
+        notificationService.markNotificationAsSeen(id);
         return Response.ok(new NotificationDTO(notification, uriContext.getBaseUri(), Optional.ofNullable(loggedUser))).build();
     }
 
