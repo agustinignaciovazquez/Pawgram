@@ -7,8 +7,8 @@
  * # sessionService
  * SessionService of the pawgramApp
  */
-var app=angular.module("pawgramApp",[]);
-app.factory('sessionService', function($window) {
+angular.module('pawgramApp')
+.factory('sessionService', function($window) {
 		var Session = {};
 
 		Session._user = JSON.parse($window.localStorage.getItem('session.user')) || JSON.parse($window.sessionStorage.getItem('session.user'));
