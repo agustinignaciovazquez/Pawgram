@@ -8,9 +8,10 @@
  * AuthService of the pawgramApp
  */
 angular.module('pawgramApp')
-.factory('authService', ['$http', 'url', 'sessionService', '$q', '$rootScope', function($http, url, session, $q, $rootScope) {
+.factory('authService', ['$http', 'url', 'sessionService', '$q', '$location', '$rootScope', function($http, url, session, $q, $location, $rootScope) {
 		var AuthService = {};
 		AuthService.loggedUser = session.getUser();
+		var redirectToUrlAfterLogin = '/'; //DEFAULT
 
 		AuthService.logIn = function(username, password, saveToSession) {
 			//var credentials = { j_username: username, j_password: password };
@@ -30,7 +31,7 @@ angular.module('pawgramApp')
 				})
 				.then(function(response) {
 					session.setAccessToken(response.headers('X-AUTH-TOKEN'), saveToSession);
-					return $http.get(url + '/user', {headers: {'X-AUTH-TOKEN': session.getAccessToken()}});
+					return $http.get(url + '/users/', {headers: {'X-AUTH-TOKEN': session.getAccessToken()}});
 				})
 				.then(function(response) {
 					return response.data;
@@ -59,6 +60,16 @@ angular.module('pawgramApp')
 
 		AuthService.getLoggedUser = function() {
 			return this.loggedUser;
+		};
+
+		AuthService.saveAttemptUrl = function(){
+			if($location.path().toLowerCase() !== '/login') {
+	        	redirectToUrlAfterLogin = $location.path();
+	    	} 
+		};
+
+		AuthService.redirectToAttemptUrl = function(){
+			 $location.path(redirectToUrlAfterLogin);
 		};
 
 		return AuthService;

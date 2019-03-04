@@ -245,11 +245,12 @@ angular.module('pawgramApp')
 					var userData = {name: data.name, surname: data.surname, password: data.password, mail: data.mail};
 					var picture = data.picture;
 					var formData = new FormData();
-					
-					formData.append('picture', dataURItoBlob(picture));
+					if(picture !== undefined && picture !== null){
+						formData.append('picture', dataURItoBlob(picture));
+					}
 					formData.append('user', new Blob([JSON.stringify(userData)], {type: "application/json"}));
 					
-					return $http.post(url + '/users', formData, multipartMetadata())
+					return $http.post(url + '/users/', formData, multipartMetadata())
 					.then(function(response) {
 						return response.data;
 					})

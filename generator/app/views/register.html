@@ -1,0 +1,66 @@
+<div class="login-body" id="login">
+	<h3 class="login-title" ng-bind="'signUp.title' | translate"></h3>
+	<form ng-submit="signUpSubmit()" name="signUpForm" novalidate>
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3" ng-class="{'has-error': signUpForm.picture.$invalid && signUpForm.$submitted}" >
+				<div class="form-group">
+					<input id="pictureUpload" class="image-input" type="file" accept="image/*" ng-file-read="user.picture" ng-model="__" name="picture" valid-file >
+					<label for="pictureUpload" class="image-upload-btn">
+						<div class="preview-container">
+							<img class="preview-image" ng-src="{{user.picture}}" ng-show="user.picture">
+							<div class="remove-btn glyphicon glyphicon-remove" ng-click="deletePicture(); $event.preventDefault();" ng-show="user.picture"></div>
+							<div class="add-img-text prof-img-text" ng-show="!user.picture">
+								<span class="glyphicon glyphicon-plus"></span>
+								<span ng-bind="'button.addProfilePicture' | translate"></span>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+		<div class="input-field" ng-class="{'has-error': signUpForm.name.$invalid && signUpForm.$submitted}">
+			<input type="text" placeholder="{{'signUp.usernamePlaceholder' | translate}}" name="name" ng-model="user.name" ng-pattern="namePattern" class="form-control" required ng-minlength="3" ng-maxlength="50">
+			<span ng-show="signUpForm.name.$error.required && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.addName' | translate"></span>
+			<span ng-show="signUpForm.name.$error.pattern && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.invalidName' | translate"></span>
+			<span ng-show="signUpForm.name.$error.maxlength && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.nameTooLong' | translate"></span>
+			<span ng-show="signUpForm.name.$error.minlength && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.nameTooShort' | translate"></span>
+		</div>
+		<div class="input-field" ng-class="{'has-error': signUpForm.surname.$invalid && signUpForm.$submitted}">
+			<input type="text" placeholder="{{'signUp.usersurnamePlaceholder' | translate}}" name="surname" ng-model="user.surname" ng-pattern="namePattern" class="form-control" required ng-minlength="3" ng-maxlength="50">
+			<span ng-show="signUpForm.surname.$error.required && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.addsurname' | translate"></span>
+			<span ng-show="signUpForm.surname.$error.pattern && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.invalidSurname' | translate"></span>
+			<span ng-show="signUpForm.surname.$error.maxlength && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.surnameTooLong' | translate"></span>
+			<span ng-show="signUpForm.surname.$error.minlength && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.surnameTooShort' | translate"></span>
+		</div>
+		<div class="input-field" ng-class="{'has-error': signUpForm.email.$invalid && signUpForm.$submitted}">
+			<input type="text" placeholder="{{'signUp.emailPlaceholder' | translate}}" name="mail" ng-model="user.mail" ng-pattern="emailPattern" class="form-control" required>
+			<span ng-show="signUpForm.email.$error.required && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.addEmail' | translate"></span>
+			<span ng-show="signUpForm.email.$error.pattern && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.invalidEmail' | translate"></span>
+			<span ng-show="duplicateEmailError && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.duplicateEmail' | translate"></span>
+		</div>
+		<div class="input-field" ng-class="{'has-error': signUpForm.password.$invalid && signUpForm.$submitted}">
+			<input type="password" placeholder="{{'signIn.passwordPlaceholder' | translate}}" name="password" ng-model="user.password"  class="form-control" required ng-minlength="6" ng-maxlength="60">
+			<span ng-show="signUpForm.password.$error.required && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.addPassword' | translate"></span>
+			<span ng-show="signUpForm.password.$error.maxlength && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.passwordTooLong' | translate"></span>
+			<span ng-show="signUpForm.password.$error.minlength && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.passwordTooShort' | translate"></span>
+		</div>
+		<div class="input-field" ng-class="{'has-error': (signUpForm.passwordConf.$invalid || !passwordsMatch) && signUpForm.$submitted}">
+			<input type="password" placeholder="{{'signUp.passwordConfPlaceholder' | translate}}" name="passwordConf" ng-model="user.passwordConf" class="form-control" required>
+			<span ng-show="!passwordsMatch && signUpForm.$submitted" class="help-block align-left" ng-bind="'signUp.error.passwordMatch' | translate"></span>
+		</div>
+		<div class="submit-field">
+			<div ng-if="loggingIn">
+				<button class="btn btn-default ps-btn disabled">
+					<div class="spinner button-spinner">
+						<div class="dot1"></div>
+						<div class="dot2"></div>
+					</div>
+					<span ng-bind="'signUp.signingUp' | translate"></span>
+				</button>			
+			</div>
+
+			<div ng-if="!loggingIn">
+				<button class="btn btn-default ps-btn" type="submit" name="submit" ng-bind="'signUp.signUp' | translate"></button>
+			</div>
+		</div>
+	</form>
+</div>

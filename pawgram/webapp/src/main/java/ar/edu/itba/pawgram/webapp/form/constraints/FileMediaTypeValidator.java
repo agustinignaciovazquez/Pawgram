@@ -3,9 +3,9 @@ package ar.edu.itba.pawgram.webapp.form.constraints;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import org.springframework.web.multipart.MultipartFile;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 
-public class FileMediaTypeValidator implements ConstraintValidator<FileMediaType, MultipartFile> {
+public class FileMediaTypeValidator implements ConstraintValidator<FileMediaType, FormDataBodyPart> {
 
     private String[] values;
 
@@ -13,14 +13,14 @@ public class FileMediaTypeValidator implements ConstraintValidator<FileMediaType
         values = constraintAnnotation.value();
     }
 
-    public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        if (value == null || value.isEmpty())
+    public boolean isValid(FormDataBodyPart value, ConstraintValidatorContext context) {
+        if (value == null)
             return true;
 
-        String contentType = value.getContentType();
+        String contentType = value.getMediaType().toString();
 
-        for(String mediaType : values){
-            if(mediaType.equals(contentType))
+        for (String mediaType : values) {
+            if (mediaType.equals(contentType))
                 return true;
         }
 

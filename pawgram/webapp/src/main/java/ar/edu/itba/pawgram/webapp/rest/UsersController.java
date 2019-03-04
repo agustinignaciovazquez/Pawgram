@@ -218,11 +218,11 @@ public class UsersController {
             return Response.status(Status.BAD_REQUEST).build();
 
         DTOValidator.validate(formUser, "Failed to validate user");
-        if(formPicture != null)
+        if(formPicture != null && formPicture.isPicture())
             DTOValidator.validate(formPicture, "Failed to validate picture");
 
         final User user = securityUserService.registerUser(formUser.getName(),formUser.getSurname(),formUser.getMail(),formUser.getPassword(),null);
-        if(formPicture != null && user != null)
+        if(formPicture != null && formPicture.isPicture() && user != null)
             userService.changeProfile(user.getId(),formPicture.getPictureBytes());
 
         final URI location = uriContext.getAbsolutePathBuilder().path(String.valueOf(user.getId())).build();

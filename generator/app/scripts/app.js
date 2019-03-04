@@ -8,6 +8,7 @@
  *
  * Main module of the application.
  */
+
 angular
   .module('pawgramApp', [
     'ngAnimate',
@@ -15,22 +16,29 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'pascalprecht.translate',
+    'angular-loading-bar'
   ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  })
-  .value('url', 'http://pawserver.it.itba.edu.ar/paw-2018b-11/api');
+  .config(['$routeProvider','$translateProvider','$qProvider','$locationProvider','cfpLoadingBarProvider', function ($routeProvider,$translateProvider,$qProvider,$locationProvider,cfpLoadingBarProvider) {
+      routesInitializer($routeProvider);
+      configs.translate($translateProvider);
+      configs.essential($qProvider, $locationProvider, cfpLoadingBarProvider);
+      
+  }])
+  .run(['$rootScope', '$location', 'authService', function($rootScope, $location,authService) {
+         configs.run($rootScope, $location,authService);
+       }])
+  .value('url', 'http://localhost:8080/api')
+  .value('searchMinLength', 3)
+  .value('searchMaxLength', 64)
+  .value('pageSize', 20)
+  .value('categories', ['adopt', 'lost', 'found', 'emergency'])
+  .value('categoriesImage', {adopt: 'images/adopt.svg', lost: 'images/lost.svg', found: 'images/found.svg', emergency: 'images/emergency.svg'})
+  .filter('urlencode', function() {
+        return function(input) {
+          return window.encodeURIComponent(input);
+        };
+  });
+
+

@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 
 public class FormPicture {
 
-    @NotNull
     @FileMediaType(value = { "image/jpeg", "image/png" })
     @FormDataParam("picture")
     private FormDataBodyPart pictureBodyPart;
@@ -21,6 +20,10 @@ public class FormPicture {
 
     public FormDataBodyPart getPictureBodyPart() {
         return pictureBodyPart;
+    }
+
+    public boolean isPicture(){
+        return (pictureBodyPart != null);
     }
 
     public void setPictureBodyPart(final FormDataBodyPart pictureBodyPart) {

@@ -60,10 +60,10 @@ public class SearchZoneController {
 
         LOGGER.debug("Accessing search zones list");
 
-        final List<SearchZone> notifications = searchZoneService.getPlainSearchZonesByUser(loggedUser.getId());
+        final List<SearchZone> szs = searchZoneService.getPlainSearchZonesByUser(loggedUser.getId());
         final long totalNotifications = searchZoneService.getTotalSearchZonesByUser(loggedUser.getId());
 
-        return Response.ok(new SearchZoneListDTO(notifications, totalNotifications, uriContext.getBaseUri(),
+        return Response.ok(new SearchZoneListDTO(szs, totalNotifications, uriContext.getBaseUri(),
                 loggedUser)).build();
     }
 

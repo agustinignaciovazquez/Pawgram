@@ -7,6 +7,7 @@ import ar.edu.itba.pawgram.model.Message;
 import ar.edu.itba.pawgram.model.User;
 import ar.edu.itba.pawgram.webapp.dto.ChatDTO;
 import ar.edu.itba.pawgram.webapp.dto.MessageDTO;
+import ar.edu.itba.pawgram.webapp.dto.UserListDTO;
 import ar.edu.itba.pawgram.webapp.dto.form.FormMessage;
 import ar.edu.itba.pawgram.webapp.exception.DTOValidationException;
 import ar.edu.itba.pawgram.webapp.utils.PaginationLinkFactory;
@@ -107,5 +108,22 @@ public class MessagesController {
         final Message message = messageService.sendMessage(loggedUser,otherUser,formMessage.getMessage());
 
         return Response.ok(new MessageDTO(message, uriContext.getBaseUri())).build();
+    }
+
+    @GET
+    @Path("/conversations")
+    public Response getConversations() {
+        final User loggedUser = securityUserService.getLoggedInUser();
+        if(loggedUser == null){
+            LOGGER.debug("Failed to fetch conversations from anonymous user ");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+        LOGGER.debug("Accessing message user list.");
+
+        final List<User> users = messageService.getMessageUsers(loggedUser);
+        final long totalUsers = users.size();
+
+        return Response.ok(new UserListDTO(users, totalUsers, uriContext.getBaseUri())).build();
     }
 }

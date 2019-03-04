@@ -375,7 +375,7 @@ public class PostsController {
         validator.validate(formPost, "Failed to validate post");
         if(formPictures != null){
             validator.validate(formPictures, "Failed to validate post pictures");
-            
+
             for (FormDataBodyPart bodyPart : formPictures.getPictures())
                 validator.validate(new FormPicture(bodyPart), "Failed to validate post pictures");
         }

@@ -1,0 +1,36 @@
+<div class="login-body" id="login">
+	<h3 class="login-title" ng-bind="'signIn.signToAccount' | translate"></h3>
+	<form ng-submit="loginSubmit()" name="form" novalidate>
+		<div class="input-field" ng-class="{'has-error': form.username.$invalid && form.$submitted}">
+			<input type="text" placeholder="{{'signIn.usernamePlaceholder' | translate}}" name="username" ng-model="loginForm.username.text" class="form-control" required>
+			<span ng-show="form.username.$error.required && form.$submitted" class="help-block align-left" ng-bind="'signIn.error.addEmail' | translate"></span>
+		</div>
+		<div class="input-field" ng-class="{'has-error': form.password.$invalid && form.$submitted}">
+			<input type="password" placeholder="{{'signIn.passwordPlaceholder' | translate}}" name="password" ng-model="loginForm.password.text" class="form-control" required>
+			<span ng-show="form.password.$error.required && form.$submitted" class="help-block align-left" ng-bind="'signIn.error.addPassword' | translate"></span>
+		</div>
+		<div ng-show="invalidUser" class="has-error">
+			<span class="help-block" ng-bind="'signIn.error.invalidUser' | translate"></span>
+		</div>
+		<div class="input-field checkbox">
+			<label><input type="checkbox" ng-model="loginForm.rememberMe">
+				<span class="checkbox-text" ng-bind="'signIn.rememberMe' | translate"></span>
+			</label>
+		</div>
+		<div class="submit-field">
+			<div ng-if="loggingIn">
+				<button class="btn btn-default ps-btn disabled">
+					<div class="spinner button-spinner">
+						<div class="dot1"></div>
+						<div class="dot2"></div>
+					</div>
+					<span ng-bind="'signIn.signingIn' | translate"></span>
+				</button>			
+			</div>
+
+			<div ng-if="!loggingIn">
+				<button class="btn btn-default ps-btn" type="submit" name="submit" ng-bind="'signIn.signIn' | translate"></button>
+			</div>
+		</div>
+	</form>
+</div>
