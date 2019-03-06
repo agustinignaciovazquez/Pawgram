@@ -16,7 +16,6 @@ angular.module('pawgramApp')
 			scope: {id: '@'},
 			link: function(scope, element, attrs) {
 				var id = attrs.id;
-				
 				element.find('.snackbar').attr('id', id);
 			}
 		};

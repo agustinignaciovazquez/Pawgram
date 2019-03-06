@@ -1,8 +1,11 @@
 package ar.edu.itba.pawgram.interfaces.persistence;
 
 import ar.edu.itba.pawgram.interfaces.exception.InvalidPostException;
+import ar.edu.itba.pawgram.interfaces.exception.InvalidQueryException;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.model.*;
+import ar.edu.itba.pawgram.model.query.OrderCriteria;
+import ar.edu.itba.pawgram.model.query.PostSortCriteria;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.Pet;
 
@@ -50,7 +53,7 @@ public interface PostDao {
      * @param offset - post offset
      * @return {@link List} of the existing posts (distance as 0)
      */
-    public List<Post> getPlainPostsRange(final int limit, final int offset);
+    public List<Post> getPlainPostsRange(PostSortCriteria postSortCriteria, OrderCriteria orderCriteria, final int limit, final int offset) throws InvalidQueryException;
 
     /**
      * Lists every post {@link Post}
@@ -59,7 +62,8 @@ public interface PostDao {
      * @param offset - post offset
      * @return {@link List} of the existing posts
      */
-    public List<Post> getPlainPostsRange(final Location location, final int limit, final int offset);
+    public List<Post> getPlainPostsRange(final Location location, PostSortCriteria postSortCriteria, OrderCriteria orderCriteria,
+                                         final int limit, final int offset) throws InvalidQueryException ;
 
     /**
      * Lists every existing {@link Post} for a given {@link Category}
@@ -68,7 +72,8 @@ public interface PostDao {
      * @param category - Category the posts belongs to
      * @return {@link List} of the existing posts
      */
-    public List<Post> getPlainPostsByCategoryRange(final Category category,final int limit, final int offset);
+    public List<Post> getPlainPostsByCategoryRange(final Category category, PostSortCriteria postSortCriteria, OrderCriteria orderCriteria,
+                                                   final int limit, final int offset) throws InvalidQueryException;
 
     /**
      * Lists every existing {@link Post} for a given {@link Category}
@@ -78,7 +83,8 @@ public interface PostDao {
      * @param category - Category the posts belongs to
      * @return {@link List} of the existing posts
      */
-    public List<Post> getPlainPostsByCategoryRange(final Location location, final Category category,final int limit, final int offset);
+    public List<Post> getPlainPostsByCategoryRange(final Location location, final Category category,  PostSortCriteria postSortCriteria, OrderCriteria orderCriteria,
+                                                   final int limit, final int offset) throws InvalidQueryException;
 
     /**
      * Retrieves a {@link Post.PostBuilder} with every attribute set except for
@@ -120,8 +126,8 @@ public interface PostDao {
      * @param offset - post offset
      * @return {@link List} of the existing posts
      */
-    public List<Post> getPlainPostsRange(final Location location, final int range,
-                                         final int limit, final int offset);
+    public List<Post> getPlainPostsRange(final Location location, final int range, PostSortCriteria postSortCriteria, OrderCriteria orderCriteria,
+                                         final int limit, final int offset) throws InvalidQueryException;
 
     /**
      * Lists every nearby in range (Meters) existing {@link Post} as a {@link Post} for a given {@link Category}
@@ -132,8 +138,8 @@ public interface PostDao {
      * @param offset - post offset
      * @return {@link List} of the existing posts
      */
-    public List<Post> getPlainPostsByCategoryRange(final Location location, final int range, final Category category,
-                                                   final int limit, final int offset);
+    public List<Post> getPlainPostsByCategoryRange(final Location location, final int range, final Category category, PostSortCriteria postSortCriteria, OrderCriteria orderCriteria,
+                                                   final int limit, final int offset) throws InvalidQueryException;
 
     /**
      * Retrieves a {@link List} of {@link Post} given a keyword ordered by id
@@ -143,7 +149,7 @@ public interface PostDao {
      * @param offset - post offset
      * @return The list of plain post that match with the keyword (distance is set to 0)
      */
-    public List<Post> getPlainPostsByKeywordRange(final Set<String> keywords, final int limit, final int offset);
+    public List<Post> getPlainPostsByKeywordRange(final Set<String> keywords, PostSortCriteria postSortCriteria, OrderCriteria orderCriteria, final int limit, final int offset) throws InvalidQueryException;
 
     /**
      * Retrieves a {@link List} of {@link Post} given a keyword ordered by the distance descendent
@@ -154,8 +160,8 @@ public interface PostDao {
      * @param offset - post offset
      * @return The list of plain post that match with the keyword.
      */
-    public List<Post> getPlainPostsByKeywordRange(final Set<String> keywords, final Location location,
-                                                  final int limit, final int offset);
+    public List<Post> getPlainPostsByKeywordRange(final Set<String> keywords, final Location location, PostSortCriteria postSortCriteria, OrderCriteria orderCriteria,
+                                                  final int limit, final int offset) throws InvalidQueryException;
     /**
      * Retrieves a {@link List} of {@link Post} given a keyword ordered by id
      * The keyword should match the post title or description
@@ -165,7 +171,7 @@ public interface PostDao {
      * @param offset - post offset
      * @return The list of plain post that match with the keyword (distance is set to 0)
      */
-    public List<Post> getPlainPostsByKeywordRange(final Set<String> keywords, final Category category,final int limit, final int offset);
+    public List<Post> getPlainPostsByKeywordRange(final Set<String> keywords, final Category category, PostSortCriteria postSortCriteria, OrderCriteria orderCriteria, final int limit, final int offset) throws InvalidQueryException;
 
     /**
      * Retrieves a {@link List} of {@link Post} given a keyword ordered by the distance descendent
@@ -177,7 +183,7 @@ public interface PostDao {
      * @param offset - post offset
      * @return The list of plain post that match with the keyword.
      */
-    public List<Post> getPlainPostsByKeywordRange(final Set<String> keywords, final Location location, final Category category,final int limit, final int offset);
+    public List<Post> getPlainPostsByKeywordRange(final Set<String> keywords, final Location location, final Category category, PostSortCriteria postSortCriteria, OrderCriteria orderCriteria,final int limit, final int offset) throws InvalidQueryException;
 
     /**
      * Retrieves the total amount of post registered.

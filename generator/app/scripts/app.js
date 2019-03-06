@@ -35,6 +35,8 @@ angular
   .value('pageSize', 20)
   .value('categories', ['adopt', 'lost', 'found', 'emergency'])
   .value('categoriesImage', {adopt: 'images/adopt.svg', lost: 'images/lost.svg', found: 'images/found.svg', emergency: 'images/emergency.svg'})
+  .value('sortCriterias', [{orderBy: 'date', order: 'desc'}, {orderBy: 'id', order: 'asc'}, {orderBy: 'alpha', order: 'asc'}])
+  .value('defaultSortCriteria', {orderBy: 'distance', order: 'asc'})
   .filter('urlencode', function() {
         return function(input) {
           return window.encodeURIComponent(input);

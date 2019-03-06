@@ -4,6 +4,8 @@ import ar.edu.itba.pawgram.interfaces.auth.SecurityUserService;
 import ar.edu.itba.pawgram.interfaces.exception.*;
 import ar.edu.itba.pawgram.interfaces.service.*;
 import ar.edu.itba.pawgram.model.*;
+import ar.edu.itba.pawgram.model.query.OrderCriteria;
+import ar.edu.itba.pawgram.model.query.PostSortCriteria;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.webapp.dto.CommentDTO;
 import ar.edu.itba.pawgram.webapp.dto.PostDTO;
@@ -87,7 +89,9 @@ public class PostsController {
     @GET
     @Path("/zone/{id}")
     public Response getPostsByZoneId(@PathParam("id") final long id, @QueryParam("category") final Category category,@DefaultValue("1") @QueryParam("page") int page,
-                                     @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize) {
+                                     @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize,
+                                     @DefaultValue("distance") @QueryParam("sorted_by") final PostSortCriteria sortCriteria,
+                                     @DefaultValue("asc") @QueryParam("order") final OrderCriteria order) throws InvalidQueryException {
         LOGGER.debug("Accesed getPostById with ID: {}", id);
 
         final SearchZone sz = searchZoneService.getFullSearchZoneById(id);
@@ -110,14 +114,16 @@ public class PostsController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        return getPosts(category,sz.getLocation().getLatitude(),sz.getLocation().getLongitude(),sz.getRange(), page, pageSize);
+        return getPosts(category,sz.getLocation().getLatitude(),sz.getLocation().getLongitude(),sz.getRange(), page, pageSize,sortCriteria,order);
     }
 
     @GET
     @Path("/")
     public Response getPosts(@QueryParam("category") final Category category,@QueryParam("latitude") Double latitude,
                              @QueryParam("longitude") Double longitude,@QueryParam("range") Integer range, @DefaultValue("1") @QueryParam("page") int page,
-                                @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize) {
+                             @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize,
+                             @DefaultValue("distance") @QueryParam("sorted_by") final PostSortCriteria sortCriteria,
+                             @DefaultValue("asc") @QueryParam("order") final OrderCriteria order) throws InvalidQueryException {
         if(!(longitude != null && latitude != null && range != null)){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -133,7 +139,7 @@ public class PostsController {
 
         final long totalPosts = postService.getTotalPosts(location,range,categoryOpt);
         final long maxPage = postService.getMaxPage(pageSize,location,range,categoryOpt);
-        final List<Post> posts = postService.getPlainPostsPaged(location,range,categoryOpt,page,pageSize);
+        final List<Post> posts = postService.getPlainPostsPaged(location,range,categoryOpt,sortCriteria,order,page,pageSize);
 
         final Map<String, Link> links = linkFactory.createLinks(uriContext, page, maxPage);
         final Link[] linkArray = links.values().toArray(new Link[0]);
@@ -147,7 +153,8 @@ public class PostsController {
     @Path("/search")
     public Response searchPost(@QueryParam("keyword") String query, @QueryParam("category") final Category category,@QueryParam("latitude") Double latitude,
                              @QueryParam("longitude") Double longitude,@QueryParam("range") Integer range, @DefaultValue("1") @QueryParam("page") int page,
-                             @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize) throws InvalidQueryException {
+                             @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize,@DefaultValue("id") @QueryParam("sorted_by") final PostSortCriteria sortCriteria,
+                               @DefaultValue("asc") @QueryParam("order") final OrderCriteria order) throws InvalidQueryException {
 
         final Location location = (!(longitude != null && latitude != null && range != null)) ? new Location(longitude,latitude) : null;
         final Optional<Category> categoryOpt = Optional.ofNullable(category);
@@ -161,7 +168,7 @@ public class PostsController {
 
         final long totalPosts = postService.getTotalPostsByKeyword(query,categoryOpt);
         final long maxPage = postService.getMaxPageByKeyword(pageSize,query,categoryOpt);
-        final List<Post> posts = postService.getPlainPostsByKeywordPaged(query,locationOpt,categoryOpt,page,pageSize);
+        final List<Post> posts = postService.getPlainPostsByKeywordPaged(query,locationOpt,categoryOpt,sortCriteria,order,page,pageSize);
 
         final Map<String, Link> links = linkFactory.createLinks(uriContext, page, maxPage);
         final Link[] linkArray = links.values().toArray(new Link[0]);

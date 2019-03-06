@@ -22,7 +22,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="header">
+   
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
           <div class="navbar-header">
@@ -47,18 +47,23 @@
           </div>
         </div>
       </div>
+       <div class="header">
+      <div class="snackbar hidden" id="noConnection">
+        <div class="alert alert-warning row-centered" role="alert">
+          <strong>
+            <span class="glyphicon glyphicon-flash"></span>
+          </strong>
+          {{'feedback.warning.noConnection' | translate}}
+          <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> !--->
+        </div>
+      </div>
     </div>
 
     <div class="container">
     <div ng-view=""></div>
-    <div class="snackbar hidden" id="noConnection">
-      <div class="alert alert-warning row-centered">
-        <strong>
-          <span class="glyphicon glyphicon-flash"></span>
-        </strong>
-        {{'feedback.warning.noConnection' | translate}}
-      </div>
-    </div>
+    
     </div>
 
     <div class="footer">
@@ -96,27 +101,28 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/routes.js"></script>
-        <script src="scripts/configs.js"></script>
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
-        <script src="scripts/services/authService.js"></script>
-        <script src="scripts/services/restService.js"></script>
-        <script src="scripts/services/sessionService.js"></script>
-        <script src="scripts/services/snackbarService.js"></script>
-        <script src="scripts/services/titleService.js"></script>
-         <script src="scripts/services/jqueryService.js"></script>
-        <script src="scripts/directives/snackbar.js"></script>
-        <script src="scripts/directives/loading.js"></script>
-      
-        <script src="scripts/controllers/notfound.js"></script>
-        <script src="scripts/controllers/login.js"></script>
-        <script src="scripts/controllers/register.js"></script>
-        
-        <script src="scripts/directives/validfile.js"></script>
-        <script src="scripts/directives/ngfileread.js"></script>
-        <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/routes.js"></script>
+    <script src="scripts/configs.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/about.js"></script>
+    <script src="scripts/services/authService.js"></script>
+    <script src="scripts/services/restService.js"></script>
+    <script src="scripts/services/sessionService.js"></script>
+    <script src="scripts/services/snackbarService.js"></script>
+    <script src="scripts/services/titleService.js"></script>
+    <script src="scripts/services/jqueryService.js"></script>
+    <script src="scripts/directives/snackbar.js"></script>
+    <script src="scripts/directives/loading.js"></script>
+  
+    <script src="scripts/controllers/notfound.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/controllers/register.js"></script>
+    
+    <script src="scripts/directives/validfile.js"></script>
+    <script src="scripts/directives/ngfileread.js"></script>
+    <script src="scripts/directives/postItem.js"></script>
+    <!-- endbuild -->
 </body>
 </html>

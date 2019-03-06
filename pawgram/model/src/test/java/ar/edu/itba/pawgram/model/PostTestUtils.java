@@ -97,7 +97,6 @@ public final class PostTestUtils {
     }
 
     public static void assertEqualsPlainPosts(Post expected, Post actual) {
-        assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getDescription(), actual.getDescription());
         assertEquals(expected.getCategory(), actual.getCategory());
         assertEquals(expected, actual);

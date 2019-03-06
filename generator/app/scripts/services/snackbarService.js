@@ -16,7 +16,7 @@ angular.module('pawgramApp')
 			var x = document.getElementById(id);
 			var elem = jQuery('#' + id);
 			var parent = elem.parent();
-			elem.appendTo('body');
+			elem.appendTo(parent);
 			
 			// Add the "show" class
 			setTimeout(function(){ x.className = 'show snackbar'; }, wait);

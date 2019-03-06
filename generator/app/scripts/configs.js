@@ -12,7 +12,7 @@ configs.translate = function($translateProvider){
       if (userLang === undefined || listOfSupportedLanguages.indexOf(userLang) < 0) {
         userLang = 'en';
       }
-      
+
       $translateProvider.useStaticFilesLoader({
           prefix: 'i18n/locale-',
           suffix: '.json'
@@ -60,3 +60,4 @@ configs.run = function($rootScope, $location,authService) {
         $location.path('/404');
       });
  };
+ 

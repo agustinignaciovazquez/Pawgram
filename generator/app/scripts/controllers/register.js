@@ -8,7 +8,7 @@
  * Controller of the pawgramApp
  */
 angular.module('pawgramApp')
-  .controller('RegisterCtrl', ['$scope', 'authService', 'restService', 'snackbarService', function($scope, authService, restService, snackbarService) {
+  .controller('RegisterCtrl', ['$scope', 'authService', 'restService', 'snackbarService', 'jQuery', function($scope, authService, restService, snackbarService, jQuery) {
 		
 		$scope.user = {};
 		$scope.duplicateEmailError = false;
@@ -27,7 +27,7 @@ angular.module('pawgramApp')
 				authService.redirectToAttemptUrl();
 			}
 		});	
-		
+
 		var checkPasswordsMatch = function() {
 			$scope.passwordsMatch = $scope.user.password === $scope.user.passwordConf;
 		};
@@ -68,6 +68,7 @@ angular.module('pawgramApp')
 		
 		$scope.deletePicture = function() {
 			$scope.user.picture = null;
+			jQuery('#pictureUpload:input[type=file]').val('');
 		};
 		
 		

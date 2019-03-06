@@ -4,6 +4,8 @@ import ar.edu.itba.pawgram.interfaces.exception.InvalidPostException;
 import ar.edu.itba.pawgram.interfaces.exception.InvalidQueryException;
 import ar.edu.itba.pawgram.interfaces.exception.PostCreateException;
 import ar.edu.itba.pawgram.model.*;
+import ar.edu.itba.pawgram.model.query.OrderCriteria;
+import ar.edu.itba.pawgram.model.query.PostSortCriteria;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.Pet;
 
@@ -58,7 +60,7 @@ public interface PostService {
      * @param category - Category the posts belongs to
      * @return {@link List} of the existing posts
      */
-    public List<Post> getPlainPostsPaged(final Optional<Location> location, final Optional<Category> category, final int page, final int pageSize);
+    public List<Post> getPlainPostsPaged(final Optional<Location> location, final Optional<Category> category, PostSortCriteria postSortCriteria, OrderCriteria orderCriteria, final int page, final int pageSize) throws InvalidQueryException;
 
     /**
      * Retrieves a {@link ar.edu.itba.pawgram.model.Post.PostBuilder} with every attribute set
@@ -92,7 +94,7 @@ public interface PostService {
      * @return {@link List} of the existing posts
      */
     public List<Post> getPlainPostsPaged(final Location location, final int range, final Optional<Category> category,
-                                                   final int page, final int pageSize);
+                                         PostSortCriteria postSortCriteria, OrderCriteria orderCriteria, final int page, final int pageSize) throws InvalidQueryException;
 
     /**
      * Retrieves a {@link List} of {@link Post} given a keyword ordered by the distance descendent
@@ -104,7 +106,8 @@ public interface PostService {
      * @param pageSize - max number of results per page
      * @return The list of plain post that match with the keyword.
      */
-    public List<Post> getPlainPostsByKeywordPaged(final String keyword, final Optional<Location> location, final Optional<Category> category, final int page, final int pageSize) throws InvalidQueryException;
+    public List<Post> getPlainPostsByKeywordPaged(final String keyword, final Optional<Location> location, final Optional<Category> category, PostSortCriteria postSortCriteria, OrderCriteria orderCriteria,
+                                                  final int page, final int pageSize) throws InvalidQueryException;
 
     /**
      * Deletes a {@link ar.edu.itba.pawgram.model.Post} from the database.

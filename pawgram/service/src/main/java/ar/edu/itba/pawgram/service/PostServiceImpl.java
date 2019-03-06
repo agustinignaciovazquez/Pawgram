@@ -10,6 +10,8 @@ import ar.edu.itba.pawgram.interfaces.service.NotificationService;
 import ar.edu.itba.pawgram.interfaces.service.PostImageService;
 import ar.edu.itba.pawgram.interfaces.service.PostService;
 import ar.edu.itba.pawgram.model.*;
+import ar.edu.itba.pawgram.model.query.OrderCriteria;
+import ar.edu.itba.pawgram.model.query.PostSortCriteria;
 import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.model.Pet;
 import ar.edu.itba.pawgram.service.utils.HaversineDistance;
@@ -86,16 +88,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPlainPostsPaged(Optional<Location> location, Optional<Category> category, int page, int pageSize) {
+    public List<Post> getPlainPostsPaged(Optional<Location> location, Optional<Category> category, PostSortCriteria postSortCriteria, OrderCriteria orderCriteria, int page, int pageSize) throws InvalidQueryException {
         if(category.isPresent()){
             if(location.isPresent()){
-                return haversineDistance.setPostsDistance(postDao.getPlainPostsByCategoryRange(location.get(),category.get(),pageSize,(page - 1) * pageSize),location.get());
+                return haversineDistance.setPostsDistance(postDao.getPlainPostsByCategoryRange(location.get(),category.get(),postSortCriteria,orderCriteria,pageSize,(page - 1) * pageSize),location.get());
             }
-            return postDao.getPlainPostsByCategoryRange(category.get(),pageSize,(page - 1) * pageSize);
+            return postDao.getPlainPostsByCategoryRange(category.get(),postSortCriteria,orderCriteria,pageSize,(page - 1) * pageSize);
         }
         if(location.isPresent())
-            return haversineDistance.setPostsDistance(postDao.getPlainPostsRange(location.get(),pageSize,(page - 1) * pageSize),location.get());
-        return postDao.getPlainPostsRange(pageSize,(page - 1) * pageSize);
+            return haversineDistance.setPostsDistance(postDao.getPlainPostsRange(location.get(),postSortCriteria,orderCriteria,pageSize,(page - 1) * pageSize),location.get());
+        return postDao.getPlainPostsRange(postSortCriteria,orderCriteria,pageSize,(page - 1) * pageSize);
     }
 
     @Override
@@ -123,27 +125,27 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public List<Post> getPlainPostsPaged(Location location, int range, Optional<Category> category, int page, int pageSize) {
+    public List<Post> getPlainPostsPaged(Location location, int range, Optional<Category> category, PostSortCriteria postSortCriteria, OrderCriteria orderCriteria, int page, int pageSize) throws InvalidQueryException {
         if(category.isPresent())
-            return haversineDistance.setPostsDistance(postDao.getPlainPostsByCategoryRange(location, range, category.get(), pageSize,(page - 1) * pageSize),location);
-        return haversineDistance.setPostsDistance(postDao.getPlainPostsRange(location, range, pageSize,(page - 1) * pageSize),location);
+            return haversineDistance.setPostsDistance(postDao.getPlainPostsByCategoryRange(location, range, category.get(),postSortCriteria,orderCriteria, pageSize,(page - 1) * pageSize),location);
+        return haversineDistance.setPostsDistance(postDao.getPlainPostsRange(location, range, postSortCriteria,orderCriteria, pageSize,(page - 1) * pageSize),location);
     }
 
     @Override
-    public List<Post> getPlainPostsByKeywordPaged(String keyword, Optional<Location> location, Optional<Category> category, int page, int pageSize) throws InvalidQueryException {
+    public List<Post> getPlainPostsByKeywordPaged(String keyword, Optional<Location> location, Optional<Category> category,PostSortCriteria postSortCriteria, OrderCriteria orderCriteria, int page, int pageSize) throws InvalidQueryException {
         Set<String> validKeywords = getValidKeywords(keyword);
         if (validKeywords.isEmpty())
             return Collections.emptyList();
         if(category.isPresent()){
             if(location.isPresent()){
-                return haversineDistance.setPostsDistance(postDao.getPlainPostsByKeywordRange(validKeywords,location.get(),category.get(),pageSize,(page - 1) * pageSize),location.get());
+                return haversineDistance.setPostsDistance(postDao.getPlainPostsByKeywordRange(validKeywords,location.get(),category.get(),postSortCriteria,orderCriteria,pageSize,(page - 1) * pageSize),location.get());
             }
-            return postDao.getPlainPostsByKeywordRange(validKeywords,category.get(),pageSize,(page - 1) * pageSize);
+            return postDao.getPlainPostsByKeywordRange(validKeywords,category.get(),postSortCriteria,orderCriteria,pageSize,(page - 1) * pageSize);
         }
         if(location.isPresent()){
-            return haversineDistance.setPostsDistance(postDao.getPlainPostsByKeywordRange(validKeywords, location.get(), pageSize,(page - 1) * pageSize),location.get());
+            return haversineDistance.setPostsDistance(postDao.getPlainPostsByKeywordRange(validKeywords, location.get(),postSortCriteria,orderCriteria, pageSize,(page - 1) * pageSize),location.get());
         }
-        return postDao.getPlainPostsByKeywordRange(validKeywords,pageSize,(page - 1) * pageSize);
+        return postDao.getPlainPostsByKeywordRange(validKeywords,postSortCriteria,orderCriteria,pageSize,(page - 1) * pageSize);
     }
 
     @Override
