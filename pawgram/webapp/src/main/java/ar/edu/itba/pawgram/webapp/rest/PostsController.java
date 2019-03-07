@@ -15,6 +15,7 @@ import ar.edu.itba.pawgram.webapp.dto.form.FormPicture;
 import ar.edu.itba.pawgram.webapp.dto.form.FormPost;
 import ar.edu.itba.pawgram.webapp.dto.form.FormPostPictures;
 import ar.edu.itba.pawgram.webapp.exception.DTOValidationException;
+import ar.edu.itba.pawgram.webapp.utils.CaseInsensitiveConverter;
 import ar.edu.itba.pawgram.webapp.utils.PaginationLinkFactory;
 import ar.edu.itba.pawgram.webapp.validators.DTOConstraintValidator;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -23,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -412,5 +415,12 @@ public class PostsController {
 
         subscribeService.unsubscribePost(postId,user.getId());
         return Response.noContent().build();
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Category.class, new CaseInsensitiveConverter<>(Category.class));
+        binder.registerCustomEditor(OrderCriteria.class, new CaseInsensitiveConverter<>(OrderCriteria.class));
+        binder.registerCustomEditor(PostSortCriteria.class, new CaseInsensitiveConverter<>(PostSortCriteria.class));
     }
 }

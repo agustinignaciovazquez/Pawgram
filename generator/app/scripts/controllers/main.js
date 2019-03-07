@@ -8,10 +8,6 @@
  * Controller of the pawgramApp
  */
 angular.module('pawgramApp')
-  .controller('MainCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+  .controller('MainCtrl',[$scope, $routeParams, $translate, titleService, restService, snackbarService, authService, productsData, categories, categoriesImage, function () {
+   
+  }]);
