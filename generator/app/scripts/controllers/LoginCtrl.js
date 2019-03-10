@@ -7,8 +7,9 @@
  * # LoginCtrl
  * Controller of the pawgramApp
  */
-angular.module('pawgramApp')
-  .controller('LoginCtrl',  ['authService', '$scope', 'snackbarService', function(auth, $scope, snackbarService) {
+ define(['pawgramApp', 'services/authService', 'services/snackbarService'], function(pawgramApp) {
+ 	
+ 	pawgramApp.controller('LoginCtrl',  ['authService', '$scope', 'snackbarService', function(auth, $scope, snackbarService) {
 		$scope.loginForm = {};
 		
 		$scope.loginForm.username = {};
@@ -51,3 +52,5 @@ angular.module('pawgramApp')
 			}
 		};
 	}]);
+
+ });

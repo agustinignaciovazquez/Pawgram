@@ -6,8 +6,8 @@
  * @description
  * # ngFileRead
  */
-angular.module('pawgramApp')
-  .directive('ngFileRead', function() {
+define(['pawgramApp'], function(pawgramApp) {
+	pawgramApp.directive('ngFileRead', function() {
 		return {
 			scope: {
 				ngFileRead: '='
@@ -28,5 +28,6 @@ angular.module('pawgramApp')
 					reader.readAsDataURL(changeEvent.target.files[0]);
 				});
 			}
-		};
+		}
 	});
+});

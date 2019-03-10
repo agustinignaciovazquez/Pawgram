@@ -6,8 +6,8 @@
  * @description
  * # loading
  */
-angular.module('pawgramApp')
-  .directive('loading', ['$http', function($http) {
+define(['pawgramApp'], function(pawgramApp) {
+	pawgramApp.directive('loading', ['$http', function($http) {
 		return {
 			restrict: 'A',
 			link: function (scope, element, attrs) {
@@ -16,12 +16,9 @@ angular.module('pawgramApp')
 				};
 
 				scope.$watch(scope.isLoading, function (isLoading) {
-					if(isLoading){
-						element.show();
-					}else{
-						element.hide();
-					}
+					isLoading ? element.show() : element.hide();
 				});
 			}
 		};
 	}]);
+});

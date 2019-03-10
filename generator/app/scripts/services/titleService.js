@@ -7,8 +7,8 @@
  * # titleService
  * Service in the pawgramApp.
  */
-angular.module('pawgramApp')
-  .service('titleService', ['$window', function($window) {
+ define(['pawgramApp'], function(pawgramApp) {
+ 	return pawgramApp.service('titleService', ['$window', function($window) {
 		this.setTitle = function(title) {
 			$window.document.title = title + ' - Pawgram';
 		};
@@ -17,3 +17,5 @@ angular.module('pawgramApp')
 			$window.document.title = 'Pawgram';
 		};
 	}]);
+ });
+

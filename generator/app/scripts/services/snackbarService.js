@@ -7,8 +7,8 @@
  * # snackbarService
  * Service in the pawgramApp.
  */
-angular.module('pawgramApp')
-  .service('snackbarService',['jQuery', function(jQuery) {
+ define(['pawgramApp', 'jquery'], function(pawgramApp) {
+ 	return pawgramApp.service('snackbarService',[ function() {
 		this.showSnackbar = function(id, timeout, wait) {
 			timeout = timeout || 3000;
 			wait = wait || 0;
@@ -41,3 +41,5 @@ angular.module('pawgramApp')
 			this.showSnackbar('noConnection', timeout, wait);
 		};
 	}]);
+
+ });

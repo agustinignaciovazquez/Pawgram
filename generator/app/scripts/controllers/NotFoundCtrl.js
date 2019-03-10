@@ -7,9 +7,11 @@
  * # NotfoundctrlCtrl
  * Controller of the pawgramApp
  */
-angular.module('pawgramApp')
-  .controller('NotFoundCtrl',['$translate', 'titleService', function($translate, titleService) {
+ define(['pawgramApp','services/titleService'],function(pawgramApp){
+ 	pawgramApp.controller('NotFoundCtrl',['$translate', 'titleService', function($translate, titleService) {
 		$translate('error.title').then(function(title) {
 			titleService.setTitle(title);
 		});
 	}]);
+ });
+

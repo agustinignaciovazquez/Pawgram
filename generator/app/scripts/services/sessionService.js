@@ -7,8 +7,8 @@
  * # sessionService
  * SessionService of the pawgramApp
  */
-angular.module('pawgramApp')
-.factory('sessionService', function($window) {
+ define(['pawgramApp'], function(pawgramApp) {
+ 	return pawgramApp.factory('sessionService', function($window) {
 		var Session = {};
 
 		Session._user = JSON.parse($window.localStorage.getItem('session.user')) || JSON.parse($window.sessionStorage.getItem('session.user'));
@@ -53,3 +53,4 @@ angular.module('pawgramApp')
 		
 		return Session;
 	});
+ });

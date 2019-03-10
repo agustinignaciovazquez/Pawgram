@@ -6,9 +6,9 @@
  * @description
  * # snackbar
  */
-angular.module('pawgramApp')
-  .directive('snackbar', function () {
-    return {
+define(['pawgramApp'], function(pawgramApp) {
+	pawgramApp.directive('snackbar', function() {
+		return {
 			restrict: 'E',
 			replace: true,
 			transclude: true,
@@ -16,7 +16,9 @@ angular.module('pawgramApp')
 			scope: {id: '@'},
 			link: function(scope, element, attrs) {
 				var id = attrs.id;
+				
 				element.find('.snackbar').attr('id', id);
 			}
-		};
-  });
+		}
+	});
+});

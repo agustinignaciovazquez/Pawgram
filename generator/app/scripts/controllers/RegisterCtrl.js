@@ -7,8 +7,9 @@
  * # RegisterCtrl
  * Controller of the pawgramApp
  */
-angular.module('pawgramApp')
-  .controller('RegisterCtrl', ['$scope', 'authService', 'restService', 'snackbarService', 'jQuery', function($scope, authService, restService, snackbarService, jQuery) {
+ define(['pawgramApp', 'directives/validFile', 'directives/ngFileRead', 'services/restService', 'services/authService', 'services/snackbarService'], function(pawgramApp) {
+ 	
+  pawgramApp.controller('RegisterCtrl', ['$scope', 'authService', 'restService', 'snackbarService', 'jQuery', function($scope, authService, restService, snackbarService, jQuery) {
 		
 		$scope.user = {};
 		$scope.duplicateEmailError = false;
@@ -73,3 +74,4 @@ angular.module('pawgramApp')
 		
 		
 	}]);
+ });

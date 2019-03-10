@@ -7,8 +7,9 @@
  * # RestService
  * RestService of the pawgramApp
  */
-angular.module('pawgramApp')
-.factory('restService', ['$http', '$q', 'url', 'sessionService','jQuery', function($http, $q, url, session,jQuery) {
+ define(['pawgramApp', 'jquery', 'services/sessionService'], function(pawgramApp) {
+
+ 	return pawgramApp.factory('restService', ['$http', '$q', 'url', 'sessionService', function($http, $q, url, session) {
 			
 			var translateTable = {
 					category: 'category',
@@ -351,3 +352,4 @@ angular.module('pawgramApp')
 				
 			};
 		}]);
+ });

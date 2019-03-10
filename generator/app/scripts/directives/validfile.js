@@ -6,8 +6,8 @@
  * @description
  * # validFile
  */
-angular.module('pawgramApp')
-  .directive('validFile', function(){
+define(['pawgramApp'], function(pawgramApp) {
+	pawgramApp.directive('validFile', function(){
 		return {
 			require: 'ngModel',
 			link: function(scope, el, attrs, ngModel) {
@@ -19,5 +19,6 @@ angular.module('pawgramApp')
 					});
 				});
 			}
-		};
+		}
 	});
+});

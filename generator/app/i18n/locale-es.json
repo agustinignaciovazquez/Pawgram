@@ -1,3 +1,45 @@
-{
-	"feedback.warning.noConnection": "Sin conexion"
+ {
+	"feedback.warning.noConnection": "No connection",
+
+	"signIn.signToAccount": "Log-In",
+	"signIn.error.addEmail": "Type Email",
+	"signIn.error.addPassword": "Type Password",
+	"signIn.error.invalidUser": "User or password incorrect",
+	"signIn.rememberMe": "Remember me",
+	"signIn.signingIn": "Loging in",
+	"signIn.usernamePlaceholder": "E-Mail",
+	"signIn.passwordPlaceholder": "Password",
+	"signIn.signIn": "Sign In",
+
+	"signUp.title" : "Register",
+	"button.addProfilePicture" : "Add profile picture (optional)",
+	"signUp.usernamePlaceholder" : "Name",
+	"signUp.error.addName" : "Empty name",
+	"signUp.error.invalidName" : "Invalid name we accept only letters and spaces",
+	"signUp.error.nameTooLong" : "Name too long only 50 max",
+	"signUp.error.nameTooShort" : "Name too short at least 4",
+	"signUp.usersurnamePlaceholder" : "Surname",
+	"signUp.error.addsurname" : "Empty Surname",
+	"signUp.error.invalidSurname" : "Invalid surname we accept only letters and spaces",
+	"signUp.error.surnameTooLong" : "Name too long only 50 max",
+	"signUp.error.surnameTooShort" : "Name too short at least 4",
+	"signUp.emailPlaceholder" : "E-Mail",
+	"signUp.error.addEmail" : "Empty Mail",
+	"signUp.error.invalidEmail" : "Invalid Mail",
+	"signUp.error.duplicateEmail" : "Duplicated e-mail",
+	"signIn.passwordPlaceholder" : "Password",
+	"signUp.error.addPassword" : "Empty password",
+	"signUp.error.passwordTooLong" : "Password is too long",
+	"signUp.error.passwordTooShort" : "Password is too short",
+	"signUp.passwordConfPlaceholder" : "Repeat Password",
+	"signUp.error.passwordMatch" : "Passwords do not match",
+	"signUp.signingUp" : "Singing up",
+	"signUp.signUp" : "Sign up",
+
+
+	"404.error.title" : "Not Found",
+	"404.error.header" : "Not Found",
+	"404.error.subheader" : "Not Found",
+	"404.error.cause" : "Not Found",
+	"404.error.description" : "Not Found"
 }
