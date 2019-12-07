@@ -1,0 +1,14 @@
+{
+  "login": "Sign In",
+  "alredyregister": "Alredy have an account? Sign in here.",
+  "email": "Email Address",
+  "password": "Password",
+  "repeat-password": "Repeat password",
+  "register": "Sign up",
+  "registermain": "Become part of Pawgram!",
+  "registercheckbox": "I accept the TOS of Pawgam",
+  "forgetpass": "Forgot your password?",
+  "remember": "Remember me",
+  "name": "First name",
+  "surname": "Surname"
+}

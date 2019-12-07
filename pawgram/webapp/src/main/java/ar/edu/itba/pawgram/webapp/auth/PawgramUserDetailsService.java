@@ -21,6 +21,7 @@ public class PawgramUserDetailsService implements UserDetailsService {
 	private UserService us;
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+
 		final User user = us.findByMail(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("No user by the mail " + username);

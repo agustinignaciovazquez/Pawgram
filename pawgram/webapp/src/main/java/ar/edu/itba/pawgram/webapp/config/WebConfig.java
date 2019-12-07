@@ -61,7 +61,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 		//LOCAL
 		ds.setUrl("jdbc:postgresql://localhost/pawgram");
-		ds.setUsername("pawgram");
+		ds.setUsername("postgres");
 		ds.setPassword("123456aa");
 
 		return ds;
@@ -112,9 +112,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		properties.setProperty("hibernate.hbm2ddl.auto", "update");
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
 
-		/*// ONLY FOR DEBUG
+		// ONLY FOR DEBUG TODO COMMENT THIS FOR DEPLOY PRODUCTION
 		properties.setProperty("hibernate.show_sql", "true");
-		properties.setProperty("format_sql", "true");*/
+		properties.setProperty("format_sql", "true");
 
 		factoryBean.setJpaProperties(properties);
 		return factoryBean;
