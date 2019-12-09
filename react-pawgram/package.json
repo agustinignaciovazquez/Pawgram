@@ -15,6 +15,7 @@
     "i18next-xhr-backend": "^3.2.2",
     "jquery-param": "^1.0.2",
     "prop-types": "latest",
+    "qs": "latest",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-i18next": "^11.2.5",
@@ -23,8 +24,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.0",
     "react-select": "^3.0.8",
-    "redux": "^4.0.4",
-    "qs": "latest"
+    "redux": "^4.0.4"
   },
   "scripts": {
     "start": "react-scripts start",

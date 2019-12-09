@@ -30,7 +30,7 @@ public class EmailServiceImpl implements EmailService {
         message.setText(text);
         try {
             emailSender.send(message);
-        }catch (MailException e){
+        }catch (Exception e){
             throw new SendMailException(e.getMessage());
         }
     }
@@ -48,7 +48,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setTo(to);
             helper.setSubject(subject);
             emailSender.send(message);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             throw new SendMailException(e.getMessage());
         }
     }

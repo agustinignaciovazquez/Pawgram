@@ -35,7 +35,7 @@ export const AuthService = (url, props) =>{
 
     AuthService.isLoggedIn = function() {
         return !!this.loggedUser;
-    }
+    };
 
     AuthService.getLoggedUser = function() {
         return this.loggedUser;

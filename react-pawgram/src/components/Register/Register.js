@@ -17,6 +17,8 @@ import {Link as LinkDom} from "react-router-dom";
 import PropTypes from "prop-types";
 import {RestService} from "../../services/RestService";
 import {SessionService} from "../../services/SessionService";
+import {AuthService} from "../../services/AuthService";
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 function Copyright() {
     return (
@@ -73,6 +75,18 @@ class Register extends Component {
         if (jwt && user){
             this.props.history.push('/ui/main');
         }
+
+        ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+            if (value !== this.state.password) {
+                return false;
+            }
+            return true;
+        });
+    }
+
+    componentWillUnmount() {
+        // remove rule when it is not needed
+        ValidatorForm.removeValidationRule('isPasswordMatch');
     }
 
     change(e){
@@ -83,9 +97,21 @@ class Register extends Component {
 
     submit(e){
         e.preventDefault();
-        console.log(this.state.email);
-
-        const as = RestService("/api/").createUser({"name": this.state.firstName,"surname": this.state.lastName,"mail": this.state.email,"password":this.state.password});
+        console.log(this.state);
+        const data = {"name": this.state.firstName,"surname": this.state.lastName,"mail": this.state.email, "password":this.state.password};
+        RestService("/api/").createUser(data)
+            .then(function (data){
+                console.log(data);
+                const as = AuthService("/api", this.props);
+                as.logIn(this.state.email, this.state.password,true).then(function (response){
+                    //TODO Redirect to main
+                }).catch(function (response){
+                    //Show error
+                })
+            }).catch(function (response) {
+                console.log(response);
+                //Show error
+        });
     }
 
     render() {
@@ -100,10 +126,16 @@ class Register extends Component {
                     <Typography component="h1" variant="h5">
                         {t("registermain")}
                     </Typography>
-                    <form className={classes.form} noValidate autoComplete="off" onSubmit={e => this.submit(e)}>
+                    <ValidatorForm
+                        className={classes.form}
+                        autoComplete="off"
+                        ref="form"
+                        onSubmit={e => this.submit(e)}
+                        onError={errors => console.log(errors)}
+                    >
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
-                                <TextField
+                                <TextValidator
                                     autoComplete="fname"
                                     name="firstName"
                                     variant="outlined"
@@ -113,11 +145,13 @@ class Register extends Component {
                                     label={t("name")}
                                     autoFocus
                                     onChange={e => this.change(e)}
+                                    validators={['required','matchRegexp:^.{3,50}$','matchRegexp:^[a-z,A-Z,á,é,í,ó,ú,â,ê,ô,ã,õ,ç,Á,É,Í,Ó,Ú,Â,Ê,Ô,Ã,Õ,Ç,ü,ñ,Ü,Ñ," "]{3,50}$']}
+                                    errorMessages={[t('name-required'), t('name-short'), t('name-invalid')]}
                                     value={this.state.firstName}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <TextField
+                                <TextValidator
                                     variant="outlined"
                                     required
                                     fullWidth
@@ -125,12 +159,14 @@ class Register extends Component {
                                     label={t("surname")}
                                     name="lastName"
                                     autoComplete="lname"
+                                    validators={['required','matchRegexp:^.{3,50}$','matchRegexp:^[a-z,A-Z,á,é,í,ó,ú,â,ê,ô,ã,õ,ç,Á,É,Í,Ó,Ú,Â,Ê,Ô,Ã,Õ,Ç,ü,ñ,Ü,Ñ," "]{3,50}$']}
+                                    errorMessages={[t('name-required'), t('name-short'), t('name-invalid')]}
                                     onChange={e => this.change(e)}
                                     value={this.state.lastName}
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
+                                <TextValidator
                                     variant="outlined"
                                     required
                                     fullWidth
@@ -138,12 +174,14 @@ class Register extends Component {
                                     label={t("email")}
                                     name="email"
                                     autoComplete="email"
+                                    validators={['required', 'isEmail']}
+                                    errorMessages={[t('email-required'), t('email-invalid')]}
                                     onChange={e => this.change(e)}
                                     value={this.state.email}
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
+                                <TextValidator
                                     variant="outlined"
                                     required
                                     fullWidth
@@ -152,12 +190,14 @@ class Register extends Component {
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
+                                    validators={['matchRegexp:^.{6,60}$', 'required']}
+                                    errorMessages={[t('password-short'), t('password-required')]}
                                     onChange={e => this.change(e)}
                                     value={this.state.password}
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
+                                <TextValidator
                                     variant="outlined"
                                     required
                                     fullWidth
@@ -166,6 +206,8 @@ class Register extends Component {
                                     type="password"
                                     id="repeatpassword"
                                     autoComplete="current-password"
+                                    validators={['isPasswordMatch', 'required']}
+                                    errorMessages={[t('password-mismatch'), t('password-required')]}
                                     onChange={e => this.change(e)}
                                     value={this.state.repeatpassword}
                                 />
@@ -193,7 +235,7 @@ class Register extends Component {
                                 </Link>
                             </Grid>
                         </Grid>
-                    </form>
+                    </ValidatorForm>
                 </div>
                 <Box mt={5}>
                     <Copyright />

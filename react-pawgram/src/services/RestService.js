@@ -38,7 +38,8 @@ export const RestService = (url) => {
         var accessToken = SessionService().getAccessToken();
         var metadata = {
             headers: {
-                'Content-Type': undefined
+                //'Content-Type': undefined
+                'content-type': 'multipart/form-data'
             }
         };
 

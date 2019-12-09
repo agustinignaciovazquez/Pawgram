@@ -10,5 +10,14 @@
   "forgetpass": "Forgot your password?",
   "remember": "Remember me",
   "name": "First name",
-  "surname": "Surname"
+  "surname": "Surname",
+  "email-required": "Email is required",
+  "email-invalid": "Email is invalid",
+  "name-required": "Name is required",
+  "name-invalid": "Name is invalid. Only letters and spaces.",
+  "name-short": "Name length must between 3 and 50 chars",
+  "password-required": "Password is required",
+  "password-short": "Password is too short",
+  "password-mismatch": "Passwords do not match"
+
 }
