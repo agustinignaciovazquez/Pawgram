@@ -99,14 +99,15 @@ class Register extends Component {
         e.preventDefault();
         console.log(this.state);
         const data = {"name": this.state.firstName,"surname": this.state.lastName,"mail": this.state.email, "password":this.state.password};
-        RestService("/api/").createUser(data)
-            .then(function (data){
-                console.log(data);
-                const as = AuthService("/api", this.props);
-                as.logIn(this.state.email, this.state.password,true).then(function (response){
+        const as = AuthService("/api", this.props);
+        RestService("/api").createUser(data)
+            .then(function (r){
+                as.logIn(data.mail, data.password,true).then(function (response){
                     //TODO Redirect to main
+                    console.log(response)
                 }).catch(function (response){
                     //Show error
+                    console.log(response);
                 })
             }).catch(function (response) {
                 console.log(response);
