@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
@@ -18,6 +17,7 @@ import {AuthService} from "../../services/AuthService";
 import {SessionService} from "../../services/SessionService";
 import PropTypes from 'prop-types';
 import LoginBackgroundImage from '../../resources/images/login_bg.jpg'
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 function Copyright() {
     return (
@@ -72,17 +72,15 @@ class Login extends Component {
         super(props, context);
         this.state = {
             'email': "",
-            'password': ""
-        }
+            'password': "",
+            'show_error':false
+        };
         this.change = this.change.bind(this);
         this.submit = this.submit.bind(this);
     }
 
     componentDidMount() {
-        const jwt = SessionService().getAccessToken();
-        const user = SessionService().getUser();
-
-        if (jwt && user){
+        if (SessionService().isLoggedIn()){
             this.props.history.push('/main');
         }
     }
@@ -96,14 +94,20 @@ class Login extends Component {
     submit(e){
         e.preventDefault();
         console.log(this.state.email);
-        const as = AuthService("/api", this.props);
-        as.logIn(this.state.email,this.state.password,true)
-        .then(function(r){
-            console.log(r)
+        const authService = AuthService(this.props);
+
+        authService.logIn(this.state.email,this.state.password,true)
+        .then(r =>{
+            this.setState({'show_error': false});
+            this.props.history.push('/main')
         })
-        .catch(function(e){
+        .catch(e =>{
             console.log("ERROR Loggin In");
-            //TODO SHOW ERROR LOGIN as.logOut();
+            this.setState({'show_error': true});
+            if(e.response && e.response.status === 401){
+
+            }
+            //TODO SHOW OUR SERVER ERROR
         })
     }
 
@@ -122,8 +126,11 @@ class Login extends Component {
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
-                        <form className={classes.form} noValidate autoComplete="off" onSubmit={e => this.submit(e)}>
-                            <TextField
+                        <Typography component="h1" variant="h5" color={"secondary"} hidden={!this.state.show_error}>
+                            {t('error-login')}
+                        </Typography>
+                        <ValidatorForm className={classes.form} noValidate autoComplete="off" onSubmit={e => this.submit(e)} onError={errors => console.log(errors)}>
+                            <TextValidator
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -135,8 +142,10 @@ class Login extends Component {
                                 autoFocus
                                 onChange={e => this.change(e)}
                                 value={this.state.email}
+                                validators={['required', 'isEmail']}
+                                errorMessages={[t('email-required'), t('email-invalid')]}
                             />
-                            <TextField
+                            <TextValidator
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -148,6 +157,8 @@ class Login extends Component {
                                 autoComplete="current-password"
                                 onChange={e => this.change(e)}
                                 value={this.state.password}
+                                validators={['required']}
+                                errorMessages={[t('password-required')]}
                             />
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary"/>}
@@ -181,7 +192,7 @@ class Login extends Component {
                             <Box mt={5}>
                                 <Copyright/>
                             </Box>
-                        </form>
+                        </ValidatorForm>
                     </div>
                 </Grid>
             </Grid>

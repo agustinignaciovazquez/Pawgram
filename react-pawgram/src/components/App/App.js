@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Switch, Route, Link, Redirect} from "react-rout
 import NavBar from '../NavBar/NavBar'
 import Login from '../Login/Login'
 import Register from '../Register/Register'
+import Main from '../Main/Main'
 class App extends Component {
   render() {
     return (
@@ -12,9 +13,7 @@ class App extends Component {
                 <Switch>
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
-                    <Route path="/main" >
-                    ACA EL MAIN
-                    </Route>
+                    <Route path="/main" component={Main} />
                     <Route path="/" render={(props) => <Redirect {...props} to={'/login'} />} />
                 </Switch>
             </div>

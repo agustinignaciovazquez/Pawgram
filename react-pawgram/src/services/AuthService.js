@@ -1,10 +1,15 @@
 import {SessionService} from "./SessionService";
 import axios from 'axios';
 import qs from 'qs'
-export const AuthService = (url, props) =>{
-
+import {Config} from "./Config";
+export const AuthService = (props) =>{
+    const url = Config.API_URL;
+    const sessionService = SessionService();
     const AuthService = {};
-    AuthService.loggedUser = SessionService().getUser();
+
+    AuthService.loggedUser = sessionService.getUser();
+    AuthService.token = sessionService.getAccessToken();
+
     let redirectToUrlAfterLogin = '/'; //DEFAULT
 
     AuthService.logIn = function(username, password, saveToSession) {
@@ -29,16 +34,21 @@ export const AuthService = (url, props) =>{
             })
             .catch(function(response) {
                 console.log(response);
+                SessionService().destroy();
                 return Promise.reject(response);
             });
     };
 
     AuthService.isLoggedIn = function() {
-        return !!this.loggedUser;
+        return !!this.loggedUser && !!this.token;
     };
 
     AuthService.getLoggedUser = function() {
         return this.loggedUser;
+    };
+
+    AuthService.getToken = function(){
+        return this.token
     };
 
     AuthService.logOut = function() {

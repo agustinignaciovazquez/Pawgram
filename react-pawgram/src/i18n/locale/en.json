@@ -1,5 +1,6 @@
 {
   "login": "Sign In",
+  "error-login": "Incorrect email or password",
   "alredyregister": "Alredy have an account? Sign in here.",
   "email": "Email Address",
   "password": "Password",

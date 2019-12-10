@@ -1,12 +1,17 @@
 import {SessionService} from "./SessionService";
 import axios from 'axios';
 import param from 'jquery-param';
-export const RestService = (url) => {
+import {Config} from "./Config";
 
+export const RestService = () => {
+    const url = Config.API_URL;
     //const param = require('jquery-param');
 
     const translateTable = {
         category: 'category',
+        latitude: 'latidude',
+        longitude: 'longitude',
+        range: 'range',
         page: 'page',
         pageSize: 'per_page',
         orderBy: 'sorted_by',
@@ -15,12 +20,12 @@ export const RestService = (url) => {
     };
 
     function translate(params) {
-        var translated = {};
+        let translated = {};
 
         if (params) {
             Object.keys(params).forEach(function (key) {
                 let value = params[key];
-                if (value){
+                if (value && translateTable[key]){
                     translated[translateTable[key]] = value;
                 }
             });
@@ -30,7 +35,7 @@ export const RestService = (url) => {
     }
 
     function authHeaders() {
-        var accessToken = SessionService().getAccessToken();
+        const accessToken = SessionService().getAccessToken();
         return accessToken ? {headers: {'X-AUTH-TOKEN': accessToken}} : {};
     }
 
@@ -44,7 +49,7 @@ export const RestService = (url) => {
         };
 
         if (accessToken){
-            metadata.headers['X-AUTH-TOKEN'] = SessionService().getAccessToken();
+            metadata.headers['X-AUTH-TOKEN'] = accessToken;
         }
 
         return metadata;
@@ -85,12 +90,16 @@ export const RestService = (url) => {
                 return response.data;
             })
             .catch(function(response) {
+                if(response.response && response.response.status === 401){
+                    SessionService().destroy();
+                }
                 return Promise.reject(response);
             });
     }
 
     function doGet(baseUrl, params, ignoreLoadingBar) {
         var paramsGet = translate(params);
+        console.log(paramsGet)
         paramsGet = Object.keys(paramsGet).length ? '?' + param(paramsGet) : '';
         var config = authHeaders();
         config['ignoreLoadingBar'] = !!ignoreLoadingBar;
@@ -100,6 +109,9 @@ export const RestService = (url) => {
                 return response.data;
             })
             .catch(function(response) {
+                if(response.response && response.response.status === 401){
+                    SessionService().destroy();
+                }
                 return Promise.reject(response);
             });
     }
@@ -115,6 +127,9 @@ export const RestService = (url) => {
                 return response.data;
             })
             .catch(function(response) {
+                if(response.response && response.response.status === 401){
+                    SessionService().destroy();
+                }
                 return Promise.reject(response);
             });
     }
@@ -130,6 +145,9 @@ export const RestService = (url) => {
                 return response.data;
             })
             .catch(function(response) {
+                if(response.response && response.response.status === 401){
+                    SessionService().destroy();
+                }
                 return Promise.reject(response);
             });
     }
@@ -191,6 +209,9 @@ export const RestService = (url) => {
                     return response.data;
                 })
                 .catch(function(response) {
+                    if(response.response && response.response.status === 401){
+                        SessionService().destroy();
+                    }
                     return Promise.reject(response);
                 });
         },
@@ -215,6 +236,9 @@ export const RestService = (url) => {
                     return response.data;
                 })
                 .catch(function(response) {
+                    if(response.response && response.response.status === 401){
+                        SessionService().destroy();
+                    }
                     return Promise.reject(response);
                 });
         },
@@ -254,6 +278,9 @@ export const RestService = (url) => {
                     return response.data;
                 })
                 .catch(function(response) {
+                    if(response.response && response.response.status === 401){
+                        SessionService().destroy();
+                    }
                     return Promise.reject(response);
                 });
         },
@@ -283,7 +310,10 @@ export const RestService = (url) => {
                     return response.data;
                 })
                 .catch(function(response){
-                    return Promise.reject(response.data);
+                    if(response.response && response.response.status === 401){
+                        SessionService().destroy();
+                    }
+                    return Promise.reject(response);
                 });
         },
 
@@ -301,6 +331,9 @@ export const RestService = (url) => {
                     return response.data;
                 })
                 .catch(function(response) {
+                    if(response.response && response.response.status === 401){
+                        SessionService().destroy();
+                    }
                     return Promise.reject(response);
                 });
         },
@@ -323,6 +356,9 @@ export const RestService = (url) => {
                     return response.data;
                 })
                 .catch(function(response) {
+                    if(response.response && response.response.status === 401){
+                        SessionService().destroy();
+                    }
                     return Promise.reject(response);
                 });
         },

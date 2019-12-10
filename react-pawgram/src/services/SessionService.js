@@ -20,6 +20,10 @@ export const SessionService = () =>{
         return this;
     };
 
+    Session.isLoggedIn = function() {
+        return !!this._user && !!this._accessToken;
+    };
+
     Session.getAccessToken = function(){
         return this._accessToken;
     };

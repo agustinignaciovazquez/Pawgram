@@ -16,7 +16,6 @@ import { withTranslation } from 'react-i18next';
 import {Link as LinkDom} from "react-router-dom";
 import PropTypes from "prop-types";
 import {RestService} from "../../services/RestService";
-import {SessionService} from "../../services/SessionService";
 import {AuthService} from "../../services/AuthService";
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
@@ -69,10 +68,7 @@ class Register extends Component {
     }
 
     componentDidMount() {
-        const jwt = SessionService().getAccessToken();
-        const user = SessionService().getUser();
-
-        if (jwt && user){
+        if (AuthService().isLoggedIn()){
             this.props.history.push('/ui/main');
         }
 
@@ -97,19 +93,20 @@ class Register extends Component {
 
     submit(e){
         e.preventDefault();
-        console.log(this.state);
+
         const data = {"name": this.state.firstName,"surname": this.state.lastName,"mail": this.state.email, "password":this.state.password};
-        const as = AuthService("/api", this.props);
-        RestService("/api").createUser(data)
-            .then(function (r){
-                as.logIn(data.mail, data.password,true).then(function (response){
-                    //TODO Redirect to main
-                    console.log(response)
-                }).catch(function (response){
-                    //Show error
+
+        RestService().createUser(data)
+            .then(r => {
+                AuthService(this.props).logIn(data.mail, data.password,true)
+                    .then(response =>{
                     console.log(response);
+                    this.props.history.push('/main');
+                }).catch(res =>{
+                    //Show error
+                    console.log(res);
                 })
-            }).catch(function (response) {
+            }).catch(response => {
                 console.log(response);
                 //Show error
         });

@@ -61,7 +61,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 		//LOCAL
 		ds.setUrl("jdbc:postgresql://localhost/pawgram");
-		ds.setUsername("postgres");
+		ds.setUsername("pawgram");
 		ds.setPassword("123456aa");
 
 		return ds;
@@ -112,9 +112,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		properties.setProperty("hibernate.hbm2ddl.auto", "update");
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
 
-		// ONLY FOR DEBUG TODO COMMENT THIS FOR DEPLOY PRODUCTION
-		properties.setProperty("hibernate.show_sql", "true");
-		properties.setProperty("format_sql", "true");
+		// ONLY FOR DEBUG, COMMENT THIS FOR DEPLOY PRODUCTION
+		//properties.setProperty("hibernate.show_sql", "true");
+		//properties.setProperty("format_sql", "true");
 
 		factoryBean.setJpaProperties(properties);
 		return factoryBean;
@@ -143,7 +143,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		props.put("mail.transport.protocol", "smtp");
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.debug", "true");
+		//props.put("mail.debug", "true");
 
 		return mailSender;
 	}
