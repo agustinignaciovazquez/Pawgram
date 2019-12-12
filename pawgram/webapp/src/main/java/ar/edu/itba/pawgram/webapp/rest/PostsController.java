@@ -127,6 +127,7 @@ public class PostsController {
                              @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize,
                              @DefaultValue("distance") @QueryParam("sorted_by") final PostSortCriteria sortCriteria,
                              @DefaultValue("asc") @QueryParam("order") final OrderCriteria order) throws InvalidQueryException {
+
         if(!(longitude != null && latitude != null && range != null)){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

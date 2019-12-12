@@ -59,6 +59,8 @@ protected void configure(final HttpSecurity http) throws Exception {
 			.and().authorizeRequests()
 			.antMatchers(HttpMethod.POST, "/api/login").anonymous()
 			.antMatchers(HttpMethod.POST, "/api/users/").anonymous()
+			.antMatchers(HttpMethod.GET, "/api/users/images/**").anonymous()
+			.antMatchers(HttpMethod.GET, "/api/posts/images/**").anonymous()
 			.antMatchers(HttpMethod.POST).authenticated()
 			.antMatchers(HttpMethod.DELETE).authenticated()
 			.antMatchers(HttpMethod.PUT).authenticated()

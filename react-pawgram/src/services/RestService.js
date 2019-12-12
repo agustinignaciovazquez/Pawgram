@@ -9,7 +9,7 @@ export const RestService = () => {
 
     const translateTable = {
         category: 'category',
-        latitude: 'latidude',
+        latitude: 'latitude',
         longitude: 'longitude',
         range: 'range',
         page: 'page',

@@ -14,6 +14,7 @@ import java.util.Optional;
 public class PlainPostDTO {
     private long id;
     private String title;
+    private String description;
     private String category;
     private String pet;
     private boolean is_male;
@@ -39,6 +40,7 @@ public class PlainPostDTO {
     public PlainPostDTO(final Post post, final URI baseUri, final Optional<User> loggedUser){
         id = post.getId();
         title = post.getTitle();
+        description = post.getDescription();
         category = post.getCategory().getLowerName();
         pet = post.getPet().getLowerName();
         is_male = post.isIs_male();
@@ -77,6 +79,14 @@ public class PlainPostDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getPet() {

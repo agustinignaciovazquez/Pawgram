@@ -137,7 +137,6 @@ class Register extends Component {
                                     autoComplete="fname"
                                     name="firstName"
                                     variant="outlined"
-                                    required
                                     fullWidth
                                     id="firstName"
                                     label={t("name")}
@@ -151,7 +150,6 @@ class Register extends Component {
                             <Grid item xs={12} sm={6}>
                                 <TextValidator
                                     variant="outlined"
-                                    required
                                     fullWidth
                                     id="lastName"
                                     label={t("surname")}
@@ -166,7 +164,6 @@ class Register extends Component {
                             <Grid item xs={12}>
                                 <TextValidator
                                     variant="outlined"
-                                    required
                                     fullWidth
                                     id="email"
                                     label={t("email")}
@@ -181,7 +178,6 @@ class Register extends Component {
                             <Grid item xs={12}>
                                 <TextValidator
                                     variant="outlined"
-                                    required
                                     fullWidth
                                     name="password"
                                     label={t("password")}
@@ -197,7 +193,6 @@ class Register extends Component {
                             <Grid item xs={12}>
                                 <TextValidator
                                     variant="outlined"
-                                    required
                                     fullWidth
                                     name="repeatpassword"
                                     label={t("repeat-password")}

@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid"
 import { withStyles } from '@material-ui/core/styles/index';
 import { withTranslation } from 'react-i18next/src/index';
 import PostCard from '../PostCard/PostCard'
-import {AuthService} from "../../services/AuthService";
+import {AuthService} from "../../../services/AuthService";
 
 const styles = theme => ({
     root: {
@@ -16,7 +16,7 @@ const styles = theme => ({
 });
 
 class PostCardsGrid extends React.Component {
-    state = {data: this.props.data};
+    state = {data: this.props.posts};
 
     componentDidMount() {
         if (!AuthService().isLoggedIn()){
@@ -27,8 +27,8 @@ class PostCardsGrid extends React.Component {
     drawPostAll(){
         let table = [];
 
-        for (let i = 0; i < this.state.data.length ; i++) {
-            table.push(<Grid item key={i} xs={4}><PostCard post={this.state.data[i]} /></Grid>);
+        for (let i = 0; i < this.state.data.posts.length ; i++) {
+            table.push(<Grid item key={i} xs={4}><PostCard post={this.state.data.posts[i]} /></Grid>);
         }
 
         return table;
@@ -37,15 +37,7 @@ class PostCardsGrid extends React.Component {
     render() {
         const { classes } =  this.props;
 
-        if (this.state.data === undefined){
-            return (
-                <div>
-                    <div>Data is still undefined...</div>
-                </div>
-            );
-        }
-
-        if (this.state.data.length === 0 ){
+        if (this.state.data.count === 0 ){
             return (
                 <div>
                     <h3>Posts</h3>
@@ -57,7 +49,7 @@ class PostCardsGrid extends React.Component {
         return (
             <div>
                 <h3>Posts</h3>
-                <Grid container spacing={24}>
+                <Grid container spacing={8}>
                     {this.drawPostAll()}
                 </Grid>
 
