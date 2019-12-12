@@ -99,7 +99,7 @@ export const RestService = () => {
 
     function doGet(baseUrl, params, ignoreLoadingBar) {
         var paramsGet = translate(params);
-        console.log(paramsGet)
+
         paramsGet = Object.keys(paramsGet).length ? '?' + param(paramsGet) : '';
         var config = authHeaders();
         config['ignoreLoadingBar'] = !!ignoreLoadingBar;
@@ -157,8 +157,8 @@ export const RestService = () => {
             return doGet(url + '/posts/', params);
         },
 
-        getPost: function(id) {
-            return doGet(url + '/posts/' + id);
+        getPost: function(id, params) {
+            return doGet(url + '/posts/' + id, params);
         },
 
         getPostByZoneId: function(id, params) {

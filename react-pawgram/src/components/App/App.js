@@ -4,6 +4,7 @@ import NavBar from '../NavBar/NavBar'
 import Login from '../Login/Login'
 import Register from '../Register/Register'
 import Main from '../Main/Main'
+import PostComplete from "../Post/PostComplete/PostComplete";
 class App extends Component {
   render() {
     return (
@@ -14,6 +15,7 @@ class App extends Component {
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
                     <Route path="/main" component={Main} />
+                    <Route path="/post/:id" component={PostComplete}/>
                     <Route path="/" render={(props) => <Redirect {...props} to={'/login'} />} />
                 </Switch>
             </div>

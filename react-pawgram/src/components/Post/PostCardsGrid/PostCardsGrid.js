@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
 import Grid from "@material-ui/core/Grid"
 import { withStyles } from '@material-ui/core/styles/index';
-import { withTranslation } from 'react-i18next/src/index';
+import {withTranslation} from "react-i18next";
 import PostCard from '../PostCard/PostCard'
 import {AuthService} from "../../../services/AuthService";
 
@@ -26,7 +26,6 @@ class PostCardsGrid extends React.Component {
 
     drawPostAll(){
         let table = [];
-
         for (let i = 0; i < this.state.data.posts.length ; i++) {
             table.push(<Grid item key={i} xs={4}><PostCard post={this.state.data.posts[i]} /></Grid>);
         }
@@ -35,20 +34,20 @@ class PostCardsGrid extends React.Component {
     }
 
     render() {
-        const { classes } =  this.props;
+        const { classes,t } =  this.props;
 
         if (this.state.data.count === 0 ){
             return (
                 <div>
-                    <h3>Posts</h3>
-                    <div>¡No hay posts!</div>
+                    <h3>{t('posts')}</h3>
+                    <div>{t('empty-posts')}</div>
                 </div>
             );
         }
 
         return (
             <div>
-                <h3>Posts</h3>
+                <h3>{t('posts')}</h3>
                 <Grid container spacing={8}>
                     {this.drawPostAll()}
                 </Grid>
@@ -63,6 +62,6 @@ class PostCardsGrid extends React.Component {
 
 PostCardsGrid.propTypes = {
     classes: PropTypes.object.isRequired,
-}
+};
 
 export default withStyles(styles)(withTranslation()(PostCardsGrid));

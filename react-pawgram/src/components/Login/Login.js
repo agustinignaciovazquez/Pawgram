@@ -95,7 +95,7 @@ class Login extends Component {
         e.preventDefault();
         console.log(this.state.email);
         const authService = AuthService(this.props);
-
+        //TODO saveToSession with remember me
         authService.logIn(this.state.email,this.state.password,true)
         .then(r =>{
             this.setState({'show_error': false});

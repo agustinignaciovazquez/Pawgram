@@ -12,7 +12,6 @@ class Main extends Component {
         if (!AuthService().isLoggedIn()){
             this.props.history.push('/login');
         }
-        RestService().getPost(2);
         RestService().getPosts({'latitude': -34.6037618, 'longitude': -58.381715, 'range': 1000000})
             .then(r=>{
                 this.setState({'posts': r});
