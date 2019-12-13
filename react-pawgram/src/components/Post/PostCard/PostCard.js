@@ -40,27 +40,25 @@ class PostCard extends Component {
         const { classes, post, t } = this.props;
         return (
             <Card className={classes.card}>
-                <CardActionArea>
-                    <CardMedia
-                        component="img"
-                        image={post.image_urls.length > 0? post.image_urls[0]: Config.DEFAULT_POST_URL}
-                        alt=""
-                        height="140"
-                        title=""
+                <CardMedia
+                    component="img"
+                    image={post.image_urls.length > 0? post.image_urls[0]: Config.DEFAULT_POST_URL}
+                    alt=""
+                    height="140"
+                    title=""
+                />
+                <CardContent>
+                    <Chip
+                        icon={<DoneIcon />}
+                        label="Clickable deletable"
                     />
-                    <CardContent>
-                        <Chip
-                            icon={<DoneIcon />}
-                            label="Clickable deletable"
-                        />
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {post.title}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {post.description}
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
+                    <Typography gutterBottom variant="h5" component="h2">
+                        {post.title}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        {post.description}
+                    </Typography>
+                </CardContent>
                 <CardActions>
                     <Button size="small" color="primary">
                         <Link component={ LinkDom } to={"/post/"+post.id} variant="body2">

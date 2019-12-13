@@ -30,7 +30,7 @@ public class UserDTO {
         name = user.getName();
         email = user.getMail();
         url = baseUri.resolve("users/" + id);
-        pictureURL = baseUri.resolve("users/images/" + user.getProfile_img_url());
+        pictureURL = user.getProfile_img_url() == null? null : baseUri.resolve("users/images/" + user.getProfile_img_url());
         userPostsURL = baseUri.resolve("users/" + id + "/posts");
     }
 
