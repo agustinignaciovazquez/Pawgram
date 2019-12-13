@@ -54,10 +54,10 @@ export const AuthService = (props) =>{
     AuthService.logOut = function() {
         SessionService().destroy();
         this.loggedUser = null;
-        props.history.push('/');
+        //props.history.push('/');
     };
 
-    AuthService.saveAttemptUrl = function(){
+    /*AuthService.saveAttemptUrl = function(){
         if(props.location.pathname.toLowerCase() !== '/login') {
             redirectToUrlAfterLogin = props.location.pathname;
         }
@@ -65,7 +65,7 @@ export const AuthService = (props) =>{
 
     AuthService.redirectToAttemptUrl = function(){
         props.history.push(redirectToUrlAfterLogin);
-    };
+    };*/
 
     return AuthService;
 }

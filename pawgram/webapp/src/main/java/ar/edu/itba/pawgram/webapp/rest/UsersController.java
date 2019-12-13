@@ -101,6 +101,34 @@ public class UsersController {
     }
 
     @GET
+    @Path("/mail/{mail}")
+    public Response getUserByMail(@PathParam("mail") final String mail) {
+        final User user = userService.findByMail(mail);
+
+        LOGGER.debug("Accessed getUserByMail with mail {}", mail);
+
+        if (user != null) {
+            return Response.ok(new UserDTO(user, uriContext.getBaseUri())).build();
+        } else {
+            LOGGER.warn("Cannot render user profile, user with mail {} not found", mail);
+            return Response.status(Status.NOT_FOUND).build();
+        }
+    }
+
+    @GET
+    @Path("/check/{mail}")
+    public Response checkEmailExists(@PathParam("mail") final String mail) {
+        final User user = userService.findByMail(mail);
+
+        LOGGER.debug("Accessed check duplicated mail with mail {}", mail);
+        if (user != null) {
+            return Response.status(Status.OK).build();
+        } else {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+    }
+
+    @GET
     @Path("/{id}/subscriptions")
     public Response getUserSubscriptions(
             @PathParam("id") final long id,

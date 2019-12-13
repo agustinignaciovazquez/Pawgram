@@ -52,6 +52,14 @@ const styles = theme => ({
     },
 });
 
+//TODO put this function in utils
+
+function ValidateEmail(mail)
+{
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(mail).toLowerCase());
+}
+
 class Register extends Component {
     constructor(props, context) {
         super(props, context);
@@ -71,12 +79,17 @@ class Register extends Component {
         if (AuthService().isLoggedIn()){
             this.props.history.push('/ui/main');
         }
-
+        //TODO put this function in utils
         ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
             if (value !== this.state.password) {
                 return false;
             }
             return true;
+        });
+        ValidatorForm.addValidationRule('isDuplicateMail', (value) => {
+            if(ValidateEmail(value) === false)
+                return false;
+            return RestService().checkDuplicatedMail(value).then( r=>{return false}).catch(r=>{ return true});
         });
     }
 
@@ -169,8 +182,8 @@ class Register extends Component {
                                     label={t("email")}
                                     name="email"
                                     autoComplete="email"
-                                    validators={['required', 'isEmail']}
-                                    errorMessages={[t('email-required'), t('email-invalid')]}
+                                    validators={['required', 'isEmail','isDuplicateMail']}
+                                    errorMessages={[t('email-required'), t('email-invalid'), t('duplicate-mail')]}
                                     onChange={e => this.change(e)}
                                     value={this.state.email}
                                 />

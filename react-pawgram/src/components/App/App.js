@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import {BrowserRouter as Router, Switch, Route, Link, Redirect} from "react-router-dom";
+import {AuthService} from "../../services/AuthService";
 import NavBar from '../NavBar/NavBar'
 import Login from '../Login/Login'
 import Register from '../Register/Register'
 import Main from '../Main/Main'
 import PostComplete from "../Post/PostComplete/PostComplete";
+import Logout from "../Logout/Logout";
 class App extends Component {
   render() {
     return (
@@ -16,6 +18,7 @@ class App extends Component {
                     <Route path="/register" component={Register} />
                     <Route path="/main" component={Main} />
                     <Route path="/post/:id" component={PostComplete}/>
+                    <Route path="/logout" component={Logout} />
                     <Route path="/" render={(props) => <Redirect {...props} to={'/login'} />} />
                 </Switch>
             </div>

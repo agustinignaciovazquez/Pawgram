@@ -177,6 +177,7 @@ export const RestService = () => {
             return doDelete(url + '/posts/' + postId + '/image/'+ postImageId);
         },
 
+        //Not used
         getComments: function(id, params) {
             return doGet(url + '/post/' + id + '/comments', params);
         },
@@ -283,6 +284,10 @@ export const RestService = () => {
                     }
                     return Promise.reject(response);
                 });
+        },
+
+        checkDuplicatedMail: function(mail) {
+            return doGet(url + '/users/check/'+mail);
         },
 
         changePassword: function(currentPass, newPass) {

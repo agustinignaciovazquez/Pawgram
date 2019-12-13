@@ -45,5 +45,8 @@
   "contact-name": "Name",
   "contact-location": "Last known location",
   "comments": "Comments",
-  "no-comments": "No comments in this post"
+  "no-comments": "No comments in this post",
+  "duplicate-mail": "Mail is already in use",
+  "reply": "Leave a reply",
+  "comment": "Leave a comment"
 }
