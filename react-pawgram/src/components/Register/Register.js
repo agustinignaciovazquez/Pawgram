@@ -18,6 +18,7 @@ import PropTypes from "prop-types";
 import {RestService} from "../../services/RestService";
 import {AuthService} from "../../services/AuthService";
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import {ValidateEmail,PasswordMatchValidation,DuplicateMailValidation} from "../../services/Utils";
 
 function Copyright() {
     return (
@@ -54,12 +55,6 @@ const styles = theme => ({
 
 //TODO put this function in utils
 
-function ValidateEmail(mail)
-{
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(mail).toLowerCase());
-}
-
 class Register extends Component {
     constructor(props, context) {
         super(props, context);
@@ -80,22 +75,14 @@ class Register extends Component {
             this.props.history.push('/ui/main');
         }
         //TODO put this function in utils
-        ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-            if (value !== this.state.password) {
-                return false;
-            }
-            return true;
-        });
-        ValidatorForm.addValidationRule('isDuplicateMail', (value) => {
-            if(ValidateEmail(value) === false)
-                return false;
-            return RestService().checkDuplicatedMail(value).then( r=>{return false}).catch(r=>{ return true});
-        });
+        ValidatorForm.addValidationRule('isPasswordMatch', PasswordMatchValidation);
+        ValidatorForm.addValidationRule('isDuplicateMail', DuplicateMailValidation);
     }
 
     componentWillUnmount() {
         // remove rule when it is not needed
         ValidatorForm.removeValidationRule('isPasswordMatch');
+        ValidatorForm.removeValidationRule('isDuplicateMail');
     }
 
     change(e){

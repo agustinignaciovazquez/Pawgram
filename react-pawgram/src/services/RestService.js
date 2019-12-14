@@ -16,7 +16,7 @@ export const RestService = () => {
         pageSize: 'per_page',
         orderBy: 'sorted_by',
         order: 'order',
-        query: 'q'
+        query: 'keyword'
     };
 
     function translate(params) {
@@ -85,7 +85,7 @@ export const RestService = () => {
         var config = authHeaders();
         config['ignoreLoadingBar'] = !!ignoreLoadingBar;
 
-        return axios.post(baseUrl + paramsPost, JSON.stringify(data), config)
+        return axios.post(baseUrl + paramsPost, data, config)
             .then(function(response) {
                 return response.data;
             })
@@ -122,7 +122,7 @@ export const RestService = () => {
         var config = authHeaders();
         config['ignoreLoadingBar'] = !!ignoreLoadingBar;
 
-        return axios.put(baseUrl + paramsPut, JSON.stringify(data), config)
+        return axios.put(baseUrl + paramsPut, data, config)
             .then(function(response) {
                 return response.data;
             })
@@ -165,8 +165,19 @@ export const RestService = () => {
             return doGet(url + '/posts/zone/' + id, params);
         },
 
-        searchPost: function(query, page, pageSize) {
-            return doGet(url + '/posts/search/', {query: query, page: page, pageSize: pageSize});
+        searchPost: function(query, category=null, orderBy=null, order=null, page=1, pageSize=Config.PAGE_SIZE, latitude=null, longitude=null) {
+
+            const params_search = {
+                'query': query,
+                'latitude': latitude,
+                'longitude': longitude,
+                'category': category,
+                'order': order,
+                'orderBy': orderBy,
+                'page': page,
+                'pageSize': pageSize
+            };
+            return doGet(url + '/posts/search/', params_search);
         },
 
         deletePost: function(id) {
@@ -187,6 +198,8 @@ export const RestService = () => {
         },
 
         commentParentPost: function(id, comment, parentCommentId) {
+            if (parentCommentId === 0)
+                return this.commentPost(id, comment);
             return doPost(url + '/posts/' + id + '/comments', {content: comment, parent_id: parentCommentId}, null, true);
         },
 

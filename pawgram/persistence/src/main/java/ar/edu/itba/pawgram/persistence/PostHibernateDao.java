@@ -82,6 +82,7 @@ public class PostHibernateDao implements PostDao {
                                          int limit, int offset) throws InvalidQueryException {
         final String queryStr = getQuery("select p from Post as p ORDER BY ${order} ${orderCriteria}",postSortCriteria,orderCriteria);
         final TypedQuery<Post> query = em.createQuery(queryStr, Post.class);
+
         return pagedResult(query, offset, limit);
     }
 
@@ -223,6 +224,7 @@ public class PostHibernateDao implements PostDao {
 
         final TypedQuery<Post> query = em.createQuery(queryStr, Post.class);
 
+        query.setParameter("category", category);
         for (final Map.Entry<String, String> e : keyWordsRegExp.entrySet())
             query.setParameter(e.getKey(), e.getValue());
 
@@ -237,6 +239,7 @@ public class PostHibernateDao implements PostDao {
                 location, postSortCriteria,orderCriteria);
         final TypedQuery<Post> query = em.createQuery(queryStr, Post.class);
 
+        query.setParameter("category", category);
         query.setParameter("lat1",location.getLatitude());
         query.setParameter("lon1",location.getLongitude());
 
@@ -257,6 +260,7 @@ public class PostHibernateDao implements PostDao {
     public long getTotalPosts(Location location, int range) {
         final TypedQuery<Long> query = em.createQuery("select count(*) from Post as p WHERE " +
                 " haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) < :range", Long.class);
+        
         query.setParameter("lat1",location.getLatitude());
         query.setParameter("lon1",location.getLongitude());
         query.setParameter("range",range);

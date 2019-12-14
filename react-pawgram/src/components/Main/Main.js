@@ -12,6 +12,7 @@ class Main extends Component {
         if (!AuthService().isLoggedIn()){
             this.props.history.push('/login');
         }
+        //TODO ADD PAGINATION
         RestService().getPosts({'latitude': -34.6037618, 'longitude': -58.381715, 'range': 1000000})
             .then(r=>{
                 this.setState({'posts': r});

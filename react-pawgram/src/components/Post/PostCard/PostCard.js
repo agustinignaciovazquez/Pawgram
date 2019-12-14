@@ -50,7 +50,7 @@ class PostCard extends Component {
                 <CardContent>
                     <Chip
                         icon={<DoneIcon />}
-                        label="Clickable deletable"
+                        label={t(post.category)}
                     />
                     <Typography gutterBottom variant="h5" component="h2">
                         {post.title}

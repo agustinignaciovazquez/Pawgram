@@ -8,7 +8,7 @@ import CardContent from '@material-ui/core/CardContent/index';
 import CardMedia from '@material-ui/core/CardMedia/index';
 import Paper from "@material-ui/core/Paper";
 import Button from '@material-ui/core/Button/index';
-import TextField from "@material-ui/core/TextField";
+import {SubscribeToggle} from "../../../services/Utils";
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
 import ReplyIcon from '@material-ui/icons/Reply';
 import Typography from '@material-ui/core/Typography/index';
@@ -18,6 +18,7 @@ import Carousel from 'react-material-ui-carousel'
 import PropTypes from "prop-types";
 import Grid from '@material-ui/core/Grid';
 import {Avatar} from "@material-ui/core";
+import SaveIcon from '@material-ui/icons/Save'
 import {Chip} from "@material-ui/core";
 import {AuthService} from "../../../services/AuthService";
 import {RestService} from "../../../services/RestService";
@@ -42,6 +43,13 @@ const styles = theme => ({
 
     }
 });
+
+function getPost(self){
+    const params = {latitude: self.props.latitude,
+        longitude: self.props.longitude};
+
+    return RestService().getPost(self.state.post_id,params);
+}
 
 function renderImageCarrousel(image_rauls){
     //Empty carrousel
@@ -72,17 +80,51 @@ function renderImageCarrousel(image_rauls){
         })}
     </Carousel>);
 }
+
 function change(e,self){
     self.setState({
         [e.target.name]: e.target.value
     })
 }
-function renderCommentBox(user, self, parent_id = 0){
+
+function renderSubscribeButton(subscribed, post, self){
+    const {t,classes} = self.props;
+    const subs_str = subscribed? t('unsubscribe'):t('subscribe');
+
+    return(<Button
+        variant="contained"
+        color="primary"
+        size="small"
+        className={classes.button}
+        startIcon={<SaveIcon />}
+        onClick={e => {SubscribeToggle(subscribed, post, self)}}
+    >
+        {subs_str}
+    </Button>);
+}
+
+function submitComment(e, self, key, post_id, parent_id){
+     e.preventDefault();
+     const comment = self.state[key];
+     RestService().commentParentPost(post_id, comment, parent_id)
+         .then(r=>{
+            return getPost(self);
+         })
+         .then(r=>{
+         self.setState({'post': r, [key]: ""});
+         })
+         .catch(err => {
+             //TODO Show error in putting comment
+         })
+}
+
+function renderCommentBox(user, post_id, self, parent_id = 0){
     const { classes, t } = self.props;
     const state = self.state;
     const comment_date = new Date();
     const formatted_comment_date = comment_date.toLocaleDateString();
     const key = "comment_"+user.id+"_"+parent_id;
+
     return (<Grid container alignItems={"center"} alignContent={"center"} justify={"center"}>
         {parent_id > 0 && <Grid item xs={2} sm={2}>
             <ReplyIcon fontSize={"large"}/>
@@ -99,7 +141,8 @@ function renderCommentBox(user, self, parent_id = 0){
                                 className={classes.form}
                                 autoComplete="off"
                                 ref="form"
-                                onSubmit={e => {console.log(e)}}
+                                instantValidate={false}
+                                onSubmit={e => {submitComment(e, self, key, post_id, parent_id);}}
                                 onError={errors => console.log(errors)}>
                                 <div style={{ padding: 20 }}>
                                     <TextValidator
@@ -111,7 +154,7 @@ function renderCommentBox(user, self, parent_id = 0){
                                         rows="4"
                                         variant="outlined"
                                         validators={['minStringLength:5','maxStringLength:500']}
-                                        errorMessages={[t('min-str-length'), t('max-str-length')]}
+                                        errorMessages={[t('comment-min-str-length'), t('comment-max-str-length')]}
                                         onChange={e => change(e,self)}
                                         value={state[key] ? state[key]:""}
                                     />
@@ -134,7 +177,8 @@ function renderCommentBox(user, self, parent_id = 0){
         </Grid>
     </Grid>);
 }
-function renderCommentChilds(user, item, self){
+
+function renderCommentChilds(user, post_id, item, self){
     const { classes, t } = self.props;
     const state = self.state;
 
@@ -147,11 +191,12 @@ function renderCommentChilds(user, item, self){
             <SubdirectoryArrowRightIcon fontSize={"large"}/>
         </Grid>
         <Grid item xs={10} sm={10}>
-            {item.children.map( (item_child, i) => {return renderComment(user, item_child,i, self, t, item.id)})}
+            {item.children.map( (item_child, i) => {return renderComment(user, post_id, item_child,i, self, t, item.id)})}
         </Grid>
     </Grid>)
 }
-function renderComment(user, item, i, self,  parent_id= 0){
+
+function renderComment(user, post_id, item, i, self,  parent_id= 0){
     const { classes, t } = self.props;
     const state = self.state;
     const comment_date = new Date(item.date);
@@ -176,18 +221,17 @@ function renderComment(user, item, i, self,  parent_id= 0){
                 </Grid>
             </Grid>
         </Paper>
+        <br/>
         {parent_id === 0 && (<div>
             <br/>
-        {renderCommentChilds(user,item,self,t)}
+        {renderCommentChilds(user, post_id, item,self)}
             <br/>
-            {renderCommentBox(user,self,t,item.id)}</div>)
+        {renderCommentBox(user, post_id, self,item.id)}</div>)
         }
     </Grid>);
 }
 
 class PostComplete extends Component {
-
-
     constructor(props, context) {
         super(props, context);
         const id = props.match.params.id;
@@ -195,6 +239,7 @@ class PostComplete extends Component {
             post_id: id,
             post: undefined,
             user: undefined,
+            subscribing: false,
         };
     }
 
@@ -202,10 +247,7 @@ class PostComplete extends Component {
         if (!AuthService().isLoggedIn()){
             this.props.history.push('/login');
         }
-        const params = {latitude: this.props.latitude,
-                        longitude: this.props.longitude};
-
-        RestService().getPost(this.state.post_id,params)
+        getPost(this)
             .then(r=>{
                 this.setState({'post': r,'user':AuthService().getLoggedUser()});
             }).catch(r=>{
@@ -216,7 +258,7 @@ class PostComplete extends Component {
     render() {
 
         const { classes, t } = this.props;
-        const {post,user} = this.state;
+        const { post, user } = this.state;
         const mapStyles = {
             width: '100%',
             height: '400px',
@@ -294,13 +336,12 @@ class PostComplete extends Component {
                                         {post.distance}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={10} sm={10}/>
 
-                                <Grid item xs={2} sm={2}>
-                                    <Chip
-                                        label={t(post.category)}
-                                        variant="outlined"
-                                    />
+                                <Grid item xs={12} sm={12}>
+                                    <Typography variant="overline" display="block" gutterBottom align={"right"}>
+                                        {renderSubscribeButton(post.subscribed,post, this)}
+                                    </Typography>
+
                                 </Grid>
                             </Grid>
                         </Paper>
@@ -368,9 +409,9 @@ class PostComplete extends Component {
                             <Typography variant="overline" display="block" gutterBottom>
                                 {post.comments.length === 0 && t('no-comments')}
                             </Typography>
-                            {post.comments.map( (item, i) => {return renderComment(user, item, i, this)})}
+                            {post.comments.map( (item, i) => {return renderComment(user, post.id, item, i, this)})}
                             <br/>
-                            {renderCommentBox(user,this)}
+                            {renderCommentBox(user, post.id,this)}
                         </Grid>
 
                     </Paper>

@@ -156,17 +156,20 @@ public class PostsController {
     @GET
     @Path("/search")
     public Response searchPost(@QueryParam("keyword") String query, @QueryParam("category") final Category category,@QueryParam("latitude") Double latitude,
-                             @QueryParam("longitude") Double longitude,@QueryParam("range") Integer range, @DefaultValue("1") @QueryParam("page") int page,
+                             @QueryParam("longitude") Double longitude, @DefaultValue("1") @QueryParam("page") int page,
                              @DefaultValue("" + DEFAULT_PAGE_SIZE) @QueryParam("per_page") int pageSize,@DefaultValue("id") @QueryParam("sorted_by") final PostSortCriteria sortCriteria,
                                @DefaultValue("asc") @QueryParam("order") final OrderCriteria order) throws InvalidQueryException {
 
-        final Location location = (!(longitude != null && latitude != null && range != null)) ? new Location(longitude,latitude) : null;
+        final Location location = (longitude != null && latitude != null) ? new Location(longitude,latitude) : null;
         final Optional<Category> categoryOpt = Optional.ofNullable(category);
         final Optional<Location> locationOpt = Optional.ofNullable(location);
 
         // Ignoring invalid values, default stays
         page = (page < 1) ? 1 : page;
         pageSize = (pageSize < 1 || pageSize > MAX_PAGE_SIZE) ? DEFAULT_PAGE_SIZE : pageSize;
+
+        if (query == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
 
         LOGGER.debug("Accessing search post list. Query {} Category: {}, page: {}, per_page: {}",query, categoryOpt, page, pageSize);
 
@@ -401,7 +404,9 @@ public class PostsController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        subscribeService.subscribePost(postId,user.getId());
+        if(!subscribeService.subscribePost(postId, user.getId())){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
         return Response.noContent().build();
     }
 
@@ -414,7 +419,10 @@ public class PostsController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-        subscribeService.unsubscribePost(postId,user.getId());
+        if(!subscribeService.unsubscribePost(postId, user.getId())){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         return Response.noContent().build();
     }
 
