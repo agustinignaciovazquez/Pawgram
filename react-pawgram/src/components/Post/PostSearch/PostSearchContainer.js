@@ -40,6 +40,7 @@ class PostSearchContainer extends Component {
     render() {
         const { classes,t } =  this.props;
         let query = this.state.query;
+        const category = this.props.match.params.category;
         return(<Grid container alignContent={"center"} justify={"center"} alignItems={"center"}>
             <Grid item xs={12} sm={12}>
                 <ValidatorForm
@@ -82,7 +83,7 @@ class PostSearchContainer extends Component {
                 </Grid>
             </ValidatorForm>
             </Grid>
-            <Grid item xs={12} sm={12}><PostSearch query={query} /></Grid>
+            <Grid item xs={12} sm={12}><PostSearch query={query} category={category}/></Grid>
 
         </Grid>);
     }

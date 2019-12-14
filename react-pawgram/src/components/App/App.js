@@ -17,6 +17,7 @@ class App extends Component {
                 <Switch>
                     <Route path="/login" component={Login} />
                     <Route path="/search/:query"  component={PostSearchContainer} />
+                    <Route path="/category/:category/search/:query"  component={PostSearchContainer} />
                     <Route path="/register" component={Register} />
                     <Route path="/main" component={Main} />
                     <Route path="/post/:id" component={PostComplete}/>

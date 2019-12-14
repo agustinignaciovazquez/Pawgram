@@ -188,7 +188,6 @@ export const RestService = () => {
             return doDelete(url + '/posts/' + postId + '/image/'+ postImageId);
         },
 
-        //Not used
         getComments: function(id, params) {
             return doGet(url + '/post/' + id + '/comments', params);
         },

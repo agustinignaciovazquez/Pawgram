@@ -17,6 +17,7 @@ import Typography from "@material-ui/core/Typography";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import Pagination from "material-ui-flat-pagination";
+import {Redirect} from "react-router-dom";
 
 const themeMui = createMuiTheme();
 const styles = theme => ({
@@ -28,6 +29,16 @@ const styles = theme => ({
         marginTop: theme.spacing(2),
     },
 });
+
+function getRedirectUrl(self, query=self.state.query,category=self.state.category){
+    let redirectUrl;
+    if (category)
+        redirectUrl = '/category/'+ category + '/search/' + query;
+    else
+        redirectUrl = '/search/' + query;
+
+   return redirectUrl;
+}
 
 function renderCategories(self){
     const { classes, t } = self.props;
@@ -41,7 +52,7 @@ function renderCategories(self){
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={self.state.category}
-            onChange={event => {self.setState({'category': event.target.value});}}
+            onChange={event => {self.setState({'category': event.target.value, 'redirectUrl': getRedirectUrl(self,self.state.query,event.target.value)})}}
         >
             <MenuItem value={null}>
                 <em>{t('categories-default')}</em>
@@ -98,7 +109,7 @@ function renderSelectSortCriteriaSelect(self){
             </MenuItem>
             {Config.SORT_CRITERIA.map(item => {
                 //Hot-fix for sort by distance without location
-                if('DISTANCE' === item && (latitude == null || longitude == null))
+                if('distance' === item && (latitude == null || longitude == null))
                     return;
                 return <MenuItem value={item}>{t(item)}</MenuItem>
             })}
@@ -112,6 +123,7 @@ class PostSearch extends Component {
         query: undefined,
         posts: undefined,
         user: undefined,
+        redirectUrl: undefined,
         labelWidth: 0,
         page: 1,
         offset: 0,
@@ -127,24 +139,25 @@ class PostSearch extends Component {
         if (!AuthService().isLoggedIn()){
             this.props.history.push('/login');
         }
-        this.loadPost(this.props.query);
+        this.loadPost(this.props.query, this.props.category);
     }
 
-    loadPost(query=this.state.query){
+    loadPost(query=this.state.query, category = this.state.category){
         const self = this;
-        RestService().searchPost(query,self.state.category, self.state.sort_criteria, self.state.order_criteria, self.state.page, self.state.pageSize, self.props.latitude, self.props.longitude)
+        const redirectUrl = getRedirectUrl(self, query, category);
+        RestService().searchPost(query, category, self.state.sort_criteria, self.state.order_criteria, self.state.page, self.state.pageSize, self.props.latitude, self.props.longitude)
             .then(r=>{
-                this.setState({'posts': r, 'user':AuthService().getLoggedUser(), 'query': query});
+                this.setState({'posts': r, 'user':AuthService().getLoggedUser(), 'query': query, 'category': category, 'redirectUrl': redirectUrl});
             }).catch(r=>{
             //TODO SHOW ERROR
         });
     }
 
     componentDidUpdate(prevProps,prevState){
-        if(prevProps.query !== this.props.query){
+        if(prevProps.query !== this.props.query || prevProps.category !== this.props.category){
             this.setState(this.DEFAULT_STATE);
-            this.loadPost(this.props.query);
-        }else if(!(prevState.posts !== this.state.posts || prevState.user !== this.state.user || prevState.query !== this.state.query)){
+            this.loadPost(this.props.query, this.props.category);
+        }else if(!(prevState.posts !== this.state.posts || prevState.user !== this.state.user || prevState.query !== this.state.query || prevState.redirectUrl !== this.state.redirectUrl)){
             //Some filter change so we reload and save this config
             this.loadPost();
         }
@@ -156,8 +169,19 @@ class PostSearch extends Component {
         this.setState({ offset:offset,page: (offset/pageSize + 1)});
     }
 
+    redirectToUrl(){
+        if(this.state.redirectUrl){
+            const redirectUrl = this.state.redirectUrl;
+            this.setState({'redirectUrl': null});
+            return ( <Redirect to={redirectUrl} />);
+        }
+    }
+
     render() {
         const {t,classes} = this.props;
+
+
+
         if(this.state.posts === undefined)
             return ("LOADING");
 
@@ -198,6 +222,7 @@ class PostSearch extends Component {
                 />
                 </MuiThemeProvider>
             </Grid>
+            {this.redirectToUrl()}
         </Grid>);
     }
 }

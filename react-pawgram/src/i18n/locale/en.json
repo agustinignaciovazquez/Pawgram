@@ -61,15 +61,10 @@
   "category-criteria": "Select category",
   "sort-default": "Default",
   "order-default": "Default",
-  "ALPHA": "Alphabetic Sort",
-  "ID": "Id Sort",
-  "DISTANCE": "Distance Sort",
-  "DATE": "Date Sort",
-  "ASC": "Greater to min",
-  "DESC": "Min to greater",
-  "categories-default": "All categories",
-  "LOST": "Lost",
-  "FOUND": "Found",
-  "ADOPT": "Adopt",
-  "EMERGENCY": "Emergency"
+  "alpha": "Alphabetic Sort",
+  "id": "Id Sort",
+  "distance": "Distance Sort",
+  "asc": "Greater to min",
+  "desc": "Min to greater",
+  "categories-default": "All categories"
 }

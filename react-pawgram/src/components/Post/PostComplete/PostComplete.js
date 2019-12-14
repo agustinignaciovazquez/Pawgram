@@ -25,6 +25,7 @@ import {RestService} from "../../../services/RestService";
 import { Map,Marker, GoogleApiWrapper } from 'google-maps-react';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import {Config} from "../../../services/Config";
+import PostComments from "./PostComments";
 
 const styles = theme => ({
     container: {
@@ -81,12 +82,6 @@ function renderImageCarrousel(image_rauls){
     </Carousel>);
 }
 
-function change(e,self){
-    self.setState({
-        [e.target.name]: e.target.value
-    })
-}
-
 function renderSubscribeButton(subscribed, post, self){
     const {t,classes} = self.props;
     const subs_str = subscribed? t('unsubscribe'):t('subscribe');
@@ -101,134 +96,6 @@ function renderSubscribeButton(subscribed, post, self){
     >
         {subs_str}
     </Button>);
-}
-
-function submitComment(e, self, key, post_id, parent_id){
-     e.preventDefault();
-     const comment = self.state[key];
-     RestService().commentParentPost(post_id, comment, parent_id)
-         .then(r=>{
-            return getPost(self);
-         })
-         .then(r=>{
-         self.setState({'post': r, [key]: ""});
-         })
-         .catch(err => {
-             //TODO Show error in putting comment
-         })
-}
-
-function renderCommentBox(user, post_id, self, parent_id = 0){
-    const { classes, t } = self.props;
-    const state = self.state;
-    const comment_date = new Date();
-    const formatted_comment_date = comment_date.toLocaleDateString();
-    const key = "comment_"+user.id+"_"+parent_id;
-
-    return (<Grid container alignItems={"center"} alignContent={"center"} justify={"center"}>
-        {parent_id > 0 && <Grid item xs={2} sm={2}>
-            <ReplyIcon fontSize={"large"}/>
-        </Grid>}
-        <Grid item xs={10} sm={10}>
-            <Grid key={key} item xs={12} sm={12}>
-                <Paper className={classes.root}>
-                    <Grid container alignItems={"center"} alignContent={"center"} justify={"center"}>
-                        <Grid item xs={1} sm={1}>
-                            <Avatar className={classes.bigAvatar} alt={user.name} src={user.profile_picture} />
-                        </Grid>
-                        <Grid item xs={10} sm={10}>
-                            <ValidatorForm
-                                className={classes.form}
-                                autoComplete="off"
-                                ref="form"
-                                instantValidate={false}
-                                onSubmit={e => {submitComment(e, self, key, post_id, parent_id);}}
-                                onError={errors => console.log(errors)}>
-                                <div style={{ padding: 20 }}>
-                                    <TextValidator
-                                        id="filled-multiline-static"
-                                        name={key}
-                                        label={(parent_id > 0)? t('reply'):t('comment')}
-                                        multiline
-                                        fullWidth
-                                        rows="4"
-                                        variant="outlined"
-                                        validators={['minStringLength:5','maxStringLength:500']}
-                                        errorMessages={[t('comment-min-str-length'), t('comment-max-str-length')]}
-                                        onChange={e => change(e,self)}
-                                        value={state[key] ? state[key]:""}
-                                    />
-                                <Typography variant="overline" display="block" gutterBottom align={"right"}>
-                                    {formatted_comment_date}
-                                </Typography>
-                                    <Typography variant="overline" display="block" gutterBottom align={"right"}>
-                                        <Button variant="contained" color="primary" type="submit">
-                                            {t('send')}
-                                        </Button>
-                                    </Typography>
-
-                            </div>
-                            </ValidatorForm>
-                        </Grid>
-
-                    </Grid>
-                </Paper>
-            </Grid>
-        </Grid>
-    </Grid>);
-}
-
-function renderCommentChilds(user, post_id, item, self){
-    const { classes, t } = self.props;
-    const state = self.state;
-
-    if(item.children.length === 0)
-        return null;
-
-    return (
-    <Grid container alignItems={"center"} alignContent={"center"} justify={"center"}>
-        <Grid item xs={2} sm={2}>
-            <SubdirectoryArrowRightIcon fontSize={"large"}/>
-        </Grid>
-        <Grid item xs={10} sm={10}>
-            {item.children.map( (item_child, i) => {return renderComment(user, post_id, item_child,i, self, t, item.id)})}
-        </Grid>
-    </Grid>)
-}
-
-function renderComment(user, post_id, item, i, self,  parent_id= 0){
-    const { classes, t } = self.props;
-    const state = self.state;
-    const comment_date = new Date(item.date);
-    const formatted_comment_date = comment_date.toLocaleDateString();
-    const xs_item = (parent_id > 0)? 12: 10;
-    return(<Grid key={"comment_"+item.id+"_"+i} item xs={xs_item} sm={xs_item}>
-        <Paper className={classes.root}>
-            <Grid container alignItems={"center"} alignContent={"center"} justify={"center"}>
-                <Grid item xs={1} sm={1}>
-                    <Avatar className={classes.bigAvatar} alt={item.author.name} src={item.author.profile_picture} />
-                </Grid>
-                <Grid item xs={11} sm={11}>
-                    <Typography variant="h5" component="h3">
-                        {item.author.name}
-                    </Typography>
-                    <Typography component="p">
-                        {item.content}
-                    </Typography>
-                    <Typography variant="overline" display="block" gutterBottom align={"right"}>
-                        {formatted_comment_date}
-                    </Typography>
-                </Grid>
-            </Grid>
-        </Paper>
-        <br/>
-        {parent_id === 0 && (<div>
-            <br/>
-        {renderCommentChilds(user, post_id, item,self)}
-            <br/>
-        {renderCommentBox(user, post_id, self,item.id)}</div>)
-        }
-    </Grid>);
 }
 
 class PostComplete extends Component {
@@ -400,21 +267,7 @@ class PostComplete extends Component {
                 </Grid>
 
                 <Grid item xs={10} sm={10} >
-                    <Typography variant="overline" display="block" gutterBottom>
-                        {t("comments")}
-                    </Typography>
-                    <br/>
-                    <Paper className={classes.root}>
-                        <Grid container spacing={1} alignItems={"center"} alignContent={"center"} justify={"center"}>
-                            <Typography variant="overline" display="block" gutterBottom>
-                                {post.comments.length === 0 && t('no-comments')}
-                            </Typography>
-                            {post.comments.map( (item, i) => {return renderComment(user, post.id, item, i, this)})}
-                            <br/>
-                            {renderCommentBox(user, post.id,this)}
-                        </Grid>
-
-                    </Paper>
+                    <PostComments post={post} />
                 </Grid>
 
 
