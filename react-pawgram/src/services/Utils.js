@@ -1,4 +1,19 @@
 import {RestService} from "./RestService";
+import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
+import React from "react";
+export const Copyright = () => {
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+            <Link color="inherit" href="https://pawgram.org/">
+                Pawgram
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
+};
 
 export const SubscribeToggle = (subscribed, post, self) =>{
     let r;

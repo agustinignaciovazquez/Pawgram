@@ -55,30 +55,6 @@ export const RestService = () => {
         return metadata;
     }
 
-    function dataURItoBlob(dataURI) {
-        // convert base64 to raw binary data held in a string
-        let byteString = atob(dataURI.split(',')[1]);
-
-        // separate out the mime component
-        let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-        // write the bytes of the string to an ArrayBuffer
-        let ab = new ArrayBuffer(byteString.length);
-
-        // create a view into the buffer
-        let ia = new Uint8Array(ab);
-
-        // set the bytes of the buffer to the correct values
-        for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
-        }
-
-        // write the ArrayBuffer to a blob, and you're done
-        let blob = new Blob([ab], {type: mimeString});
-        return blob;
-
-    }
-
     function doPost(baseUrl, data, params, ignoreLoadingBar) {
         var paramsPost = translate(params);
         paramsPost = Object.keys(paramsPost).length ? '?' + param(paramsPost) : '';
@@ -153,12 +129,29 @@ export const RestService = () => {
     }
     
     return {
-        getPosts: function(params) {
-            return doGet(url + '/posts/', params);
+        getPosts: function(latitude, longitude, range, category=null, orderBy=null, order=null, page=1, pageSize=Config.PAGE_SIZE) {
+            const params_posts = {
+                'latitude': latitude,
+                'longitude': longitude,
+                'range': range,
+                'category': category,
+                'order': order,
+                'orderBy': orderBy,
+                'page': page,
+                'pageSize': pageSize
+            };
+            return doGet(url + '/posts/', params_posts);
         },
 
-        getPost: function(id, params) {
-            return doGet(url + '/posts/' + id, params);
+        getPost: function(id, category=null, orderBy=null, order=null, page=1, pageSize=Config.PAGE_SIZE) {
+            const params_posts = {
+                'category': category,
+                'order': order,
+                'orderBy': orderBy,
+                'page': page,
+                'pageSize': pageSize
+            };
+            return doGet(url + '/posts/' + id, params_posts);
         },
 
         getPostByZoneId: function(id, params) {
@@ -177,6 +170,7 @@ export const RestService = () => {
                 'page': page,
                 'pageSize': pageSize
             };
+
             return doGet(url + '/posts/search/', params_search);
         },
 
@@ -203,14 +197,14 @@ export const RestService = () => {
         },
 
         createPost: function(data) {
-            var postData = {title: data.title, description: data.description, contact_phone: data.contact_phone, event_date: data.event_date, category: data.category,
+            const postData = {title: data.title, description: data.description, contact_phone: data.contact_phone, event_date: data.event_date, category: data.category,
                 pet: data.pet, is_male: data.is_male, latitude: data.latitude, longitude: data.longitude};
-            var images = data.images;
-            var formData = new FormData();
+            const images = data.images;
+            const formData = new FormData();
 
             images.forEach(function (img) {
                 if (img){
-                    formData.append('picture', dataURItoBlob(img));
+                    formData.append('picture', img);
                 }
             });
 
@@ -230,14 +224,14 @@ export const RestService = () => {
         },
 
         modifyPost: function(id,data) {
-            var postData = {title: data.title, description: data.description, contact_phone: data.contact_phone, event_date: data.event_date,
+            const postData = {title: data.title, description: data.description, contact_phone: data.contact_phone, event_date: data.event_date,
                 category: data.category, pet: data.pet, is_male: data.is_male, latitude: data.latitude, longitude: data.longitude};
-            var images = data.images;
-            var formData = new FormData();
+            const images = data.images;
+            const formData = new FormData();
 
             images.forEach(function (img) {
                 if (img){
-                    formData.append('picture', dataURItoBlob(img));
+                    formData.append('picture', img);
                 }
             });
 
@@ -277,11 +271,12 @@ export const RestService = () => {
         },
 
         createUser: function(data) {
-            var userData = {name: data.name, surname: data.surname, password: data.password, mail: data.mail};
-            var picture = data.picture;
-            var formData = new FormData();
+            const userData = {name: data.name, surname: data.surname, password: data.password, mail: data.mail};
+            const picture = data.picture;
+            const formData = new FormData();
+
             if(picture !== undefined && picture !== null){
-                formData.append('picture', dataURItoBlob(picture));
+                formData.append('picture', picture);
             }
 
             formData.append('user', new Blob([JSON.stringify(userData)], {type: "application/json"}));
@@ -318,10 +313,10 @@ export const RestService = () => {
         },
 
         changeProfilePicture: function(data) {
-            var picture = data.picture;
-            var formData = new FormData();
+            const picture = data.picture;
+            const formData = new FormData();
 
-            formData.append('picture', dataURItoBlob(picture));
+            formData.append('picture', picture);
             return axios.put(url + '/users/picture', formData, multipartMetadata())
                 .then(function(response){
                     return response.data;

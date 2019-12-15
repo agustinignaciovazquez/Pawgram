@@ -19,19 +19,7 @@ import {RestService} from "../../services/RestService";
 import {AuthService} from "../../services/AuthService";
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import {ValidateEmail,PasswordMatchValidation,DuplicateMailValidation} from "../../services/Utils";
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://pawgram.org/">
-                Pawgram
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import {Copyright} from "../../services/Utils";
 
 const styles = theme => ({
     paper: {

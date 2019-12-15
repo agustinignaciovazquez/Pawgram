@@ -83,7 +83,10 @@ class PostSearchContainer extends Component {
                 </Grid>
             </ValidatorForm>
             </Grid>
-            <Grid item xs={12} sm={12}><PostSearch query={query} category={category}/></Grid>
+            {
+                //TODO ADD location here
+                 }
+            <Grid item xs={10} sm={10}><PostSearch query={query} category={category} location={null}/></Grid>
 
         </Grid>);
     }

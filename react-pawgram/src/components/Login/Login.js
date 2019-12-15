@@ -18,19 +18,7 @@ import {SessionService} from "../../services/SessionService";
 import PropTypes from 'prop-types';
 import LoginBackgroundImage from '../../resources/images/login_bg.jpg'
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://pawgram.org/">
-                Pawgram
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import {Copyright} from "../../services/Utils";
 
 const styles = theme => ({
     root: {

@@ -8,6 +8,8 @@ import Main from '../Main/Main'
 import PostComplete from "../Post/PostComplete/PostComplete";
 import Logout from "../Logout/Logout";
 import PostSearchContainer from "../Post/PostSearch/PostSearchContainer";
+import PostABM from "../Post/PostABM/PostABM";
+import PostSelectCategory from "../Post/PostABM/PostSelectCategory";
 class App extends Component {
   render() {
     return (
@@ -16,8 +18,10 @@ class App extends Component {
               <NavBar />
                 <Switch>
                     <Route path="/login" component={Login} />
-                    <Route path="/search/:query"  component={PostSearchContainer} />
-                    <Route path="/category/:category/search/:query"  component={PostSearchContainer} />
+                    <Route path="/search/:query" component={PostSearchContainer} />
+                    <Route path="/category/:category/search/:query" component={PostSearchContainer} />
+                    <Route path="/create/category/:category" component={PostABM} />
+                    <Route path="/create" component={PostSelectCategory} />
                     <Route path="/register" component={Register} />
                     <Route path="/main" component={Main} />
                     <Route path="/post/:id" component={PostComplete}/>

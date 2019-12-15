@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AuthService } from "../../services/AuthService";
+import {AuthService} from "../../../services/AuthService";
 import { withStyles } from '@material-ui/core/styles/index';
 import { withTranslation } from 'react-i18next';
 import Grid from "@material-ui/core/Grid";
@@ -9,7 +9,7 @@ import {ValidatorForm, TextValidator} from "react-material-ui-form-validator";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import PostLocation from "../Post/PostLocation/PostLocation";
+import {Redirect} from "react-router-dom";
 
 const styles = theme => ({
     margin: {
@@ -17,14 +17,12 @@ const styles = theme => ({
     },
 });
 
-class PostLocationContainer extends Component {
+class PostSelectCategory extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const query = props.match.params.query;
         this.state = {
-            query: query,
-            query_input: query,
+            'category': undefined
         };
     }
 
@@ -35,19 +33,27 @@ class PostLocationContainer extends Component {
 
     }
 
+    redirectToUrl(){
+        if(this.state.redirectUrl){
+            const redirectUrl = this.state.redirectUrl;
+            this.setState({'redirectUrl': null});
+            return ( <Redirect to={redirectUrl} />);
+        }
+    }
+
+    handleClick(category){
+        this.setState({'redirectUrl': '/create/category/'+category})
+    }
+
     render() {
         const { classes,t } =  this.props;
-        let query = this.state.query;
-        const category = this.props.match.params.category;
-        const location = {'latitude': -34.6037618, 'longitude': -58.381715, 'range': 1000000}
         return(<Grid container alignContent={"center"} justify={"center"} alignItems={"center"}>
-            <Grid item xs={10} sm={10}><PostLocation location={location} category={category}/></Grid>
-
+            <h2>Select category</h2>
         </Grid>);
     }
 }
-PostLocationContainer.propTypes = {
+PostSelectCategory.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withTranslation()(PostLocationContainer));
+export default withStyles(styles)(withTranslation()(PostSelectCategory));

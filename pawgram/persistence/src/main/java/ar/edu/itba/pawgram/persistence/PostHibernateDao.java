@@ -260,7 +260,7 @@ public class PostHibernateDao implements PostDao {
     public long getTotalPosts(Location location, int range) {
         final TypedQuery<Long> query = em.createQuery("select count(*) from Post as p WHERE " +
                 " haversine_distance(:lat1,:lon1,p.location.latitude,p.location.longitude) < :range", Long.class);
-        
+
         query.setParameter("lat1",location.getLatitude());
         query.setParameter("lon1",location.getLongitude());
         query.setParameter("range",range);

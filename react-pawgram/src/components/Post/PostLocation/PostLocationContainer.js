@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AuthService } from "../../services/AuthService";
+import {AuthService} from "../../../services/AuthService";
 import { withStyles } from '@material-ui/core/styles/index';
 import { withTranslation } from 'react-i18next';
 import Grid from "@material-ui/core/Grid";
