@@ -88,7 +88,7 @@ class Register extends Component {
             .then(r => {
                 AuthService(this.props).logIn(data.mail, data.password,true)
                     .then(response =>{
-                    console.log(response);
+                    this.props.callback(response);
                     this.props.history.push('/main');
                 }).catch(res =>{
                     //Show error

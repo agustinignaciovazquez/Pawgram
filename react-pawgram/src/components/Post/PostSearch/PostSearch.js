@@ -130,6 +130,7 @@ class PostSearch extends Component {
         page: 1,
         offset: 0,
         pageSize: Config.PAGE_SIZE,
+        show_error:false,
     };
 
     constructor(props, context) {
@@ -154,7 +155,7 @@ class PostSearch extends Component {
             .then(r=>{
                 this.setState({'posts': r, 'user':AuthService().getLoggedUser(), 'query': query, 'category': category,'location': location, 'redirectUrl': redirectUrl});
             }).catch(r=>{
-            //TODO SHOW ERROR
+                this.setState({'posts':null});
         });
     }
 
@@ -190,6 +191,12 @@ class PostSearch extends Component {
 
         if(this.state.posts === undefined)
             return ("LOADING");
+
+        if(this.state.posts === null) {
+            return <Typography component="h2" variant="h6" color={"secondary"} >
+                {t('invalid-query')}
+            </Typography>;
+        }
 
         return(<Grid container justify={"center"} alignItems={"center"} alignContent={"center"}>
             <Grid item xs={12} sm={12}>

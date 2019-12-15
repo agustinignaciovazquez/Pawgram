@@ -55,11 +55,11 @@ export const RestService = () => {
         return metadata;
     }
 
-    function doPost(baseUrl, data, params, ignoreLoadingBar) {
+    function doPost(baseUrl, data, params) {
         var paramsPost = translate(params);
         paramsPost = Object.keys(paramsPost).length ? '?' + param(paramsPost) : '';
         var config = authHeaders();
-        config['ignoreLoadingBar'] = !!ignoreLoadingBar;
+
 
         return axios.post(baseUrl + paramsPost, data, config)
             .then(function(response) {
@@ -73,12 +73,11 @@ export const RestService = () => {
             });
     }
 
-    function doGet(baseUrl, params, ignoreLoadingBar) {
+    function doGet(baseUrl, params) {
         var paramsGet = translate(params);
 
         paramsGet = Object.keys(paramsGet).length ? '?' + param(paramsGet) : '';
         var config = authHeaders();
-        config['ignoreLoadingBar'] = !!ignoreLoadingBar;
 
         return  axios.get(baseUrl + paramsGet, config)
             .then(function(response) {
@@ -92,11 +91,10 @@ export const RestService = () => {
             });
     }
 
-    function doPut(baseUrl, data, params, ignoreLoadingBar) {
+    function doPut(baseUrl, data={}, params={}) {
         var paramsPut = translate(params);
         paramsPut = Object.keys(paramsPut).length ? '?' + param(paramsPut) : '';
         var config = authHeaders();
-        config['ignoreLoadingBar'] = !!ignoreLoadingBar;
 
         return axios.put(baseUrl + paramsPut, data, config)
             .then(function(response) {
@@ -110,11 +108,10 @@ export const RestService = () => {
             });
     }
 
-    function doDelete(baseUrl, params, ignoreLoadingBar) {
+    function doDelete(baseUrl, params) {
         var paramsDelete = translate(params);
         paramsDelete = Object.keys(paramsDelete).length ? '?' + param(paramsDelete) : '';
         var config = authHeaders();
-        config['ignoreLoadingBar'] = !!ignoreLoadingBar;
 
         return axios.delete(baseUrl + paramsDelete, config)
             .then(function(response) {
@@ -377,8 +374,7 @@ export const RestService = () => {
         },
 
         markNotificationAsSeen: function(id) {
-            return doPut(url + '/notifications/' + id,
-                {});
+            return doPut(url + '/notifications/' + id +'/seen',{});
         },
 
         getNotifications: function(params) {

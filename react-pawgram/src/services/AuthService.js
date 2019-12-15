@@ -2,7 +2,7 @@ import {SessionService} from "./SessionService";
 import axios from 'axios';
 import qs from 'qs'
 import {Config} from "./Config";
-export const AuthService = (props) =>{
+export const AuthService = (props=null) =>{
     const url = Config.API_URL;
     const sessionService = SessionService();
     const AuthService = {};

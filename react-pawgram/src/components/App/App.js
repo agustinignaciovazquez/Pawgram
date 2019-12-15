@@ -14,38 +14,54 @@ import PostEdit from "../Post/PostABM/PostEdit";
 import UserSearchZones from "../SearchZone/UserSearchZones";
 import SearchZoneAdd from "../SearchZone/SearchZoneAdd";
 import NotificationCardsGrid from "../Notification/NotificationCardsGrid";
+import {Config} from "../../services/Config";
+import {AuthService} from "../../services/AuthService";
 
 class App extends Component {
-  render() {
-    return (
-        <Router>
-            <div>
-              <NavBar />
-                <Switch>
-                    <Route path="/login" component={Login} />
-                    <Route path="/register" component={Register} />
+    constructor(props, context) {
+        super(props, context);
+        const userSaved = AuthService().getLoggedUser();
+        this.state = {
+            user: userSaved,
+        };
+    }
 
-                    <Route path='/notifications/all' render={(props) => <NotificationCardsGrid {...props} all={true} />}/>
-                    <Route path='/notifications' render={(props) => <NotificationCardsGrid {...props} all={false} />}/>
+    updateUser(user){
+        const userSaved = AuthService().getLoggedUser();
+        this.setState({user:user});
+    }
 
-                    <Route path="/searchzones/create" component={SearchZoneAdd}/>
-                    <Route path="/searchzones" component={UserSearchZones}/>
+    render() {
+        return (
+            <Router>
+                <div>
+                  <NavBar user={this.state.user}/>
+                    <Switch>
+                        <Route path="/login" render={(props) => <Login {...props} callback={e=>{this.updateUser(e)}} />} />
+                        <Route path="/register" render={(props) => <Register {...props} callback={e=>{this.updateUser(e)}} />} />
+                        <Route path="/logout" render={(props) => <Logout {...props} callback={e=>{this.updateUser(e)}} />} />
 
-                    <Route path="/category/:category/search/:query" component={PostSearchContainer} />
-                    <Route path="/search/:query" component={PostSearchContainer} />
+                        <Route path='/notifications/all' render={(props) => <NotificationCardsGrid {...props} all={true} />}/>
+                        <Route path='/notifications' render={(props) => <NotificationCardsGrid {...props} all={false} />}/>
 
-                    <Route path="/main" component={Main} />
+                        <Route path="/searchzones/create" component={SearchZoneAdd}/>
+                        <Route path="/searchzones" component={UserSearchZones}/>
 
-                    <Route path="/post/create/category/:category" component={PostABM} />
-                    <Route path="/post/create" component={PostSelectCategory} />
-                    <Route path="/post/edit/:id" component={PostEdit}/>
-                    <Route path="/post/:id" component={PostComplete}/>
+                        <Route path="/category/:category/search/:query" component={PostSearchContainer} />
+                        <Route path="/search/:query" component={PostSearchContainer} />
 
-                    <Route path="/logout" component={Logout} />
-                    <Route path="/" render={(props) => <Redirect {...props} to={'/login'} />} />
-                </Switch>
-            </div>
-        </Router>
+                        <Route path="/main" component={Main} />
+
+                        <Route path="/post/create/category/:category" component={PostABM} />
+                        <Route path="/post/create" component={PostSelectCategory} />
+                        <Route path="/post/edit/:id" component={PostEdit}/>
+                        <Route path="/post/:id" component={PostComplete}/>
+
+
+                        <Route path="/" render={(props) => <Redirect {...props} to={'/login'} />} />
+                    </Switch>
+                </div>
+            </Router>
     )
   }
 }

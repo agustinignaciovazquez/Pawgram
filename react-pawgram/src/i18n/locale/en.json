@@ -98,5 +98,12 @@
   "range-search-select": "Select your desire range for the searchs",
   "latitude": "Latitude",
   "longitude": "Longitude",
-  "location": "Location"
+  "location": "Location",
+  "notifications": "Notifications",
+  "new-comment": "New comment in post ",
+  "new-post-update": "New update in post ",
+  "invalid-query": "Invalid search input min length is 3 characters",
+  "empty-notifications": "You have no notifications",
+  "my-account": "My profile",
+  "logout": "Logout"
 }

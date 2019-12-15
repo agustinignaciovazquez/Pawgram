@@ -8,6 +8,9 @@ import IconButton from '@material-ui/core/IconButton';
 import { red } from '@material-ui/core/colors';
 import CloseIcon from '@material-ui/icons/Close';
 import PropTypes from "prop-types";
+import {RestService} from "../../services/RestService";
+import {Link as LinkDom} from "react-router-dom";
+import Link from "@material-ui/core/Link";
 
 const styles = theme =>({
     card: {
@@ -37,49 +40,71 @@ class NotificationCard extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
+            removed: false,
         };
     }
 
     renderNotificationTitle(notification){
         const {t} = this.props;
+        const postEnd = (notification.post.title.length > 10)?"...":""
         if(notification.comment)
-            return t('new-comment');
+            return t('new-comment') + " " + notification.post.title.substring(0, 10) + postEnd;
         return t('new-post-update');
     }
 
     renderNotificationSubheader(notification){
         const {t} = this.props;
-        if(notification.comment)
-            return notification.comment.content.substring(0, 20);
-        return t('new-post-update');
+        const postEnd = (notification.post.title.length > 10)?"...":""
+        if(notification.comment) {
+            const commentEnd = (notification.comment.content.length > 20)?"...":""
+            return notification.comment.content.substring(0, 20) + commentEnd;
+        }
+        return notification.post.title.substring(0, 20)+postEnd;
     }
 
-    renderRemoveNotification(is_seen){
+    renderRemoveNotification(is_seen, id){
         if(!is_seen)
-            return <IconButton aria-label="remove" onClick={event => {console.log("CLICK")}}>
+            return <IconButton aria-label="remove" onClick={event => {this.handleRemoveNotification(id)}}>
                 <CloseIcon />
             </IconButton>;
         return null;
     }
+
+    handleRemoveNotification(id){
+        RestService().markNotificationAsSeen(id).then( r=>{
+            this.setState({removed: true});
+        }).catch(r=>{
+            //TODO Show error here
+        })
+    }
+
     renderAvatar(notification){
         const {classes,t} = this.props;
         if(notification.comment){
-            return (<Avatar aria-label="comment" className={classes.avatar} src={notification.comment.author.profile_picture}>
+            return (<Link component={ LinkDom } to={"/post/"+notification.post.id} variant="body2">
+                <Avatar aria-label="comment" className={classes.avatar} src={notification.comment.author.profile_picture}>
                 {notification.comment.author.name}
-                </Avatar>)
-        }else{
-            return <Avatar aria-label="post" className={classes.avatar} src={notification.post.image_urls[0]}>
-                {notification.post.title}
                 </Avatar>
+            </Link>)
+        }else{
+            const image = (notification.post.image_urls.length >0)? notification.post.image_urls[0]: "";
+
+            return <Link component={ LinkDom } to={"/post/"+notification.post.id} variant="body2">
+                <Avatar aria-label="comment" className={classes.avatar} src={image}>
+                    {notification.post.id}
+                </Avatar>
+            </Link>
         }
     }
     render() {
         const { classes, notification, t } = this.props;
+        if(this.state.removed)
+            return null;
         return (
             <Card className={classes.card}>
                 <CardHeader
                     avatar={this.renderAvatar(notification)}
-                    action={this.renderRemoveNotification(notification.is_seen)}
+                    action={this.renderRemoveNotification(notification.is_seen, notification.id)}
                     title={this.renderNotificationTitle(notification)}
                     subheader={this.renderNotificationSubheader(notification)}
                 />

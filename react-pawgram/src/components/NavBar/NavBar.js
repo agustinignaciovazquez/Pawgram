@@ -14,11 +14,14 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import {ValidatorForm} from "react-material-ui-form-validator";
+import {ValidatorForm,TextValidator} from "react-material-ui-form-validator";
 import PropTypes from "prop-types";
-import {Redirect} from "react-router-dom";
+import {Link as LinkDom, Redirect} from "react-router-dom";
 import {withTranslation} from "react-i18next";
-
+import {AuthService} from "../../services/AuthService";
+import Logo from "../../resources/images/logo.png"
+import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
 const styles = theme => ({
     grow: {
         flexGrow: 1,
@@ -92,8 +95,12 @@ class NavBar extends Component {
         };
     }
 
+    handleRedirectUrl(url){
+        this.setState({'redirectUrl': url});
+    }
+
     render() {
-        const {classes} = this.props;
+        const {classes,t} = this.props;
 
 
         const handleProfileMenuOpen = event => {
@@ -124,8 +131,8 @@ class NavBar extends Component {
                 open={Boolean(this.state.anchorEl)}
                 onClose={handleMenuClose}
             >
-                <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-                <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+                <MenuItem onClick={e=>{handleMenuClose();this.handleRedirectUrl('/settings')}}>{t('my-account')}</MenuItem>
+                <MenuItem onClick={e=>{handleMenuClose();this.handleRedirectUrl('/logout')}}>{t('logout')}</MenuItem>
             </Menu>
         );
 
@@ -141,16 +148,16 @@ class NavBar extends Component {
                 onClose={handleMobileMenuClose}
             >
                 <MenuItem>
-                    <IconButton aria-label="show 4 new mails" color="inherit">
-                        <Badge badgeContent={4} color="secondary">
+                    <IconButton aria-label="show 4 new mails" color="inherit" onClick={e=>{this.handleRedirectUrl('/messages')}}>
+                        <Badge badgeContent={0} color="secondary">
                             <MailIcon />
                         </Badge>
                     </IconButton>
                     <p>Messages</p>
                 </MenuItem>
                 <MenuItem>
-                    <IconButton aria-label="show 11 new notifications" color="inherit">
-                        <Badge badgeContent={11} color="secondary">
+                    <IconButton aria-label="show 11 new notifications" color="inherit" onClick={e=>{this.handleRedirectUrl('/notifications')}}>
+                        <Badge badgeContent={0} color="secondary">
                             <NotificationsIcon />
                         </Badge>
                     </IconButton>
@@ -169,6 +176,9 @@ class NavBar extends Component {
                 </MenuItem>
             </Menu>
         );
+
+        if(!this.props.user)
+            return null;
 
         if(this.state.redirectUrl){
             const redirectUrl = this.state.redirectUrl;
@@ -189,19 +199,20 @@ class NavBar extends Component {
                             <MenuIcon />
                         </IconButton>
                         <Typography className={classes.title} variant="h6" noWrap>
-                            Pawgram
+                            <img src={Logo} />
                         </Typography>
                         <div className={classes.search}>
                             <ValidatorForm
                                 autoComplete="off"
-                                onSubmit={e => this.setState({'redirectUrl': "/search/"+this.state.searchRedirect})}
+                                onSubmit={e => {this.handleRedirectUrl('/search/'+this.state.searchRedirect)}}
                                 onError={errors => console.log(errors)}
                             >
                                 <div className={classes.searchIcon}>
                                     <SearchIcon />
                                 </div>
+
                                 <InputBase
-                                    placeholder="Search…"
+                                    placeholder={t('search')}
                                     classes={{
                                         root: classes.inputRoot,
                                         input: classes.inputInput,
@@ -214,15 +225,15 @@ class NavBar extends Component {
                         </div>
                         <div className={classes.grow} />
                         <div className={classes.sectionDesktop}>
-                            <IconButton aria-label="show 4 new mails" color="inherit">
-                                <Badge badgeContent={4} color="secondary">
+                            <IconButton aria-label="messages" color="inherit" onClick={e=>{this.handleRedirectUrl('/messages')}}>
+                                <Badge badgeContent={0} color="secondary">
                                     <MailIcon />
                                 </Badge>
                             </IconButton>
-                            <IconButton aria-label="show 17 new notifications" color="inherit">
-                                <Badge badgeContent={17} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge>
+                            <IconButton aria-label="notifications" color="inherit" onClick={e=>{this.handleRedirectUrl('/notifications')}}>
+                                    <Badge badgeContent={0} color="secondary">
+                                        <NotificationsIcon />
+                                    </Badge>
                             </IconButton>
                             <IconButton
                                 edge="end"

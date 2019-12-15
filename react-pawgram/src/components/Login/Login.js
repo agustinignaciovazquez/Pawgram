@@ -87,6 +87,7 @@ class Login extends Component {
         authService.logIn(this.state.email,this.state.password,true)
         .then(r =>{
             this.setState({'show_error': false});
+            this.props.callback(r);
             this.props.history.push('/main')
         })
         .catch(e =>{

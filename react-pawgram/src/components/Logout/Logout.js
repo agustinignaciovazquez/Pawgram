@@ -13,6 +13,7 @@ class Logout extends Component {
     }
 
     render() {
+        this.props.callback(undefined);
         return(<Redirect to={'/login'} />);
     }
 }
