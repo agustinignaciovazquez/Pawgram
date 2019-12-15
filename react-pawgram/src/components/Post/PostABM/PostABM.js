@@ -3,16 +3,10 @@ import {AuthService} from "../../../services/AuthService";
 import { withStyles } from '@material-ui/core/styles/index';
 import { withTranslation } from 'react-i18next';
 import Grid from "@material-ui/core/Grid";
-import SearchIcon from "@material-ui/icons/Search"
-import InputAdornment from '@material-ui/core/InputAdornment';
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {Config} from "../../../services/Config";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import {Link as LinkDom} from "react-router-dom";
 import Box from '@material-ui/core/Box';
 import Paper from "@material-ui/core/Paper";
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
@@ -23,6 +17,11 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import DateFnsUtils from '@date-io/date-fns';
+import CardMedia from "@material-ui/core/CardMedia";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import IconButton from '@material-ui/core/IconButton';
+import RemoveIcon from '@material-ui/icons/Remove';
 import {
     MuiPickersUtilsProvider,
     KeyboardTimePicker,
@@ -34,42 +33,73 @@ import {Chip} from "@material-ui/core";
 import 'react-google-places-autocomplete/dist/assets/index.css';
 import GoogleMapsSearchPicker from "../../GoogleMaps/GoogleMapsSearchPicker";
 import {RestService} from "../../../services/RestService";
+import PostDeleteDialog from "./PostDeleteDialog";
+import {Redirect} from "react-router-dom";
 
 const styles = theme => ({
     margin: {
         margin: theme.spacing(1),
     },
+    card: {
+        maxWidth: 150,
+    },
+    media: {
+        height: 0,
+        paddingTop: '100%', // 16:9
+    },
 });
-const mapStyles = {
-    width: '100%',
-    height: '400px',
-};
+
 class PostABM extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const category = props.match.params.category.toLowerCase();
+        let title = "", description = "", contact_phone = "", latitude="", longitude="", event_date=new Date();
+        let pet = Config.PET[0], gender = Config.GENDER[0], modify = false, images_upload = [], post_id = null;
+
+        let category = props.category;
+        if(!category) {
+            category = props.match.params.category;
+        }
+        category = category.toLowerCase();
+
+        if(props.post){
+            const post = props.post;
+            modify = true;
+            post_id = post.id;
+            title = post.title;
+            description = post.description;
+            contact_phone = post.contact_phone;
+            latitude = post.locationDTO.latitude;
+            longitude = post.locationDTO.longitude;
+            event_date = new Date(post.event_date);
+            pet = post.pet;
+            images_upload = post.image_urls.postImages;
+            gender = (post.is_male)? Config.GENDER[0]:Config.GENDER[1];
+        }
+
         this.state = {
+            'post_id': post_id,
             'category': category,
-            'title': "",
-            'description':"",
-            'contact_phone':"",
-            'latitude':"",
-            'longitude':"",
-            'event_date': new Date(),
-            'pet': Config.PET[0],
-            'gender': Config.GENDER[0],
+            'title': title,
+            'description': description,
+            'contact_phone': contact_phone,
+            'latitude': latitude,
+            'longitude': longitude,
+            'event_date': event_date,
+            'pet': pet,
+            'gender': gender,
             'images': [],
-            'labelWidth': 0,
+            'image_urls': images_upload,
+            'marker': {'latitude': latitude, 'longitude': longitude},
             'show_error': false,
             'show_error_server': false,
-            'marker': undefined,
+            'post': props.post,
+            'modify': modify,
+            'redirectUrl': undefined,
         };
     }
 
     componentDidMount() {
-        console.log(this.state.category);
-
         if (!AuthService().isLoggedIn())
             this.props.history.push('/login');
 
@@ -94,11 +124,9 @@ class PostABM extends Component {
     renderSelect(name, values){
         const { classes,t } =  this.props;
         const {labelWidth} = this.state;
-        let inputLabel;
+
         return(<FormControl fullWidth variant="outlined" className={classes.formControl}>
-            <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-                {t(name)}
-            </InputLabel>
+
             <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
@@ -106,7 +134,7 @@ class PostABM extends Component {
                 onChange={event => this.setState({[name]:event.target.value})}
                 labelWidth={labelWidth}
             >
-                {values.map(item => {return <MenuItem value={item}>{t(item)}</MenuItem>})}
+                {values.map((item,i) => {return <MenuItem key={i} value={item}>{t(item)}</MenuItem>})}
             </Select>
         </FormControl>);
     }
@@ -118,15 +146,54 @@ class PostABM extends Component {
 
     renderImageInputs(){
         let table = [];
-        for(let i =0;i<Config.MAX_UPLOAD_IMAGE;i++){
-            table.push(<TextField type="file" onChange={this.onFileChange(i)} />)
+        const left_to_upload = Config.MAX_UPLOAD_IMAGE - this.state.image_urls.length;
+        for(let i =0;i<left_to_upload;i++){
+            table.push(<TextField key={i} type="file" onChange={this.onFileChange(i)} />)
         }
+        return table;
+    }
+
+    removeImageHandler(r,i){
+        r.then(res=>{
+            const image_urls = this.state.image_urls;
+            image_urls.splice(i, 1);
+            this.setState({image_urls: image_urls});
+        }).catch(err=> {
+            console.log(err);
+            //TODO SHOW error
+        });
+    }
+
+    renderImages(){
+        const {classes} = this.props;
+        let table = [];
+
+        this.state.image_urls.forEach(
+            (value,i) => {
+                table.push(
+                    <Grid key={i} item xs={4} sm={4}>
+                    <Card className={classes.card} >
+                        <CardHeader
+                            action={
+                                <PostDeleteDialog post_id={this.state.post_id} image_id={value['postImageId']}
+                                                  callback={(e) => {this.removeImageHandler(e,i)}}/>
+                            }
+                            />
+                        <CardMedia
+                    className={classes.media}
+                    image={value['url']}
+                    title="Paella dish"
+                />
+                    </Card>
+                    </Grid>)
+            }
+        )
         return table;
     }
 
     submitPost(e){
         e.preventDefault();
-
+        let req;
         const postData = {title: this.state.title,
             description: this.state.description,
             contact_phone: this.state.contact_phone,
@@ -138,19 +205,29 @@ class PostABM extends Component {
             longitude: this.state.longitude,
             images: this.state.images};
 
-        RestService().createPost(postData).then(
+        if(this.state.modify)
+            req = RestService().modifyPost(this.state.post_id, postData);
+        else
+            req = RestService().createPost(postData);
+
+        req.then(
             r=>{
-                this.props.history.push('/post/'+r.id);
+                this.setState({show_error:false,show_error_server:false, redirectUrl: '/post/'+r.id});
             }
         ).catch( r=>{
             console.log(r);
             this.setState({show_error:false,show_error_server:true});
-        })
+        });
     }
 
     render() {
         const { classes,t } =  this.props;
-        const category = this.props.match.params.category;
+        const { category } = this.state;
+
+        if(this.state.redirectUrl){
+            const redirectUrl = this.state.redirectUrl;
+            return ( <Redirect to={redirectUrl} />);
+        }
 
         return(<Grid container alignContent={"center"} justify={"center"} alignItems={"center"} spacing={2}>
             <Grid item xs={10} sm={10}>
@@ -173,7 +250,7 @@ class PostABM extends Component {
                         <Grid item xs={12} sm={12}>
                             <Typography variant="h4" align={"right"} gutterBottom>
                                 <Chip
-                                    label={t(this.state.category)}
+                                    label={t(category)}
                                     variant="outlined"
                                 />
                             </Typography>
@@ -184,6 +261,7 @@ class PostABM extends Component {
                                 {t('error-server')}
                             </Typography>
                         </Grid>
+
                         <Grid item xs={12} sm={12}>
                             <TextValidator
                                 autoComplete="fname"
@@ -217,7 +295,7 @@ class PostABM extends Component {
                             />
 
                         </Grid>
-                        <Grid item xs={12} sm={8}>
+                        <Grid item xs={12} sm={9}>
                             <TextValidator
                                 autoComplete="phone"
                                 name="contact_phone"
@@ -231,7 +309,8 @@ class PostABM extends Component {
                                 value={this.state.contact_phone}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={4}>
+
+                        <Grid item xs={12} sm={3}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <Grid container justify="flex-end">
                                     <KeyboardDatePicker
@@ -249,23 +328,47 @@ class PostABM extends Component {
                                     />
                                 </Grid>
                             </MuiPickersUtilsProvider>
-
                         </Grid>
+
                         <Grid item xs={12} sm={6}>
+                            <Typography variant="overline" display="block" gutterBottom>
+                                {t('pet')}
+                            </Typography>
                             {this.renderSelect('pet',Config.PET)}
                         </Grid>
+
                         <Grid item xs={12} sm={6}>
+                            <Typography variant="overline" display="block" gutterBottom>
+                                {t('gender')}
+                            </Typography>
                             {this.renderSelect('gender',Config.GENDER)}
                         </Grid>
-                        <Grid item xs={12} sm={12}>
+
+                        <Grid item xs={4} sm={4} hidden={Config.MAX_UPLOAD_IMAGE - this.state.image_urls.length <= 0}>
+                            <Typography variant="overline" display="block" gutterBottom>
+                                {t('upload-images')}
+                            </Typography>
                             {this.renderImageInputs()}
                         </Grid>
-                        <Grid item xs={12} sm={12} style={{position: 'relative', height: '50vh'}}>
+
+                        <Grid item xs={8} sm={8} hidden={this.state.image_urls.length === 0}>
+                            <Typography variant="overline" display="block" gutterBottom>
+                                {t('uploaded-images')}
+                            </Typography>
+                            <Grid container spacing={2}>
+                                {this.renderImages()}
+                            </Grid>
+                        </Grid>
+
+                        <Grid item xs={12} sm={12} style={{position: 'relative', height: '70vh'}}>
+                            <Typography variant="overline" display="block" gutterBottom>
+                                {t('location')}
+                            </Typography>
                             <GoogleMapsSearchPicker marker={this.state.marker} callback={(m) => this.handleMarker(m)}/>
                             <br/>
                         </Grid>
-                        <Grid item xs={12} sm={6} hidden={true}>
 
+                        <Grid item xs={12} sm={6} hidden={true}>
                             <TextValidator
                                 name="latitude"
                                 variant="outlined"
@@ -287,10 +390,6 @@ class PostABM extends Component {
                                 value={this.state.longitude}
                             />
                         </Grid>
-
-                        <Grid item xs={12} sm={12} />
-                        <Grid item xs={12} sm={12} />
-
 
                     </Grid>
                     <Button

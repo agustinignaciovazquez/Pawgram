@@ -143,15 +143,8 @@ export const RestService = () => {
             return doGet(url + '/posts/', params_posts);
         },
 
-        getPost: function(id, category=null, orderBy=null, order=null, page=1, pageSize=Config.PAGE_SIZE) {
-            const params_posts = {
-                'category': category,
-                'order': order,
-                'orderBy': orderBy,
-                'page': page,
-                'pageSize': pageSize
-            };
-            return doGet(url + '/posts/' + id, params_posts);
+        getPost: function(id, params) {
+            return doGet(url + '/posts/' + id, params);
         },
 
         getPostByZoneId: function(id, params) {

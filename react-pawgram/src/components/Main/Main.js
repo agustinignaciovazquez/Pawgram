@@ -37,7 +37,6 @@ class PostLocationContainer extends Component {
 
     render() {
         const { classes,t } =  this.props;
-        let query = this.state.query;
         const category = this.props.match.params.category;
         const location = {'latitude': -34.6037618, 'longitude': -58.381715, 'range': 1000000}
         return(<Grid container alignContent={"center"} justify={"center"} alignItems={"center"}>

@@ -81,5 +81,12 @@
   "description-min-str-length": "Description too short",
   "no-location": "Please enter a location of ocurrence",
   "change-date": "Enter a date",
-  "error-server": "Error: Please try again later"
+  "error-server": "Error: Please try again later",
+  "uploaded-images": "Uploaded images",
+  "upload-images": "Upload new images",
+  "remove-post-dialog":"Are you sure you want to remove post?",
+  "remove-image-dialog": "Are you sure you want to remove image?",
+  "agree": "Yes",
+  "disagree": "No",
+  "delete": "Delete confirmation"
 }

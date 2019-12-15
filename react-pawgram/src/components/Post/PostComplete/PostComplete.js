@@ -54,7 +54,7 @@ function getPost(self){
 
 function renderImageCarrousel(image_rauls){
     //Empty carrousel
-    if(image_rauls.length === 0)
+    if(image_rauls.postImages.length === 0)
         return (<Carousel>
             <CardMedia
                 component="img"
@@ -67,11 +67,11 @@ function renderImageCarrousel(image_rauls){
             </Carousel>);
 
     return (<Carousel>
-        {image_rauls.map( (it,index) => {
+        {image_rauls.postImages.map( (it,index) => {
             if(it) {
                 return (<CardMedia
                     component="img"
-                    image={it}
+                    image={it['url']}
                     alt={"image_" + index}
                     height="1000"
                     title=""

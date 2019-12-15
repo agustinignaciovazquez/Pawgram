@@ -30,7 +30,7 @@ public class PostDTO {
     private Date event_date;
 
     @XmlElement(name = "image_urls")
-    private List<URI> imageURLs;
+    private PostImageListDTO imageURLs;
 
     /*@XmlElement(name = "subscribers_url")
     private URI subscribersURL;*/
@@ -56,9 +56,7 @@ public class PostDTO {
         url = baseUri.resolve("posts/"+id);
        // subscribersURL = baseUri.resolve("posts/"+id+"/subscriptions");
 
-        imageURLs = new ArrayList<>();
-        for (final PostImage pi : post.getPostImages())
-            imageURLs.add(baseUri.resolve("posts/images/" + pi.getUrl()));
+        imageURLs = new PostImageListDTO(post.getPostImages(),post.getPostImages().size(),baseUri);
     }
 
     public long getId() {
@@ -173,15 +171,15 @@ public class PostDTO {
         this.event_date = event_date;
     }
 
-    public List<URI> getImageURLs() {
+    public PostImageListDTO getImageURLs() {
         return imageURLs;
     }
 
-    public void setImageURLs(List<URI> imageURLs) {
+    public void setImageURLs(PostImageListDTO imageURLs) {
         this.imageURLs = imageURLs;
     }
 
-   /* public URI getSubscribersURL() {
+    /* public URI getSubscribersURL() {
         return subscribersURL;
     }
 
