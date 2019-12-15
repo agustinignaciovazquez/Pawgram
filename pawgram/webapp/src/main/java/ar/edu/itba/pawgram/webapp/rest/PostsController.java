@@ -30,9 +30,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Path("posts")
 @Controller
@@ -253,6 +252,10 @@ public class PostsController {
     @Produces({"image/png", "image/jpeg"})
     public Response getPostImage(@PathParam("imageId") final String postImageId) {
         LOGGER.debug("Accessed get with image ID: {}", postImageId);
+
+        final CacheControl cacheControl = new CacheControl();
+        cacheControl.setMaxAge((int) TimeUnit.DAYS.toSeconds(365));
+
         final byte[] image;
         try {
             image = postImageService.getImage(postImageId);
@@ -261,7 +264,7 @@ public class PostsController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.ok(image).build();
+        return Response.ok(image).cacheControl(cacheControl).header("expires", "").header("Pragma", "").build();
     }
 
     @POST

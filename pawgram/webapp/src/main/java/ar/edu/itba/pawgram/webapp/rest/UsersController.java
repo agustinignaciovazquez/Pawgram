@@ -29,19 +29,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Link;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriInfo;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Path("users")
 @Controller
@@ -202,6 +197,9 @@ public class UsersController {
     @Produces(value = {"image/png", "image/jpeg"})
     public Response getUserProfilePicture(@PathParam("id") final String id) {
         LOGGER.debug("Accessed getUserProfilePicture with id {}", id);
+        final CacheControl cacheControl = new CacheControl();
+        cacheControl.setMaxAge((int) TimeUnit.DAYS.toSeconds(365));
+        cacheControl.setPrivate(true);
 
         final byte[] picture;
         try {
@@ -211,7 +209,7 @@ public class UsersController {
             return Response.status(Status.NOT_FOUND).build();
         }
 
-        return Response.ok(picture).build();
+        return Response.ok(picture).cacheControl(cacheControl).build();
     }
 
 
@@ -221,6 +219,9 @@ public class UsersController {
     public Response getDefaultUserProfilePicture() {
         LOGGER.debug("Accessed getDefaultUserProfilePicture");
         final byte[] picture;
+        final CacheControl cacheControl = new CacheControl();
+        cacheControl.setMaxAge((int) TimeUnit.DAYS.toSeconds(365));
+
         try {
             File defaultImage = ResourceUtils.getFile("classpath:master_default_pic.jpg");
             picture = Files.readAllBytes(defaultImage.toPath());
@@ -229,7 +230,7 @@ public class UsersController {
             return Response.status(Status.NOT_FOUND).build();
         }
 
-        return Response.ok(picture).build();
+        return Response.ok(picture).cacheControl(cacheControl).header("Pragma", "").build();
     }
 
     @POST
