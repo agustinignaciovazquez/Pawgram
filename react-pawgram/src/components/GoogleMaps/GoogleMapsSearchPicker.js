@@ -79,7 +79,7 @@ class GoogleMapsSearchPicker extends Component {
                 />}
                 {isMarked && this.state.range &&
                 <Polygon
-                    paths={createPolygonCircle(latLng,3000)}
+                    paths={createPolygonCircle(latLng,this.state.range*1000)}
                     strokeColor="#0000FF"
                     strokeOpacity={0.8}
                     strokeWeight={2}

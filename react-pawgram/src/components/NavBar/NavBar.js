@@ -198,9 +198,9 @@ class NavBar extends Component {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography className={classes.title} variant="h6" noWrap>
+                        <LinkDom >
                             <img src={Logo} />
-                        </Typography>
+                        </LinkDom>
                         <div className={classes.search}>
                             <ValidatorForm
                                 autoComplete="off"

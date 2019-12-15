@@ -105,5 +105,9 @@
   "invalid-query": "Invalid search input min length is 3 characters",
   "empty-notifications": "You have no notifications",
   "my-account": "My profile",
-  "logout": "Logout"
+  "logout": "Logout",
+  "empty-sz": "You have no search zones add one now!",
+  "searchzones": "My search zones",
+  "add-sz": "Create new search zone",
+  "max-sz-reached": "You can not add more search zones"
 }

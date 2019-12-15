@@ -7,6 +7,10 @@ import {withTranslation} from "react-i18next";
 import {AuthService} from "../../services/AuthService";
 import SearchZoneCard from "./SearchZoneCard";
 import {RestService} from "../../services/RestService";
+import AddIcon from "@material-ui/icons/Add";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import {Config} from "../../services/Config";
 
 const styles = theme => ({
     root: {
@@ -44,7 +48,25 @@ class UserSearchZones extends React.Component {
 
         return table;
     }
-
+    renderAddButton(){
+        const {classes,t}= this.props;
+        if(Config.MAX_SEARCH_ZONES - this.state.data.count > 0){
+            return(<Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                size="small"
+                className={classes.button}
+                startIcon={<AddIcon />}
+                onClick={e => {this.props.history.push('/searchzones/create')}}
+            >
+                {t('add-sz')}
+            </Button>)
+        }
+        return <Typography variant="overline" display="block" gutterBottom>
+            {t('max-sz-reached')}
+        </Typography>
+    }
     render() {
         const { classes,t } =  this.props;
 
@@ -55,7 +77,10 @@ class UserSearchZones extends React.Component {
             return (
                 <div>
                     <h3>{t('searchzones')}</h3>
-                    <div>{t('empty-sz')}</div>
+                    <Grid container spacing={8} alignContent={"center"} justify={"center"} alignItems={"center"}>
+                        <Grid item xs={4} sm={4}>{this.renderAddButton()}</Grid>
+                        <Grid item xs={10} sm={10}>{t('empty-sz')}</Grid>
+                    </Grid>
                 </div>
             );
         }
@@ -64,7 +89,10 @@ class UserSearchZones extends React.Component {
             <div>
                 <h3>{t('my-search-zones')}</h3>
                 <Grid container spacing={8} alignContent={"center"} justify={"center"} alignItems={"center"}>
-                    {this.drawPostAll()}
+                    <Grid item xs={4} sm={4}>{this.renderAddButton()}</Grid>
+                    <Grid item xs={10} sm={10}>
+                        {this.drawPostAll()}
+                    </Grid>
                 </Grid>
 
             </div>

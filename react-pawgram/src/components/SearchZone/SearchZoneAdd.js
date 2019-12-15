@@ -40,6 +40,14 @@ class SearchZoneAdd extends Component {
         if (!AuthService().isLoggedIn()){
             this.props.history.push('/login');
         }
+        RestService().getSearchZones().then(r=>{
+            if(Config.MAX_SEARCH_ZONES - r.count <=0){
+                this.props.history.push('/searchzones');
+            }
+        }).catch(err=>{
+                this.props.history.push('/searchzones');
+            }
+        )
     }
 
     handleMarker (m) {
@@ -53,6 +61,7 @@ class SearchZoneAdd extends Component {
             a.push({value: i});
         return a;
     }
+
     submitSz(e){
         e.preventDefault();
         const data = {longitude:this.state.longitude,latitude:this.state.latitude,range:this.state.range};
@@ -65,6 +74,7 @@ class SearchZoneAdd extends Component {
                 this.setState({show_error:false,show_error_server:true});
             });
     }
+
     render() {
         const { classes,t } =  this.props;
 
@@ -103,8 +113,8 @@ class SearchZoneAdd extends Component {
 
                         <Grid item xs={10} sm={10}>
                             <Typography gutterBottom>{t('range-search-select')}</Typography><br/>
-                            <IOSSlider aria-label="ios slider" defaultValue={this.state.range}
-                                       onChange={(e, newValue) => {this.setState({range:newValue*1000})}}
+                            <IOSSlider aria-label="ios slider" defaultValue={Config.MIN_DISTANCE_SZ}
+                                       onChange={(e, newValue) => {this.setState({range:newValue})}}
                                        max={Config.MAX_DISTANCE_SZ} min={Config.MIN_DISTANCE_SZ}
                                        marks={this.getDistanceMarkers()} valueLabelDisplay="on" />
                         </Grid>
