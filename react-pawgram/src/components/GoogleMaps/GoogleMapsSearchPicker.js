@@ -4,8 +4,9 @@ import { AuthService } from "../../services/AuthService";
 import { withStyles } from '@material-ui/core/styles/index';
 import { withTranslation } from 'react-i18next';
 import LocationSearchInput from "./LocationSearchInput";
-import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
+import {GoogleApiWrapper, Map, Marker, Polygon} from "google-maps-react";
 import {Config} from "../../services/Config";
+import {createPolygonCircle} from "../../services/Utils";
 const styles = theme => ({
     margin: {
         margin: theme.spacing(1),
@@ -18,6 +19,7 @@ class GoogleMapsSearchPicker extends Component {
         super(props, context);
         this.state = {
             marker: props.marker,
+            range: props.range?props.range:0
         };
     }
 
@@ -26,6 +28,12 @@ class GoogleMapsSearchPicker extends Component {
             this.props.history.push('/login');
         }
 
+    }
+
+    componentDidUpdate(prevProps,prevState){
+        if(prevProps.range !== this.props.range ){
+            this.setState({range: this.props.range});
+        }
     }
 
     handleSelectSearch(r){
@@ -45,9 +53,10 @@ class GoogleMapsSearchPicker extends Component {
             width: '100%',
             height: '400px',
         };
-
-        const initialLatitude = (this.state.marker)? this.state.marker.latitude:Config.DEFAULT_POSITION.lat;
-        const initialLongitude = (this.state.marker)? this.state.marker.longitude:Config.DEFAULT_POSITION.lng;
+        const isMarked = (this.state.marker && !isNaN(parseFloat(this.state.marker.latitude)) && !isNaN(parseFloat(this.state.marker.latitude)));
+        const initialLatitude = isMarked? this.state.marker.latitude:Config.DEFAULT_POSITION.lat;
+        const initialLongitude = isMarked? this.state.marker.longitude:Config.DEFAULT_POSITION.lng;
+        const latLng = {lat:initialLatitude,lng:initialLongitude};
 
         //We call the callback so it gets updated
         if(this.state.marker !== this.props.marker){
@@ -60,14 +69,22 @@ class GoogleMapsSearchPicker extends Component {
                 google={this.props.google}
                 zoom={15}
                 style={mapStyles}
-                initialCenter={{ lat: initialLatitude, lng: initialLongitude}}
-                center={{ lat: initialLatitude, lng: initialLongitude}}
+                initialCenter={latLng}
+                center={latLng}
             >
-                {this.state.marker &&
+                {isMarked &&
                 <Marker position={{ lat: this.state.marker.latitude, lng: this.state.marker.longitude}}
                         draggable={true}
                         onDragend={(t, map, coordinate) => this.onMarkerDragEnd(coordinate)}
                 />}
+                {isMarked && this.state.range &&
+                <Polygon
+                    paths={createPolygonCircle(latLng,3000)}
+                    strokeColor="#0000FF"
+                    strokeOpacity={0.8}
+                    strokeWeight={2}
+                    fillColor="#0000FF"
+                    fillOpacity={0.35} />}
             </Map>
         </div>);
     }

@@ -1,9 +1,4 @@
 import React, {Component} from 'react';
-import { makeStyles } from '@material-ui/core/styles/index';
-import Card from '@material-ui/core/Card/index';
-import CardActionArea from '@material-ui/core/CardActionArea/index';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions/index';
 import CardContent from '@material-ui/core/CardContent/index';
 import CardMedia from '@material-ui/core/CardMedia/index';
 import Paper from "@material-ui/core/Paper";
@@ -18,7 +13,8 @@ import Carousel from 'react-material-ui-carousel'
 import PropTypes from "prop-types";
 import Grid from '@material-ui/core/Grid';
 import {Avatar} from "@material-ui/core";
-import SaveIcon from '@material-ui/icons/Save'
+import SaveIcon from '@material-ui/icons/Subscriptions';
+import EditIcon from '@material-ui/icons/Edit';
 import {Chip} from "@material-ui/core";
 import {AuthService} from "../../../services/AuthService";
 import {RestService} from "../../../services/RestService";
@@ -26,6 +22,7 @@ import { Map,Marker, GoogleApiWrapper } from 'google-maps-react';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import {Config} from "../../../services/Config";
 import PostComments from "./PostComments";
+import PostDeleteDialog from "../PostABM/PostDeleteDialog";
 
 const styles = theme => ({
     container: {
@@ -96,6 +93,36 @@ function renderSubscribeButton(subscribed, post, self){
     >
         {subs_str}
     </Button>);
+}
+
+function renderEditButton(post, self){
+    const {t,classes} = self.props;
+
+    return(<Button
+        fullWidth
+        variant="contained"
+        color="primary"
+        size="small"
+        className={classes.button}
+        startIcon={<EditIcon />}
+        onClick={e => {self.props.history.push('/post/edit/'+post.id)}}
+    >
+        {t('edit')}
+    </Button>);
+}
+
+function renderButtons(post,user,self){
+    if(post.creator.id !== user.id)
+        return renderSubscribeButton(post.subscribed, post, self);
+    else
+        return(<Grid container spacing={2} alignItems={"flex-end"} justify={"flex-end"} alignContent={"flex-end"}>
+            <Grid item xs={2} sm={2}>
+                {renderEditButton(post,self)}
+            </Grid>
+            <Grid item xs={2} sm={2}>
+                <PostDeleteDialog post_id={post.id} callback={r => {self.props.history.push('/')}} />
+            </Grid>
+        </Grid>)
 }
 
 class PostComplete extends Component {
@@ -206,7 +233,7 @@ class PostComplete extends Component {
 
                                 <Grid item xs={12} sm={12}>
                                     <Typography variant="overline" display="block" gutterBottom align={"right"}>
-                                        {renderSubscribeButton(post.subscribed,post, this)}
+                                        {renderButtons(post,user,this)}
                                     </Typography>
 
                                 </Grid>
@@ -265,13 +292,9 @@ class PostComplete extends Component {
                         </Grid>
                     </CardContent>
                 </Grid>
-
                 <Grid item xs={10} sm={10} >
                     <PostComments post={post} />
                 </Grid>
-
-
-
             </Grid>
         );
     }

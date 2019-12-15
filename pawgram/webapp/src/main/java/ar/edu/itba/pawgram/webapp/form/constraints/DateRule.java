@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = DateRuleValidator.class)
 @Documented
 public @interface DateRule {
-    String message() default "{ar.edu.itba.pawgram.webapp.form.constraints.DateRule.message}}";
+    String message() default "{ar.edu.itba.pawgram.webapp.form.constraints.DateRule.message}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

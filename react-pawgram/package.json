@@ -35,7 +35,8 @@
     "react-scripts": "^3.3.0",
     "react-select": "^3.0.8",
     "recompose": "^0.30.0",
-    "redux": "^4.0.4"
+    "redux": "^4.0.4",
+    "spherical-geometry-js": "^2.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

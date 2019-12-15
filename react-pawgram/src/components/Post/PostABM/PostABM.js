@@ -22,6 +22,7 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import IconButton from '@material-ui/core/IconButton';
 import RemoveIcon from '@material-ui/icons/Remove';
+
 import {
     MuiPickersUtilsProvider,
     KeyboardTimePicker,
@@ -29,8 +30,6 @@ import {
 } from '@material-ui/pickers';
 import {Chip} from "@material-ui/core";
 
-
-import 'react-google-places-autocomplete/dist/assets/index.css';
 import GoogleMapsSearchPicker from "../../GoogleMaps/GoogleMapsSearchPicker";
 import {RestService} from "../../../services/RestService";
 import PostDeleteDialog from "./PostDeleteDialog";
@@ -41,7 +40,7 @@ const styles = theme => ({
         margin: theme.spacing(1),
     },
     card: {
-        maxWidth: 150,
+        maxWidth: 250,
     },
     media: {
         height: 0,
@@ -96,6 +95,7 @@ class PostABM extends Component {
             'post': props.post,
             'modify': modify,
             'redirectUrl': undefined,
+            'errors':[]
         };
     }
 
@@ -159,8 +159,7 @@ class PostABM extends Component {
             image_urls.splice(i, 1);
             this.setState({image_urls: image_urls});
         }).catch(err=> {
-            console.log(err);
-            //TODO SHOW error
+            this.setState({show_error:false, show_error_server:true});
         });
     }
 
@@ -190,6 +189,25 @@ class PostABM extends Component {
         )
         return table;
     }
+    renderServerErrors(){
+        const {t} = this.props;
+        const {errors} = this.state;
+        let r = []
+        if(errors && errors.length === 0) {
+
+            return <Typography component="h1" variant="h5" color={"secondary"} hidden={!this.state.show_error_server}>
+                { t('error-server') }
+            </Typography>
+
+        } else {
+            errors.map(item => {
+                r.push(<Typography component="h1" variant="h5" color={"secondary"} hidden={!this.state.show_error_server}>
+                    { t(item.violation)}
+                </Typography>)
+            })
+        }
+        return r;
+    }
 
     submitPost(e){
         e.preventDefault();
@@ -214,9 +232,9 @@ class PostABM extends Component {
             r=>{
                 this.setState({show_error:false,show_error_server:false, redirectUrl: '/post/'+r.id});
             }
-        ).catch( r=>{
-            console.log(r);
-            this.setState({show_error:false,show_error_server:true});
+        ).catch( err=>{
+            const errors = (err.response.status !== 500 && err.response.data.errors)? err.response.data.errors:[];
+            this.setState({show_error:false,show_error_server:true, errors: errors});
         });
     }
 
@@ -258,7 +276,7 @@ class PostABM extends Component {
                                 {t('complete-all-fields')}
                             </Typography>
                             <Typography component="h1" variant="h5" color={"secondary"} hidden={!this.state.show_error_server}>
-                                {t('error-server')}
+                                {this.renderServerErrors()}
                             </Typography>
                         </Grid>
 
@@ -379,6 +397,7 @@ class PostABM extends Component {
                                 errorMessages={[t('no-location')]}
                                 value={this.state.latitude}
                             />
+
                             <TextValidator
                                 name="longitude"
                                 variant="outlined"

@@ -110,7 +110,7 @@ class NavBar extends Component {
         };
 
         const handleMobileMenuOpen = event => {
-            this.setState({'mobileMoreAnchorEl': event.currentTarget()});
+            this.setState({'mobileMoreAnchorEl': event.currentTarget});
         };
 
         const menuId = 'primary-search-account-menu';

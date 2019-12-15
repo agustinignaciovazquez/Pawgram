@@ -63,7 +63,7 @@ class Register extends Component {
             this.props.history.push('/ui/main');
         }
         //TODO put this function in utils
-        ValidatorForm.addValidationRule('isPasswordMatch', PasswordMatchValidation);
+        ValidatorForm.addValidationRule('isPasswordMatch', PasswordMatchValidation(this));
         ValidatorForm.addValidationRule('isDuplicateMail', DuplicateMailValidation);
     }
 

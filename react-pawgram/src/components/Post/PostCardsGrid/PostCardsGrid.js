@@ -23,11 +23,13 @@ class PostCardsGrid extends React.Component {
             this.props.history.push('/login');
         }
     }
+
     componentDidUpdate(prevProps,prevState){
         if(prevProps.posts !== this.props.posts){
             this.setState({data: this.props.posts});
         }
     }
+
     drawPostAll(){
         let table = [];
         for (let i = 0; i < this.state.data.posts.length ; i++) {

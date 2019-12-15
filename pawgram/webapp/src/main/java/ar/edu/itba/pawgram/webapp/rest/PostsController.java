@@ -349,7 +349,6 @@ public class PostsController {
 
         performFormValidations(formPost, formPictures);
 
-
         final User creator = securityUserService.getLoggedInUser();
         final Post post = postService.getFullPostById(postId);
         LOGGER.debug("User with id {} accessed modify post with id {}", creator.getId(),postId);

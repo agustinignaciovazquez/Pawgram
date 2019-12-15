@@ -88,5 +88,15 @@
   "remove-image-dialog": "Are you sure you want to remove image?",
   "agree": "Yes",
   "disagree": "No",
-  "delete": "Delete confirmation"
+  "delete": "Delete confirmation",
+  "my-search-zones": "My search zones",
+  "delete-sz": "Are you sure you want to delete this Search Zone?",
+  "remove":"Remove",
+  "searchzone-range": "Search Zone Range",
+  "Date-invalid": "Invalid date (margin one year from today)",
+  "create-sz": "Create new search zone",
+  "range-search-select": "Select your desire range for the searchs",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
+  "location": "Location"
 }

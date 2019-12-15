@@ -69,7 +69,7 @@ public class SearchZoneController {
 
     @POST
     @Path("/create")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response createSZ(@FormDataParam("sz") final FormSearchZone formSearchZone) throws DTOValidationException, MaxSearchZoneReachedException, InvalidSearchZoneException {
         final User user = securityUserService.getLoggedInUser();
 

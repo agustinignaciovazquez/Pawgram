@@ -9,26 +9,22 @@ import {withStyles} from "@material-ui/core/styles";
 import {withTranslation} from "react-i18next";
 import RemoveIcon from "@material-ui/icons/DeleteOutline";
 import IconButton from "@material-ui/core/IconButton";
-import {RestService} from "../../../services/RestService";
 import EditIcon from "@material-ui/icons/Edit";
 import PropTypes from "prop-types";
+import {RestService} from "../../services/RestService";
 
 const styles = theme => ({
 
 });
 
-class PostDeleteDialog extends Component  {
+class SearchZoneDeleteDialog extends Component  {
     constructor(props, context) {
         super(props, context);
-        const post_id = props.post_id;
-        const image_id = props.image_id;
+        const sz_id = props.sz_id;
         const callback = props.callback? props.callback: (e)=>console.log(e);
-        let is_image = Boolean(image_id);
 
         this.state = {
-            post_id: post_id,
-            post_image_id: image_id,
-            is_image: is_image,
+            sz_id: sz_id,
             callback: callback,
             open:false,
         };
@@ -42,22 +38,12 @@ class PostDeleteDialog extends Component  {
         this.setState({open:false});
     };
 
-    removePost = () => {
-        const {post_id, post_image_id,is_image} = this.state;
+    removeSZ = () => {
+        const {sz_id} = this.state;
         let req;
         this.handleClose();
-        if(is_image)
-            req = RestService().deletePostImage(post_id,post_image_id);
-        else
-            req = RestService().deletePost(post_id);
+        req = RestService().deleteSearchZone(sz_id);
         this.state.callback(req);
-    }
-
-    renderDialogContent(is_image){
-        const {classes,t} = this.props;
-        if(is_image)
-            return t('remove-image-dialog');
-        return t('remove-post-dialog');
     }
 
     render() {
@@ -85,14 +71,14 @@ class PostDeleteDialog extends Component  {
                     <DialogTitle id="alert-dialog-title">{t('delete')}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            {this.renderDialogContent(this.state.is_image)}
+                            {t('delete-sz')}
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
                             {t('disagree')}
                         </Button>
-                        <Button onClick={this.removePost} color="primary" autoFocus>
+                        <Button onClick={this.removeSZ} color="primary" autoFocus>
                             {t('agree')}
                         </Button>
                     </DialogActions>
@@ -101,7 +87,7 @@ class PostDeleteDialog extends Component  {
         );
     }
 }
-PostDeleteDialog.propTypes = {
+SearchZoneDeleteDialog.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(withTranslation()(PostDeleteDialog));
+export default withStyles(styles)(withTranslation()(SearchZoneDeleteDialog));
