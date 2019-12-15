@@ -21,13 +21,23 @@ import {withTranslation} from "react-i18next";
 import {AuthService} from "../../services/AuthService";
 import Logo from "../../resources/images/logo.png"
 import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
+import Drawer from '@material-ui/core/Drawer';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import {useTheme} from "@material-ui/core/styles";
+
+const drawerWidth = 240;
+
 const styles = theme => ({
     grow: {
         flexGrow: 1,
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
     },
     title: {
         display: 'none',
@@ -82,6 +92,50 @@ const styles = theme => ({
             display: 'none',
         },
     },
+    appBarShift: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    hide: {
+        display: 'none',
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-end',
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        marginLeft: -drawerWidth,
+    },
+    contentShift: {
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginLeft: 0,
+    },
 });
 
 class NavBar extends Component {
@@ -90,6 +144,7 @@ class NavBar extends Component {
         this.state = {
             'anchorEl': null,
             'redirectUrl': null,
+            'drawerOpen': false,
             'mobileMoreAnchorEl':null,
             'searchRedirect': ""
         };
@@ -97,6 +152,14 @@ class NavBar extends Component {
 
     handleRedirectUrl(url){
         this.setState({'redirectUrl': url});
+    }
+
+    handleDrawerClose(){
+        this.setState({'drawerOpen': false})
+    }
+
+    handleDrawerOpen(){
+        this.setState({'drawerOpen': true})
     }
 
     render() {
@@ -185,7 +248,6 @@ class NavBar extends Component {
             this.setState({'redirectUrl': null}); //TODO Remove search bar when route is search
             return ( <Redirect to={redirectUrl} />);
         }
-
         return (
             <div className={classes.grow}>
                 <AppBar position="static">
@@ -195,6 +257,7 @@ class NavBar extends Component {
                             className={classes.menuButton}
                             color="inherit"
                             aria-label="open drawer"
+                            onClick={e=>{this.handleDrawerOpen()}}
                         >
                             <MenuIcon />
                         </IconButton>
@@ -261,6 +324,39 @@ class NavBar extends Component {
                 </AppBar>
                 {renderMobileMenu}
                 {renderMenu}
+                <Drawer
+                    className={classes.drawer}
+                    variant="persistent"
+                    anchor="left"
+                    open={this.state.drawerOpen}
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                >
+                    <div className={classes.drawerHeader}>
+                        <IconButton onClick={e =>{this.handleDrawerClose()}}>
+                            <ChevronLeftIcon />
+                        </IconButton>
+                    </div>
+                    <Divider />
+                    <List>
+                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                            <ListItem button key={text}>
+                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Divider />
+                    <List>
+                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                            <ListItem button key={text}>
+                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Drawer>
             </div>
         );
     }
