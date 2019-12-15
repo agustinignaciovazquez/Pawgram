@@ -218,9 +218,7 @@ class Register extends Component {
                         </Grid>
                     </ValidatorForm>
                 </div>
-                <Box mt={5}>
-                    <Copyright />
-                </Box>
+             
             </Container>
         );
     }

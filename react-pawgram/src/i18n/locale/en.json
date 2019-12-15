@@ -109,5 +109,7 @@
   "empty-sz": "You have no search zones add one now!",
   "searchzones": "My search zones",
   "add-sz": "Create new search zone",
-  "max-sz-reached": "You can not add more search zones"
+  "max-sz-reached": "You can not add more search zones",
+  "subscriptions": "Subscriptions",
+  "settings": "Settings"
 }

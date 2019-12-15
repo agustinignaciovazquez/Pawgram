@@ -16,6 +16,9 @@ import SearchZoneAdd from "../SearchZone/SearchZoneAdd";
 import NotificationCardsGrid from "../Notification/NotificationCardsGrid";
 import {Config} from "../../services/Config";
 import {AuthService} from "../../services/AuthService";
+import Box from "@material-ui/core/Box";
+import {Copyright} from "../../services/Utils";
+import Container from "@material-ui/core/Container";
 
 class App extends Component {
     constructor(props, context) {
@@ -61,6 +64,9 @@ class App extends Component {
                         <Route path="/" render={(props) => <Redirect {...props} to={'/login'} />} />
                     </Switch>
                 </div>
+                <Box mt={5}>
+                    <Copyright />
+                </Box>
             </Router>
     )
   }

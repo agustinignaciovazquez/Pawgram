@@ -178,9 +178,7 @@ class Login extends Component {
 
                                 </Grid>
                             </Grid>
-                            <Box mt={5}>
-                                <Copyright/>
-                            </Box>
+
                         </ValidatorForm>
                     </div>
                 </Grid>

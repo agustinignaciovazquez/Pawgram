@@ -26,13 +26,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import {useTheme} from "@material-ui/core/styles";
-
+import SubsIcon from '@material-ui/icons/Subscriptions';
+import MapIcon from '@material-ui/icons/Map';
+import SettingsIcon from '@material-ui/icons/Settings';
+import PostIcon from '@material-ui/icons/AddAPhoto'
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -151,7 +151,7 @@ class NavBar extends Component {
     }
 
     handleRedirectUrl(url){
-        this.setState({'redirectUrl': url});
+        this.setState({'redirectUrl': url,'drawerOpen':false,'anchorEl': null,'mobileMoreAnchorEl': null});
     }
 
     handleDrawerClose(){
@@ -194,8 +194,8 @@ class NavBar extends Component {
                 open={Boolean(this.state.anchorEl)}
                 onClose={handleMenuClose}
             >
-                <MenuItem onClick={e=>{handleMenuClose();this.handleRedirectUrl('/settings')}}>{t('my-account')}</MenuItem>
-                <MenuItem onClick={e=>{handleMenuClose();this.handleRedirectUrl('/logout')}}>{t('logout')}</MenuItem>
+                <MenuItem onClick={e=>{this.handleRedirectUrl('/my_profile')}}>{t('my-account')}</MenuItem>
+                <MenuItem onClick={e=>{this.handleRedirectUrl('/logout')}}>{t('logout')}</MenuItem>
             </Menu>
         );
 
@@ -288,6 +288,11 @@ class NavBar extends Component {
                         </div>
                         <div className={classes.grow} />
                         <div className={classes.sectionDesktop}>
+                            <IconButton aria-label="new-post" color="inherit" onClick={e=>{this.handleRedirectUrl('/post/create')}}>
+                                <Badge badgeContent={0} color="secondary">
+                                    <PostIcon />
+                                </Badge>
+                            </IconButton>
                             <IconButton aria-label="messages" color="inherit" onClick={e=>{this.handleRedirectUrl('/messages')}}>
                                 <Badge badgeContent={0} color="secondary">
                                     <MailIcon />
@@ -340,21 +345,21 @@ class NavBar extends Component {
                     </div>
                     <Divider />
                     <List>
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
+                        <ListItem button key={1} onClick={e=>{handleMenuClose();this.handleRedirectUrl('/searchzones')}}>
+                            <ListItemIcon> <MapIcon /></ListItemIcon>
+                            <ListItemText primary={t('searchzones')} />
+                        </ListItem>
+                        <ListItem button key={2} onClick={e=>{handleMenuClose();this.handleRedirectUrl('/subscriptions')}}>
+                            <ListItemIcon> <SubsIcon /></ListItemIcon>
+                            <ListItemText primary={t('subscriptions')} />
+                        </ListItem>
                     </List>
                     <Divider />
                     <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
+                        <ListItem button key={1} onClick={e=>{handleMenuClose();this.handleRedirectUrl('/settings')}}>
+                            <ListItemIcon> <SettingsIcon /></ListItemIcon>
+                            <ListItemText primary={t('settings')} />
+                        </ListItem>
                     </List>
                 </Drawer>
             </div>
