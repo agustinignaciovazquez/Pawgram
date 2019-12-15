@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class NotificationDTO {
     private long id;
-    private PostDTO post;
+    private PlainPostDTO post;
     private CommentDTO comment;
     private boolean is_seen;
 
@@ -28,7 +28,7 @@ public class NotificationDTO {
         this.is_seen = notification.isIs_seen();
 
         if(notification.getPost() != null)
-            this.post = new PostDTO(notification.getPost(),baseUri,loggedUser);
+            this.post = new PlainPostDTO(notification.getPost(),baseUri,loggedUser);
 
         if(notification.getComment() != null)
             this.comment = new CommentDTO(notification.getComment(),baseUri);
@@ -44,11 +44,11 @@ public class NotificationDTO {
         this.id = id;
     }
 
-    public PostDTO getPost() {
+    public PlainPostDTO getPost() {
         return post;
     }
 
-    public void setPost(PostDTO post) {
+    public void setPost(PlainPostDTO post) {
         this.post = post;
     }
 

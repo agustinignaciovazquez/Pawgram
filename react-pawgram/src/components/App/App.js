@@ -13,6 +13,7 @@ import PostSelectCategory from "../Post/PostABM/PostSelectCategory";
 import PostEdit from "../Post/PostABM/PostEdit";
 import UserSearchZones from "../SearchZone/UserSearchZones";
 import SearchZoneAdd from "../SearchZone/SearchZoneAdd";
+import NotificationCardsGrid from "../Notification/NotificationCardsGrid";
 
 class App extends Component {
   render() {
@@ -23,6 +24,9 @@ class App extends Component {
                 <Switch>
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
+
+                    <Route path='/notifications/all' render={(props) => <NotificationCardsGrid {...props} all={true} />}/>
+                    <Route path='/notifications' render={(props) => <NotificationCardsGrid {...props} all={false} />}/>
 
                     <Route path="/searchzones/create" component={SearchZoneAdd}/>
                     <Route path="/searchzones" component={UserSearchZones}/>
