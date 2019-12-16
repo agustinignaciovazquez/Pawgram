@@ -21,6 +21,7 @@ import {Copyright} from "../../services/Utils";
 import Container from "@material-ui/core/Container";
 import PostSubscriptionsContainer from "../Post/PostSubscriptions/PostSubscriptionsContainer";
 import Profile from "../Profile/Profile";
+import PostOwn from "../Post/PostProfile/PostOwn";
 
 class App extends Component {
     constructor(props, context) {
@@ -61,11 +62,13 @@ class App extends Component {
                         <Route path="/post/create" component={PostSelectCategory} />
                         <Route path="/post/edit/:id" component={PostEdit}/>
                         <Route path="/post/:id" component={PostComplete}/>
+                        <Route path="/myposts" component={PostOwn}/>
 
                         <Route path="/user/:id" component={Profile}/>
 
                         <Route path="/subscriptions" component={PostSubscriptionsContainer}/>
 
+                        <Route path="/my_profile" render={(props) => <Redirect {...props} to={'/user/'+this.state.user.id} />} />
                         <Route path="/" render={(props) => <Redirect {...props} to={'/login'} />} />
                     </Switch>
                 </div>

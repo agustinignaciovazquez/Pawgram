@@ -33,6 +33,7 @@ import SubsIcon from '@material-ui/icons/Subscriptions';
 import MapIcon from '@material-ui/icons/Map';
 import SettingsIcon from '@material-ui/icons/Settings';
 import PostIcon from '@material-ui/icons/AddAPhoto'
+import MyPostIcon from '@material-ui/icons/PostAdd'
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -353,6 +354,7 @@ class NavBar extends Component {
                     </div>
                     <Divider />
                     <List>
+
                         <ListItem button key={1} onClick={e=>{handleMenuClose();this.handleRedirectUrl('/searchzones')}}>
                             <ListItemIcon> <MapIcon /></ListItemIcon>
                             <ListItemText primary={t('searchzones')} />
@@ -360,6 +362,10 @@ class NavBar extends Component {
                         <ListItem button key={2} onClick={e=>{handleMenuClose();this.handleRedirectUrl('/subscriptions')}}>
                             <ListItemIcon> <SubsIcon /></ListItemIcon>
                             <ListItemText primary={t('subscriptions')} />
+                        </ListItem>
+                        <ListItem button key={1} onClick={e=>{handleMenuClose();this.handleRedirectUrl('/myposts')}}>
+                            <ListItemIcon> <MyPostIcon /></ListItemIcon>
+                            <ListItemText primary={t('my-posts')} />
                         </ListItem>
                     </List>
                     <Divider />

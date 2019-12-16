@@ -117,5 +117,9 @@
   "post": "Post",
   "show-all-not": "Show all notifications",
   "show-less-not": "Show only unseen notifications",
-  "user-profile": "User profile"
+  "user-profile": "User profile",
+  "my-posts": "My posts",
+  "user-my-posts": "My Posts",
+  "user-posts": "Post by user",
+  "filters": "Filters"
 }
