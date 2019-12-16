@@ -98,9 +98,9 @@ public class UserHibernateDao implements UserDao {
     }
 
     @Override
-    public List<Post> getSubscribedPostsRange(long userId, int offset, int length) {
-        final TypedQuery<Post> query = em.createQuery("select p from User as u join u.postSubscriptions as p where u.id = :userId "
-                + "order by lower(p.name)", Post.class);
+    public List<Post> getSubscribedPostsRange(long userId, int length, int offset) {
+        final TypedQuery<Post> query = em.createQuery("select post from User as u join u.postSubscriptions as post where u.id = :userId "
+                + "order by post.id desc", Post.class);
         query.setParameter("userId", userId);
 
         return pagedResult(query, offset, length);

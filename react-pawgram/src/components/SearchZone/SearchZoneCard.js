@@ -25,7 +25,7 @@ import { computeOffset } from 'spherical-geometry-js';
 import {createPolygonCircle} from "../../services/Utils";
 const styles = theme =>({
     card: {
-        maxWidth: 345,
+        maxWidth: 1000,
     },
     chip: {
         backgroundColor: red[500],

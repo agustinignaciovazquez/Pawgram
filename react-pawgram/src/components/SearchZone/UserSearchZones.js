@@ -42,15 +42,14 @@ class UserSearchZones extends React.Component {
     drawPostAll(){
         let table = [];
         for (let i = 0; i < this.state.data.searchzones.length ; i++) {
-            console.log(this.state.data.searchzones[i])
-            table.push(<Grid item key={i} xs={10}><SearchZoneCard searchzone={this.state.data.searchzones[i]} /></Grid>);
+            table.push(<Grid item key={i} xs={12}><SearchZoneCard searchzone={this.state.data.searchzones[i]} /></Grid>);
         }
 
         return table;
     }
     renderAddButton(){
         const {classes,t}= this.props;
-        if(Config.MAX_SEARCH_ZONES - this.state.data.count > 0){
+        if(Config.MAX_SEARCH_ZONES - this.state.data.searchzones.length > 0){
             return(<Button
                 fullWidth
                 variant="contained"
@@ -76,8 +75,12 @@ class UserSearchZones extends React.Component {
         if (this.state.data.count === 0 ){
             return (
                 <div>
-                    <h3>{t('searchzones')}</h3>
                     <Grid container spacing={8} alignContent={"center"} justify={"center"} alignItems={"center"}>
+                        <Grid item xs={10} sm={10}>
+                            <Typography variant="h4" display="block" align={"left"} gutterBottom>
+                                {t('my-search-zones')}
+                            </Typography>
+                        </Grid>
                         <Grid item xs={4} sm={4}>{this.renderAddButton()}</Grid>
                         <Grid item xs={10} sm={10}>{t('empty-sz')}</Grid>
                     </Grid>
@@ -87,8 +90,12 @@ class UserSearchZones extends React.Component {
 
         return (
             <div>
-                <h3>{t('my-search-zones')}</h3>
-                <Grid container spacing={8} alignContent={"center"} justify={"center"} alignItems={"center"}>
+                <Grid container spacing={4} alignContent={"center"} justify={"center"} alignItems={"center"}>
+                    <Grid item xs={10} sm={10}>
+                        <Typography variant="h4" display="block" align={"left"} gutterBottom>
+                            {t('my-search-zones')}
+                        </Typography>
+                    </Grid>
                     <Grid item xs={4} sm={4}>{this.renderAddButton()}</Grid>
                     <Grid item xs={10} sm={10}>
                         {this.drawPostAll()}

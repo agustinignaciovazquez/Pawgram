@@ -23,10 +23,9 @@ public class PostListDTO {
 
     public PostListDTO(final List<Post> posts, long totalCount, final URI baseUri, final Optional<User> loggedUser) {
         this.posts = new LinkedList<>();
-
-        for (final Post p : posts)
+        for (final Post p : posts) {
             this.posts.add(new PlainPostDTO(p, baseUri, loggedUser));
-
+        }
         this.totalCount = totalCount;
         this.count = posts.size();
     }

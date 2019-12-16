@@ -328,7 +328,7 @@ class PostABM extends Component {
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={3}>
+                        <Grid item xs={12} sm={3} hidden={this.state.category.toLowerCase() === 'adopt'}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <Grid container justify="flex-end">
                                     <KeyboardDatePicker

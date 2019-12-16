@@ -23,6 +23,8 @@ import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import {Config} from "../../../services/Config";
 import PostComments from "./PostComments";
 import PostDeleteDialog from "../PostABM/PostDeleteDialog";
+import {Link as LinkDom} from "react-router-dom";
+import Link from "@material-ui/core/Link";
 
 const styles = theme => ({
     container: {
@@ -256,7 +258,9 @@ class PostComplete extends Component {
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={2} sm={2}>
-                                    <Avatar alt={post.creator.name} src={post.creator.profile_picture} className={classes.biggerAvatar} />
+                                    <Link component={ LinkDom } to={"/user/"+post.creator.id} variant="body2">
+                                        <Avatar alt={post.creator.name} src={post.creator.profile_picture} className={classes.biggerAvatar} />
+                                    </Link>
                                 </Grid>
                                 <Grid item xs={6} sm={6}>
                                     <Typography variant="overline" display="block" gutterBottom>

@@ -160,7 +160,9 @@ class PostSearch extends Component {
     }
 
     componentDidUpdate(prevProps,prevState){
-        if(prevProps.query !== this.props.query || prevProps.category !== this.props.category || prevProps.location !== this.props.location){
+        if(prevState.category !== this.state.category){
+            this.setState({offset:0,page:1},e=>{this.loadPost()})
+        }else if(prevProps.query !== this.props.query || prevProps.category !== this.props.category || prevProps.location !== this.props.location){
             this.setState(this.DEFAULT_STATE);
             this.loadPost(this.props.query, this.props.category, this.props.location);
         }else if(!(prevState.posts !== this.state.posts || prevState.user !== this.state.user || prevState.query !== this.state.query

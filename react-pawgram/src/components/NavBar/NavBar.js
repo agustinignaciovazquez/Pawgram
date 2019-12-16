@@ -210,21 +210,29 @@ class NavBar extends Component {
                 open={Boolean(this.state.mobileMoreAnchorEl)}
                 onClose={handleMobileMenuClose}
             >
-                <MenuItem>
-                    <IconButton aria-label="show 4 new mails" color="inherit" onClick={e=>{this.handleRedirectUrl('/messages')}}>
+                <MenuItem onClick={e=>{this.handleRedirectUrl('/post/create')}}>
+                    <IconButton aria-label="create-post" color="inherit" >
+                        <Badge badgeContent={0} color="secondary">
+                            <PostIcon />
+                        </Badge>
+                    </IconButton>
+                    <p>{t('post')}</p>
+                </MenuItem>
+                <MenuItem onClick={e=>{this.handleRedirectUrl('/messages')}}>
+                    <IconButton aria-label="messages" color="inherit" >
                         <Badge badgeContent={0} color="secondary">
                             <MailIcon />
                         </Badge>
                     </IconButton>
-                    <p>Messages</p>
+                    <p>{t('messages')}</p>
                 </MenuItem>
-                <MenuItem>
-                    <IconButton aria-label="show 11 new notifications" color="inherit" onClick={e=>{this.handleRedirectUrl('/notifications')}}>
+                <MenuItem onClick={e=>{this.handleRedirectUrl('/notifications')}}>
+                    <IconButton aria-label="notifications" color="inherit" >
                         <Badge badgeContent={0} color="secondary">
                             <NotificationsIcon />
                         </Badge>
                     </IconButton>
-                    <p>Notifications</p>
+                    <p>{t('notifications')}</p>
                 </MenuItem>
                 <MenuItem onClick={handleProfileMenuOpen}>
                     <IconButton
@@ -261,7 +269,7 @@ class NavBar extends Component {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <LinkDom >
+                        <LinkDom to={'/'}>
                             <img src={Logo} />
                         </LinkDom>
                         <div className={classes.search}>

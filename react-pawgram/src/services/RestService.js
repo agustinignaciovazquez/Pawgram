@@ -252,12 +252,20 @@ export const RestService = () => {
             return doGet(url + '/users/' + id);
         },
 
-        getUserSubscriptions: function(id, params) {
-            return doGet(url + '/users/' + id + '/subscriptions', params);
+        getUserSubscriptions: function(params) {
+            const user = SessionService().getUser();
+            return doGet(url + '/users/' + user.id + '/subscriptions', params);
         },
 
-        getPostedByUser: function(id, params) {
-            return doGet(url + '/users/' + id + '/user_posts', params);
+        getPostedByUser: function(id, latitude=null, longitude=null, category=null, page=1, pageSize=Config.PAGE_SIZE) {
+            const params_posts = {
+                'latitude': latitude,
+                'longitude': longitude,
+                'category': category,
+                'page': page,
+                'pageSize': pageSize
+            };
+            return doGet(url + '/users/' + id + '/user_posts', params_posts);
         },
 
         createUser: function(data) {

@@ -11,6 +11,9 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Pagination from "material-ui-flat-pagination";
 import {Config} from "../../services/Config";
 import {RestService} from "../../services/RestService";
+import {Link as LinkDom} from "react-router-dom";
+import Link from "@material-ui/core/Link";
+import Typography from "@material-ui/core/Typography";
 
 const themeMui = createMuiTheme();
 const styles = theme => ({
@@ -35,9 +38,9 @@ class NotificationCardsGrid extends React.Component {
     }
 
     componentDidUpdate(prevProps,prevState){
+
         if(prevProps.all !== this.props.all ){
-            this.setState({all: this.props.all});
-            this.loadNotifications()
+            this.loadNotifications(this.props.all)
         }
     }
 
@@ -48,16 +51,16 @@ class NotificationCardsGrid extends React.Component {
         this.loadNotifications();
     }
 
-    loadNotifications(){
+    loadNotifications(all=this.state.all){
         const params = {page:this.state.page, pageSize: this.state.pageSize };
         let req;
-        if(this.state.all)
+        if(all)
             req = RestService().getAllNotifications(params);
         else
             req = RestService().getNotifications(params);
         req.then(
             r=>{
-                this.setState({data:r})
+                this.setState({data:r, all:all})
             }
         ).catch(err =>{
             //TODO show error
@@ -78,6 +81,24 @@ class NotificationCardsGrid extends React.Component {
         this.setState({ offset:offset, page: (offset/pageSize + 1)});
     }
 
+    renderLink(){
+       const {t} = this.props;
+        let link = '/notifications';
+        let info =  t('show-less-not');
+
+        if(!this.state.all){
+            link = link+'/all';
+            info =  t('show-all-not');
+        }
+
+        return (<Link component={ LinkDom } to={link} variant="body2">
+            <Typography variant="overline" display="block" align={"right"} gutterBottom>
+                {info}
+            </Typography>
+        </Link>);
+
+    }
+
     render() {
         const { classes,t } =  this.props;
 
@@ -88,22 +109,44 @@ class NotificationCardsGrid extends React.Component {
         if (this.state.data.count === 0 ){
             return (
                 <div>
-                    <h3>{t('notifications')}</h3>
-                    <div>{t('empty-notifications')}</div>
+                    <Grid container spacing={2} alignContent={"center"} justify={"center"}>
+                        <Grid item xs={8} sm={8}>
+                            <Typography variant="h4" display="block" align={"left"} gutterBottom>
+                                {t('notifications')}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={8} sm={8}>
+                            {this.renderLink()}
+                        </Grid>
+                        <Grid item xs={12} sm={12}>
+                            <Grid container spacing={3} alignContent={"center"} justify={"center"}>
+                                {t('empty-notifications')}
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </div>
             );
         }
 
         return (
             <div>
-                <h3>{t('notifications')}</h3>
+
                 <Grid container spacing={2} alignContent={"center"} justify={"center"}>
+                    <Grid item xs={8} sm={8}>
+                        <Typography variant="h4" display="block" align={"left"} gutterBottom>
+                            {t('notifications')}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={8} sm={8}>
+                        {this.renderLink()}
+                    </Grid>
                     <Grid item xs={12} sm={12}>
                         <Grid container spacing={3} alignContent={"center"} justify={"center"}>
                     {this.drawNotificationAll()}
                         </Grid>
                     </Grid>
                     <Grid item xs={4} sm={2}>
+
                         <MuiThemeProvider theme={themeMui}>
                             <CssBaseline />
                             <Pagination reduced={true} size={"large"} centerRipple={false}

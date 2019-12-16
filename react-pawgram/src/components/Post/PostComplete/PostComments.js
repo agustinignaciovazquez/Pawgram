@@ -25,6 +25,8 @@ import {RestService} from "../../../services/RestService";
 import { Map,Marker, GoogleApiWrapper } from 'google-maps-react';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import {Config} from "../../../services/Config";
+import {Link as LinkDom} from "react-router-dom";
+import Link from "@material-ui/core/Link";
 
 const styles = theme => ({
     container: {
@@ -160,7 +162,9 @@ function renderComment(user, post_id, item, i, self,  parent_id= 0){
         <Paper className={classes.root}>
             <Grid container alignItems={"center"} alignContent={"center"} justify={"center"}>
                 <Grid item xs={1} sm={1}>
-                    <Avatar className={classes.bigAvatar} alt={item.author.name} src={item.author.profile_picture} />
+                    <Link component={ LinkDom } to={"/user/"+item.author.id} variant="body2">
+                        <Avatar className={classes.bigAvatar} alt={item.author.name} src={item.author.profile_picture} />
+                    </Link>
                 </Grid>
                 <Grid item xs={11} sm={11}>
                     <Typography variant="h5" component="h3">

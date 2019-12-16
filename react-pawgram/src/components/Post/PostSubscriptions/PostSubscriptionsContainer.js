@@ -9,7 +9,7 @@ import {ValidatorForm, TextValidator} from "react-material-ui-form-validator";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import PostLocation from "./PostLocation";
+import PostSubscriptions from "./PostSubscriptions";
 
 const styles = theme => ({
     margin: {
@@ -17,10 +17,11 @@ const styles = theme => ({
     },
 });
 
-class PostLocationContainer extends Component {
+class PostSubscriptionsContainer extends Component {
 
     constructor(props, context) {
         super(props, context);
+        const query = props.match.params.query;
         this.state = {
         };
     }
@@ -34,15 +35,21 @@ class PostLocationContainer extends Component {
 
     render() {
         const { classes,t } =  this.props;
+        let query = this.state.query;
         const category = this.props.match.params.category;
-        const location = {'latitude': -34.6037618, 'longitude': -58.381715, 'range': 1000000}
         return(<Grid container alignContent={"center"} justify={"center"} alignItems={"center"}>
-            <Grid item xs={10} sm={10}><PostLocation location={location} category={category}/></Grid>
+                <Grid item xs={10} sm={10}>
+                    <Typography variant="h4" display="block" align={"left"} gutterBottom>
+                        {t('my-subscriptions')}
+                    </Typography>
+                </Grid>
+            <Grid item xs={10} sm={10}><PostSubscriptions category={category}/></Grid>
+
         </Grid>);
     }
 }
-PostLocationContainer.propTypes = {
+PostSubscriptionsContainer.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withTranslation()(PostLocationContainer));
+export default withStyles(styles)(withTranslation()(PostSubscriptionsContainer));

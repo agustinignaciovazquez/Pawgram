@@ -218,7 +218,7 @@ class Register extends Component {
                         </Grid>
                     </ValidatorForm>
                 </div>
-             
+
             </Container>
         );
     }

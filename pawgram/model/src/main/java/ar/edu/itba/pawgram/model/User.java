@@ -100,6 +100,10 @@ public class User {
 		this.surname = notBlank(surname,"User surname must have at least one non empty character");
 	}
 
+	public void setPostSubscriptions(SortedSet<Post> postSubscriptions) {
+		this.postSubscriptions = notNull(postSubscriptions, "Subscription posts set cannot be null");
+	}
+
 	public SortedSet<Post> getPostSubscriptions() {
 		return Collections.unmodifiableSortedSet(postSubscriptions);
 	}

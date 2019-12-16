@@ -64,61 +64,9 @@ function renderCategories(self){
     </FormControl>)
 }
 
-function renderSelectOrderCriteriaSelect(self){
-    const { classes, t } = self.props;
-    const { labelWidth } = self.state;
-
-    return(<FormControl fullWidth className={classes.formControl} color={"primary"}>
-        <InputLabel id="demo-simple-select-label">
-            {t('order-criteria')}
-        </InputLabel>
-        <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={self.state.order_criteria}
-            onChange={event => {self.setState({'order_criteria': event.target.value});}}
-        >
-            <MenuItem value={null}>
-                <em>{t('order-default')}</em>
-            </MenuItem>
-            {Config.ORDER_CRITERIA.map(item => {
-                return <MenuItem value={item}>{t(item)}</MenuItem>
-            })}
-
-        </Select>
-    </FormControl>)
-}
-
-function renderSelectSortCriteriaSelect(self){
-    const { classes, t } = self.props;
-    const { latitude,longitude } = self.state.location;
-
-    return(<FormControl fullWidth className={classes.formControl} color={"primary"}>
-        <InputLabel id="demo-simple-select-label">
-            {t('sort-criteria')}
-        </InputLabel>
-        <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={self.state.sort_criteria}
-            onChange={event => {self.setState({'sort_criteria': event.target.value});}}
-        >
-            <MenuItem value={null}>
-                <em>{t('sort-default')}</em>
-            </MenuItem>
-            {Config.SORT_CRITERIA.map(item => {
-                //Hot-fix for sort by distance without location
-                if('distance' === item && (latitude == null || longitude == null))
-                    return;
-                return <MenuItem value={item}>{t(item)}</MenuItem>
-            })}
-
-        </Select>
-    </FormControl>)
-}
-
-class PostLocation extends Component {
+class PostProfile extends Component {
     DEFAULT_STATE = {
+        user_id: undefined,
         location: undefined,
         posts: undefined,
         user: undefined,
@@ -138,29 +86,28 @@ class PostLocation extends Component {
         if (!AuthService().isLoggedIn()){
             this.props.history.push('/login');
         }
-        this.loadPost(this.props.location, this.props.category);
+        this.loadPost(this.props.user_id, this.props.location, this.props.category);
     }
 
-    loadPost(location=this.state.location, category = this.state.category){
+    loadPost(id=this.state.user_id,location=this.state.location, category = this.state.category){
         const self = this;
         //const redirectUrl = getRedirectUrl(self, location, category); : State 'redirectUrl': redirectUrl
-        const {latitude,longitude,range} = location;
-        RestService().getPosts(latitude, longitude, range,category, self.state.sort_criteria, self.state.order_criteria, self.state.page, self.state.pageSize, self.props.latitude, self.props.longitude)
-            .then(r=>{
-                this.setState({'posts': r, 'user':AuthService().getLoggedUser(), 'location': location, 'category': category});
-            }).catch(r=>{
-            //TODO SHOW ERROR
-        });
+        const {latitude,longitude} = location;
+        RestService().getPostedByUser(id,latitude,longitude,category,this.state.page,this.state.pageSize).then(r=>{
+            this.setState({'posts': r, 'user':AuthService().getLoggedUser(), 'location': location, 'category': category, user_id:id});
+        }).catch(r=>{
+            //TODO show error
+        })
     }
 
     componentDidUpdate(prevProps,prevState){
         if(prevState.category !== this.state.category){
             this.setState({offset:0,page:1},e=>{this.loadPost()})
-        }else if(prevProps.location !== this.props.location || prevProps.category !== this.props.category){
+        }else if(prevProps.user_id !== this.props.user_id || prevProps.location !== this.props.location || prevProps.category !== this.props.category){
             this.setState(this.DEFAULT_STATE);
-            this.loadPost(this.props.location, this.props.category);
+            this.loadPost(this.props.user_id, this.props.location, this.props.category);
         }else if(!(prevState.posts !== this.state.posts || prevState.user !== this.state.user
-            || prevState.redirectUrl !== this.state.redirectUrl || prevState.location !== this.state.location)){
+            || prevState.location !== this.state.location)){
             //Some filter change so we reload and save this config
             this.loadPost();
         }
@@ -197,16 +144,6 @@ class PostLocation extends Component {
                             {renderCategories(this)}
                         </Typography>
                     </Grid>
-                    <Grid item xs={2} sm={2}>
-                        <Typography variant="overline" display="block" gutterBottom align={"right"}>
-                            {renderSelectSortCriteriaSelect(this)}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={2} sm={2}>
-                        <Typography variant="overline" display="block" gutterBottom align={"right"}>
-                            {renderSelectOrderCriteriaSelect(this)}
-                        </Typography>
-                    </Grid>
                 </Grid>
 
             </Grid>
@@ -227,4 +164,4 @@ class PostLocation extends Component {
     }
 }
 
-export default withStyles(styles)(withTranslation()(PostLocation));
+export default withStyles(styles)(withTranslation()(PostProfile));

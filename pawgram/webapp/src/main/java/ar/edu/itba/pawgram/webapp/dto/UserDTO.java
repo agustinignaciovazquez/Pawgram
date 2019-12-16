@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class UserDTO {
     private long id;
     private String name;
+    private String surname;
     private String email;
     private URI url;
 
@@ -28,6 +29,7 @@ public class UserDTO {
     public UserDTO(final User user, final URI baseUri) {
         id = user.getId();
         name = user.getName();
+        surname = user.getSurname();
         email = user.getMail();
         url = baseUri.resolve("users/" + id);
         pictureURL = user.getProfile_img_url() == null? null : baseUri.resolve("users/images/" + user.getProfile_img_url());
@@ -48,6 +50,14 @@ public class UserDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getEmail() {

@@ -111,5 +111,11 @@
   "add-sz": "Create new search zone",
   "max-sz-reached": "You can not add more search zones",
   "subscriptions": "Subscriptions",
-  "settings": "Settings"
+  "my-subscriptions": "My subscriptions",
+  "settings": "Settings",
+  "messages": "Messages",
+  "post": "Post",
+  "show-all-not": "Show all notifications",
+  "show-less-not": "Show only unseen notifications",
+  "user-profile": "User profile"
 }
