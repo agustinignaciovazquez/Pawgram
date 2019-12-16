@@ -24,6 +24,9 @@ import Profile from "../Profile/Profile";
 import PostOwn from "../Post/PostProfile/PostOwn";
 import MessageCardsGrid from "../Message/MessageCardsGrid";
 import ConversationCardsGrid from "../Message/ConversationCardsGrid";
+import PostLocationContainer from "../Post/PostLocation/PostLocationContainer";
+import NotFoundComponent from "../Status/404Component";
+import ProfileSettings from "../Profile/ProfileSettings";
 
 class App extends Component {
     constructor(props, context) {
@@ -53,6 +56,7 @@ class App extends Component {
                         <Route path='/notifications' render={(props) => <NotificationCardsGrid {...props} all={false} />}/>
 
                         <Route path="/searchzones/create" component={SearchZoneAdd}/>
+                        <Route path="/searchzones/:id" component={PostLocationContainer}/>
                         <Route path="/searchzones" component={UserSearchZones}/>
 
                         <Route path="/category/:category/search/:query" component={PostSearchContainer} />
@@ -67,15 +71,17 @@ class App extends Component {
                         <Route path="/myposts" component={PostOwn}/>
 
                         <Route path="/user/:id" component={Profile}/>
+                        <Route path="/my_profile" render={(props) => <Redirect {...props} to={'/user/'+this.state.user.id} />} />
+                        <Route path="/settings" component={ProfileSettings}/>
 
                         <Route path="/subscriptions" component={PostSubscriptionsContainer}/>
 
                         <Route path="/message/:id" component={MessageCardsGrid}/>
                         <Route path="/messages" component={ConversationCardsGrid}/>
-                        <Route path="/404">
-                            404 Not found
-                        </Route>
-                        <Route path="/my_profile" render={(props) => <Redirect {...props} to={'/user/'+this.state.user.id} />} />
+
+                        <Route path="/404" component={NotFoundComponent} />
+
+
                         <Route path="/" render={(props) => <Redirect {...props} to={'/login'} />} />
                     </Switch>
                 </div>

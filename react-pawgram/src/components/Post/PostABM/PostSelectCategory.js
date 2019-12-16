@@ -51,7 +51,7 @@ class PostSelectCategory extends Component {
     render() {
         const { classes,t } =  this.props;
         return(<Grid container alignContent={"center"} justify={"center"} alignItems={"center"}>
-            <h2>Select category</h2>
+            <h2>{t('select-category')}</h2>
             <Grid container alignContent={"center"} justify={"center"} spacing={2}>
                 <Grid item xs={4} sm={4}>
                     <Paper>

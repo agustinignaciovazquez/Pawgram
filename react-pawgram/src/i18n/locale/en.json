@@ -127,5 +127,9 @@
   "message-max-str-length": "Message too long",
   "send-message": "Send message",
   "empty-conversations": "You have no conversations",
-  "conversations": "Conversations"
+  "conversations": "Conversations",
+  "more-posts": "More posts",
+  "404notfound": "Not found sorry",
+  "back-main": "Go back to main",
+  "select-category": "Select category"
 }

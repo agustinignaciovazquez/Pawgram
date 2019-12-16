@@ -5,9 +5,12 @@ import ar.edu.itba.pawgram.interfaces.exception.InvalidSearchZoneException;
 import ar.edu.itba.pawgram.interfaces.exception.MaxSearchZoneReachedException;
 import ar.edu.itba.pawgram.interfaces.service.SearchZoneService;
 import ar.edu.itba.pawgram.interfaces.service.UserService;
+import ar.edu.itba.pawgram.model.Post;
 import ar.edu.itba.pawgram.model.SearchZone;
 import ar.edu.itba.pawgram.model.User;
+import ar.edu.itba.pawgram.model.structures.Location;
 import ar.edu.itba.pawgram.webapp.dto.NotificationListDTO;
+import ar.edu.itba.pawgram.webapp.dto.PostDTO;
 import ar.edu.itba.pawgram.webapp.dto.SearchZoneDTO;
 import ar.edu.itba.pawgram.webapp.dto.SearchZoneListDTO;
 import ar.edu.itba.pawgram.webapp.dto.form.FormSearchZone;
@@ -48,6 +51,28 @@ public class SearchZoneController {
     @Context
     private UriInfo uriContext;
 
+    @GET
+    @Path("/{id}")
+    public Response getSZById(@PathParam("id") final long id) {
+        LOGGER.debug("Accesed getPostById with ID: {}", id);
+
+        final SearchZone sz = searchZoneService.getFullSearchZoneById(id);
+        final User user = securityUserService.getLoggedInUser();
+
+        if (sz == null) {
+            LOGGER.warn("Searcho zone with ID: {} not found", id);
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        if(user == null){
+            LOGGER.debug("Failed to fetch sz {}, user not found", id);
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        if (!user.equals(sz.getUser())) {
+            LOGGER.warn("Forbidden user {} trying to access search zone with id {} he/she is not owner of", user.getId(), id);
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        return Response.ok(new SearchZoneDTO(sz, uriContext.getBaseUri(),user)).build();
+    }
 
     @GET
     @Path("/")

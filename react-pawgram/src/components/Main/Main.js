@@ -10,6 +10,9 @@ import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import PostLocation from "../Post/PostLocation/PostLocation";
+import {RestService} from "../../services/RestService";
+import PostSearchZone from "../SearchZone/PostSearchZone";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
     margin: {
@@ -17,14 +20,14 @@ const styles = theme => ({
     },
 });
 
-class PostLocationContainer extends Component {
+class Main extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const query = props.match.params.query;
+        let category = (this.props.match.params.category)?this.props.match.params.category:null;
         this.state = {
-            query: query,
-            query_input: query,
+            searchzones: undefined,
+            category: category
         };
     }
 
@@ -32,21 +35,39 @@ class PostLocationContainer extends Component {
         if (!AuthService().isLoggedIn()){
             this.props.history.push('/login');
         }
-
+        RestService().getSearchZones().then(r=>{
+            this.setState({searchzones: r});
+        }).catch(err =>{
+            //TODO show error
+        })
     }
-
+    drawAllSearchZones(){
+        let table = [];
+        this.state.searchzones.searchzones.map((item,i)=>{
+            table.push(<Grid item key={i} xs={10} sm={10}><PostSearchZone kiy={i+1} searchzone={item} category={this.state.category} /></Grid>)
+        });
+        return table;
+    }
     render() {
         const { classes,t } =  this.props;
-        const category = this.props.match.params.category;
-        const location = {'latitude': -34.6037618, 'longitude': -58.381715, 'range': 1000000}
-        return(<Grid container alignContent={"center"} justify={"center"} alignItems={"center"}>
-            <Grid item xs={10} sm={10}><PostLocation location={location} category={category}/></Grid>
+        if(this.state.searchzones === undefined){
+            return <LinearProgress />;
+        }
+
+        if(this.state.searchzones.totalCount === 0){
+            this.props.history.push('/searchzones/create')
+        }
+
+        //const location = {'latitude': -34.6037618, 'longitude': -58.381715, 'range': 1000000}
+        //<PostLocation location={location} category={category}/>
+        return(<Grid container spacing={3} alignContent={"center"} justify={"center"} alignItems={"center"}>
+            {this.drawAllSearchZones()}
 
         </Grid>);
     }
 }
-PostLocationContainer.propTypes = {
+Main.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withTranslation()(PostLocationContainer));
+export default withStyles(styles)(withTranslation()(Main));

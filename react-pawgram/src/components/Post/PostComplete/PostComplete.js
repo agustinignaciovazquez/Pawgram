@@ -26,6 +26,7 @@ import PostDeleteDialog from "../PostABM/PostDeleteDialog";
 import {Link as LinkDom} from "react-router-dom";
 import Link from "@material-ui/core/Link";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import MailIcon from "@material-ui/icons/Mail";
 
 const styles = theme => ({
     container: {
@@ -113,19 +114,44 @@ function renderEditButton(post, self){
         {t('edit')}
     </Button>);
 }
+function renderMessageButton(post,self){
+    const {t,classes} = self.props;
 
+    return (<Button
+        fullWidth
+        variant="contained"
+        color="primary"
+        size="small"
+        className={classes.button}
+        startIcon={<MailIcon />}
+        onClick={e => {self.props.history.push('/message/'+post.creator.id)}}
+    >
+
+        {t('message')}
+    </Button>)
+}
 function renderButtons(post,user,self){
+
     if(post.creator.id !== user.id)
-        return renderSubscribeButton(post.subscribed, post, self);
+        return(<Grid container spacing={1} alignItems={"center"} justify={"center"} alignContent={"center"}>
+            <Grid item xs={2} sm={2}>
+                {renderSubscribeButton(post.subscribed, post, self)}
+            </Grid>
+            <Grid item xs={1} sm={1} />
+            <Grid item xs={2} sm={2}>
+                {renderMessageButton(post,self)}
+            </Grid>
+        </Grid>);
     else
-        return(<Grid container spacing={2} alignItems={"flex-end"} justify={"flex-end"} alignContent={"flex-end"}>
+        return(<Grid container spacing={1} alignItems={"center"} justify={"center"} alignContent={"center"}>
             <Grid item xs={2} sm={2}>
                 {renderEditButton(post,self)}
             </Grid>
+            <Grid item xs={1} sm={1} />
             <Grid item xs={2} sm={2}>
                 <PostDeleteDialog post_id={post.id} callback={r => {self.props.history.push('/')}} />
             </Grid>
-        </Grid>)
+        </Grid>);
 }
 
 class PostComplete extends Component {
@@ -146,6 +172,7 @@ class PostComplete extends Component {
         }
         this.getPostHandler();
     }
+
     getPostHandler(){
         getPost(this)
             .then(r=>{

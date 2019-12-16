@@ -331,6 +331,10 @@ export const RestService = () => {
             return doGet(url + '/sz/');
         },
 
+        getSearchZone: function(id) {
+            return doGet(url + '/sz/'+id);
+        },
+
         createSearchZone: function(data) {
             var szData = {latitude: data.latitude, longitude: data.longitude, range: data.range};
             var formData = new FormData();

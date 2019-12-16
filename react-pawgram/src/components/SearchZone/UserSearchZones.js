@@ -11,6 +11,7 @@ import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {Config} from "../../services/Config";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
     root: {
@@ -71,7 +72,7 @@ class UserSearchZones extends React.Component {
         const { classes,t } =  this.props;
 
         if(!this.state.data)
-            return "<LinearProgress />";
+            return <LinearProgress />;
 
         if (this.state.data.count === 0 ){
             return (
