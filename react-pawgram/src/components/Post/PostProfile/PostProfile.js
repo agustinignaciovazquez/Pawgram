@@ -17,6 +17,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import Pagination from "material-ui-flat-pagination";
 import {Redirect} from "react-router-dom";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const themeMui = createMuiTheme();
 const styles = theme => ({
@@ -130,7 +131,7 @@ class PostProfile extends Component {
         const {t,classes} = this.props;
 
         if(this.state.posts === undefined)
-            return ("LOADING");
+            return (<LinearProgress />);
 
         return(<Grid container justify={"center"} alignItems={"center"} alignContent={"center"}>
             <Grid item xs={12} sm={12}>

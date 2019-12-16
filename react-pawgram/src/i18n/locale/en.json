@@ -22,7 +22,7 @@
   "password-mismatch": "Passwords do not match",
   "more-details": "See details",
   "posts": "Posts",
-  "empty-posts": "There are no posts nearby",
+  "empty-posts": "There are no posts",
   "title": "Title",
   "date": "Date",
   "date-post": "Post date",
@@ -121,5 +121,9 @@
   "my-posts": "My posts",
   "user-my-posts": "My Posts",
   "user-posts": "Post by user",
-  "filters": "Filters"
+  "filters": "Filters",
+  "empty-messages": "No messages",
+  "message-min-str-length": "Message too short",
+  "message-max-str-length": "Message too long",
+  "send-message": "Send message"
 }

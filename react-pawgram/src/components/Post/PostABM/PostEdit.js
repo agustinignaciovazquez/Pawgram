@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import {RestService} from "../../../services/RestService";
 import PostABM from "./PostABM";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
     margin: {
@@ -47,7 +48,7 @@ class PostEdit extends Component {
         const { classes,t } =  this.props;
 
         if(this.state.post === undefined)
-            return "LOADING";
+            return <LinearProgress />;
 
         return(<Grid container alignContent={"center"} justify={"center"} alignItems={"center"}>
             <Grid item xs={10} sm={10}>

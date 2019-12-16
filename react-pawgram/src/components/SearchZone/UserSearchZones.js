@@ -23,7 +23,8 @@ const styles = theme => ({
 class UserSearchZones extends React.Component {
     constructor(props, context) {
         super(props, context);
-        this.state = {data: undefined};
+        this.state = {data: undefined, show_error:false};
+
     }
 
     componentDidMount() {
@@ -31,10 +32,10 @@ class UserSearchZones extends React.Component {
             this.props.history.push('/login');
         }
         RestService().getSearchZones().then(r=>{
-            this.setState({data: r})
+            this.setState({data: r,show_error:false})
         }).catch(
             r=>{
-                //TODO show error
+                this.setState({show_error:true})
             }
         )
     }
@@ -70,7 +71,7 @@ class UserSearchZones extends React.Component {
         const { classes,t } =  this.props;
 
         if(!this.state.data)
-            return "Loading";
+            return "<LinearProgress />";
 
         if (this.state.data.count === 0 ){
             return (
@@ -80,6 +81,9 @@ class UserSearchZones extends React.Component {
                             <Typography variant="h4" display="block" align={"left"} gutterBottom>
                                 {t('my-search-zones')}
                             </Typography>
+                        </Grid>
+                        <Grid item xs={10} sm={10} hidden={this.state.show_error === false}>
+                            <Typography color={"secondary"}>{t('error-server')}</Typography>
                         </Grid>
                         <Grid item xs={4} sm={4}>{this.renderAddButton()}</Grid>
                         <Grid item xs={10} sm={10}>{t('empty-sz')}</Grid>

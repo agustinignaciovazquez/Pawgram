@@ -95,6 +95,7 @@ class PostABM extends Component {
             'post': props.post,
             'modify': modify,
             'redirectUrl': undefined,
+            'submitting':false,
             'errors':[]
         };
     }
@@ -221,7 +222,9 @@ class PostABM extends Component {
             is_male: (this.state.gender === Config.GENDER[0]),
             latitude: this.state.latitude,
             longitude: this.state.longitude,
-            images: this.state.images};
+            images: this.state.images,
+            submitting:true,
+        };
 
         if(this.state.modify)
             req = RestService().modifyPost(this.state.post_id, postData);
@@ -262,7 +265,7 @@ class PostABM extends Component {
                     autoComplete="off"
                     ref="form"
                     onSubmit={e => this.submitPost(e)}
-                    onError={errors => {console.log(errors);this.setState({show_error:true})}}
+                    onError={errors => {console.log(errors);this.setState({show_error:true,submitting:false})}}
                 >
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={12}>
@@ -414,6 +417,7 @@ class PostABM extends Component {
                     <Button
                         type="submit"
                         fullWidth
+                        disabled={this.state.submitting}
                         variant="contained"
                         color="primary"
                         className={classes.submit}

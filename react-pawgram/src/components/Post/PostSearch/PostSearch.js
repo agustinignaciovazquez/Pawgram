@@ -18,6 +18,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import Pagination from "material-ui-flat-pagination";
 import {Redirect} from "react-router-dom";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const themeMui = createMuiTheme();
 const styles = theme => ({
@@ -192,7 +193,7 @@ class PostSearch extends Component {
 
 
         if(this.state.posts === undefined)
-            return ("LOADING");
+            return (<LinearProgress />);
 
         if(this.state.posts === null) {
             return <Typography component="h2" variant="h6" color={"secondary"} >

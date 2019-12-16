@@ -44,6 +44,8 @@ public class MessageHibernateDao implements MessageDao {
     public long getTotalMessages(User origin, User destination){
         final TypedQuery<Long> query = em.createQuery("select count(*) from Message as m WHERE (m.orig_user.id = :origId AND m.dest_user.id = :destId) " +
                 " OR (m.orig_user.id = :destId AND m.dest_user.id = :origId) ", Long.class);
+        query.setParameter("origId",origin.getId());
+        query.setParameter("destId",destination.getId());
         final Long total = query.getSingleResult();
         return total != null ? total : 0;
     }

@@ -14,6 +14,7 @@ import {RestService} from "../../services/RestService";
 import {Link as LinkDom} from "react-router-dom";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const themeMui = createMuiTheme();
 const styles = theme => ({
@@ -103,7 +104,7 @@ class NotificationCardsGrid extends React.Component {
         const { classes,t } =  this.props;
 
         if(this.state.data === undefined){
-            return "LOADING";
+            return <LinearProgress />;
         }
 
         if (this.state.data.count === 0 ){

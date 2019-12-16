@@ -34,7 +34,6 @@ export const SubscribeToggle = (subscribed, post, self) =>{
     })
         .catch(err => {
             self.setState({'subscribed':false});
-            //TODO show error
         });
 };
 

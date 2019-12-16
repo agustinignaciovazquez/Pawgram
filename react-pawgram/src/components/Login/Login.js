@@ -61,6 +61,7 @@ class Login extends Component {
         this.state = {
             'email': "",
             'password': "",
+            'remember':false,
             'show_error':false
         };
         this.change = this.change.bind(this);
@@ -84,7 +85,7 @@ class Login extends Component {
         console.log(this.state.email);
         const authService = AuthService(this.props);
         //TODO saveToSession with remember me
-        authService.logIn(this.state.email,this.state.password,true)
+        authService.logIn(this.state.email,this.state.password,this.state.remember)
         .then(r =>{
             this.setState({'show_error': false});
             this.props.callback(r);
@@ -96,10 +97,12 @@ class Login extends Component {
             if(e.response && e.response.status === 401){
 
             }
-            //TODO SHOW OUR SERVER ERROR
         })
     }
-
+    toggleRemember(){
+        const r = !this.state.remember;
+        this.setState({remember:r})
+    }
     render(){
         const { classes, t } = this.props;
 
@@ -151,6 +154,7 @@ class Login extends Component {
                             />
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary"/>}
+                                onChange={event => {this.toggleRemember()}}
                                 label={t('remember')}
                             />
                             <Button

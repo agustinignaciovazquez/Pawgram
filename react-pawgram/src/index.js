@@ -6,10 +6,10 @@ import i18n from "./i18n/i18n";
 import './index.css';
 import App from './components/App/App';
 import * as serviceWorker from './serviceWorker';
-
+import LinearProgress from '@material-ui/core/LinearProgress';
 ReactDOM.render(
     <I18nextProvider i18n={i18n}>
-        <Suspense fallback={<div>Loading... </div>}>
+        <Suspense fallback={<div><LinearProgress /></div>}>
         <App />
         </Suspense>
     </I18nextProvider>,

@@ -12,7 +12,7 @@ public class MessageDTO {
     private long id;
     private long dest_user;
     private long orig_user;
-
+    private String message;
     @XmlElement(name = "message_date")
     private Date message_date;
 
@@ -23,6 +23,8 @@ public class MessageDTO {
         this.id = message.getId();
         this.dest_user = message.getDest_user().getId();
         this.orig_user = message.getOrig_user().getId();
+        this.message = message.getMessage();
+        this.message_date = message.getMessageDate();
     }
 
     public long getId() {
@@ -31,6 +33,14 @@ public class MessageDTO {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public long getDest_user() {

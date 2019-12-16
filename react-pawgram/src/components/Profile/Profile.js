@@ -18,6 +18,7 @@ import {Avatar} from "@material-ui/core";
 import {RestService} from "../../services/RestService";
 import PostLocation from "../Post/PostLocation/PostLocation";
 import PostProfile from "../Post/PostProfile/PostProfile";
+import LinearProgress from "@material-ui/core/LinearProgress";
 const styles = theme => ({
     margin: {
         margin: theme.spacing(1),
@@ -35,7 +36,8 @@ class Profile extends Component {
         const user_id = props.match.params.id;
         this.state = {
             'user_id': user_id,
-            'user':undefined
+            'user':undefined,
+            show_error:false
         };
     }
 
@@ -44,9 +46,9 @@ class Profile extends Component {
             this.props.history.push('/login');
         }
         RestService().getUser(this.state.user_id).then(r=>{
-            this.setState({user:r})
+            this.setState({user:r, show_error:false})
         }).catch(err=>{
-            //TODO show error
+            this.setState({show_error:true})
         });
     }
 
@@ -65,8 +67,10 @@ class Profile extends Component {
     render() {
         const { classes,t } =  this.props;
         const location = {latitude:null,longitude:null};
+
         if(this.state.user === undefined)
-            return "Loading";
+            return <LinearProgress />;
+
         return(<Grid container alignContent={"center"} justify={"center"} alignItems={"center"}>
                 <Grid item xs={10} sm={10}>
                 <Typography variant="h4" display="block" align={"left"} gutterBottom>
@@ -79,6 +83,9 @@ class Profile extends Component {
                         <Box p={2}>
                             <Grid container spacing={4} justify={"center"} alignContent={"flex-end"} alignItems={"flex-end"}>
                                 <Grid item xs={9} sm={9}>
+                                    <Grid item xs={12} sm={12} hidden={this.state.show_error === false}>
+                                        <Typography color={"secondary"}>{t('error-server')}</Typography>
+                                    </Grid>
                                     <Grid container spacing={2} alignItems={"flex-end"}>
                                         <Grid item xs={6} sm={6}>
                                             <Typography variant="overline" display="block" gutterBottom>

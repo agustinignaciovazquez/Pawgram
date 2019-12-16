@@ -20,6 +20,7 @@ import {AuthService} from "../../services/AuthService";
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import {ValidateEmail,PasswordMatchValidation,DuplicateMailValidation} from "../../services/Utils";
 import {Copyright} from "../../services/Utils";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
     paper: {
@@ -41,8 +42,6 @@ const styles = theme => ({
     },
 });
 
-//TODO put this function in utils
-
 class Register extends Component {
     constructor(props, context) {
         super(props, context);
@@ -52,6 +51,8 @@ class Register extends Component {
             'email': "",
             'password': "",
             'repeatpassword':"",
+            'submitting':false,
+            'error':false,
         };
 
         this.change = this.change.bind(this);
@@ -62,7 +63,7 @@ class Register extends Component {
         if (AuthService().isLoggedIn()){
             this.props.history.push('/ui/main');
         }
-        //TODO put this function in utils
+
         ValidatorForm.addValidationRule('isPasswordMatch', PasswordMatchValidation(this));
         ValidatorForm.addValidationRule('isDuplicateMail', DuplicateMailValidation);
     }
@@ -82,8 +83,11 @@ class Register extends Component {
     submit(e){
         e.preventDefault();
 
-        const data = {"name": this.state.firstName,"surname": this.state.lastName,"mail": this.state.email, "password":this.state.password};
+        if(this.state.submitting)
+            return;
 
+        const data = {"name": this.state.firstName,"surname": this.state.lastName,"mail": this.state.email, "password":this.state.password};
+        this.setState({submitting:true});
         RestService().createUser(data)
             .then(r => {
                 AuthService(this.props).logIn(data.mail, data.password,true)
@@ -92,11 +96,10 @@ class Register extends Component {
                     this.props.history.push('/main');
                 }).catch(res =>{
                     //Show error
-                    console.log(res);
+                    this.setState({submitting:false, error:true});
                 })
             }).catch(response => {
-                console.log(response);
-                //Show error
+                    this.setState({submitting:false, error:true});
         });
     }
 
@@ -112,6 +115,7 @@ class Register extends Component {
                     <Typography component="h1" variant="h5">
                         {t("registermain")}
                     </Typography>
+
                     <ValidatorForm
                         className={classes.form}
                         autoComplete="off"
@@ -120,6 +124,12 @@ class Register extends Component {
                         onError={errors => console.log(errors)}
                     >
                         <Grid container spacing={2}>
+                            <Grid item xs={12} sm={12} hidden={this.state.submitting === false}>
+                                <LinearProgress />
+                            </Grid>
+                            <Grid item xs={12} sm={12} hidden={this.state.error === false}>
+                                <Typography color={"secondary"}>{t('error-server')}</Typography>
+                            </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextValidator
                                     autoComplete="fname"
@@ -195,13 +205,14 @@ class Register extends Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <FormControlLabel
-                                    control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                    control={<Checkbox required value="allowExtraEmails" color="primary" />}
                                     label={t("registercheckbox")}
                                 />
                             </Grid>
                         </Grid>
                         <Button
                             type="submit"
+                            disabled={this.state.submitting}
                             fullWidth
                             variant="contained"
                             color="primary"

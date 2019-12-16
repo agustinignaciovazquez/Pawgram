@@ -53,7 +53,7 @@ class LocationSearchInput extends React.Component {
                         </Grid>
                         <Grid item xs={12} sm={12}>
                         <Paper>
-                            {loading && <div>Loading...</div>}
+                            {loading && <div>{t('loading')}</div>}
                             {suggestions.map(suggestion => {
                                 const className = suggestion.active
                                     ? 'suggestion-item--active'

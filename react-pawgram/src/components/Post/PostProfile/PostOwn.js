@@ -17,6 +17,7 @@ import Box from "@material-ui/core/Box";
 import {Avatar} from "@material-ui/core";
 import {RestService} from "../../../services/RestService";
 import PostProfile from "./PostProfile";
+import LinearProgress from "@material-ui/core/LinearProgress";
 const styles = theme => ({
     margin: {
         margin: theme.spacing(1),
@@ -65,7 +66,7 @@ class PostOwn extends Component {
         const { classes,t } =  this.props;
         const location = {latitude:null,longitude:null};
         if(this.state.user === undefined)
-            return "Loading";
+            return <LinearProgress />;
         return(<Grid container alignContent={"center"} justify={"center"} alignItems={"center"}>
             <Grid item xs={10} sm={10}>
                 <Typography variant="h4" display="block" align={"left"} gutterBottom>

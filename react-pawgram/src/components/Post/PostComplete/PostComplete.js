@@ -25,6 +25,7 @@ import PostComments from "./PostComments";
 import PostDeleteDialog from "../PostABM/PostDeleteDialog";
 import {Link as LinkDom} from "react-router-dom";
 import Link from "@material-ui/core/Link";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
     container: {
@@ -147,7 +148,6 @@ class PostComplete extends Component {
             .then(r=>{
                 this.setState({'post': r,'user':AuthService().getLoggedUser()});
             }).catch(r=>{
-            //TODO SHOW ERROR
         });
     }
 
@@ -161,7 +161,7 @@ class PostComplete extends Component {
         };
 
         if(!post)
-            return ("LOADING");
+            return (<LinearProgress />);
 
         const post_date = new Date(post.event_date);
         const formatted_post_date = post_date.toLocaleDateString();

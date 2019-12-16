@@ -69,7 +69,16 @@ public class MessagesController {
         pageSize = (pageSize < 1 || pageSize > MAX_PAGE_SIZE) ? DEFAULT_PAGE_SIZE : pageSize;
 
         LOGGER.debug("Accessing messages list, page: {}, per_page: {}", page, pageSize);
+        final long totalMessages = messageService.getTotalMessages(loggedUser,otherUser);
+        final List<Message> messages = messageService.getMessages(loggedUser,otherUser,1,(int)totalMessages);
 
+        final Map<String, Link> links = linkFactory.createLinks(uriContext, page, 1);
+        final Link[] linkArray = links.values().toArray(new Link[0]);
+
+        LOGGER.debug("Links: {}", links);
+        return Response.ok(new ChatDTO(messages, totalMessages, uriContext.getBaseUri(),
+                loggedUser,otherUser)).links(linkArray).build();
+        /*Paginated for future use
         final long totalMessages = messageService.getTotalMessages(loggedUser,otherUser);
         final long maxPage = messageService.getMaxPage(loggedUser,otherUser,pageSize);
         final List<Message> messages = messageService.getMessages(loggedUser,otherUser,page,pageSize);
@@ -79,12 +88,12 @@ public class MessagesController {
 
         LOGGER.debug("Links: {}", links);
         return Response.ok(new ChatDTO(messages, totalMessages, uriContext.getBaseUri(),
-               loggedUser,otherUser)).links(linkArray).build();
+               loggedUser,otherUser)).links(linkArray).build();*/
     }
 
     @POST
     @Path("{otherId}/send")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response sendMessage(@PathParam("otherId") final long otherId, @FormDataParam("message") final FormMessage formMessage) throws DTOValidationException {
         final User otherUser = userService.findById(otherId);
 

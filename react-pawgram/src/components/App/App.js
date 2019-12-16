@@ -22,6 +22,7 @@ import Container from "@material-ui/core/Container";
 import PostSubscriptionsContainer from "../Post/PostSubscriptions/PostSubscriptionsContainer";
 import Profile from "../Profile/Profile";
 import PostOwn from "../Post/PostProfile/PostOwn";
+import MessageCardsGrid from "../Message/MessageCardsGrid";
 
 class App extends Component {
     constructor(props, context) {
@@ -67,6 +68,8 @@ class App extends Component {
                         <Route path="/user/:id" component={Profile}/>
 
                         <Route path="/subscriptions" component={PostSubscriptionsContainer}/>
+
+                        <Route path="/message/:id" component={MessageCardsGrid}/>
 
                         <Route path="/my_profile" render={(props) => <Redirect {...props} to={'/user/'+this.state.user.id} />} />
                         <Route path="/" render={(props) => <Redirect {...props} to={'/login'} />} />
