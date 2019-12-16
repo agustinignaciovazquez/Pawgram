@@ -1,8 +1,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-//"proxy": "http://localhost:8080",
-    "proxy": "http://pawserver.it.itba.edu.ar",
-   "homepage": "/paw-2018b-11",
-    API_URL:"/paw-2018b-11/api",
+//For deploy check this in config.js and package.json
+//    "proxy": "http://pawserver.it.itba.edu.ar",
+//   "homepage": "/paw-2018b-11",
+//    API_URL:"/paw-2018b-11/api",
 ## Available Scripts
 
 In the project directory, you can run:
