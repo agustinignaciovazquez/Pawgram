@@ -15,6 +15,10 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 const styles = theme =>({
     card: {
     },
+    cardHeader:{
+        height:10,
+        maxHeight:10
+    },
     media: {
         height: 0,
         paddingTop: '56.25%', // 16:9
@@ -111,10 +115,13 @@ class NotificationCard extends React.Component {
             return null;
         return (
             <Card className={classes.card}>
+                {!notification.is_seen &&
+                <CardHeader className={classes.cardHeader}
+                    action={this.renderRemoveNotification(notification.is_seen, notification.id)}
+                />}
                 <CardActionArea onClick={event => {this.setRedirectToUrl('/post/'+notification.post.id)}}>
                 <CardHeader
                     avatar={this.renderAvatar(notification)}
-                    action={this.renderRemoveNotification(notification.is_seen, notification.id)}
                     title={this.renderNotificationTitle(notification)}
                     subheader={this.renderNotificationSubheader(notification)}
                 />

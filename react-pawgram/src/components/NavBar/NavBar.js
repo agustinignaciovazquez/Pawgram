@@ -34,6 +34,7 @@ import MapIcon from '@material-ui/icons/Map';
 import SettingsIcon from '@material-ui/icons/Settings';
 import PostIcon from '@material-ui/icons/AddAPhoto'
 import MyPostIcon from '@material-ui/icons/PostAdd'
+import {RestService} from "../../services/RestService";
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -147,8 +148,18 @@ class NavBar extends Component {
             'redirectUrl': null,
             'drawerOpen': false,
             'mobileMoreAnchorEl':null,
-            'searchRedirect': ""
+            'searchRedirect': "",
+            'notifications_total':"0",
         };
+    }
+    componentDidMount() {
+        const params = {page:1, pageSize: 50 };
+        RestService().getNotifications(params).then(r=>{
+            this.setState({'notifications_total': r.totalCount});
+        }).catch(err=>{
+            //Do nothing
+        })
+
     }
 
     handleRedirectUrl(url){
@@ -229,7 +240,7 @@ class NavBar extends Component {
                 </MenuItem>
                 <MenuItem onClick={e=>{this.handleRedirectUrl('/notifications')}}>
                     <IconButton aria-label="notifications" color="inherit" >
-                        <Badge badgeContent={0} color="secondary">
+                        <Badge badgeContent={this.state.notifications_total} color="secondary">
                             <NotificationsIcon />
                         </Badge>
                     </IconButton>
@@ -308,7 +319,7 @@ class NavBar extends Component {
                                 </Badge>
                             </IconButton>
                             <IconButton aria-label="notifications" color="inherit" onClick={e=>{this.handleRedirectUrl('/notifications')}}>
-                                    <Badge badgeContent={0} color="secondary">
+                                    <Badge badgeContent={this.state.notifications_total} color="secondary">
                                         <NotificationsIcon />
                                     </Badge>
                             </IconButton>
