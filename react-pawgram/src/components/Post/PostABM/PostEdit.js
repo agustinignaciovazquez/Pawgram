@@ -40,7 +40,9 @@ class PostEdit extends Component {
         })
             .catch(err => {
                 console.log(err);
-                //TODO show error
+                if(err.response.status === 404){
+                    this.props.history.push('/404')
+                }
         });
     }
 

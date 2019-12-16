@@ -9,9 +9,9 @@ import { red } from '@material-ui/core/colors';
 import CloseIcon from '@material-ui/icons/Close';
 import PropTypes from "prop-types";
 import {RestService} from "../../services/RestService";
-import {Link as LinkDom} from "react-router-dom";
+import {Link as LinkDom, Redirect} from "react-router-dom";
 import Link from "@material-ui/core/Link";
-
+import CardActionArea from "@material-ui/core/CardActionArea";
 const styles = theme =>({
     card: {
     },
@@ -81,19 +81,28 @@ class NotificationCard extends React.Component {
     renderAvatar(notification){
         const {classes,t} = this.props;
         if(notification.comment){
-            return (<Link component={ LinkDom } to={"/post/"+notification.post.id} variant="body2">
+            return (
                 <Avatar aria-label="comment" className={classes.avatar} src={notification.comment.author.profile_picture}>
                 {notification.comment.author.name}
                 </Avatar>
-            </Link>)
+           )
         }else{
             const image = (notification.post.image_urls.length >0)? notification.post.image_urls[0]: "";
 
-            return <Link component={ LinkDom } to={"/post/"+notification.post.id} variant="body2">
-                <Avatar aria-label="comment" className={classes.avatar} src={image}>
+            return <Avatar aria-label="comment" className={classes.avatar} src={image}>
                     {notification.post.id}
                 </Avatar>
-            </Link>
+
+        }
+    }
+    setRedirectToUrl(url){
+        this.setState({redirectUrl:url})
+    }
+    redirectToUrl(){
+        if(this.state.redirectUrl){
+            const redirectUrl = this.state.redirectUrl;
+            this.setState({'redirectUrl': null});
+            return ( <Redirect to={redirectUrl} />);
         }
     }
     render() {
@@ -102,12 +111,15 @@ class NotificationCard extends React.Component {
             return null;
         return (
             <Card className={classes.card}>
+                <CardActionArea onClick={event => {this.setRedirectToUrl('/post/'+notification.post.id)}}>
                 <CardHeader
                     avatar={this.renderAvatar(notification)}
                     action={this.renderRemoveNotification(notification.is_seen, notification.id)}
                     title={this.renderNotificationTitle(notification)}
                     subheader={this.renderNotificationSubheader(notification)}
                 />
+                </CardActionArea>
+                {this.redirectToUrl()}
             </Card>
         );
     }

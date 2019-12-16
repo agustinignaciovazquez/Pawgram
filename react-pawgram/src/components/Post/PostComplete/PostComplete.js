@@ -144,11 +144,26 @@ class PostComplete extends Component {
         if (!AuthService().isLoggedIn()){
             this.props.history.push('/login');
         }
+        this.getPostHandler();
+    }
+    getPostHandler(){
         getPost(this)
             .then(r=>{
                 this.setState({'post': r,'user':AuthService().getLoggedUser()});
             }).catch(r=>{
+            if(r.response.status === 404){
+                this.props.history.push('/404')
+            }
         });
+    }
+
+    componentDidUpdate(prevProps,prevState){
+        if(prevProps.match.params.id !== this.props.match.params.id){
+            this.setState({post: undefined,post_id:this.props.match.params.id});
+        }
+        if(prevState.post_id !== this.state.post_id){
+            this.getPostHandler();
+        }
     }
 
     render() {

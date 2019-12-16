@@ -19,6 +19,8 @@ import {RestService} from "../../services/RestService";
 import PostLocation from "../Post/PostLocation/PostLocation";
 import PostProfile from "../Post/PostProfile/PostProfile";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import EditIcon from "@material-ui/icons/Edit";
+import MailIcon from "@material-ui/icons/Mail";
 const styles = theme => ({
     margin: {
         margin: theme.spacing(1),
@@ -45,11 +47,27 @@ class Profile extends Component {
         if (!AuthService().isLoggedIn()){
             this.props.history.push('/login');
         }
+        this.getUser();
+    }
+
+    getUser(){
         RestService().getUser(this.state.user_id).then(r=>{
             this.setState({user:r, show_error:false})
         }).catch(err=>{
             this.setState({show_error:true})
+            if(err.response.status === 404){
+                this.props.history.push('/404');
+            }
         });
+    }
+
+    componentDidUpdate(prevProps,prevState){
+        if(prevProps.match.params.id !== this.props.match.params.id){
+            this.setState({user: undefined,user_id:this.props.match.params.id});
+        }
+        if(prevState.user_id !== this.state.user_id){
+            this.getUser();
+        }
     }
 
     redirectToUrl(){
@@ -62,6 +80,31 @@ class Profile extends Component {
 
     handleClick(category){
         this.setState({'redirectUrl': '/create/category/'+category})
+    }
+
+    renderButton(){
+        const {classes, t} = this.props;
+        let icon = <MailIcon />;
+        let url = '/message/'+this.state.user.id;
+        let type = 'message';
+        const me = AuthService().getLoggedUser();
+        console.log(this.state.user)
+        if(me.id === this.state.user.id) {
+            icon = <EditIcon/>;
+            url = '/settings'
+            type = 'edit'
+        }
+        return (<Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            size="small"
+            className={classes.button}
+            startIcon={icon}
+            onClick={e => {this.props.history.push(url)}}
+        >
+            {t(type)}
+        </Button>)
     }
 
     render() {
@@ -116,6 +159,9 @@ class Profile extends Component {
                                 </Grid>
                                 <Grid item xs={3} sm={3}>
                                     <Avatar alt={this.state.user.name} src={this.state.user.profile_picture} className={classes.biggerAvatar} />
+                                </Grid>
+                                <Grid item xs={3} sm={3}>
+                                    {this.renderButton()}
                                 </Grid>
                                 <Grid item xs={10} sm={10}>
                                     <Typography variant="overline" display="block" gutterBottom>

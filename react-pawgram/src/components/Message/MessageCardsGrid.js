@@ -53,14 +53,30 @@ class MessageCardsGrid extends React.Component {
         if (!AuthService().isLoggedIn()){
             this.props.history.push('/login');
         }
+        if(this.state.user_id == this.state.me.id){
+            this.props.history.push('/');
+        }
         this.loadMessages();
+    }
+
+    componentDidUpdate(prevProps,prevState){
+        if(prevProps.match.params.id !== this.props.match.params.id){
+            this.setState({data: undefined,user_id:this.props.match.params.id});
+        }
+        if(prevState.user_id !== this.state.user_id){
+            this.loadMessages();
+        }
     }
 
     loadMessages(){
         RestService().getMessages(this.state.user_id).then(r=>{
+
             this.setState({data:r,'show_error': false,send:""},e=>{this.scrollToBottom();});
         }).catch(err=>{
             this.setState({show_error:true});
+            if(err.response.status === 404){
+                this.props.history.push('/404')
+            }
         });
     }
 

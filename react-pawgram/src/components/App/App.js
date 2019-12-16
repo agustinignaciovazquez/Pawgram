@@ -23,6 +23,7 @@ import PostSubscriptionsContainer from "../Post/PostSubscriptions/PostSubscripti
 import Profile from "../Profile/Profile";
 import PostOwn from "../Post/PostProfile/PostOwn";
 import MessageCardsGrid from "../Message/MessageCardsGrid";
+import ConversationCardsGrid from "../Message/ConversationCardsGrid";
 
 class App extends Component {
     constructor(props, context) {
@@ -70,7 +71,10 @@ class App extends Component {
                         <Route path="/subscriptions" component={PostSubscriptionsContainer}/>
 
                         <Route path="/message/:id" component={MessageCardsGrid}/>
-
+                        <Route path="/messages" component={ConversationCardsGrid}/>
+                        <Route path="/404">
+                            404 Not found
+                        </Route>
                         <Route path="/my_profile" render={(props) => <Redirect {...props} to={'/user/'+this.state.user.id} />} />
                         <Route path="/" render={(props) => <Redirect {...props} to={'/login'} />} />
                     </Switch>

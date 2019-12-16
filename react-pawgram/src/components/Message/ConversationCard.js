@@ -9,11 +9,12 @@ import { red } from '@material-ui/core/colors';
 import CloseIcon from '@material-ui/icons/Close';
 import PropTypes from "prop-types";
 import {RestService} from "../../services/RestService";
-import {Link as LinkDom} from "react-router-dom";
+import {Link as LinkDom, Redirect} from "react-router-dom";
 import Link from "@material-ui/core/Link";
 import {AuthService} from "../../services/AuthService";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import CardActionArea from "@material-ui/core/CardActionArea";
 
 const styles = theme =>({
     card: {
@@ -37,7 +38,7 @@ const styles = theme =>({
     },
 });
 
-class MessageCard extends React.Component {
+class ConversationCard extends React.Component {
 
 
     constructor(props, context) {
@@ -47,14 +48,24 @@ class MessageCard extends React.Component {
         };
     }
 
+    setRedirectToUrl(url){
+        this.setState({redirectUrl:url})
+    }
+
+    redirectToUrl(){
+        if(this.state.redirectUrl){
+            const redirectUrl = this.state.redirectUrl;
+            this.setState({'redirectUrl': null});
+            return ( <Redirect to={redirectUrl} />);
+        }
+    }
 
     render() {
-        const { classes, message, otheruser} = this.props;
-        const message_date = new Date(message.message_date);
-        const formatted_message_date = message_date.toLocaleDateString();
-        const user = (this.state.me.id === message.orig_user)? this.state.me:otheruser;
+        const { classes,  user} = this.props;
+
         return (
             <Card className={classes.card}>
+                <CardActionArea onClick={event => {this.setRedirectToUrl('/message/'+user.id)}}>
                 <CardHeader
                     avatar={<Link component={ LinkDom } to={"/user/"+user.id} variant="body2">
                         <Avatar aria-label="comment" className={classes.avatar} src={user.profile_picture}>
@@ -62,21 +73,17 @@ class MessageCard extends React.Component {
                         </Avatar>
                     </Link>}
                     title={user.name +" "+user.surname}
-                    subheader={<div><Typography component="p">
-                        {message.message}
-                    </Typography>
-                    <Typography variant="overline" display="block" gutterBottom align={"right"}>
-                        {formatted_message_date}
-                    </Typography>
-                    </div>}
+                    subheader={user.email}
                 />
+                </CardActionArea>
+                {this.redirectToUrl()}
             </Card>
         );
     }
 }
 
-MessageCard.propTypes = {
+ConversationCard.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(withTranslation()(MessageCard));
+export default withStyles(styles)(withTranslation()(ConversationCard));

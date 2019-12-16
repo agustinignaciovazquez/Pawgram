@@ -125,5 +125,7 @@
   "empty-messages": "No messages",
   "message-min-str-length": "Message too short",
   "message-max-str-length": "Message too long",
-  "send-message": "Send message"
+  "send-message": "Send message",
+  "empty-conversations": "You have no conversations",
+  "conversations": "Conversations"
 }
