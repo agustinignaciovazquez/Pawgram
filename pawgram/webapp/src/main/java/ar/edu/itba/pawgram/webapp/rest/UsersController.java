@@ -295,6 +295,32 @@ public class UsersController {
     }
 
     @PUT
+    @Path("/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response changeInfo(final FormUser changeInfoForm) throws DTOValidationException, InvalidUserException {
+        LOGGER.debug("Accessed change info");
+
+        // @FormDataParam parameter is optional --> it may be null
+        if (changeInfoForm == null)
+            return Response.status(Status.BAD_REQUEST).build();
+
+        DTOValidator.validate(changeInfoForm, "Failed to validate change info form");
+
+        final User authenticatedUser = securityUserService.getLoggedInUser();
+        if(authenticatedUser == null){
+            LOGGER.debug("Failed to modify info, user not found");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+        if (!passwordEncoder.matches(changeInfoForm.getPassword(), authenticatedUser.getPassword()))
+            return Response.status(ValidationMapper.UNPROCESSABLE_ENTITY).entity(new ExceptionDTO("Incorrect password")).build();
+
+        userService.changeName(authenticatedUser.getId(),changeInfoForm.getName(),changeInfoForm.getSurname());
+        LOGGER.info("User with id {} changed info",authenticatedUser.getId());
+        return Response.noContent().build();
+    }
+
+    @PUT
     @Path("/get_recover_token")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getTokenForRecovery(final FormMail recoverPasswordForm, @Context HttpServletRequest request) throws DTOValidationException,

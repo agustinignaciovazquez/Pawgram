@@ -34,6 +34,7 @@ import GoogleMapsSearchPicker from "../../GoogleMaps/GoogleMapsSearchPicker";
 import {RestService} from "../../../services/RestService";
 import PostDeleteDialog from "./PostDeleteDialog";
 import {Redirect} from "react-router-dom";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
     margin: {
@@ -212,7 +213,9 @@ class PostABM extends Component {
 
     submitPost(e){
         e.preventDefault();
+        this.setState({submitting:true});
         let req;
+
         const postData = {title: this.state.title,
             description: this.state.description,
             contact_phone: this.state.contact_phone,
@@ -223,7 +226,6 @@ class PostABM extends Component {
             latitude: this.state.latitude,
             longitude: this.state.longitude,
             images: this.state.images,
-            submitting:true,
         };
 
         if(this.state.modify)
@@ -233,11 +235,11 @@ class PostABM extends Component {
 
         req.then(
             r=>{
-                this.setState({show_error:false,show_error_server:false, redirectUrl: '/post/'+r.id});
+                this.setState({submitting:false,show_error:false,show_error_server:false, redirectUrl: '/post/'+r.id});
             }
         ).catch( err=>{
             const errors = (err.response.status !== 500 && err.response.data.errors)? err.response.data.errors:[];
-            this.setState({show_error:false,show_error_server:true, errors: errors});
+            this.setState({submitting:false,show_error:false,show_error_server:true, errors: errors});
         });
     }
 
@@ -268,6 +270,9 @@ class PostABM extends Component {
                     onError={errors => {console.log(errors);this.setState({show_error:true,submitting:false})}}
                 >
                     <Grid container spacing={2}>
+                        <Grid item xs={12} sm={12} hidden={this.state.submitting === false}>
+                            <LinearProgress />
+                        </Grid>
                         <Grid item xs={12} sm={12}>
                             <Typography variant="h4" align={"right"} gutterBottom>
                                 <Chip

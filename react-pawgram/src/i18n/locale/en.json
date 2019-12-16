@@ -131,5 +131,18 @@
   "more-posts": "More posts",
   "404notfound": "Not found sorry",
   "back-main": "Go back to main",
-  "select-category": "Select category"
+  "select-category": "Select category",
+  "change-info": "General information",
+  "change-password": "Security",
+  "change-profile-pic": "Profile picture",
+  "mail": "Mail",
+  "save": "Save",
+  "accept": "accept",
+  "password-confirm": "Password confirmation",
+  "incorrect-password": "Password entered not match your password",
+  "update-success": "Changes saved sucessfully",
+  "change-password-s": "Change password",
+  "new-repeat-password": "Confirm new password",
+  "new-password": "New password",
+  "old-password": "Old password"
 }

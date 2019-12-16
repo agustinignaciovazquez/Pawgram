@@ -47,6 +47,8 @@ export const AuthService = (props=null) =>{
         return this.loggedUser;
     };
 
+
+
     AuthService.getToken = function(){
         return this.token
     };

@@ -121,7 +121,7 @@ class Login extends Component {
                         <Typography component="h1" variant="h5" color={"secondary"} hidden={!this.state.show_error}>
                             {t('error-login')}
                         </Typography>
-                        <ValidatorForm className={classes.form} noValidate autoComplete="off" onSubmit={e => this.submit(e)} onError={errors => console.log(errors)}>
+                        <ValidatorForm className={classes.form} noValidate autoComplete="off" instantValidate={false} onSubmit={e => this.submit(e)} onError={errors => console.log(errors)}>
                             <TextValidator
                                 variant="outlined"
                                 margin="normal"
@@ -167,7 +167,7 @@ class Login extends Component {
                                 {t('login')}
                             </Button>
                             <Grid container>
-                                <Grid item xs>
+                                <Grid item xs hidden={true}>
                                     <Link href="#" variant="body2">
                                         {t('forgetpass')}
                                     </Link>

@@ -28,6 +28,11 @@ export const SessionService = () =>{
         return this._accessToken;
     };
 
+    Session.isLocalSaved = function(){
+        return !!(this.isLoggedIn() && JSON.parse(localStorage.getItem('session.user')));
+
+    };
+
     Session.setAccessToken = function(token, isLocalStorage){
         this._accessToken = token;
         if (isLocalStorage){

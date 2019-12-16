@@ -295,6 +295,10 @@ export const RestService = () => {
             return doGet(url + '/users/check/'+mail);
         },
 
+        changeInfo: function(data) {
+            return doPut(url + '/users/', data);
+        },
+
         changePassword: function(currentPass, newPass) {
             return doPut(url + '/users/password',
                 {'current_password': currentPass, 'new_password': newPass});

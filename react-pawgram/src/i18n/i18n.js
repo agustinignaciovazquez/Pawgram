@@ -3,6 +3,8 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import XHR from "i18next-xhr-backend";
 
 import translationEng from "./locale/en.json";
+import translationEs from "./locale/es.json";
+
 i18n
     .use(XHR)
     .use(LanguageDetector)
@@ -20,6 +22,9 @@ i18n
         resources: {
             en: {
                 translations: translationEng
+            },
+            es:{
+                translations: translationEs
             },
         },
         // react-i18next options

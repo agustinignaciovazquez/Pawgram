@@ -14,6 +14,7 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Link from "@material-ui/core/Link";
 import ErrorIcon from "@material-ui/icons/Error"
+import PostEditUser from "./PostEditUser";
 const styles = theme => ({
     margin: {
         margin: theme.spacing(1),
@@ -39,7 +40,7 @@ class NotFoundComponent extends Component {
         const { classes,t } =  this.props;
         return(<Grid container alignContent={"center"} justify={"center"} alignItems={"center"}>
             <Grid container alignContent={"center"} justify={"center"} spacing={2}>
-                <Grid item xs={4} sm={4}>
+                <Grid item xs={7} sm={7}>
                     <Paper>
                         <Box p={2}>
                             <Grid container alignContent={"center"} justify={"center"} spacing={2} spacing={4}>
@@ -48,12 +49,8 @@ class NotFoundComponent extends Component {
                                         {t('settings')}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={7} sm={7}>
-                                    <Link component={ LinkDom } to="/" variant="body2">
-                                        <Typography variant="h5" display="block" align={"center"} gutterBottom>
-
-                                        </Typography>
-                                    </Link>
+                                <Grid item xs={10} sm={10}>
+                                    <PostEditUser />
                                 </Grid>
 
                             </Grid>
@@ -64,6 +61,7 @@ class NotFoundComponent extends Component {
         </Grid>);
     }
 }
+
 NotFoundComponent.propTypes = {
     classes: PropTypes.object.isRequired,
 };
